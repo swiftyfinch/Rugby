@@ -17,16 +17,16 @@ final class CleanupStep: Step {
         let podsProject = try XcodeProj(pathString: .podsProject)
         if !buildPods.isEmpty {
             podsProject.pbxproj.removeTarget(name: buildTarget)
-            progress.update(info: "Removed tmp target".yellow)
+            progress.update(info: "Remove aggregated build target".yellow)
         }
         remotePods.forEach {
             podsProject.pbxproj.removeDependency(name: $0)
             podsProject.pbxproj.removeTarget(name: $0)
         }
-        progress.update(info: "Removed remote pods".yellow)
+        progress.update(info: "Remove builded pods".yellow)
 
         try podsProject.write(pathString: .podsProject, override: true)
-        progress.update(info: "Saved".yellow)
+        progress.update(info: "Save project".yellow)
 
         done()
     }

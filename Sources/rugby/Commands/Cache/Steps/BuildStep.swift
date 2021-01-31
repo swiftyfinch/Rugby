@@ -14,10 +14,16 @@ final class BuildStep: Step {
 
     func run(scheme: String?, checksums: [String]) throws {
         if let scheme = scheme {
+            progress.update(info: "Building...".yellow)
             try XcodeBuild(project: .podsProject, scheme: scheme).build()
+            progress.update(info: "Finish".yellow)
+            
+            let checksumsFile = try Folder.current.createFileIfNeeded(at: .cachedChecksums)
+            try checksumsFile.write("SPEC CHECKSUMS:\n" + checksums.joined(separator: "\n") + "\n\n")
+            progress.update(info: "Update checksums".yellow)
+        } else {
+            progress.update(info: "Skip".yellow)
         }
-        let checksumsFile = try Folder.current.createFileIfNeeded(at: .cachedChecksums)
-        try checksumsFile.write("SPEC CHECKSUMS:\n" + checksums.joined(separator: "\n") + "\n\n")
         done()
     }
 }

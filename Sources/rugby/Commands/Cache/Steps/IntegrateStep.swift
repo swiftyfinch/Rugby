@@ -15,7 +15,7 @@ final class IntegrateStep: Step {
     func run(remotePods: [String]) throws {
         try CacheIntegration(cacheFolder: .buildFolder,
                              buildedProducts: remotePods).replacePathsToCache()
-        progress.update(info: "Updated paths to builded remote pods".yellow)
+        progress.update(info: "Update paths to builded pods".yellow)
         done()
     }
 }
