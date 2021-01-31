@@ -14,9 +14,10 @@ final class PrepareStep: Step {
     }
 
     func run(buildTarget: String, needRebuild: Bool) throws -> (buildPods: [String], checksums: [String], remotePods: [String]) {
+        // Get remote pods from Podfile.lock
         let podfile = try Podfile(.podfileLock)
         let remotePods = try podfile.getRemotePods()
-        progress.update(info: "Found remote pods ".yellow + "(\(remotePods.count))" + ":".yellow)
+        progress.update(info: "Remote pods ".yellow + "(\(remotePods.count))" + ":".yellow)
         remotePods.forEach { progress.update(info: "* ".yellow + "\($0)") }
 
         let checksums = try podfile.getChecksums().filter {
@@ -31,14 +32,23 @@ final class PrepareStep: Step {
             let cachedChecksums = (try? Podfile(.cachedChecksums).getChecksums()) ?? []
             let changes = Set(checksums).subtracting(cachedChecksums)
             let changedPods = changes.compactMap { $0.components(separatedBy: ": ").first }
-            changedPods.forEach { print($0) }
             buildPods = changedPods
         }
+        progress.update(info: "Build pods ".yellow + "(\(buildPods.count))" + ":".yellow)
+        buildPods.forEach { progress.update(info: "* ".yellow + "\($0)") }
 
+        // Validate pods
         let podsProject = try XcodeProj(pathString: .podsProject)
-        if !buildPods.isEmpty {
+        let missedPods = buildPods.filter { podsProject.pbxproj.targets(named: $0).isEmpty }
+        if !missedPods.isEmpty {
+            throw CacheError.cantFindPodsInProject(missedPods)
+        }
+
+        if buildPods.isEmpty {
+            progress.update(info: "Skip".yellow)
+        } else {
             podsProject.pbxproj.addTarget(name: buildTarget, dependencies: buildPods)
-            progress.update(info: "Added tmp target: ".yellow + buildTarget)
+            progress.update(info: "Added aggregated build target: ".yellow + buildTarget)
             try podsProject.write(pathString: .podsProject, override: true)
         }
         done()

@@ -41,7 +41,7 @@ final class RugbyProgressBar {
 
     func done() {
         let time = ProcessInfo.processInfo.systemUptime - begin
-        formatter.info = "Done"
+        formatter.info = "✓"
         formatter.time = "[\(time.formatTime())] ".yellow
         progressBar.setValue(progressBar.count)
     }
