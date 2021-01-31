@@ -8,16 +8,18 @@
 import Files
 
 class Step {
-    let verbose: Bool
+    private let verbose: Bool
+    private let isLast: Bool
     let progress: RugbyProgressBar
 
-    init(name: String, logFile: File, verbose: Bool) {
+    init(name: String, logFile: File, verbose: Bool, isLast: Bool = false) {
         self.verbose = verbose
+        self.isLast = isLast
         self.progress = RugbyProgressBar(title: name, logFile: logFile, verbose: verbose)
     }
 
     func done() {
         progress.done()
-        if verbose { print("------------------------------------------------".yellow) }
+        if verbose && !isLast { print("------------------------------------------------".yellow) }
     }
 }
