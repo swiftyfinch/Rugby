@@ -2,7 +2,7 @@ import ArgumentParser
 
 struct Rugby: ParsableCommand {
     static var configuration = CommandConfiguration(
-        subcommands: [Cache.self],
+        subcommands: [Cache.self, Clean.self],
         defaultSubcommand: Cache.self
     )
 }
