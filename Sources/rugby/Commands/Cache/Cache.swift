@@ -11,27 +11,16 @@ import Files
 import ShellOut
 import Rainbow
 
-extension String {
-    static let podfileLock = "Podfile.lock"
-    static let podsProject = "Pods/Pods.xcodeproj"
-    static let podsTargetSupportFiles = "Pods/Target Support Files"
-
-    static let cachedChecksums = supportFolder + "/Checksums"
-    static let buildFolder = "${PODS_ROOT}/../" + supportFolder + "/build/Debug-iphonesimulator"
-}
-
 private extension String {
-    static let supportFolder = ".rugby"
-    static let log = supportFolder + "/rugby.log"
     static let buildTarget = "RemotePods"
 }
 
 struct Cache: ParsableCommand {
-    @Flag(name: .long)
-    var verbose = false
-
-    @Flag(name: .long)
-    var rebuild = false
+    @Flag(name: .long, help: "Print more information.") var verbose = false
+    @Flag(name: .long, help: "Ignore already cached pods.") var rebuild = false
+    static var configuration: CommandConfiguration = .init(
+        abstract: "Remove remote pods, build them and integrate as frameworks."
+    )
 
     func run() throws {
         let logFile = try Folder.current.createFile(at: .log)
