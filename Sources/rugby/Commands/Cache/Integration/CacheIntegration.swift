@@ -19,17 +19,17 @@ struct CacheIntegration {
             $0.append(("${BUILT_PRODUCTS_DIR}/\($1)", "\(cacheFolder)/\($1)"))
         }
         try replaceContent(occurrences: buildedProductsDirToCacheFolder,
-                           inFilesByRegEx: ".*-frameworks\\.sh",
+                           inFilesByRegEx: #".*-frameworks\.sh"#,
                            folder: supportFilesFolder)
 
         let podsConfigurationBuildDirToCacheFolder = buildedProducts.reduce(into: []) {
             $0.append(("${PODS_CONFIGURATION_BUILD_DIR}/\($1)", "\(cacheFolder)/\($1)"))
         }
         try replaceContent(occurrences: podsConfigurationBuildDirToCacheFolder,
-                           inFilesByRegEx: ".*(?:\\.unit-tests)?\\.debug\\.xcconfig",
+                           inFilesByRegEx: #".*\.xcconfig"#,
                            folder: supportFilesFolder)
         try replaceContent(occurrences: podsConfigurationBuildDirToCacheFolder,
-                           inFilesByRegEx: ".*-resources.sh",
+                           inFilesByRegEx: #".*-resources\.sh"#,
                            folder: supportFilesFolder)
     }
 
