@@ -11,8 +11,8 @@ import ShellOut
 struct XcodeBuild {
     let project: String
     let scheme: String
+    let arch: String
 
-    // todo: Clean up
     func build() throws {
         try shellOut(
             to: "set -o pipefail && NSUnbufferedIO=YES xcodebuild",
@@ -20,7 +20,7 @@ struct XcodeBuild {
                 "-project \(project)",
                 "-scheme \(scheme)",
                 "-sdk iphonesimulator",
-                "ARCHS=x86_64",
+                "ARCHS=\(arch)",
                 "SYMROOT=$(PWD)/" + .buildFolder,
                 "COMPILER_INDEX_STORE_ENABLE=NO",
                 "SWIFT_COMPILATION_MODE=wholemodule",

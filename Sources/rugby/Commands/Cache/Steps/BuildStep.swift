@@ -13,12 +13,11 @@ final class BuildStep: Step {
         super.init(name: "Build", logFile: logFile, verbose: verbose)
     }
 
-    func run(scheme: String?, checksums: [String]) throws {
+    func run(scheme: String?, checksums: [String], arch: String) throws {
         if let scheme = scheme {
             progress.update(info: "Building...".yellow)
-            try XcodeBuild(project: .podsProject, scheme: scheme).build()
             do {
-                try XcodeBuild(project: .podsProject, scheme: scheme).build()
+                try XcodeBuild(project: .podsProject, scheme: scheme, arch: arch).build()
             } catch {
                 let podsProject = try XcodeProj(pathString: .podsProject)
                 podsProject.pbxproj.removeTarget(name: scheme)
