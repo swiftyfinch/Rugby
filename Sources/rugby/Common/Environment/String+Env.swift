@@ -13,7 +13,9 @@ extension String {
     static let podsTargetSupportFiles = "Pods/Target Support Files"
 
     static let supportFolder = ".rugby"
+    static let buildFolder = supportFolder + "/build"
     static let log = supportFolder + "/rugby.log"
+    static let buildLog = supportFolder + "/build.log"
     static let cachedChecksums = supportFolder + "/Checksums"
-    static let buildFolder = "${PODS_ROOT}/../" + supportFolder + "/build/Debug-iphonesimulator"
+    static let cacheFolder = "${PODS_ROOT}/../" + supportFolder + "/build/Debug-iphonesimulator"
 }
