@@ -21,7 +21,7 @@ struct XcodeBuild {
                 "-scheme \(scheme)",
                 "-sdk iphonesimulator",
                 "ARCHS=x86_64",
-                "SYMROOT=$(PWD)/.rugby/build",
+                "SYMROOT=$(PWD)/" + .buildFolder,
                 "COMPILER_INDEX_STORE_ENABLE=NO",
                 "SWIFT_COMPILATION_MODE=wholemodule",
                 "SWIFT_OPTIMIZATION_LEVEL=-Onone",
