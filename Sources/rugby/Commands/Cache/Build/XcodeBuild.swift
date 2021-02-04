@@ -26,6 +26,7 @@ struct XcodeBuild {
                 "SWIFT_COMPILATION_MODE=wholemodule",
                 "SWIFT_OPTIMIZATION_LEVEL=-Onone",
                 "| xcbeautify"
+                "| tee " + .buildLog
             ],
             errorHandle: FileHandle.standardError
         )
