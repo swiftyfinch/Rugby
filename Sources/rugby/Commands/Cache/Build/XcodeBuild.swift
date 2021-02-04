@@ -24,7 +24,7 @@ struct XcodeBuild {
                 "SYMROOT=$(PWD)/" + .buildFolder,
                 "COMPILER_INDEX_STORE_ENABLE=NO",
                 "SWIFT_COMPILATION_MODE=wholemodule",
-                "| xcbeautify"
+                "| xcpretty",
                 "| tee " + .buildLog
             ],
             errorHandle: FileHandle.standardError
