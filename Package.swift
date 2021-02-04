@@ -10,10 +10,8 @@ let package = Package(
         .executable(name: "rugby", targets: ["rugby"])
     ],
     dependencies: [
-//        .package(path: "/Users/v.khorkov/Developer/SwiftyFinch/swift-argument-parser"),
         .package(url: "https://github.com/apple/swift-argument-parser", from: "0.0.1"),
         .package(url: "https://github.com/onevcat/Rainbow", from: "3.0.0"),
-        .package(url: "https://github.com/jpsim/Yams.git", from: "4.0.3"),
         .package(url: "https://github.com/JohnSundell/Files", from: "4.0.0"),
         .package(name: "XcodeProj", url: "https://github.com/tuist/xcodeproj", from: "7.18.0"),
         .package(url: "https://github.com/eneko/RegEx.git", from: "0.1.0"),
@@ -23,7 +21,6 @@ let package = Package(
         .target(name: "rugby", dependencies: [
             .product(name: "ArgumentParser", package: "swift-argument-parser"),
             "Rainbow",
-            "Yams",
             "Files",
             "XcodeProj",
             "RegEx",
