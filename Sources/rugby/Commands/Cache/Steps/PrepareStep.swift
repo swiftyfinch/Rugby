@@ -13,7 +13,8 @@ final class PrepareStep: Step {
         super.init(name: "Prepare", logFile: logFile, verbose: verbose)
     }
 
-    func run(buildTarget: String, needRebuild: Bool) throws -> (buildPods: [String], checksums: [String], remotePods: [String]) {
+    func run(buildTarget: String,
+             needRebuild: Bool) throws -> (buildPods: [String], checksums: [String], remotePods: [String]) {
         // Get remote pods from Podfile.lock
         let podfile = try Podfile(.podfileLock)
         let remotePods = try podfile.getRemotePods().map { $0.trimmingCharacters(in: ["\""]) }

@@ -18,6 +18,8 @@ private extension String {
 struct Cache: ParsableCommand {
     @Flag(name: .long, help: "Print more information.") var verbose = false
     @Flag(name: .long, help: "Ignore already cached pods.") var rebuild = false
+    @Option(name: .long, help: "Build architechture.") var arch = "x86_64"
+
     static var configuration: CommandConfiguration = .init(
         abstract: "Remove remote pods, build them and integrate as frameworks."
     )
@@ -31,7 +33,9 @@ struct Cache: ParsableCommand {
             let input = try prepareStep.run(buildTarget: buildTarget, needRebuild: rebuild)
 
             let buildStep = BuildStep(logFile: logFile, verbose: verbose)
-            try buildStep.run(scheme: input.buildPods.isEmpty ? nil : buildTarget, checksums: input.checksums)
+            try buildStep.run(scheme: input.buildPods.isEmpty ? nil : buildTarget,
+                              checksums: input.checksums,
+                              arch: arch)
 
             let integrateStep = IntegrateStep(logFile: logFile, verbose: verbose)
             try integrateStep.run(remotePods: input.remotePods)
