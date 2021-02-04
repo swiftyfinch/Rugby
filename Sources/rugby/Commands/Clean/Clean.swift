@@ -14,8 +14,7 @@ struct Clean: ParsableCommand {
     )
 
     func run() throws {
-        let logFile = try Folder.current.createFile(at: .log)
-        let step = CleanStep(logFile: logFile, verbose: false, isLast: true)
+        let step = CleanStep(verbose: false, isLast: true)
         try step.run()
     }
 }

@@ -14,10 +14,14 @@ final class RugbyProgressBar {
     private let begin = ProcessInfo.processInfo.systemUptime
     private let verbose: Bool
 
-    init(count: Int = Int.max, title: String, logFile: File, verbose: Bool = false) {
+    init(count: Int = Int.max,
+         title: String,
+         logFile: File? = nil,
+         verbose: Bool = false) {
         self.formatter = RugbyFormatter(title: title)
 
-        var printers: [ProgressBarPrinter] = [LogProgressBarPrinter(file: logFile)]
+        var printers: [ProgressBarPrinter] = []
+        logFile.map { printers.append(LogProgressBarPrinter(file: $0)) }
         printers.append(verbose ? ProgressDefaultPrinter() : ProgressOneLinePrinter())
         self.progressBar = ProgressBar(
             count: count,

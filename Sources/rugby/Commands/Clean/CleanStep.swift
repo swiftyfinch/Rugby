@@ -8,8 +8,8 @@
 import Files
 
 final class CleanStep: Step {
-    init(logFile: File, verbose: Bool, isLast: Bool) {
-        super.init(name: "Clean", logFile: logFile, verbose: verbose, isLast: isLast)
+    init(verbose: Bool, isLast: Bool) {
+        super.init(name: "Clean", verbose: verbose, isLast: isLast)
     }
 
     func run() throws {
