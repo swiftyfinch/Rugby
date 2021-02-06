@@ -38,10 +38,10 @@ struct Cache: ParsableCommand {
                               arch: arch)
 
             let integrateStep = IntegrateStep(logFile: logFile, verbose: verbose)
-            try integrateStep.run(remotePods: input.remotePods)
+            try integrateStep.run(buildPods: input.buildPods)
 
             let cleanupStep = CleanupStep(logFile: logFile, verbose: verbose)
-            try cleanupStep.run(buildPods: input.buildPods, buildTarget: buildTarget, remotePods: input.remotePods)
+            try cleanupStep.run(buildPods: input.buildPods, buildTarget: buildTarget)
         }
         print("[\(totalTime.formatTime())] ".yellow + "Let's roll 🏈 ".green)
         try shellOut(to: "tput bel")
