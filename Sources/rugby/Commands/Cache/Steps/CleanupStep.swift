@@ -13,13 +13,13 @@ final class CleanupStep: Step {
         super.init(name: "Clean up", logFile: logFile, verbose: verbose)
     }
 
-    func run(buildPods: [String], buildTarget: String, remotePods: [String]) throws {
+    func run(buildPods: Set<String>, buildTarget: String) throws {
         let podsProject = try XcodeProj(pathString: .podsProject)
         if !buildPods.isEmpty {
             podsProject.pbxproj.removeTarget(name: buildTarget)
             progress.update(info: "Remove aggregated build target".yellow)
         }
-        remotePods.forEach {
+        buildPods.forEach {
             podsProject.pbxproj.removeDependency(name: $0)
             podsProject.pbxproj.removeTarget(name: $0)
         }

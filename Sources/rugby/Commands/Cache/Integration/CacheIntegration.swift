@@ -10,7 +10,7 @@ import RegEx
 
 struct CacheIntegration {
     let cacheFolder: String
-    let buildedProducts: [String]
+    let buildedProducts: Set<String>
 
     func replacePathsToCache() throws {
         let supportFilesFolder = try Folder.current.subfolder(at: .podsTargetSupportFiles)
