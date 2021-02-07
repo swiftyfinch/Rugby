@@ -25,8 +25,7 @@ struct XcodeBuild {
                 "COMPILER_INDEX_STORE_ENABLE=NO",
                 "SWIFT_COMPILATION_MODE=wholemodule",
                 "| tee " + .buildLog
-            ],
-            errorHandle: FileHandle.standardError
+            ]
         )
     }
 }

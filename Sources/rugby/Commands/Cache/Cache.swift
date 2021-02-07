@@ -15,6 +15,17 @@ private extension String {
     static let buildTarget = "RemotePods"
 }
 
+private enum WrappedError: Error, LocalizedError {
+    case common(String)
+
+    var errorDescription: String? {
+        switch self {
+        case .common(let description):
+            return description
+        }
+    }
+}
+
 struct Cache: ParsableCommand {
     @Flag(name: .long, help: "Print more information.") var verbose = false
     @Flag(name: .long, help: "Ignore already cached pods.") var rebuild = false
@@ -25,6 +36,10 @@ struct Cache: ParsableCommand {
     )
 
     func run() throws {
+        try wrapError(privateRun)
+    }
+
+    private func privateRun() throws {
         let logFile = try Folder.current.createFile(at: .log)
         let buildTarget: String = .buildTarget
 
@@ -45,5 +60,13 @@ struct Cache: ParsableCommand {
         }
         print("[\(totalTime.formatTime())] ".yellow + "Let's roll 🏈 ".green)
         try shellOut(to: "tput bel")
+    }
+
+    func wrapError(_ block: () throws -> Void) throws {
+        do {
+            try block()
+        } catch {
+            throw WrappedError.common(error.localizedDescription.red)
+        }
     }
 }
