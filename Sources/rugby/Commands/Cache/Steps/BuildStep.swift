@@ -22,6 +22,7 @@ final class BuildStep: Step {
                 let podsProject = try XcodeProj(pathString: .podsProject)
                 podsProject.pbxproj.removeTarget(name: scheme)
                 try podsProject.write(pathString: .podsProject, override: true)
+                progress.update(info: "Full build log: ".yellow + .buildLog)
                 throw error
             }
             progress.update(info: "Finish".yellow)
