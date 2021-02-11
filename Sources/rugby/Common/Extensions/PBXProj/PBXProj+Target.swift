@@ -8,7 +8,7 @@
 import XcodeProj
 
 extension PBXProj {
-    func addTarget(name: String, dependencies: Set<String>) {
+    func addTarget(name: String, dependencies: [String]) {
         let podsTargets = main.targets.filter { dependencies.contains($0.name) }
         let target = PBXAggregateTarget(name: name, productName: name)
         target.buildConfigurationList = podsTargets[0].buildConfigurationList
