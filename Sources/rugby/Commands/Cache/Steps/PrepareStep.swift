@@ -14,7 +14,7 @@ final class PrepareStep: Step {
     }
 
     func run(buildTarget: String,
-             needRebuild: Bool) throws -> (buildPods: Set<String>, checksums: [String]) {
+             needRebuild: Bool) throws -> (buildPods: [String], remotePods: Set<String>, checksums: [String]) {
         // Get remote pods from Podfile.lock
         let podfile = try Podfile(.podfileLock)
         let remotePods = try podfile.getRemotePods().map { $0.trimmingCharacters(in: ["\""]) }
@@ -45,28 +45,28 @@ final class PrepareStep: Step {
             throw CacheError.cantFindPodsInProject(missedPods)
         }
 
-        // Collect all build target chain
-        let buildPodsChain: Set<String> = buildPods.reduce(Set(buildPods)) { set, name in
+        // Collect all remote pods chain
+        let remotePodsChain: Set<String> = remotePods.reduce(Set(remotePods)) { set, name in
             let targets = Set(podsProject.pbxproj.targets(named: name))
             return set.union(targets.reduce(Set<String>()) { set, target in
                 return set.union(target.dependencies.compactMap(\.name))
             })
         }
-        let additionalBuildTargets = buildPodsChain.subtracting(buildPods)
+        let additionalBuildTargets = remotePodsChain.subtracting(remotePods)
         if !additionalBuildTargets.isEmpty {
             progress.update(info: "Additional build targets ".yellow + "(\(additionalBuildTargets.count))" + ":".yellow)
             additionalBuildTargets.sorted().forEach { progress.update(info: "* ".yellow + "\($0)") }
         }
 
-        if buildPodsChain.isEmpty {
+        if buildPods.isEmpty {
             progress.update(info: "Skip".yellow)
         } else {
-            podsProject.pbxproj.addTarget(name: buildTarget, dependencies: buildPodsChain)
+            podsProject.pbxproj.addTarget(name: buildTarget, dependencies: buildPods)
             progress.update(info: "Added aggregated build target: ".yellow + buildTarget)
             try podsProject.write(pathString: .podsProject, override: true)
         }
         done()
 
-        return (buildPodsChain, checksums)
+        return (buildPods, remotePodsChain, checksums)
     }
 }
