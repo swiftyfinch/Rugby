@@ -28,6 +28,9 @@ struct CacheIntegration {
         try replaceContent(occurrences: podsConfigurationBuildDirToCacheFolder,
                            inFilesByRegEx: #".*\.xcconfig"#,
                            folder: supportFilesFolder)
+        try replaceContent(occurrences: buildedProductsDirToCacheFolder,
+                           inFilesByRegEx: #".*-resources\.sh"#,
+                           folder: supportFilesFolder)
         try replaceContent(occurrences: podsConfigurationBuildDirToCacheFolder,
                            inFilesByRegEx: #".*-resources\.sh"#,
                            folder: supportFilesFolder)
