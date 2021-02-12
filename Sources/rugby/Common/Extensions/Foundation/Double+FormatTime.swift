@@ -10,6 +10,11 @@ import Foundation
 extension Double {
     func formatTime() -> String {
         let formatter = DateComponentsFormatter()
+
+        var calendar = Calendar.current
+        calendar.locale = Locale(identifier: "en")
+        formatter.calendar = calendar
+
         formatter.allowedUnits = [.hour, .minute, .second]
         formatter.unitsStyle = .abbreviated
         formatter.zeroFormattingBehavior = .dropAll
