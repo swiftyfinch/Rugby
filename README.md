@@ -12,6 +12,11 @@ brew tap swiftyfinch/Rugby https://github.com/swiftyfinch/Rugby.git
 brew install swiftyfinch/Rugby/rugby
 ```
 
+## Problems
+
+- [ ] Doesn't rebuild parents pods after patch 😕 \
+Use `--rebuild` flag for temporary workaround.
+
 ## Maybe Roadmap
 
 `-` Build for device\
