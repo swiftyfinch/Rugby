@@ -14,17 +14,24 @@ final class CleanupStep: Step {
     }
 
     func run(remotePods: Set<String>, buildTarget: String) throws {
+        var hasChanges = false
         let podsProject = try XcodeProj(pathString: .podsProject)
-        podsProject.pbxproj.removeTarget(name: buildTarget)
-        progress.update(info: "Remove aggregated build target".yellow)
+
+        if podsProject.pbxproj.removeTarget(name: buildTarget) {
+            hasChanges = true
+            progress.update(info: "Remove aggregated build target".yellow)
+        }
+
         remotePods.forEach {
-            podsProject.pbxproj.removeDependency(name: $0)
-            podsProject.pbxproj.removeTarget(name: $0)
+            hasChanges = podsProject.pbxproj.removeDependency(name: $0) || hasChanges
+            hasChanges = podsProject.pbxproj.removeTarget(name: $0) || hasChanges
         }
         progress.update(info: "Remove builded pods".yellow)
 
-        try podsProject.write(pathString: .podsProject, override: true)
-        progress.update(info: "Save project".yellow)
+        if hasChanges {
+            try podsProject.write(pathString: .podsProject, override: true)
+            progress.update(info: "Save project".yellow)
+        }
 
         done()
     }

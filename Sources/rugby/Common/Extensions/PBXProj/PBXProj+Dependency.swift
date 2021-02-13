@@ -8,13 +8,17 @@
 import XcodeProj
 
 extension PBXProj {
-    func removeDependency(name: String) {
+    @discardableResult
+    func removeDependency(name: String) -> Bool {
+        var hasChanges = false
         for target in main.targets {
             target.dependencies.removeAll {
                 guard $0.name == name else { return false }
                 delete(object: $0)
+                hasChanges = true
                 return true
             }
         }
+        return hasChanges
     }
 }

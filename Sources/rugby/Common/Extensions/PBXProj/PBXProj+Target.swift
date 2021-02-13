@@ -21,10 +21,12 @@ extension PBXProj {
 }
 
 extension PBXProj {
-    func removeTarget(name: String) {
-        guard let target = main.targets.first(where: { $0.name == name }) else { return }
+    @discardableResult
+    func removeTarget(name: String) -> Bool {
+        guard let target = main.targets.first(where: { $0.name == name }) else { return false }
         target.dependencies.forEach(delete)
         target.dependencies.forEach { $0.targetProxy.map(delete) }
         delete(object: target)
+        return true
     }
 }
