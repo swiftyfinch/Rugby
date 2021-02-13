@@ -35,8 +35,6 @@ final class PrepareStep: Step {
             let changedPods = changes.compactMap { $0.components(separatedBy: ": ").first }
             buildPods = changedPods.sorted()
         }
-        progress.update(info: "Build pods ".yellow + "(\(buildPods.count))" + ":".yellow)
-        buildPods.forEach { progress.update(info: "* ".yellow + "\($0)") }
 
         // Validate pods
         let podsProject = try XcodeProj(pathString: .podsProject)
@@ -58,15 +56,21 @@ final class PrepareStep: Step {
             additionalBuildTargets.sorted().forEach { progress.update(info: "* ".yellow + "\($0)") }
         }
 
-        if buildPods.isEmpty {
+        // Include parents of build pods
+        let buildPodsChain = podsProject.findParentDependencies(Set(buildPods), allTargets: remotePods)
+
+        if buildPodsChain.isEmpty {
             progress.update(info: "Skip".yellow)
         } else {
-            podsProject.pbxproj.addTarget(name: buildTarget, dependencies: buildPods)
+            progress.update(info: "Build pods ".yellow + "(\(buildPodsChain.count))" + ":".yellow)
+            buildPodsChain.sorted().forEach { progress.update(info: "* ".yellow + "\($0)") }
+
+            podsProject.pbxproj.addTarget(name: buildTarget, dependencies: buildPodsChain)
             progress.update(info: "Added aggregated build target: ".yellow + buildTarget)
             try podsProject.write(pathString: .podsProject, override: true)
         }
         done()
 
-        return (buildPods, remotePodsChain, checksums)
+        return (buildPodsChain, remotePodsChain, checksums)
     }
 }
