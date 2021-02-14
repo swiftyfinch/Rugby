@@ -5,8 +5,8 @@
 //  Created by v.khorkov on 31.01.2021.
 //
 
-import XcodeProj
 import Files
+import XcodeProj
 
 final class PrepareStep: Step {
     init(logFile: File, verbose: Bool) {

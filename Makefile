@@ -1,5 +1,6 @@
 .PHONY: build
 build:
+	@swift run swiftlint --strict --quiet
 	@swift build -c release
 	
 .PHONY: package

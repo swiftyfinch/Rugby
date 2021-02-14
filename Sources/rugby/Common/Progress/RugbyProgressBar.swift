@@ -5,8 +5,8 @@
 //  Created by v.khorkov on 09.01.2021.
 //
 
-import Foundation
 import Files
+import Foundation
 
 final class RugbyProgressBar {
     private let formatter: RugbyFormatter
@@ -37,7 +37,7 @@ final class RugbyProgressBar {
         progressBar.count = count
         progressBar.setValue(0)
     }
-    
+
     func update(info: String) {
         formatter.info = info
         progressBar.next()

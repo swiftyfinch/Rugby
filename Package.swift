@@ -15,7 +15,8 @@ let package = Package(
         .package(url: "https://github.com/JohnSundell/Files", from: "4.0.0"),
         .package(name: "XcodeProj", url: "https://github.com/tuist/xcodeproj", from: "7.18.0"),
         .package(url: "https://github.com/eneko/RegEx.git", from: "0.1.0"),
-        .package(url: "https://github.com/JohnSundell/ShellOut.git", from: "2.0.0")
+        .package(url: "https://github.com/JohnSundell/ShellOut.git", from: "2.0.0"),
+        .package(url: "https://github.com/realm/SwiftLint", from: "0.42.0")
     ],
     targets: [
         .target(name: "rugby", dependencies: [
