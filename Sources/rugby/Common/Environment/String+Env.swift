@@ -5,7 +5,18 @@
 //  Created by v.khorkov on 31.01.2021.
 //
 
-import Foundation
+import ArgumentParser
+
+enum SDK: String, ExpressibleByArgument {
+    case sim, ios
+
+    var xcodebuild: String {
+        switch self {
+        case .sim: return "iphonesimulator"
+        case .ios: return "iphoneos"
+        }
+    }
+}
 
 extension String {
     static let podfileLock = "Podfile.lock"
@@ -17,5 +28,8 @@ extension String {
     static let log = supportFolder + "/rugby.log"
     static let buildLog = supportFolder + "/build.log"
     static let cachedChecksums = supportFolder + "/Checksums"
-    static let cacheFolder = "${PODS_ROOT}/../" + supportFolder + "/build/Debug-iphonesimulator"
+
+    static func cacheFolder(sdk: SDK) -> String {
+        "${PODS_ROOT}/../" + supportFolder + "/build/Debug-\(sdk.xcodebuild)"
+    }
 }
