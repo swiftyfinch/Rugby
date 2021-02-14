@@ -7,6 +7,7 @@
 
 import Files
 import XcodeProj
+import ShellOut
 
 final class CleanupStep: Step {
     init(logFile: File, verbose: Bool) {
@@ -27,6 +28,15 @@ final class CleanupStep: Step {
             hasChanges = podsProject.pbxproj.removeTarget(name: $0) || hasChanges
         }
         progress.update(info: "Remove builded pods".yellow)
+
+        let username = try shellOut(to: "echo ${USER}")
+        let schemeCleaner = SchemeCleaner()
+        remotePods.forEach {
+            if (try? schemeCleaner.removeScheme(name: $0, user: username)) == nil {
+                progress.update(info: "- Can't remove scheme \($0).".red)
+            }
+        }
+        progress.update(info: "Remove schemes".yellow)
 
         if hasChanges {
             try podsProject.write(pathString: .podsProject, override: true)
