@@ -26,7 +26,7 @@ final class BuildStep: Step {
                 throw error
             }
             progress.update(info: "Finish".yellow)
-            
+
             let checksumsFile = try Folder.current.createFileIfNeeded(at: .cachedChecksums)
             try checksumsFile.write("SPEC CHECKSUMS:\n" + checksums.joined(separator: "\n") + "\n\n")
             progress.update(info: "Update checksums".yellow)

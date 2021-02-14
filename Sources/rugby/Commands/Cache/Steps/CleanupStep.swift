@@ -6,8 +6,8 @@
 //
 
 import Files
-import XcodeProj
 import ShellOut
+import XcodeProj
 
 final class CleanupStep: Step {
     init(logFile: File, verbose: Bool) {

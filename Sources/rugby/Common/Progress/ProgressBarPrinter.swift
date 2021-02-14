@@ -5,8 +5,8 @@
 //  Created by v.khorkov on 09.01.2021.
 //
 
-import Foundation
 import Files
+import Foundation
 
 private extension TimeInterval {
     static let printInterval: TimeInterval = 0.2
@@ -31,7 +31,7 @@ final class ProgressOneLinePrinter: ProgressBarPrinter {
 
     private func setupTimer() -> Bool {
         guard timer == nil else { return false }
-        let timer = Timer(timeInterval: .printInterval, repeats: true, block: { [weak self] timer in
+        let timer = Timer(timeInterval: .printInterval, repeats: true, block: { [weak self] _ in
             guard let self = self else { return }
             guard !self.queue.isEmpty else { return }
             print(self.queue.removeFirst())
