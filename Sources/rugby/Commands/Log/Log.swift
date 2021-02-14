@@ -1,5 +1,5 @@
 //
-//  File.swift
+//  Log.swift
 //  
 //
 //  Created by v.khorkov on 31.01.2021.

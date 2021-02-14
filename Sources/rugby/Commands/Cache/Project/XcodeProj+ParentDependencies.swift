@@ -1,5 +1,5 @@
 //
-//  File.swift
+//  XcodeProj+ParentDependencies.swift
 //  
 //
 //  Created by Vyacheslav Khorkov on 13.02.2021.
