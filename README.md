@@ -19,25 +19,50 @@ Also, `Rugby` smart enough to rebuild only changed remote pods.
 
 ```bash
 $ brew tap swiftyfinch/Rugby https://github.com/swiftyfinch/Rugby.git
-$ brew install swiftyfinch/Rugby/rugby
+$ brew install rugby # or swiftyfinch/Rugby/rugby
 ```
 
-### Usage
+### `Usage`
 
-```
+```bash
 $ pod install
 $ rugby
 ```
 
-### Demo
+##### Build for simulator
+
+```bash
+$ rugby
+# or the same:
+$ rugby cache
+# or the same:
+$ rugby cache --sdk sim
+# or the same:
+$ rugby cache --sdk sim --arch x86_64
+```
+
+##### Build for device
+
+```bash
+$ rugby --sdk ios # use arm64
+```
+
+##### After switch between sdks or in any unclear situation
+
+```bash
+$ rugby --rebuild # ignore cache
+```
+
+### `Demo`
 
 <img src="https://github.com/swiftyfinch/Rugby/blob/main/Demo.gif" width="320"/>
 
 ### `Maybe Roadmap`
 
-`-` Build for device\
-`-` Speed up build with additional arguments\
-`-` New commands: Reduce & Focus
+- [x] Build for device
+- [ ] Speed up build with additional arguments
+- [ ] New commands: Reduce & Focus
+- [ ] Custom build systems
 
 ### `Author`
 
