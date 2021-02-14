@@ -29,7 +29,8 @@ private enum WrappedError: Error, LocalizedError {
 struct Cache: ParsableCommand {
     @Flag(name: .long, help: "Print more information.") var verbose = false
     @Flag(name: .long, help: "Ignore already cached pods.") var rebuild = false
-    @Option(name: .long, help: "Build architechture.") var arch = "x86_64"
+    @Option(name: .long, help: "Build architechture.") var arch: String?
+    @Option(name: .long, help: "Build sdk: sim or ios.\nUse --rebuild after switch.") var sdk: SDK = .sim
 
     static var configuration: CommandConfiguration = .init(
         abstract: "Remove remote pods, build them and integrate as frameworks."
@@ -50,10 +51,11 @@ struct Cache: ParsableCommand {
             let buildStep = BuildStep(logFile: logFile, verbose: verbose)
             try buildStep.run(scheme: input.buildPods.isEmpty ? nil : buildTarget,
                               checksums: input.checksums,
+                              sdk: sdk,
                               arch: arch)
 
             let integrateStep = IntegrateStep(logFile: logFile, verbose: verbose)
-            try integrateStep.run(remotePods: input.remotePods)
+            try integrateStep.run(remotePods: input.remotePods, cacheFolder: .cacheFolder(sdk: sdk))
 
             let cleanupStep = CleanupStep(logFile: logFile, verbose: verbose)
             try cleanupStep.run(remotePods: input.remotePods, buildTarget: buildTarget)
