@@ -1,5 +1,5 @@
 # Rugby 🏈
-![](https://img.shields.io/badge/version-0.0.3-008800.svg?style=flat)
+![](https://img.shields.io/badge/version-0.0.4-008800.svg?style=flat)
 ![](https://img.shields.io/badge/Xcode_CLI-12+-blue.svg?style=flat)
 
 <img src="https://github.com/swiftyfinch/Rugby/blob/main/Preview.jpg" width="400"/>
