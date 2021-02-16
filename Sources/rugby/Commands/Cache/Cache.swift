@@ -41,10 +41,10 @@ struct Cache: ParsableCommand {
     }
 
     private func privateRun() throws {
-        let logFile = try Folder.current.createFile(at: .log)
-        let buildTarget: String = .buildTarget
-
         let totalTime = try measure {
+            let logFile = try Folder.current.createFile(at: .log)
+            let buildTarget: String = .buildTarget
+
             let prepareStep = PrepareStep(logFile: logFile, verbose: verbose)
             let input = try prepareStep.run(buildTarget: buildTarget, needRebuild: rebuild)
 
@@ -59,12 +59,13 @@ struct Cache: ParsableCommand {
 
             let cleanupStep = CleanupStep(logFile: logFile, verbose: verbose)
             try cleanupStep.run(remotePods: input.remotePods, buildTarget: buildTarget)
+
+            try shellOut(to: "tput bel")
         }
         print("[\(totalTime.formatTime())] ".yellow + "Let's roll 🏈 ".green)
-        try shellOut(to: "tput bel")
     }
 
-    func wrapError(_ block: () throws -> Void) throws {
+    private func wrapError(_ block: () throws -> Void) throws {
         do {
             try block()
         } catch {
