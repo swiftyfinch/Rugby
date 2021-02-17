@@ -43,11 +43,7 @@ final class CleanupStep: Step {
     private func removeSchemes(pods: Set<String>) throws {
         let username = try shellOut(to: "echo ${USER}")
         let schemeCleaner = SchemeCleaner()
-        pods.forEach {
-            if (try? schemeCleaner.removeScheme(name: $0, user: username)) == nil {
-                progress.update(info: "- Can't remove scheme \($0).".red)
-            }
-        }
+        pods.forEach { try? schemeCleaner.removeScheme(name: $0, user: username) }
         progress.update(info: "Remove schemes".yellow)
     }
 }
