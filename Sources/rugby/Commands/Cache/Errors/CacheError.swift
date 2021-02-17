@@ -11,7 +11,6 @@ import Rainbow
 enum CacheError: Error, LocalizedError {
     case cantParsePodfileLock
     case cantParseCachedChecksums
-    case cantFindPodsInProject([String])
 
     var errorDescription: String? {
         let output: String
@@ -20,9 +19,6 @@ enum CacheError: Error, LocalizedError {
             output = "Can't parse Podfile.lock."
         case .cantParseCachedChecksums:
             output = "Can't parse cached checksums."
-        case .cantFindPodsInProject(let pods):
-            output = "Can't find pods in project:\n"
-                + pods.map { "* " + $0 }.joined(separator: "\n")
         }
         return output.red
     }
