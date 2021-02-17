@@ -9,19 +9,27 @@ import Files
 import XcodeProj
 
 final class PrepareStep: Step {
+    struct Output {
+        let buildPods: [String]
+        let remotePods: Set<String>
+        let checksums: [String]
+        let podsCount: Int
+    }
+
     init(logFile: File, verbose: Bool) {
         super.init(name: "Prepare", logFile: logFile, verbose: verbose)
     }
 
     func run(buildTarget: String,
-             needRebuild: Bool) throws -> (buildPods: [String], remotePods: Set<String>, checksums: [String]) {
+             needRebuild: Bool) throws -> Output {
         // Get remote pods from Podfile.lock
         let podfile = try Podfile(.podfileLock)
         let remotePods = try podfile.getRemotePods().map { $0.trimmingCharacters(in: ["\""]) }
         progress.update(info: "Remote pods ".yellow + "(\(remotePods.count))" + ":".yellow)
         remotePods.forEach { progress.update(info: "* ".yellow + "\($0)") }
 
-        let checksums = try podfile.getChecksums().filter {
+        let checksums = try podfile.getChecksums()
+        let remoteChecksums = checksums.filter {
             guard let name = $0.components(separatedBy: ": ").first else { return false }
             return remotePods.contains(name)
         }
@@ -31,7 +39,7 @@ final class PrepareStep: Step {
             buildPods = remotePods
         } else {
             let cachedChecksums = (try? Podfile(.cachedChecksums).getChecksums()) ?? []
-            let changes = Set(checksums).subtracting(cachedChecksums)
+            let changes = Set(remoteChecksums).subtracting(cachedChecksums)
             let changedPods = changes.compactMap { $0.components(separatedBy: ": ").first }
             buildPods = changedPods.sorted()
         }
@@ -65,6 +73,9 @@ final class PrepareStep: Step {
         }
         done()
 
-        return (buildPodsChain, remotePodsChain, checksums)
+        return Output(buildPods: buildPodsChain,
+                      remotePods: remotePodsChain,
+                      checksums: remoteChecksums,
+                      podsCount: checksums.count)
     }
 }

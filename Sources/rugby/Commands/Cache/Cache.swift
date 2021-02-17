@@ -41,28 +41,31 @@ struct Cache: ParsableCommand {
     }
 
     private func privateRun() throws {
+        var outputMessage: String = ""
         let totalTime = try measure {
             let logFile = try Folder.current.createFile(at: .log)
             let buildTarget: String = .buildTarget
 
             let prepareStep = PrepareStep(logFile: logFile, verbose: verbose)
-            let input = try prepareStep.run(buildTarget: buildTarget, needRebuild: rebuild)
+            let info = try prepareStep.run(buildTarget: buildTarget, needRebuild: rebuild)
 
             let buildStep = BuildStep(logFile: logFile, verbose: verbose)
-            try buildStep.run(scheme: input.buildPods.isEmpty ? nil : buildTarget,
-                              checksums: input.checksums,
+            try buildStep.run(scheme: info.buildPods.isEmpty ? nil : buildTarget,
+                              checksums: info.checksums,
                               sdk: sdk,
                               arch: arch)
 
             let integrateStep = IntegrateStep(logFile: logFile, verbose: verbose)
-            try integrateStep.run(remotePods: input.remotePods, cacheFolder: .cacheFolder(sdk: sdk))
+            try integrateStep.run(remotePods: info.remotePods, cacheFolder: .cacheFolder(sdk: sdk))
 
             let cleanupStep = CleanupStep(logFile: logFile, verbose: verbose)
-            try cleanupStep.run(remotePods: input.remotePods, buildTarget: buildTarget)
+            try cleanupStep.run(remotePods: info.remotePods, buildTarget: buildTarget)
 
             try shellOut(to: "tput bel")
+            let (podsCount, cachedPodsCount) = (info.podsCount, info.checksums.count)
+            outputMessage = "Cached \(cachedPodsCount)/\(podsCount) pods. Let's roll 🏈 ".green
         }
-        print("[\(totalTime.formatTime())] ".yellow + "Let's roll 🏈 ".green)
+        print("[\(totalTime.formatTime())] ".yellow + outputMessage)
     }
 
     private func wrapError(_ block: () throws -> Void) throws {
