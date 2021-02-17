@@ -36,14 +36,8 @@ final class PrepareStep: Step {
             buildPods = changedPods.sorted()
         }
 
-        // Validate pods
-        let podsProject = try XcodeProj(pathString: .podsProject)
-        let missedPods = buildPods.filter { podsProject.pbxproj.targets(named: $0).isEmpty }
-        if !missedPods.isEmpty {
-            throw CacheError.cantFindPodsInProject(missedPods)
-        }
-
         // Collect all remote pods chain
+        let podsProject = try XcodeProj(pathString: .podsProject)
         let remotePodsChain: Set<String> = remotePods.reduce(Set(remotePods)) { set, name in
             let targets = Set(podsProject.pbxproj.targets(named: name))
             return set.union(targets.reduce(Set<String>()) { set, target in
