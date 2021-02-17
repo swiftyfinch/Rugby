@@ -7,6 +7,7 @@
 
 import ArgumentParser
 import Files
+import Foundation
 import ShellOut
 
 struct Log: ParsableCommand {
@@ -16,7 +17,8 @@ struct Log: ParsableCommand {
 
     func run() throws {
         if Folder.current.containsFile(at: .log) {
-            try shellOut(to: "cat " + .log)
+            try shellOut(to: "cat " + .log,
+                         outputHandle: FileHandle.standardOutput)
         } else {
             print("Can't find log.".red)
         }
