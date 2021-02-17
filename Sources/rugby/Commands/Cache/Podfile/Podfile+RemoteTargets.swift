@@ -14,9 +14,20 @@ extension Podfile {
         let specRepos = try (specReposRegex.firstMatch(in: content)?.values.first)
             .unwrap(orThrow: CacheError.cantParsePodfileLock)
 
-        return try RegEx(pattern: "(?<=- ).*")
+        let podsByVersion = try RegEx(pattern: "(?<=- ).*")
             .matches(in: String(specRepos))
             .flatMap { $0.values }
             .compactMap { $0.map(String.init) }
+
+        let checkoutOptionsRegex = try RegEx(pattern: #"(?<=CHECKOUT OPTIONS:\n)[\s\S]*?(?=\n\n)"#)
+        let checkoutOptions = try (checkoutOptionsRegex.firstMatch(in: content)?.values.first)
+            .unwrap(orThrow: CacheError.cantParsePodfileLock)
+
+        let podsByGitOptions = try RegEx(pattern: #"(?<=  )\b.*\b"#)
+            .matches(in: String(checkoutOptions))
+            .flatMap { $0.values }
+            .compactMap { $0.map(String.init) }
+
+        return podsByVersion + podsByGitOptions
     }
 }
