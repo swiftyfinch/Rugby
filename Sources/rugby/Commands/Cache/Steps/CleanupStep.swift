@@ -29,20 +29,25 @@ final class CleanupStep: Step {
         }
         progress.update(info: "Remove builded pods".yellow)
 
-        let username = try shellOut(to: "echo ${USER}")
-        let schemeCleaner = SchemeCleaner()
-        remotePods.forEach {
-            if (try? schemeCleaner.removeScheme(name: $0, user: username)) == nil {
-                progress.update(info: "- Can't remove scheme \($0).".red)
-            }
-        }
-        progress.update(info: "Remove schemes".yellow)
-
         if hasChanges {
+            // Remove schemes if has changes (it should be changes in targets)
+            try removeSchemes(pods: remotePods)
+
             try podsProject.write(pathString: .podsProject, override: true)
             progress.update(info: "Save project".yellow)
         }
 
         done()
+    }
+
+    private func removeSchemes(pods: Set<String>) throws {
+        let username = try shellOut(to: "echo ${USER}")
+        let schemeCleaner = SchemeCleaner()
+        pods.forEach {
+            if (try? schemeCleaner.removeScheme(name: $0, user: username)) == nil {
+                progress.update(info: "- Can't remove scheme \($0).".red)
+            }
+        }
+        progress.update(info: "Remove schemes".yellow)
     }
 }
