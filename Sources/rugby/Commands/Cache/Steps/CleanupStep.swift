@@ -23,13 +23,14 @@ final class CleanupStep: Step {
             progress.update(info: "Remove aggregated build target".yellow)
         }
 
+        var removeBuildedPods = false
         remotePods.forEach {
-            hasChanges = podsProject.pbxproj.removeDependency(name: $0) || hasChanges
-            hasChanges = podsProject.pbxproj.removeTarget(name: $0) || hasChanges
+            removeBuildedPods = podsProject.pbxproj.removeDependency(name: $0) || removeBuildedPods
+            removeBuildedPods = podsProject.pbxproj.removeTarget(name: $0) || removeBuildedPods
         }
-        progress.update(info: "Remove builded pods".yellow)
+        if removeBuildedPods { progress.update(info: "Remove builded pods".yellow) }
 
-        if hasChanges {
+        if hasChanges || removeBuildedPods {
             // Remove schemes if has changes (it should be changes in targets)
             try removeSchemes(pods: remotePods)
 
