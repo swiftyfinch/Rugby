@@ -46,12 +46,7 @@ final class PrepareStep: Step {
 
         // Collect all remote pods chain
         let podsProject = try XcodeProj(pathString: .podsProject)
-        let remotePodsChain: Set<String> = remotePods.reduce(Set(remotePods)) { set, name in
-            let targets = Set(podsProject.pbxproj.targets(named: name))
-            return set.union(targets.reduce(Set<String>()) { set, target in
-                return set.union(target.dependencies.compactMap(\.name))
-            })
-        }
+        let remotePodsChain = buildRemotePodsChain(project: podsProject, remotePods: Set(remotePods))
         let additionalBuildTargets = remotePodsChain.subtracting(remotePods)
         if !additionalBuildTargets.isEmpty {
             progress.update(info: "Additional build targets ".yellow + "(\(additionalBuildTargets.count))" + ":".yellow)
@@ -77,5 +72,19 @@ final class PrepareStep: Step {
                       remotePods: remotePodsChain,
                       checksums: remoteChecksums,
                       podsCount: checksums.count)
+    }
+
+    private func buildRemotePodsChain(project: XcodeProj, remotePods: Set<String>) -> Set<String> {
+        remotePods.reduce(Set(remotePods)) { chain, name in
+            let targets = Set(project.pbxproj.targets(named: name))
+            return chain.union(targets.reduce(Set<String>()) { set, target in
+                let dependencies = target.dependencies.compactMap(\.name).filter {
+                    // Check that it's a part of remote pod
+                    guard let prefix = $0.components(separatedBy: "-").first else { return true }
+                    return remotePods.contains(prefix)
+                }
+                return set.union(dependencies)
+            })
+        }
     }
 }
