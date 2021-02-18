@@ -1,3 +1,8 @@
+.PHONY: debug
+debug:
+	@swift run swiftlint --strict --quiet
+	@swift build
+	
 .PHONY: build
 build:
 	@swift run swiftlint --strict --quiet
