@@ -19,14 +19,14 @@ extension Podfile {
             .flatMap { $0.values }
             .compactMap { $0.map(String.init) }
 
+        var podsByGitOptions: [String] = []
         let checkoutOptionsRegex = try RegEx(pattern: #"(?<=CHECKOUT OPTIONS:\n)[\s\S]*?(?=\n\n)"#)
-        let checkoutOptions = try (checkoutOptionsRegex.firstMatch(in: content)?.values.first)
-            .unwrap(orThrow: CacheError.cantParsePodfileLock)
-
-        let podsByGitOptions = try RegEx(pattern: #"(?<=  )\b.*\b"#)
-            .matches(in: String(checkoutOptions))
-            .flatMap { $0.values }
-            .compactMap { $0.map(String.init) }
+        if let checkoutOptions = checkoutOptionsRegex.firstMatch(in: content)?.values.first ?? nil {
+            podsByGitOptions = try RegEx(pattern: #"(?<=  )\b.*\b"#)
+                .matches(in: String(checkoutOptions))
+                .flatMap { $0.values }
+                .compactMap { $0.map(String.init) }
+        }
 
         return podsByVersion + podsByGitOptions
     }
