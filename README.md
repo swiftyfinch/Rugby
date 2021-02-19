@@ -1,4 +1,4 @@
-# Rugby 🏈
+# Rugby 🏈 (like Ruby but with g)
 ![](https://img.shields.io/badge/version-0.0.6-008800.svg?style=flat)
 ![](https://img.shields.io/badge/Xcode_CLI-12+-blue.svg?style=flat)
 
