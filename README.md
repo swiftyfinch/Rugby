@@ -22,6 +22,12 @@ $ brew tap swiftyfinch/Rugby https://github.com/swiftyfinch/Rugby.git
 $ brew install rugby # or swiftyfinch/Rugby/rugby
 ```
 
+##### Get new version
+
+```bash
+$ brew upgrade rugby
+```
+
 ### `Usage`
 
 ```bash
