@@ -1,8 +1,14 @@
-# Rugby 🏈 (like Ruby but with g)
-![](https://img.shields.io/badge/version-0.0.6-008800.svg?style=flat)
-![](https://img.shields.io/badge/Xcode_CLI-12+-blue.svg?style=flat)
-
-<img src="https://github.com/swiftyfinch/Rugby/blob/main/Preview.jpg" width="400"/>
+<h3 align="center">
+  Rugby 🏈<br>
+  <sup>(<ins>like Ruby but with g</ins>)</sup>
+</h3>
+<p align="center">
+    <img src="https://github.com/swiftyfinch/Rugby/blob/main/Demo.gif" width="400"/>
+</p>
+<p align="center">
+    <img src="https://img.shields.io/badge/version-0.0.6-008800.svg" />
+    <img src="https://img.shields.io/badge/Xcode_CLTool-12+-blue.svg" />
+</p>
 
 ### `Motivation`
 
@@ -19,7 +25,7 @@ Also, `Rugby` smart enough to rebuild only changed remote pods.
 
 ```bash
 $ brew tap swiftyfinch/Rugby https://github.com/swiftyfinch/Rugby.git
-$ brew install rugby # or swiftyfinch/Rugby/rugby
+$ brew install rugby
 ```
 
 ##### Get new version
@@ -31,37 +37,35 @@ $ brew upgrade rugby
 ### `Usage`
 
 ```bash
-$ pod install
-$ rugby
+$ pod install && rugby
 ```
 
 ##### Build for simulator
 
 ```bash
 $ rugby
+
 # or the same:
 $ rugby cache
+
 # or the same:
 $ rugby cache --sdk sim
+
 # or the same:
 $ rugby cache --sdk sim --arch x86_64
 ```
 
-##### Build for device
+##### Build for device (arm64)
 
 ```bash
-$ rugby --sdk ios # use arm64
+$ rugby --sdk ios
 ```
 
-##### After switch between sdks or in any unclear situation
+##### After switch between sdks or in any unclear situation (ignore cache)
 
 ```bash
-$ rugby --rebuild # ignore cache
+$ rugby --rebuild
 ```
-
-### `Demo`
-
-<img src="https://github.com/swiftyfinch/Rugby/blob/main/Demo.gif" width="320"/>
 
 ### `Maybe Roadmap`
 
