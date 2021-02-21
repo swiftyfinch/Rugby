@@ -21,13 +21,14 @@ final class PrepareStep: Step {
         super.init(name: "Prepare", logFile: logFile, verbose: verbose)
     }
 
-    func run(buildTarget: String,
-             needRebuild: Bool) throws -> Output {
+    func run(buildTarget: String, needRebuild: Bool, excludePods: Set<String>) throws -> Output {
         // Get remote pods from Podfile.lock
         let podfile = try Podfile(.podfileLock)
-        let remotePods = try podfile.getRemotePods().map { $0.trimmingCharacters(in: ["\""]) }
+        var remotePods = try podfile.getRemotePods().map { $0.trimmingCharacters(in: ["\""]) }
         progress.update(info: "Remote pods ".yellow + "(\(remotePods.count))" + ":".yellow)
         remotePods.forEach { progress.update(info: "* ".yellow + "\($0)") }
+
+        remotePods = exclude(pods: excludePods, from: remotePods)
 
         let checksums = try podfile.getChecksums()
         let remoteChecksums = checksums.filter {
@@ -77,6 +78,16 @@ final class PrepareStep: Step {
                       checksums: remoteChecksums,
                       podsCount: checksums.count,
                       products: products)
+    }
+
+    private func exclude(pods: Set<String>, from remotePods: [String]) -> [String] {
+        var remotePods = remotePods
+        if !pods.isEmpty {
+            remotePods.removeAll(where: { pods.contains($0) })
+            progress.update(info: "Exclude pods ".yellow + "(\(pods.count))" + ":".yellow)
+            pods.forEach { progress.update(info: "* ".yellow + "\($0)") }
+        }
+        return remotePods
     }
 
     private func buildRemotePodsChain(project: XcodeProj, remotePods: Set<String>) -> Set<PBXTarget> {
