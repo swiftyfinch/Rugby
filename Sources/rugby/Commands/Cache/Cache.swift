@@ -31,6 +31,7 @@ struct Cache: ParsableCommand {
     @Flag(name: .long, help: "Ignore already cached pods.") var rebuild = false
     @Option(name: .long, help: "Build architechture.") var arch: String?
     @Option(name: .long, help: "Build sdk: sim or ios.\nUse --rebuild after switch.") var sdk: SDK = .sim
+    @Flag(name: .long, help: "\("Beta:".yellow) Remove Pods group from project.") var dropSources = false
 
     static var configuration: CommandConfiguration = .init(
         abstract: "Remove remote pods, build them and integrate as frameworks."
@@ -59,7 +60,7 @@ struct Cache: ParsableCommand {
             try integrateStep.run(remotePods: info.remotePods, cacheFolder: .cacheFolder(sdk: sdk))
 
             let cleanupStep = CleanupStep(logFile: logFile, verbose: verbose)
-            try cleanupStep.run(remotePods: info.remotePods, buildTarget: buildTarget)
+            try cleanupStep.run(remotePods: info.remotePods, buildTarget: buildTarget, dropSources: dropSources)
 
             try shellOut(to: "tput bel")
             let (podsCount, cachedPodsCount) = (info.podsCount, info.checksums.count)

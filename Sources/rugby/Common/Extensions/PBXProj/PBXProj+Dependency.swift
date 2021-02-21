@@ -15,6 +15,7 @@ extension PBXProj {
             target.dependencies.removeAll {
                 guard $0.name == name else { return false }
                 delete(object: $0)
+                $0.targetProxy.map(delete)
                 hasChanges = true
                 return true
             }
