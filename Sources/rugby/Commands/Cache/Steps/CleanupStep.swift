@@ -14,11 +14,15 @@ final class CleanupStep: Step {
         super.init(name: "Clean up", logFile: logFile, verbose: verbose)
     }
 
-    func run(remotePods: Set<String>, buildTarget: String, dropSources: Bool, products: Set<String>) throws {
+    func run(remotePods: Set<String>,
+             buildTarget: String,
+             dropSources: Bool,
+             products: Set<String>,
+             excludePods: Set<String>) throws {
         var hasChanges = false
         let podsProject = try XcodeProj(pathString: .podsProject)
 
-        if dropSources && removeSources(project: podsProject.pbxproj) {
+        if dropSources && removeSources(project: podsProject.pbxproj, exclude: excludePods) {
             hasChanges = true
             progress.update(info: "Remove remote pods sources from project".yellow)
         }
@@ -58,12 +62,14 @@ final class CleanupStep: Step {
         progress.update(info: "Remove schemes".yellow)
     }
 
-    private func removeSources(project: PBXProj) -> Bool {
+    private func removeSources(project: PBXProj, exclude: Set<String>) -> Bool {
         guard let podsGroup = project.groups.first(where: { $0.name == "Pods" && $0.parent?.parent == nil }) else {
             return false
         }
-        podsGroup.removeFilesRecursively(from: project)
-        (podsGroup.parent as? PBXGroup)?.children.removeAll(where: { $0.name == "Pods" })
+        podsGroup.removeFilesRecursively(from: project, exclude: exclude)
+        if exclude.isEmpty {
+            (podsGroup.parent as? PBXGroup)?.children.removeAll(where: { $0.name == "Pods" })
+        }
         return true
     }
 
