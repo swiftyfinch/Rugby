@@ -14,13 +14,18 @@ final class CleanupStep: Step {
         super.init(name: "Clean up", logFile: logFile, verbose: verbose)
     }
 
-    func run(remotePods: Set<String>, buildTarget: String, dropSources: Bool) throws {
+    func run(remotePods: Set<String>, buildTarget: String, dropSources: Bool, products: Set<String>) throws {
         var hasChanges = false
         let podsProject = try XcodeProj(pathString: .podsProject)
 
         if dropSources && removeSources(project: podsProject.pbxproj) {
             hasChanges = true
             progress.update(info: "Remove remote pods sources from project".yellow)
+        }
+
+        if restoreFrameworkPaths(project: podsProject.pbxproj, groups: ["Frameworks", "Products"], products: products) {
+            hasChanges = true
+            progress.update(info: "Remove remote pods products".yellow)
         }
 
         if podsProject.pbxproj.removeTarget(name: buildTarget) {
@@ -60,5 +65,26 @@ final class CleanupStep: Step {
         podsGroup.removeFilesRecursively(from: project)
         (podsGroup.parent as? PBXGroup)?.children.removeAll(where: { $0.name == "Pods" })
         return true
+    }
+
+    private func restoreFrameworkPaths(project: PBXProj, groups: Set<String>, products: Set<String>) -> Bool {
+        var hasChanges = false
+        let frameworks = project.groups.filter {
+            ($0.name.map(groups.contains) ?? false) && $0.parent?.parent == nil
+        }
+        frameworks.forEach {
+            $0.children.forEach { child in
+                if let name = child.name, products.contains(name) {
+                    project.delete(object: child)
+                    (child.parent as? PBXGroup)?.children.removeAll(where: { child.name == $0.name })
+                    hasChanges = true
+                } else if let path = child.path, products.contains(path) {
+                    project.delete(object: child)
+                    (child.parent as? PBXGroup)?.children.removeAll(where: { child.name == $0.name })
+                    hasChanges = true
+                }
+            }
+        }
+        return hasChanges
     }
 }
