@@ -27,11 +27,11 @@ private enum WrappedError: Error, LocalizedError {
 }
 
 struct Cache: ParsableCommand {
-    @Flag(name: .long, help: "Print more information.") var verbose = false
-    @Flag(name: .long, help: "Ignore already cached pods.") var rebuild = false
-    @Option(name: .long, help: "Build architechture.") var arch: String?
-    @Option(name: .long, help: "Build sdk: sim or ios.\nUse --rebuild after switch.") var sdk: SDK = .sim
-    @Flag(name: .long, help: "\("Beta:".yellow) Remove Pods group from project.") var dropSources = false
+    @Flag(name: .shortAndLong, help: "Print more information.") var verbose = false
+    @Flag(name: .shortAndLong, help: "Ignore already cached pods.") var rebuild = false
+    @Option(name: .shortAndLong, help: "Build architechture.") var arch: String?
+    @Option(name: .shortAndLong, help: "Build sdk: sim or ios.\nUse --rebuild after switch.") var sdk: SDK = .sim
+    @Flag(name: .shortAndLong, help: "\("Beta:".yellow) Remove Pods group from project.") var dropSources = false
     @Option(name: .shortAndLong,
             parsing: .upToNextOption,
             help: "\("Beta:".yellow) Exclude pods from cache.") var exclude: [String] = []
