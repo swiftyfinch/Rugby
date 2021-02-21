@@ -60,7 +60,10 @@ struct Cache: ParsableCommand {
             try integrateStep.run(remotePods: info.remotePods, cacheFolder: .cacheFolder(sdk: sdk))
 
             let cleanupStep = CleanupStep(logFile: logFile, verbose: verbose)
-            try cleanupStep.run(remotePods: info.remotePods, buildTarget: buildTarget, dropSources: dropSources)
+            try cleanupStep.run(remotePods: info.remotePods,
+                                buildTarget: buildTarget,
+                                dropSources: dropSources,
+                                products: info.products)
 
             try shellOut(to: "tput bel")
             let (podsCount, cachedPodsCount) = (info.podsCount, info.checksums.count)

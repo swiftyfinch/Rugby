@@ -14,6 +14,7 @@ final class PrepareStep: Step {
         let remotePods: Set<String>
         let checksums: [String]
         let podsCount: Int
+        let products: Set<String>
     }
 
     init(logFile: File, verbose: Bool) {
@@ -47,7 +48,7 @@ final class PrepareStep: Step {
         // Collect all remote pods chain
         let podsProject = try XcodeProj(pathString: .podsProject)
         let remotePodsChain = buildRemotePodsChain(project: podsProject, remotePods: Set(remotePods))
-        let additionalBuildTargets = remotePodsChain.subtracting(remotePods)
+        let additionalBuildTargets = Set(remotePodsChain.map(\.name)).subtracting(remotePods)
         if !additionalBuildTargets.isEmpty {
             progress.update(info: "Additional build targets ".yellow + "(\(additionalBuildTargets.count))" + ":".yellow)
             additionalBuildTargets.sorted().forEach { progress.update(info: "* ".yellow + "\($0)") }
@@ -68,23 +69,30 @@ final class PrepareStep: Step {
         }
         done()
 
+        // Prepare list of products like: Some.framework, Some.bundle
+        let products = Set(remotePodsChain.compactMap(\.product?.name))
+
         return Output(buildPods: buildPodsChain,
-                      remotePods: remotePodsChain,
+                      remotePods: Set(remotePodsChain.map(\.name)),
                       checksums: remoteChecksums,
-                      podsCount: checksums.count)
+                      podsCount: checksums.count,
+                      products: products)
     }
 
-    private func buildRemotePodsChain(project: XcodeProj, remotePods: Set<String>) -> Set<String> {
-        remotePods.reduce(Set(remotePods)) { chain, name in
+    private func buildRemotePodsChain(project: XcodeProj, remotePods: Set<String>) -> Set<PBXTarget> {
+        remotePods.reduce(into: Set<PBXTarget>()) { chain, name in
             let targets = Set(project.pbxproj.targets(named: name))
-            return chain.union(targets.reduce(Set<String>()) { set, target in
-                let dependencies = target.dependencies.compactMap(\.name).filter {
+            chain.formUnion(targets)
+
+            let dependencies = targets.reduce(Set<PBXTarget>()) { set, target in
+                let dependencies = target.dependencies.filter {
                     // Check that it's a part of remote pod
-                    guard let prefix = $0.components(separatedBy: "-").first else { return true }
+                    guard let prefix = $0.name?.components(separatedBy: "-").first else { return true }
                     return remotePods.contains(prefix)
                 }
-                return set.union(dependencies)
-            })
+                return set.union(dependencies.compactMap(\.target))
+            }
+            chain.formUnion(dependencies)
         }
     }
 }
