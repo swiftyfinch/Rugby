@@ -6,7 +6,7 @@
     <img src="https://github.com/swiftyfinch/Rugby/blob/main/Demo.gif" width="400"/>
 </p>
 <p align="center">
-    <img src="https://img.shields.io/badge/version-0.0.6-008800.svg" />
+    <img src="https://img.shields.io/badge/version-0.1.0-008800.svg" />
     <img src="https://img.shields.io/badge/Xcode_CLTool-12+-blue.svg" />
 </p>
 
@@ -67,12 +67,22 @@ $ rugby --sdk ios
 $ rugby --rebuild
 ```
 
+### `Beta`
+
+```bash
+# Remove Pods group from project.
+$ rugby --drop-sources
+
+# Exclude pods from cache.
+$ rugby --exclude Alamofire SnapKit
+```
+
 ### `Maybe Roadmap`
 
-- [ ] Optionally remove source groups from project
+- [x] Optionally remove source groups from project
 - [ ] New commands: Reduce & Focus
-- [ ] Speed up build with additional arguments
 - [ ] Custom build systems
+- [ ] Open source
 
 ### `Author`
 
