@@ -34,6 +34,12 @@ $ brew install rugby
 $ brew upgrade rugby
 ```
 
+### `Help information`
+
+```bash
+$ rugby cache -h
+```
+
 ### `Usage`
 
 ```bash
