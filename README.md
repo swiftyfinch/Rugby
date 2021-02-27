@@ -6,7 +6,7 @@
     <img src="https://github.com/swiftyfinch/Rugby/blob/main/Demo.gif" width="400"/>
 </p>
 <p align="center">
-    <img src="https://img.shields.io/badge/version-0.1.0-008800.svg" />
+    <img src="https://img.shields.io/badge/version-0.1.1-008800.svg" />
     <img src="https://img.shields.io/badge/Xcode_CLTool-12+-blue.svg" />
 </p>
 
@@ -14,7 +14,7 @@
 
 Working on a project with a huge amount of remote pods I had some troubles:\
 `-` Slow and unnecessary indexing of remote pods targets, which implementation I rarely try to edit;\
-`-` Reduntant rebuild time, probably as a result of problems in the project, CocoaPods hooks or Xcode build system;\
+`-` Redundant rebuild time, probably as a result of problems in the project, CocoaPods hooks or Xcode build system;\
 `-` Freezing UI during navigation.
 
 `Rugby` is CLI tool that was developed to solve the above problems.
