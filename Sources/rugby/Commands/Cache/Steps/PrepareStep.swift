@@ -40,10 +40,7 @@ final class PrepareStep: Step {
         if needRebuild {
             buildPods = remotePods
         } else {
-            let cachedChecksums = (try? Podfile(.cachedChecksums).getChecksums()) ?? []
-            let changes = Set(remoteChecksums).subtracting(cachedChecksums)
-            let changedPods = changes.compactMap { $0.components(separatedBy: ": ").first }
-            buildPods = changedPods.sorted()
+            buildPods = findBuildPods(byChecksums: remoteChecksums)
         }
 
         // Collect all remote pods chain
@@ -88,6 +85,13 @@ final class PrepareStep: Step {
             pods.forEach { progress.update(info: "* ".yellow + "\($0)") }
         }
         return remotePods
+    }
+
+    private func findBuildPods(byChecksums checksums: [String]) -> [String] {
+        let cachedChecksums = (try? Podfile(.cachedChecksums).getChecksums()) ?? []
+        let changes = Set(checksums).subtracting(cachedChecksums)
+        let changedPods = changes.compactMap { $0.components(separatedBy: ": ").first }
+        return changedPods.caseInsensitiveSorted()
     }
 
     private func buildRemotePodsChain(project: XcodeProj, remotePods: Set<String>) -> Set<PBXTarget> {
