@@ -21,7 +21,10 @@ final class PrepareStep: Step {
         super.init(name: "Prepare", logFile: logFile, verbose: verbose)
     }
 
-    func run(buildTarget: String, needRebuild: Bool, excludePods: Set<String>) throws -> Output {
+    func run(buildTarget: String,
+             needRebuild: Bool,
+             excludePods: Set<String>,
+             includeAggTargets: Bool) throws -> Output {
         // Get remote pods from Podfile.lock
         let podfile = try Podfile(.podfileLock)
         var remotePods = try podfile.getRemotePods().map { $0.trimmingCharacters(in: ["\""]) }
@@ -29,6 +32,12 @@ final class PrepareStep: Step {
         remotePods.forEach { progress.update(info: "* ".yellow + "\($0)") }
 
         remotePods = exclude(pods: excludePods, from: remotePods)
+
+        // Exclude aggregated targets, which contain scripts with the installation of some xcframeworks.
+        let podsProject = try XcodeProj(pathString: .podsProject)
+        if !includeAggTargets {
+            remotePods = excludeXCFrameworksTargets(project: podsProject, pods: remotePods)
+        }
 
         let checksums = try podfile.getChecksums()
         let remoteChecksums = checksums.filter {
@@ -44,7 +53,6 @@ final class PrepareStep: Step {
         }
 
         // Collect all remote pods chain
-        let podsProject = try XcodeProj(pathString: .podsProject)
         let remotePodsChain = buildRemotePodsChain(project: podsProject, remotePods: Set(remotePods))
         let additionalBuildTargets = Set(remotePodsChain.map(\.name)).subtracting(remotePods)
         if !additionalBuildTargets.isEmpty {
@@ -85,6 +93,21 @@ final class PrepareStep: Step {
             pods.forEach { progress.update(info: "* ".yellow + "\($0)") }
         }
         return remotePods
+    }
+
+    private func excludeXCFrameworksTargets(project: XcodeProj, pods: [String]) -> [String] {
+        let aggregateTargets = project.pbxproj.aggregateTargets.reduce(into: Set<String>()) { set, target in
+            let phaseNames = target.buildPhases.compactMap { $0.name() }
+            if phaseNames.contains(where: { $0.contains("XCFrameworks") }) {
+                set.insert(target.name)
+            }
+        }
+        let excluded = pods.filter { aggregateTargets.contains($0) }
+        if !excluded.isEmpty {
+            progress.update(info: "Exclude XCFrameworks ".yellow + "(\(excluded.count))" + ":".yellow)
+            excluded.caseInsensitiveSorted().forEach { progress.update(info: "* ".yellow + "\($0)") }
+        }
+        return Array(Set(pods).subtracting(excluded))
     }
 
     private func findBuildPods(byChecksums checksums: [String]) -> [String] {

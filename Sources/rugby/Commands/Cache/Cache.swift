@@ -44,7 +44,8 @@ struct Cache: ParsableCommand {
             let prepareStep = PrepareStep(logFile: logFile, verbose: verbose)
             let info = try prepareStep.run(buildTarget: buildTarget,
                                            needRebuild: rebuild,
-                                           excludePods: Set(exclude))
+                                           excludePods: Set(exclude),
+                                           includeAggTargets: false)
 
             let buildStep = BuildStep(logFile: logFile, verbose: verbose)
             try buildStep.run(scheme: info.buildPods.isEmpty ? nil : buildTarget,
