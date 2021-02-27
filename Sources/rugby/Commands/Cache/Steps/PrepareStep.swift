@@ -29,7 +29,7 @@ final class PrepareStep: Step {
         let podfile = try Podfile(.podfileLock)
         var remotePods = try podfile.getRemotePods().map { $0.trimmingCharacters(in: ["\""]) }
         progress.update(info: "Remote pods ".yellow + "(\(remotePods.count))" + ":".yellow)
-        remotePods.forEach { progress.update(info: "* ".yellow + "\($0)") }
+        remotePods.caseInsensitiveSorted().forEach { progress.update(info: "* ".yellow + "\($0)") }
 
         remotePods = exclude(pods: excludePods, from: remotePods)
 
@@ -57,7 +57,7 @@ final class PrepareStep: Step {
         let additionalBuildTargets = Set(remotePodsChain.map(\.name)).subtracting(remotePods)
         if !additionalBuildTargets.isEmpty {
             progress.update(info: "Additional build targets ".yellow + "(\(additionalBuildTargets.count))" + ":".yellow)
-            additionalBuildTargets.sorted().forEach { progress.update(info: "* ".yellow + "\($0)") }
+            additionalBuildTargets.caseInsensitiveSorted().forEach { progress.update(info: "* ".yellow + "\($0)") }
         }
 
         // Include parents of build pods
@@ -67,7 +67,7 @@ final class PrepareStep: Step {
             progress.update(info: "Skip".yellow)
         } else {
             progress.update(info: "Build pods ".yellow + "(\(buildPodsChain.count))" + ":".yellow)
-            buildPodsChain.sorted().forEach { progress.update(info: "* ".yellow + "\($0)") }
+            buildPodsChain.caseInsensitiveSorted().forEach { progress.update(info: "* ".yellow + "\($0)") }
 
             podsProject.pbxproj.addTarget(name: buildTarget, dependencies: buildPodsChain)
             progress.update(info: "Added aggregated build target: ".yellow + buildTarget)
@@ -90,7 +90,7 @@ final class PrepareStep: Step {
         if !pods.isEmpty {
             remotePods.removeAll(where: { pods.contains($0) })
             progress.update(info: "Exclude pods ".yellow + "(\(pods.count))" + ":".yellow)
-            pods.forEach { progress.update(info: "* ".yellow + "\($0)") }
+            pods.caseInsensitiveSorted().forEach { progress.update(info: "* ".yellow + "\($0)") }
         }
         return remotePods
     }
