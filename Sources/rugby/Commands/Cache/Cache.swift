@@ -60,8 +60,7 @@ struct Cache: ParsableCommand {
             try cleanupStep.run(remotePods: info.remotePods,
                                 buildTarget: buildTarget,
                                 dropSources: dropSources,
-                                products: info.products,
-                                excludePods: Set(exclude))
+                                products: info.products)
 
             try shellOut(to: "tput bel")
             let (podsCount, cachedPodsCount) = (info.podsCount, info.checksums.count)
