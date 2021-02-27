@@ -15,17 +15,6 @@ private extension String {
     static let buildTarget = "RemotePods"
 }
 
-private enum WrappedError: Error, LocalizedError {
-    case common(String)
-
-    var errorDescription: String? {
-        switch self {
-        case .common(let description):
-            return description
-        }
-    }
-}
-
 struct Cache: ParsableCommand {
     @Flag(name: .shortAndLong, help: "Print more information.") var verbose = false
     @Flag(name: .shortAndLong, help: "Ignore already cached pods.") var rebuild = false
@@ -41,7 +30,7 @@ struct Cache: ParsableCommand {
     )
 
     func run() throws {
-        try wrapError(privateRun)
+        try WrappedError.wrap(privateRun)
     }
 
     private func privateRun() throws {
@@ -76,13 +65,5 @@ struct Cache: ParsableCommand {
             outputMessage = "Cached \(cachedPodsCount)/\(podsCount) pods. Let's roll 🏈 ".green
         }
         print("[\(totalTime.formatTime())] ".yellow + outputMessage)
-    }
-
-    private func wrapError(_ block: () throws -> Void) throws {
-        do {
-            try block()
-        } catch {
-            throw WrappedError.common(error.localizedDescription.red)
-        }
     }
 }
