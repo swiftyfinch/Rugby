@@ -8,18 +8,21 @@
 import XcodeProj
 
 extension PBXFileElement {
-    func removeFilesRecursively(from project: PBXProj, exclude: Set<String>) {
-        if let name = name, parent?.name == "Pods", exclude.contains(name) { return }
+    func removeFilesRecursively(from project: PBXProj, pods: Set<String>) {
+        if let name = name, parent?.name == "Pods", !pods.contains(name) { return }
 
         guard let group = self as? PBXGroup else {
             return project.delete(object: self)
         }
 
         for child in group.children {
-            child.removeFilesRecursively(from: project, exclude: exclude)
+            child.removeFilesRecursively(from: project, pods: pods)
         }
 
-        if name == "Pods", !exclude.isEmpty { return }
+        if name == "Pods" { return }
+        if group.parent?.name == "Pods" {
+            (group.parent as? PBXGroup)?.children.removeAll { $0.name == name }
+        }
         project.delete(object: group)
     }
 }
