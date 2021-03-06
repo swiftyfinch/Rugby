@@ -6,7 +6,7 @@
     <img src="https://github.com/swiftyfinch/Rugby/blob/main/Demo.gif" width="400"/>
 </p>
 <p align="center">
-    <img src="https://img.shields.io/badge/version-0.1.1-008800.svg" />
+    <img src="https://img.shields.io/badge/version-1.0.0-008800.svg" />
     <img src="https://img.shields.io/badge/Xcode_CLTool-12+-blue.svg" />
 </p>
 
