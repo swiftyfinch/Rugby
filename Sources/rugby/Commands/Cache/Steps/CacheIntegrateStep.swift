@@ -1,5 +1,5 @@
 //
-//  IntegrateStep.swift
+//  CacheIntegrateStep.swift
 //  
 //
 //  Created by v.khorkov on 31.01.2021.
@@ -7,7 +7,7 @@
 
 import Files
 
-final class IntegrateStep: Step {
+final class CacheIntegrateStep: Step {
     init(logFile: File, verbose: Bool) {
         super.init(name: "Integration", logFile: logFile, verbose: verbose)
     }

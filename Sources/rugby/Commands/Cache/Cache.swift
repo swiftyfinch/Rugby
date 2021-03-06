@@ -41,22 +41,22 @@ struct Cache: ParsableCommand {
             let logFile = try Folder.current.createFile(at: .log)
             let buildTarget: String = .buildTarget
 
-            let prepareStep = PrepareStep(logFile: logFile, verbose: verbose)
+            let prepareStep = CachePrepareStep(logFile: logFile, verbose: verbose)
             let info = try prepareStep.run(buildTarget: buildTarget,
                                            needRebuild: rebuild,
                                            excludePods: Set(exclude),
                                            includeAggTargets: false)
 
-            let buildStep = BuildStep(logFile: logFile, verbose: verbose)
+            let buildStep = CacheBuildStep(logFile: logFile, verbose: verbose)
             try buildStep.run(scheme: info.buildPods.isEmpty ? nil : buildTarget,
                               checksums: info.checksums,
                               sdk: sdk,
                               arch: arch)
 
-            let integrateStep = IntegrateStep(logFile: logFile, verbose: verbose)
+            let integrateStep = CacheIntegrateStep(logFile: logFile, verbose: verbose)
             try integrateStep.run(remotePods: info.remotePods, cacheFolder: .cacheFolder(sdk: sdk))
 
-            let cleanupStep = CleanupStep(logFile: logFile, verbose: verbose)
+            let cleanupStep = CacheCleanupStep(logFile: logFile, verbose: verbose)
             try cleanupStep.run(remotePods: info.remotePods,
                                 buildTarget: buildTarget,
                                 dropSources: dropSources,
@@ -64,7 +64,7 @@ struct Cache: ParsableCommand {
 
             try shellOut(to: "tput bel")
             let (podsCount, cachedPodsCount) = (info.podsCount, info.checksums.count)
-            outputMessage = "Cached \(cachedPodsCount)/\(podsCount) pods. Let's roll 🏈 ".green
+            outputMessage = "Cached \(cachedPodsCount)/\(podsCount) pods. Let's roll 🏈".green
         }
         print("[\(totalTime.formatTime())] ".yellow + outputMessage)
     }

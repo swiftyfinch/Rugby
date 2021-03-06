@@ -1,5 +1,5 @@
 //
-//  PrepareStep.swift
+//  CachePrepareStep.swift
 //  
 //
 //  Created by v.khorkov on 31.01.2021.
@@ -8,7 +8,7 @@
 import Files
 import XcodeProj
 
-final class PrepareStep: Step {
+final class CachePrepareStep: Step {
     struct Output {
         let buildPods: [String]
         let remotePods: Set<String>
@@ -73,11 +73,11 @@ final class PrepareStep: Step {
             progress.update(info: "Added aggregated build target: ".yellow + buildTarget)
             try podsProject.write(pathString: .podsProject, override: true)
         }
-        done()
 
         // Prepare list of products like: Some.framework, Some.bundle
         let products = Set(remotePodsChain.compactMap(\.product?.name))
 
+        defer { done() }
         return Output(buildPods: buildPodsChain,
                       remotePods: Set(remotePodsChain.map(\.name)),
                       checksums: remoteChecksums,

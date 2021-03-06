@@ -1,5 +1,5 @@
 //
-//  BuildStep.swift
+//  CacheBuildStep.swift
 //  
 //
 //  Created by v.khorkov on 31.01.2021.
@@ -8,7 +8,7 @@
 import Files
 import XcodeProj
 
-final class BuildStep: Step {
+final class CacheBuildStep: Step {
     init(logFile: File, verbose: Bool) {
         super.init(name: "Build", logFile: logFile, verbose: verbose)
     }
