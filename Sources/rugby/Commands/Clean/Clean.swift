@@ -10,7 +10,7 @@ import Files
 
 struct Clean: ParsableCommand {
     static var configuration: CommandConfiguration = .init(
-        abstract: "Remove .rugby folder."
+        abstract: "Remove .rugby cache folder."
     )
 
     func run() throws {

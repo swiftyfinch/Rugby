@@ -69,8 +69,10 @@ final class CachePrepareStep: Step {
             progress.update(info: "Build pods ".yellow + "(\(buildPodsChain.count))" + ":".yellow)
             buildPodsChain.caseInsensitiveSorted().forEach { progress.update(info: "* ".yellow + "\($0)") }
 
+            progress.update(info: "Add build target: ".yellow + buildTarget)
             podsProject.pbxproj.addTarget(name: buildTarget, dependencies: buildPodsChain)
-            progress.update(info: "Added aggregated build target: ".yellow + buildTarget)
+
+            progress.update(info: "Save project".yellow)
             try podsProject.write(pathString: .podsProject, override: true)
         }
 
@@ -88,9 +90,9 @@ final class CachePrepareStep: Step {
     private func exclude(pods: Set<String>, from remotePods: [String]) -> [String] {
         var remotePods = remotePods
         if !pods.isEmpty {
-            remotePods.removeAll(where: { pods.contains($0) })
             progress.update(info: "Exclude pods ".yellow + "(\(pods.count))" + ":".yellow)
             pods.caseInsensitiveSorted().forEach { progress.update(info: "* ".yellow + "\($0)") }
+            remotePods.removeAll(where: { pods.contains($0) })
         }
         return remotePods
     }

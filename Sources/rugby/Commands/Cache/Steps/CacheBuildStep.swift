@@ -15,7 +15,7 @@ final class CacheBuildStep: Step {
 
     func run(scheme: String?, checksums: [String], sdk: SDK, arch: String?) throws {
         if let scheme = scheme {
-            progress.update(info: "Building...".yellow)
+            progress.update(info: "Building ⏱".yellow)
             do {
                 try XcodeBuild(project: .podsProject, scheme: scheme, sdk: sdk, arch: arch).build()
             } catch {
@@ -27,9 +27,9 @@ final class CacheBuildStep: Step {
             }
             progress.update(info: "Finish".yellow)
 
+            progress.update(info: "Update checksums".yellow)
             let checksumsFile = try Folder.current.createFileIfNeeded(at: .cachedChecksums)
             try checksumsFile.write("SPEC CHECKSUMS:\n" + checksums.joined(separator: "\n") + "\n\n")
-            progress.update(info: "Update checksums".yellow)
         } else {
             progress.update(info: "Skip".yellow)
         }

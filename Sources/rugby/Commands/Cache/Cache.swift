@@ -16,19 +16,19 @@ private extension String {
 }
 
 struct Cache: ParsableCommand {
-    @Flag(name: .shortAndLong, help: "Ignore already cached pods.") var rebuild = false
+    @Flag(name: .shortAndLong, help: "Ignore already cached pods checksums.") var rebuild = false
     @Option(name: .shortAndLong, help: "Build architechture.") var arch: String?
     @Option(name: .shortAndLong,
-            help: "Build sdk: sim or ios.\nUse \("--rebuild".dim) after switch.") var sdk: SDK = .sim
-    @Flag(name: .shortAndLong, help: "\("Beta:".yellow) Remove Pods group from project.") var dropSources = false
+            help: "Build sdk: sim or ios.\nUse --rebuild after switch.") var sdk: SDK = .sim
+    @Flag(name: .shortAndLong, help: "Keep Pods group in project.") var keepSources = false
     @Option(name: .shortAndLong,
             parsing: .upToNextOption,
-            help: "\("Beta:".yellow) Exclude pods from cache.\n") var exclude: [String] = []
+            help: "Exclude pods from cache.\n") var exclude: [String] = []
 
     @Flag(name: .shortAndLong, help: "Print more information.") var verbose = false
 
     static var configuration: CommandConfiguration = .init(
-        abstract: "Remove remote pods, build them and integrate as frameworks."
+        abstract: "Remove remote pods, build them and integrate as frameworks and bundles."
     )
 
     func run() throws {
@@ -59,7 +59,7 @@ struct Cache: ParsableCommand {
             let cleanupStep = CacheCleanupStep(logFile: logFile, verbose: verbose)
             try cleanupStep.run(remotePods: info.remotePods,
                                 buildTarget: buildTarget,
-                                dropSources: dropSources,
+                                keepSources: keepSources,
                                 products: info.products)
 
             try shellOut(to: "tput bel")
