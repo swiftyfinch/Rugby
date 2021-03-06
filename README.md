@@ -14,79 +14,37 @@
 
 Working on a project with a huge amount of remote pods I had some troubles:\
 `-` Slow and unnecessary indexing of remote pods targets, which implementation I rarely try to edit;\
-`-` Redundant rebuild time, probably as a result of problems in the project, CocoaPods hooks or Xcode build system;\
+`-` Redundant rebuild time, probably as a result of problems CocoaPods hooks or Xcode build system;\
 `-` Freezing UI during navigation.
 
-`Rugby` is CLI tool that was developed to solve the above problems.
-In the current version, `Rugby` can cache all remote pods dependencies and remove their targets from the Pods project.
-Also, `Rugby` smart enough to rebuild only changed remote pods.
+`Rugby` is CLI tool that was developed to solve the above problems.\
+`+` Cache all remote pods dependencies and remove their targets from the Pods project;\
+`+` Rebuild only changed remote pods;\
+`+` Remove unnecessary sources from a project and reduce project size;\
+`+` Drop any unneeded targets with sources and resources by RegEx.
 
-### ✈️ Test flight with `Homebrew`
+### ✈️ Quick start with [`Homebrew`](https://brew.sh)
 
 ```bash
+# First install
 $ brew tap swiftyfinch/Rugby https://github.com/swiftyfinch/Rugby.git
 $ brew install rugby
-```
 
-##### Get new version
-
-```bash
+# Get new version
 $ brew upgrade rugby
 ```
 
-### `Help information`
+### `How to use`
 
-```bash
-$ rugby cache -h
-```
-
-### `Usage`
-
-```bash
-$ pod install && rugby
-```
-
-##### Build for simulator
-
-```bash
-$ rugby
-
-# or the same:
-$ rugby cache
-
-# or the same:
-$ rugby cache --sdk sim
-
-# or the same:
-$ rugby cache --sdk sim --arch x86_64
-```
-
-##### Build for device (arm64)
-
-```bash
-$ rugby --sdk ios
-```
-
-##### After switch between sdks or in any unclear situation (ignore cache)
-
-```bash
-$ rugby --rebuild
-```
-
-### `Beta`
-
-```bash
-# Remove Pods group from project.
-$ rugby --drop-sources
-
-# Exclude pods from cache.
-$ rugby --exclude Alamofire SnapKit
-```
+| Command | Description |
+| :----- | :------ |
+🏈 [`Cache`](Docs/Cache.md) | Remove remote pods from project, build them and integrate as frameworks and bundles.
+⚠️ [`Drop`](Docs/Drop.md) | Remove any targets by RegEx.
 
 ### `Maybe Roadmap`
 
-- [x] Optionally remove source groups from project
-- [ ] New commands: Reduce & Focus
+- [x] New command: Drop
+- [ ] New commands
 - [ ] Custom build systems
 - [ ] Open source
 
