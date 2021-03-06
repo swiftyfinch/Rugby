@@ -22,12 +22,10 @@ struct DropUpdateConfigs {
             #" *install_resource "\$\{PODS_CONFIGURATION_BUILD_DIR\}.*\#(productsRegex)\.bundle"\n"#
         ]
         let fileRegex = [#".*-resources\.sh"#, #".*\.xcconfig"#, #".*-frameworks\.sh"#].joined(separator: "|")
-        try lookupMatches.forEach {
-            try FileContentReplacer().replace($0,
-                                              with: "",
-                                              inFilesByRegEx: "(\(fileRegex))",
-                                              folder: supportFilesFolder)
-        }
+        try FileContentReplacer().replace("(" + lookupMatches.joined(separator: "|") + ")",
+                                          with: "",
+                                          inFilesByRegEx: "(\(fileRegex))",
+                                          folder: supportFilesFolder)
     }
 
     private func productsNames() -> [String] {
