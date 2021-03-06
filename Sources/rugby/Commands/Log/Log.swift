@@ -12,7 +12,7 @@ import ShellOut
 
 struct Log: ParsableCommand {
     static var configuration: CommandConfiguration = .init(
-        abstract: "Print last command log."
+        abstract: "Print last command log verbosely."
     )
 
     func run() throws {
