@@ -17,7 +17,11 @@ Working on a project with a huge amount of remote pods I had some troubles:\
 `-` Redundant rebuild time, probably as a result of problems CocoaPods hooks or Xcode build system;\
 `-` Freezing UI during navigation.
 
-`Rugby` is CLI tool that was developed to solve the above problems.\
+You can read 📖 [full story](https://swiftyfinch.github.io/en/2021-03-09-rugby-story/) on my blog.
+
+### `Description`
+
+`Rugby` is CLI tool that was developed to solve the above problems:\
 `+` Cache all remote pods dependencies and remove their targets from the Pods project;\
 `+` Rebuild only changed remote pods;\
 `+` Remove unnecessary sources from a project and reduce project size;\
