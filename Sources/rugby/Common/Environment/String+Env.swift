@@ -29,6 +29,8 @@ extension String {
     static let buildLog = supportFolder + "/build.log"
     static let cachedChecksums = supportFolder + "/Checksums"
 
+    static let podsGroup = "Pods"
+
     static func cacheFolder(sdk: SDK) -> String {
         "${PODS_ROOT}/../" + supportFolder + "/build/Debug-\(sdk.xcodebuild)"
     }
