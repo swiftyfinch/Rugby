@@ -9,20 +9,26 @@ import XcodeProj
 
 extension PBXFileElement {
     func removeFilesRecursively(from project: PBXProj, pods: Set<String>) {
-        if let name = name, parent?.name == "Pods", !pods.contains(name) { return }
-
         guard let group = self as? PBXGroup else {
+            // Remove single file
             return project.delete(object: self)
         }
 
-        for child in group.children {
-            child.removeFilesRecursively(from: project, pods: pods)
-        }
+        // Skip pod group in Pods if it hasn't included
+        if let name = displayName, parent?.displayName == .podsGroup, !pods.contains(name) { return }
 
-        if name == "Pods" { return }
-        if group.parent?.name == "Pods" {
-            (group.parent as? PBXGroup)?.children.removeAll { $0.name == name }
-        }
+        // Remove each file in group recersively
+        group.children.forEach { $0.removeFilesRecursively(from: project, pods: pods) }
+
+        // Don't remove Pods group
+        if displayName == .podsGroup { return }
+
+        // Remove group
         project.delete(object: group)
+
+        // Remove group from parent
+        if group.parent?.displayName == .podsGroup {
+            (group.parent as? PBXGroup)?.children.removeAll { $0.uuid == uuid }
+        }
     }
 }
