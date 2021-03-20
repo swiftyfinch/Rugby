@@ -49,8 +49,10 @@ $ brew upgrade rugby
 ### `Maybe Roadmap`
 
 - [x] New command: Drop
-- [ ] New commands
-- [ ] Custom build systems
+- [ ] Stable Drop command ✈️
+- [ ] Run-in, stabilisation ✈️
+- [ ] Pause for refactoring, tests, pipelines
+- [ ] New command
 - [ ] Open source
 
 ### `Author`
