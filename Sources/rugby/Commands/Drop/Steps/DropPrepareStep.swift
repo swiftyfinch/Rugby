@@ -35,7 +35,7 @@ final class DropPrepareStep: Step {
         foundTargets.map(\.name).caseInsensitiveSorted().forEach { progress.update(info: "* ".yellow + "\($0)") }
 
         // Prepare list of products like: Some.framework, Some.bundle
-        let products = Set(foundTargets.compactMap(\.product?.name))
+        let products = Set(foundTargets.compactMap(\.product?.displayName))
 
         done()
         return Output(foundTargets: foundTargets.map(\.name),
