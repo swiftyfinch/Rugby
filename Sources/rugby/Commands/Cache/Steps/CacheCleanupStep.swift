@@ -56,13 +56,13 @@ final class CacheCleanupStep: Step {
     }
 
     private func removeSources(project: PBXProj, pods: Set<String>) -> Bool {
-        guard let podsGroup = project.groups.first(where: { $0.name == "Pods" && $0.parent?.parent == nil }) else {
+        guard let podsGroup = project.groups.first(where: { $0.name == .podsGroup && $0.parent?.parent == nil }) else {
             return false
         }
         podsGroup.removeFilesRecursively(from: project, pods: pods)
         if podsGroup.children.isEmpty {
             project.delete(object: podsGroup)
-            (podsGroup.parent as? PBXGroup)?.children.removeAll { $0.name == "Pods" }
+            (podsGroup.parent as? PBXGroup)?.children.removeAll { $0.name == .podsGroup }
         }
         return true
     }
@@ -76,11 +76,11 @@ final class CacheCleanupStep: Step {
             $0.children.forEach { child in
                 if let name = child.name, products.contains(name) {
                     project.delete(object: child)
-                    (child.parent as? PBXGroup)?.children.removeAll(where: { child.name == $0.name })
+                    (child.parent as? PBXGroup)?.children.removeAll(where: { child.uuid == $0.uuid })
                     hasChanges = true
                 } else if let path = child.path, products.contains(path) {
                     project.delete(object: child)
-                    (child.parent as? PBXGroup)?.children.removeAll(where: { child.name == $0.name })
+                    (child.parent as? PBXGroup)?.children.removeAll(where: { child.uuid == $0.uuid })
                     hasChanges = true
                 }
             }
