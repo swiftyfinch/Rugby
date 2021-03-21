@@ -26,6 +26,11 @@ final class CacheCleanupStep: Step {
             hasChanges = removeSources(project: podsProject.pbxproj, pods: remotePods) || hasChanges
         }
 
+        progress.update(info: "Remove frameworks".yellow)
+        products.forEach {
+            hasChanges = podsProject.pbxproj.removeFrameworks(productName: $0) || hasChanges
+        }
+
         progress.update(info: "Remove products".yellow)
         if removeFrameworkPaths(project: podsProject.pbxproj, groups: ["Frameworks", "Products"], products: products) {
             hasChanges = true

@@ -22,6 +22,10 @@ final class DropRemoveStep: Step {
         }
 
         let project = try XcodeProj(pathString: projectPath)
+
+        progress.update(info: "Remove frameworks".yellow)
+        products.forEach { project.pbxproj.removeFrameworks(productName: $0) }
+
         if !keepSources {
             progress.update(info: "Remove sources & resources".yellow)
             let filesRemainingTargets = try findFilesRemainingTargets(project: project.pbxproj,
