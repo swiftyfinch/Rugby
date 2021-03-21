@@ -62,7 +62,6 @@ struct Cache: ParsableCommand {
                                 keepSources: keepSources,
                                 products: info.products)
 
-            try shellOut(to: "tput bel")
             let (podsCount, cachedPodsCount) = (info.podsCount, info.checksums.count)
             outputMessage = "Cached \(cachedPodsCount)/\(podsCount) pods. Let's roll 🏈".green
         }

@@ -1,0 +1,56 @@
+name: Tests
+
+on: workflow_dispatch
+
+jobs:
+  Main:
+    runs-on: macos-latest
+
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v2
+        
+      - name: Get spm .build cache
+        uses: actions/cache@v2
+        with:
+          path: .build
+          key: ${{ runner.os }}-spm-${{ hashFiles('Package.resolved') }}
+
+      - name: Build Rugby
+        run: |
+          swift run swiftlint --strict --quiet
+          swift build
+
+      - name: Get gems cache
+        uses: ruby/setup-ruby@v1
+        with:
+          ruby-version: 2.7.2
+          bundler-cache: true
+          working-directory: Tests/TestProject
+
+      - name: Get CocoaPods cache
+        uses: actions/cache@v2
+        with:
+          path: Tests/TestProject/Pods
+          key: ${{ runner.os }}-pods-${{ hashFiles('Tests/TestProject/Podfile.lock') }}
+
+      - name: Get .rugby cache
+        uses: actions/cache@v2
+        with:
+          path: Tests/TestProject/.rugby
+          key: ${{ runner.os }}-pods-${{ hashFiles('Tests/TestProject/.rugby/Checksums') }}
+
+      - name: Bundle install
+        run: cd "Tests/TestProject" && bundle
+        
+      - name: Pod install
+        run: cd "Tests/TestProject" && bundle exec pod install
+        
+      - name: Exclude arm64
+        run: cd "Tests/TestProject" && bundle exec ruby Scripts/exclude_arm64.rb
+        
+      - name: Rugby cache
+        run: cd "Tests/TestProject" && swift run rugby
+        
+      - name: Test
+        run: cd "Tests/TestProject" && set -o pipefail && env NSUnbufferedIO=YES xcodebuild -workspace TestProject.xcworkspace -scheme TestProject -sdk iphonesimulator | bundle exec xcpretty
