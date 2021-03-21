@@ -14,8 +14,12 @@ Pod::Spec.new do |s|
 
   s.dependency 'R.swift'
 
-  # ================================ Resources ========================================
+  s.test_spec 'Tests' do |ts|
+    ts.source_files = "#{s.name}/Tests/**/*.swift"
+    ts.resources = "#{s.name}/Tests/**/*.{json,xcassets}"
+  end
 
+  # ================================ Resources ========================================
   r_swift_prepare_script = <<-SCRIPT
     require "fileutils"
     FileUtils.touch "#{s.name}/Sources/R.generated.swift"

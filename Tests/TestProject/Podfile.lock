@@ -2,6 +2,8 @@ PODS:
   - "Keyboard+LayoutGuide (1.6.0)"
   - LocalPod (1.0.0):
     - R.swift
+  - LocalPod/Tests (1.0.0):
+    - R.swift
   - R.swift (5.4.0):
     - R.swift.Library (~> 5.3.0)
   - R.swift.Library (5.3.0)
@@ -10,6 +12,7 @@ PODS:
 DEPENDENCIES:
   - "Keyboard+LayoutGuide"
   - LocalPod (from `.`)
+  - LocalPod/Tests (from `.`)
   - R.swift
   - SnapKit
 
@@ -26,11 +29,11 @@ EXTERNAL SOURCES:
 
 SPEC CHECKSUMS:
   "Keyboard+LayoutGuide": db44b1764e2bb5d9824cc9cea9d9006cd4442045
-  LocalPod: 770338f17c13fa608e152f4166cfd176f0be09b8
+  LocalPod: 75a7d283929e52aacf640520f08266a0812ba63c
   R.swift: c533450b0f7dc494e0993f5f1a1db925d84c3006
   R.swift.Library: 0fc583cb55a99e28901299cc451614cad1161962
   SnapKit: 97b92857e3df3a0c71833cce143274bf6ef8e5eb
 
-PODFILE CHECKSUM: 6f00928030b851561a9c5cfa2f110d62974a298f
+PODFILE CHECKSUM: 19aa7f23f9b07313f2e5a1a99864d29091d9e793
 
 COCOAPODS: 1.10.1
