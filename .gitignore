@@ -5,3 +5,5 @@
 xcuserdata/
 .swiftpm
 .product
+Pods
+Tests/TestProject/build
