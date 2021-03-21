@@ -1,0 +1,8 @@
+platform :ios, '11.0.1'
+
+target 'TestProject' do
+  use_frameworks!
+  
+  pod 'SnapKit'
+  pod 'Keyboard+LayoutGuide'
+end
