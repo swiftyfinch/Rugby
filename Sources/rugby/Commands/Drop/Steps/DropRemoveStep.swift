@@ -15,26 +15,30 @@ final class DropRemoveStep: Step {
         super.init(name: "Drop", logFile: logFile, verbose: verbose)
     }
 
-    func run(project: String, targets: [String], products: Set<String>, keepSources: Bool) throws {
+    func run(projectPath: String, targets: [String], products: Set<String>, keepSources: Bool) throws {
         guard !targets.isEmpty else {
             progress.update(info: "Can't find any targets. Skip".yellow)
             return done()
         }
 
-        let podsProject = try XcodeProj(pathString: project)
+        let project = try XcodeProj(pathString: projectPath)
         if !keepSources {
             progress.update(info: "Remove sources & resources".yellow)
-            try targets.forEach { try removeSources(project: podsProject.pbxproj, fromTarget: $0) }
+            let filesRemainingTargets = try findFilesRemainingTargets(project: project.pbxproj,
+                                                                      targetsForRemove: Set(targets))
+            try targets.forEach { try removeSources(project: project.pbxproj,
+                                                    fromTarget: $0,
+                                                    excludeFiles: filesRemainingTargets) }
         }
 
         progress.update(info: "Remove targets".yellow)
-        let removedTargets = Set(targets.filter(podsProject.pbxproj.removeTarget))
-
-        progress.update(info: "Remove dependencies".yellow)
-        removedTargets.forEach { podsProject.pbxproj.removeDependency(name: $0) }
+        let removedTargets = Set(targets.filter(project.pbxproj.removeTarget))
 
         progress.update(info: "Remove schemes".yellow)
-        try SchemeCleaner().removeSchemes(pods: removedTargets, projectPath: project)
+        try SchemeCleaner().removeSchemes(pods: removedTargets, projectPath: projectPath)
+        removedTargets.forEach { targetName in
+            project.sharedData?.schemes.removeAll { $0.name == targetName }
+        }
 
         progress.update(info: "Update configs".yellow)
         try DropUpdateConfigs(products: products).removeProducts()
@@ -43,7 +47,7 @@ final class DropRemoveStep: Step {
         removedTargets.caseInsensitiveSorted().forEach { progress.update(info: "* ".red + "\($0)") }
 
         progress.update(info: "Save project".yellow)
-        try podsProject.write(pathString: project, override: true)
+        try project.write(pathString: projectPath, override: true)
 
         done()
     }

@@ -45,7 +45,7 @@ struct Drop: ParsableCommand {
 
             if !testFlight {
                 let removeStep = DropRemoveStep(logFile: logFile, verbose: verbose)
-                try removeStep.run(project: project,
+                try removeStep.run(projectPath: project,
                                    targets: info.foundTargets,
                                    products: info.products,
                                    keepSources: keepSources)
