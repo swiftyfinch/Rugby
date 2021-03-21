@@ -31,6 +31,7 @@ extension PBXProj {
             }
             delete(object: phase)
         }
+        target.buildRules.forEach(delete)
 
         for configuration in target.buildConfigurationList?.buildConfigurations ?? [] {
             delete(object: configuration)
@@ -39,6 +40,7 @@ extension PBXProj {
 
         target.dependencies.forEach { $0.targetProxy.map(delete) }
         target.dependencies.forEach(delete)
+        target.product.map(delete)
 
         delete(object: target)
         main.targets.removeAll(where: { $0.name == name })
