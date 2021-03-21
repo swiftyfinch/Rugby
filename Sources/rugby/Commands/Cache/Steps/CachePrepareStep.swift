@@ -78,7 +78,7 @@ final class CachePrepareStep: Step {
         // Prepare list of products like: Some.framework, Some.bundle
         let products = Set(remotePodsChain.compactMap(\.product?.name))
 
-        defer { done() }
+        done()
         return Output(buildPods: buildPodsChain,
                       remotePods: Set(remotePodsChain.map(\.name)),
                       checksums: remoteChecksums,
