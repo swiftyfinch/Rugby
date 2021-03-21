@@ -7,3 +7,4 @@ xcuserdata/
 .product
 Pods
 Tests/TestProject/build
+Tests/TestProject/LocalPod/Sources/R.generated.swift
