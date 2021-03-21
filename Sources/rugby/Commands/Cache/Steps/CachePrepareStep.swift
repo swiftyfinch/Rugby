@@ -35,13 +35,12 @@ final class CachePrepareStep: Step {
 
         // Exclude aggregated targets, which contain scripts with the installation of some xcframeworks.
         let podsProject = try XcodeProj(pathString: .podsProject)
-        if !includeAggTargets {
-            remotePods = excludeXCFrameworksTargets(project: podsProject, pods: remotePods)
-        }
+        if !includeAggTargets { remotePods = excludeXCFrameworksTargets(project: podsProject, pods: remotePods) }
 
         let checksums = try podfile.getChecksums()
         let remoteChecksums = checksums.filter {
-            guard let name = $0.components(separatedBy: ": ").first else { return false }
+            guard let name = $0.components(separatedBy: ": ").first?
+                    .trimmingCharacters(in: ["\""]) else { return false }
             return remotePods.contains(name)
         }
 
@@ -115,7 +114,7 @@ final class CachePrepareStep: Step {
     private func findBuildPods(byChecksums checksums: [String]) -> [String] {
         let cachedChecksums = (try? Podfile(.cachedChecksums).getChecksums()) ?? []
         let changes = Set(checksums).subtracting(cachedChecksums)
-        let changedPods = changes.compactMap { $0.components(separatedBy: ": ").first }
+        let changedPods = changes.compactMap { $0.components(separatedBy: ": ").first?.trimmingCharacters(in: ["\""]) }
         return changedPods.caseInsensitiveSorted()
     }
 
