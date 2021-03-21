@@ -26,10 +26,16 @@ final class DropRemoveStep: Step {
         progress.update(info: "Remove frameworks".yellow)
         products.forEach { project.pbxproj.removeFrameworks(productName: $0) }
 
+        progress.update(info: "Remove dependencies".yellow)
+        targets.forEach { project.pbxproj.removeDependency(name: $0) }
+
         // Remove app extension
         products.filter { $0.hasSuffix("appex") }.forEach {
             project.pbxproj.removeAppExtensions(productName: $0)
         }
+
+        progress.update(info: "Remove products".yellow)
+        removeFrameworkPaths(project: project.pbxproj, groups: ["Frameworks", "Products"], products: products)
 
         if !keepSources {
             progress.update(info: "Remove sources & resources".yellow)
