@@ -13,7 +13,7 @@ extension PBXProj {
         var hasChanges = false
         for target in main.targets {
             target.dependencies.removeAll {
-                guard $0.name == name else { return false }
+                guard $0.displayName == name else { return false }
                 delete(object: $0)
                 $0.targetProxy.map(delete)
                 hasChanges = true
@@ -21,5 +21,11 @@ extension PBXProj {
             }
         }
         return hasChanges
+    }
+}
+
+extension PBXTargetDependency {
+    var displayName: String? {
+        name ?? target?.name
     }
 }
