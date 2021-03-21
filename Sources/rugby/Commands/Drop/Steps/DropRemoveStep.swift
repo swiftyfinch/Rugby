@@ -26,6 +26,11 @@ final class DropRemoveStep: Step {
         progress.update(info: "Remove frameworks".yellow)
         products.forEach { project.pbxproj.removeFrameworks(productName: $0) }
 
+        // Remove app extension
+        products.filter { $0.hasSuffix("appex") }.forEach {
+            project.pbxproj.removeAppExtensions(productName: $0)
+        }
+
         if !keepSources {
             progress.update(info: "Remove sources & resources".yellow)
             let filesRemainingTargets = try findFilesRemainingTargets(project: project.pbxproj,
