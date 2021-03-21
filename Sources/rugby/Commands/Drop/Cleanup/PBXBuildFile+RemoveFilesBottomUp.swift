@@ -13,6 +13,7 @@ extension Array where Element == PBXBuildFile {
             guard let uuid = buildFile.file?.uuid else { return }
             if excludeFiles.contains(uuid) { return }
             let group = buildFile.file?.parent as? PBXGroup
+            group?.children.removeAll { $0.uuid == uuid }
             buildFile.file.map(project.delete)
             group?.removeIfEmpty(project: project, applyForParent: true)
         }

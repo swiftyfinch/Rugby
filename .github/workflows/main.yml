@@ -53,4 +53,22 @@ jobs:
         run: cd "Tests/TestProject" && swift run rugby
         
       - name: Test
-        run: cd "Tests/TestProject" && set -o pipefail && env NSUnbufferedIO=YES xcodebuild -workspace TestProject.xcworkspace -scheme TestProject -sdk iphonesimulator | bundle exec xcpretty
+        run: cd "Tests/TestProject" && bundle exec fastlane run_unit_tests
+        
+      - name: Rugby drop Pods tests
+        run: cd "Tests/TestProject" && swift run rugby drop "Unit-Tests"
+        
+      - name: Test
+        run: cd "Tests/TestProject" && bundle exec fastlane run_unit_tests
+        
+      - name: Rugby drop Unit tests
+        run: cd "Tests/TestProject" && swift run rugby drop "TestProjectTests" -p TestProject.xcodeproj
+        
+      - name: Test
+        run: cd "Tests/TestProject" && bundle exec fastlane run_unit_tests
+        
+      - name: Rugby drop UI tests
+        run: cd "Tests/TestProject" && swift run rugby drop "UI" -p TestProject.xcodeproj
+        
+      - name: Test
+        run: cd "Tests/TestProject" && bundle exec fastlane build

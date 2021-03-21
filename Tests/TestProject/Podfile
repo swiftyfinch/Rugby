@@ -6,7 +6,15 @@ target 'TestProject' do
   pod 'SnapKit'
   pod 'Keyboard+LayoutGuide'
   pod 'R.swift'
-  pod 'LocalPod', :path => '.'
+  pod 'LocalPod', :path => '.', :testspecs => ['Tests']
+
+  target 'TestProjectTests' do
+      inherit! :search_paths
+  end
+
+  target 'TestProjectUITests' do
+
+  end
 end
 
 post_install do |installer|
