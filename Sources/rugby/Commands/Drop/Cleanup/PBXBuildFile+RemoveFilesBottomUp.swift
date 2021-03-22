@@ -8,14 +8,25 @@
 import XcodeProj
 
 extension Array where Element == PBXBuildFile {
-    func removeFilesBottomUp(project: PBXProj, excludeFiles: Set<String>) throws {
-        forEach { buildFile in
-            guard let uuid = buildFile.file?.uuid else { return }
-            if excludeFiles.contains(uuid) { return }
-            let group = buildFile.file?.parent as? PBXGroup
-            group?.children.removeAll { $0.uuid == uuid }
-            buildFile.file.map(project.delete)
-            group?.removeIfEmpty(project: project, applyForParent: true)
+    func removeFilesBottomUp(project: PBXProj, excludeFiles: Set<String>) {
+        compactMap(\.file).removeFilesBottomUp(project: project, excludeFiles: excludeFiles)
+    }
+}
+
+private extension Array where Element == PBXFileElement {
+    func removeFilesBottomUp(project: PBXProj, excludeFiles: Set<String>) {
+        forEach { file in
+            if excludeFiles.contains(file.uuid) { return }
+
+            if let currentGroup = file as? PBXGroup {
+                currentGroup.children.removeFilesBottomUp(project: project,
+                                                          excludeFiles: excludeFiles)
+            } else {
+                let group = file.parent as? PBXGroup
+                group?.children.removeAll { $0.uuid == file.uuid }
+                project.delete(object: file)
+                group?.removeIfEmpty(project: project, applyForParent: true)
+            }
         }
     }
 }

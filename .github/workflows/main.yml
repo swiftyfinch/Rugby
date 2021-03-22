@@ -72,3 +72,9 @@ jobs:
         
       - name: Test
         run: cd "Tests/TestProject" && bundle exec fastlane build
+
+      - name: Rugby drop Localizable
+        run: cd "Tests/TestProject" && swift run rugby drop "TestLocalizable" -p TestProject.xcodeproj
+
+      - name: Test
+        run: cd "Tests/TestProject" && bundle exec fastlane build
