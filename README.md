@@ -9,6 +9,7 @@
     <img src="https://img.shields.io/badge/version-1.0.2-008800.svg" />
     <img src="https://img.shields.io/badge/Language-Swift-orange.svg" />
     <img src="https://img.shields.io/badge/Xcode_CLTool-12+-blue.svg" />
+    <img src="https://github.com/swiftyfinch/RugbyTesting/actions/workflows/release.yml/badge.svg" />
 </p>
 
 ### `Motivation`
