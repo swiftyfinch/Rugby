@@ -53,6 +53,8 @@ final class CachePrepareStep: Step {
 
         // Collect all remote pods chain
         let remotePodsChain = buildRemotePodsChain(project: podsProject, remotePods: Set(remotePods))
+        if remotePodsChain.isEmpty { throw CacheError.cantFindRemotePodsTargets }
+
         let additionalBuildTargets = Set(remotePodsChain.map(\.name)).subtracting(remotePods)
         if !additionalBuildTargets.isEmpty {
             progress.update(info: "Additional build targets ".yellow + "(\(additionalBuildTargets.count))" + ":".yellow)
