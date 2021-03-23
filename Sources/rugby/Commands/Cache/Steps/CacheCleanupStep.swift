@@ -6,7 +6,6 @@
 //
 
 import Files
-import ShellOut
 import XcodeProj
 
 final class CacheCleanupStep: Step {

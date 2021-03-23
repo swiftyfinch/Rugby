@@ -9,7 +9,6 @@ import ArgumentParser
 import Files
 import Foundation
 import Rainbow
-import ShellOut
 
 private extension String {
     static let buildTarget = "RemotePods"
