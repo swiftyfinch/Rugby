@@ -13,7 +13,7 @@ struct Rugby: ParsableCommand {
         \("🏈 Cache some pods: build and throw away part of them.".green)
         📖 https://github.com/swiftyfinch/Rugby (⌘ + double click)
         """,
-        version: "1.0.1",
+        version: "1.0.2",
         subcommands: [Cache.self, Drop.self, Clean.self, Log.self],
         defaultSubcommand: Cache.self
     )
