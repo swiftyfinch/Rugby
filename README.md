@@ -6,10 +6,9 @@
     <img src="https://github.com/swiftyfinch/Rugby/blob/main/Demo.gif" width="400"/>
 </p>
 <p align="center">
-    <img src="https://img.shields.io/badge/version-1.0.2-008800.svg" />
-    <img src="https://img.shields.io/badge/Language-Swift-orange.svg" />
-    <img src="https://img.shields.io/badge/Xcode_CLTool-12+-blue.svg" />
-    <img src="https://github.com/swiftyfinch/RugbyTesting/actions/workflows/release.yml/badge.svg" />
+  <img src="https://img.shields.io/badge/Swift-orange.svg?logo=swift&logoColor=white" />
+  <img src="https://img.shields.io/badge/12+-blue.svg?logo=xcode&logoColor=white" />
+  <img src="https://img.shields.io/badge/Brew-8B4513?logo=homebrew&logoColor=white" />
 </p>
 
 ### `Motivation`
