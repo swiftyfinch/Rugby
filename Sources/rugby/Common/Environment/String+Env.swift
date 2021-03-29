@@ -7,7 +7,7 @@
 
 import ArgumentParser
 
-enum SDK: String, ExpressibleByArgument {
+enum SDK: String, Codable, ExpressibleByArgument {
     case sim, ios
 
     var xcodebuild: String {
@@ -28,6 +28,7 @@ extension String {
     static let log = supportFolder + "/rugby.log"
     static let buildLog = supportFolder + "/build.log"
     static let cachedChecksums = supportFolder + "/Checksums"
+    static let cacheFile = supportFolder + "/cache.yml"
 
     static let podsGroup = "Pods"
 
