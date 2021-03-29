@@ -13,11 +13,11 @@ final class CacheBuildStep: Step {
         super.init(name: "Build", logFile: logFile, verbose: verbose)
     }
 
-    func run(scheme: String?, checksums: [String], sdk: SDK, arch: String?) throws {
+    func run(scheme: String?, checksums: [String], command: Cache) throws {
         if let scheme = scheme {
             progress.update(info: "Building ⏱".yellow)
             do {
-                try XcodeBuild(project: .podsProject, scheme: scheme, sdk: sdk, arch: arch).build()
+                try XcodeBuild(project: .podsProject, scheme: scheme, sdk: command.sdk, arch: command.arch).build()
             } catch {
                 let podsProject = try XcodeProj(pathString: .podsProject)
                 podsProject.pbxproj.removeTarget(name: scheme)
@@ -28,8 +28,7 @@ final class CacheBuildStep: Step {
             progress.update(info: "Finish".yellow)
 
             progress.update(info: "Update checksums".yellow)
-            let checksumsFile = try Folder.current.createFileIfNeeded(at: .cachedChecksums)
-            try checksumsFile.write("SPEC CHECKSUMS:\n" + checksums.joined(separator: "\n") + "\n\n")
+            try CacheManager().save(CacheFile(checksums: checksums, sdk: command.sdk, arch: command.arch))
         } else {
             progress.update(info: "Skip".yellow)
         }

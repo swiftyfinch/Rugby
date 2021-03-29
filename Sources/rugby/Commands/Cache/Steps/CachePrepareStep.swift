@@ -21,48 +21,40 @@ final class CachePrepareStep: Step {
         super.init(name: "Prepare", logFile: logFile, verbose: verbose)
     }
 
-    func run(buildTarget: String,
-             needRebuild: Bool,
-             excludePods: Set<String>,
-             includeAggTargets: Bool) throws -> Output {
+    func run(buildTarget: String, command: Cache) throws -> Output {
         // Get remote pods from Podfile.lock
         let podfile = try Podfile(.podfileLock)
-        var remotePods = try podfile.getRemotePods().map { $0.trimmingCharacters(in: ["\""]) }
+        let remotePods = try podfile.getRemotePods().map { $0.trimmingCharacters(in: ["\""]) }
         progress.update(info: "Remote pods ".yellow + "(\(remotePods.count))" + ":".yellow)
         remotePods.caseInsensitiveSorted().forEach { progress.update(info: "* ".yellow + "\($0)") }
 
-        remotePods = exclude(pods: excludePods, from: remotePods)
+        var filteredRemotePods = exclude(pods: Set(command.exclude), from: remotePods)
 
         // Exclude aggregated targets, which contain scripts with the installation of some xcframeworks.
         let podsProject = try XcodeProj(pathString: .podsProject)
-        if !includeAggTargets { remotePods = excludeXCFrameworksTargets(project: podsProject, pods: remotePods) }
+        filteredRemotePods = excludeXCFrameworksTargets(project: podsProject, pods: filteredRemotePods)
 
         let checksums = try podfile.getChecksums()
         let remoteChecksums = checksums.filter {
             guard let name = $0.components(separatedBy: ": ").first?
                     .trimmingCharacters(in: ["\""]) else { return false }
-            return remotePods.contains(name)
+            return filteredRemotePods.contains(name)
         }
 
-        let buildPods: [String]
-        if needRebuild {
-            buildPods = remotePods
-        } else {
-            buildPods = findBuildPods(byChecksums: remoteChecksums)
-        }
+        let buildPods = try findBuildPods(remotePods: filteredRemotePods, checksums: remoteChecksums, command: command)
 
         // Collect all remote pods chain
         let remotePodsChain = buildRemotePodsChain(project: podsProject, remotePods: Set(remotePods))
         if remotePodsChain.isEmpty { throw CacheError.cantFindRemotePodsTargets }
 
-        let additionalBuildTargets = Set(remotePodsChain.map(\.name)).subtracting(remotePods)
+        let additionalBuildTargets = Set(remotePodsChain.map(\.name)).subtracting(filteredRemotePods)
         if !additionalBuildTargets.isEmpty {
             progress.update(info: "Additional build targets ".yellow + "(\(additionalBuildTargets.count))" + ":".yellow)
             additionalBuildTargets.caseInsensitiveSorted().forEach { progress.update(info: "* ".yellow + "\($0)") }
         }
 
         // Include parents of build pods
-        let buildPodsChain = podsProject.findParentDependencies(Set(buildPods), allTargets: remotePods)
+        let buildPodsChain = podsProject.findParentDependencies(Set(buildPods), allTargets: filteredRemotePods)
 
         if buildPodsChain.isEmpty {
             progress.update(info: "Skip".yellow)
@@ -84,7 +76,7 @@ final class CachePrepareStep: Step {
         return Output(buildPods: buildPodsChain,
                       remotePods: Set(remotePodsChain.map(\.name)),
                       checksums: remoteChecksums,
-                      podsCount: checksums.count,
+                      podsCount: remoteChecksums.count,
                       products: products)
     }
 
@@ -113,8 +105,13 @@ final class CachePrepareStep: Step {
         return Array(Set(pods).subtracting(excluded))
     }
 
-    private func findBuildPods(byChecksums checksums: [String]) -> [String] {
-        let cachedChecksums = (try? Podfile(.cachedChecksums).getChecksums()) ?? []
+    private func findBuildPods(remotePods: [String], checksums: [String], command: Cache) throws -> [String] {
+        if command.rebuild { return remotePods }
+
+        let cacheFile = try CacheManager().load()
+        if command.sdk != cacheFile.sdk || command.arch != cacheFile.arch { return remotePods }
+
+        let cachedChecksums = cacheFile.checksums
         let changes = Set(checksums).subtracting(cachedChecksums)
         let changedPods = changes.compactMap { $0.components(separatedBy: ": ").first?.trimmingCharacters(in: ["\""]) }
         return changedPods.caseInsensitiveSorted()
