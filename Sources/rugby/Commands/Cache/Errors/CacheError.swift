@@ -21,7 +21,7 @@ enum CacheError: Error, LocalizedError {
         case .cantParseCachedChecksums:
             output = "Couldn't parse cached checksums.".red
         case .cantFindRemotePodsTargets:
-            output = "Couldn't find any targets.\n".red
+            output = "Couldn't find remote pods targets.\n".red
                 + "🚑 Try to call pod install.".yellow
         }
         // Need to clear color because in _errorLabel we don't do that
