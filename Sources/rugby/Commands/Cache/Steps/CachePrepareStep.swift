@@ -6,6 +6,7 @@
 //
 
 import Files
+import ShellOut
 import XcodeProj
 
 final class CachePrepareStep: Step {
@@ -22,6 +23,10 @@ final class CachePrepareStep: Step {
     }
 
     func run(buildTarget: String, command: Cache) throws -> Output {
+        if try shellOut(to: "xcode-select -p") == .defaultXcodeCLTPath {
+            throw CacheError.cantFineXcodeCommandLineTools
+        }
+
         // Get remote pods from Podfile.lock
         let podfile = try Podfile(.podfileLock)
         let remotePods = try podfile.getRemotePods().map { $0.trimmingCharacters(in: ["\""]) }
