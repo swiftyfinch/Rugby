@@ -44,8 +44,8 @@ final class CachePrepareStep: Step {
         let buildPods = try findBuildPods(remotePods: filteredRemotePods, checksums: remoteChecksums, command: command)
 
         // Collect all remote pods chain
-        let remotePodsChain = buildRemotePodsChain(project: podsProject, remotePods: Set(remotePods))
-        if remotePodsChain.isEmpty { throw CacheError.cantFindRemotePodsTargets }
+        let remotePodsChain = buildRemotePodsChain(project: podsProject, remotePods: Set(filteredRemotePods))
+        guard remotePodsChain.count >= filteredRemotePods.count else { throw CacheError.cantFindRemotePodsTargets }
 
         let additionalBuildTargets = Set(remotePodsChain.map(\.name)).subtracting(filteredRemotePods)
         if !additionalBuildTargets.isEmpty {
