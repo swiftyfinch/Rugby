@@ -32,6 +32,8 @@ extension String {
 
     static let podsGroup = "Pods"
 
+    static let defaultXcodeCLTPath = "/Library/Developer/CommandLineTools"
+
     static func cacheFolder(sdk: SDK) -> String {
         "${PODS_ROOT}/../" + supportFolder + "/build/Debug-\(sdk.xcodebuild)"
     }
