@@ -23,12 +23,15 @@ struct XcodeBuild {
             "COMPILER_INDEX_STORE_ENABLE=NO",
             "SWIFT_COMPILATION_MODE=wholemodule"
         ]
+
+        if sdk == .ios { arguments.append("ENABLE_BITCODE=NO") }
         if let arch = arch {
             arguments.append("ARCHS=\(arch)")
         } else if sdk == .sim {
             // For simulators use arch x86_64 by default.
             arguments.append("ARCHS=x86_64")
         }
+
         arguments.append("| tee " + .buildLog)
 
         try shellOut(
