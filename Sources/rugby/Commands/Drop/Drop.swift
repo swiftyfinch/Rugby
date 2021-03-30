@@ -18,6 +18,7 @@ private extension ArgumentHelp {
 
 struct Drop: ParsableCommand {
     @Argument(parsing: .remaining, help: .targetsHelp) var targets: [String]
+    @Flag(name: .shortAndLong, help: "Invert regEx.") var invert = false
     @Option(name: .shortAndLong, help: "Project location.") var project: String = .podsProject
     @Flag(name: .shortAndLong, help: "Show output without any changes.") var testFlight = false
     @Flag(name: .shortAndLong, help: "Keep sources & resources in project.") var keepSources = false
@@ -41,7 +42,7 @@ struct Drop: ParsableCommand {
             let logFile = try Folder.current.createFile(at: .log)
 
             let prepareStep = DropPrepareStep(logFile: logFile, verbose: verbose)
-            let info = try prepareStep.run(project: project, targets: targets, exclude: exclude)
+            let info = try prepareStep.run(command: self)
 
             if !testFlight {
                 let removeStep = DropRemoveStep(logFile: logFile, verbose: verbose)
