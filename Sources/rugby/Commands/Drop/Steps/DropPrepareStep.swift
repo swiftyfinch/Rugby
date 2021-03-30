@@ -20,15 +20,17 @@ final class DropPrepareStep: Step {
         super.init(name: "Prepare", logFile: logFile, verbose: verbose)
     }
 
-    func run(project: String, targets: [String], exclude: [String]) throws -> Output {
-        let podsProject = try XcodeProj(pathString: project)
+    func run(command: Drop) throws -> Output {
+        let podsProject = try XcodeProj(pathString: command.project)
         let projectTargets = podsProject.pbxproj.main.targets
 
         progress.update(info: "Find targets ".yellow)
-        let exclude = Set(exclude)
-        let regEx = try RegEx(pattern: "(" + targets.joined(separator: "|") + ")")
+        let exclude = Set(command.exclude)
+        let regEx = try RegEx(pattern: "(" + command.targets.joined(separator: "|") + ")")
         let foundTargets = projectTargets.filter {
-            !exclude.contains($0.name) && regEx.test($0.name)
+            if exclude.contains($0.name) { return false }
+            let passedRegEx = regEx.test($0.name)
+            return command.invert ? !passedRegEx : passedRegEx
         }
 
         progress.update(info: "Found targets ".yellow + "(\(foundTargets.count))" + ":".yellow)
