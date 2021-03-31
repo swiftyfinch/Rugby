@@ -58,7 +58,7 @@ $ rugby --sdk ios
 $ rugby -s ios
 ```
 
-##### After switch between sdks or in any unclear situation (ignore checksums cache)
+##### In any unclear situation (ignore cache)
 
 ```bash
 $ rugby --rebuild
