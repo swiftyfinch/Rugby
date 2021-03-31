@@ -9,6 +9,7 @@
   <img src="https://img.shields.io/badge/Swift-orange.svg?logo=swift&logoColor=white" />
   <img src="https://img.shields.io/badge/12+-blue.svg?logo=xcode&logoColor=white" />
   <img src="https://img.shields.io/badge/Brew-8B4513?logo=homebrew&logoColor=white" />
+  <img src="https://img.shields.io/badge/CocoaPods-red?logo=cocoapods&logoColor=white" />
 </p>
 
 ### `Motivation`
