@@ -35,11 +35,16 @@ You can read 📖 [full story](https://swiftyfinch.github.io/en/2021-03-09-rugby
 $ brew tap swiftyfinch/Rugby https://github.com/swiftyfinch/Rugby.git
 $ brew install rugby
 
-# Get new version
+# Or get new version
 $ brew upgrade rugby
 ```
 
 ### `How to use`
+
+```bash
+# For basic usage just run one command in your project directory
+$ rugby
+```
 
 | Command | Description |
 | :----- | :------ |
