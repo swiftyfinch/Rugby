@@ -46,14 +46,11 @@ final class DropRemoveStep: Step {
                                                     excludeFiles: filesRemainingTargets) }
         }
 
+        progress.update(info: "Remove schemes".yellow)
+        try project.removeSchemes(pods: Set(targets), projectPath: projectPath)
+
         progress.update(info: "Remove targets".yellow)
         let removedTargets = Set(targets.filter(project.pbxproj.removeTarget))
-
-        progress.update(info: "Remove schemes".yellow)
-        try SchemeCleaner().removeSchemes(pods: removedTargets, projectPath: projectPath)
-        removedTargets.forEach { targetName in
-            project.sharedData?.schemes.removeAll { $0.name == targetName }
-        }
 
         progress.update(info: "Update configs".yellow)
         try DropUpdateConfigs(products: products).removeProducts()
