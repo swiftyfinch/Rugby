@@ -7,16 +7,55 @@
 
 import Files
 import ShellOut
+import XcodeProj
 
-struct SchemeCleaner {
+extension XcodeProj {
     func removeSchemes(pods: Set<String>, projectPath: String) throws {
-        pods.forEach {
+        let remainingTargets = pbxproj.main.targets.filter { !pods.contains($0.name) }
+        var remainingUUIDs = Set(remainingTargets.map(\.uuid))
+
+        if !projectPath.hasSuffix(.podsProject) {
+            let podsProject = try XcodeProj(pathString: .podsProject)
+            remainingUUIDs.formUnion(podsProject.pbxproj.main.targets.map(\.uuid))
+        }
+
+        let customSchemesForRemove = (sharedData?.schemes ?? []).filter { scheme in
+            scheme.testAction?.testables.removeAll {
+                !remainingUUIDs.contains($0.buildableReference.blueprintIdentifier)
+            }
+
+            let profileActionReference = scheme.profileAction?.buildableProductRunnable?.buildableReference
+            if let id = profileActionReference?.blueprintIdentifier, !remainingUUIDs.contains(id) {
+                scheme.profileAction = nil
+            }
+
+            scheme.buildAction?.buildActionEntries.removeAll {
+                !remainingUUIDs.contains($0.buildableReference.blueprintIdentifier)
+            }
+
+            let launchActionReference = scheme.launchAction?.runnable?.buildableReference
+            if let id = launchActionReference?.blueprintIdentifier, !remainingUUIDs.contains(id) {
+                scheme.launchAction = nil
+            }
+
+            return (scheme.testAction?.testables ?? []).isEmpty
+                && (scheme.buildAction?.buildActionEntries ?? []).isEmpty
+                && scheme.profileAction == nil
+                && scheme.launchAction == nil
+        }
+
+        let schemesForRemove = customSchemesForRemove.map(\.name) + pods
+
+        // Anyway remove schmes from project
+        defer { sharedData?.schemes.removeAll { schemesForRemove.contains($0.name) } }
+
+        schemesForRemove.forEach {
             let sharedSchemes = try? Folder(path: projectPath + "/xcshareddata/xcschemes")
             try? sharedSchemes?.file(at: $0 + ".xcscheme").delete()
         }
 
         let username = try shellOut(to: "echo ${USER}")
-        pods.forEach {
+        schemesForRemove.forEach {
             let userSchemesFolder = try? Folder(path: projectPath + "/xcuserdata/\(username).xcuserdatad/xcschemes")
             try? userSchemesFolder?.file(at: $0 + ".xcscheme").delete()
         }

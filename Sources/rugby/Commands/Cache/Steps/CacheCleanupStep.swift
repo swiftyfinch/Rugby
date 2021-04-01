@@ -50,7 +50,7 @@ final class CacheCleanupStep: Step {
         if hasChanges || removeBuildedPods {
             // Remove schemes if has changes (it should be changes in targets)
             progress.update(info: "Remove schemes".yellow)
-            try SchemeCleaner().removeSchemes(pods: remotePods, projectPath: .podsProject)
+            try podsProject.removeSchemes(pods: remotePods, projectPath: .podsProject)
 
             progress.update(info: "Save project".yellow)
             try podsProject.write(pathString: .podsProject, override: true)
