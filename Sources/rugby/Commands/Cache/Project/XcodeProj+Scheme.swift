@@ -26,7 +26,7 @@ extension XcodeProj {
 
             let profileActionReference = scheme.profileAction?.buildableProductRunnable?.buildableReference
             if let id = profileActionReference?.blueprintIdentifier, !remainingUUIDs.contains(id) {
-                scheme.profileAction = nil
+                scheme.profileAction?.buildableProductRunnable = nil
             }
 
             scheme.buildAction?.buildActionEntries.removeAll {
@@ -35,13 +35,13 @@ extension XcodeProj {
 
             let launchActionReference = scheme.launchAction?.runnable?.buildableReference
             if let id = launchActionReference?.blueprintIdentifier, !remainingUUIDs.contains(id) {
-                scheme.launchAction = nil
+                scheme.launchAction?.runnable = nil
             }
 
             return (scheme.testAction?.testables ?? []).isEmpty
                 && (scheme.buildAction?.buildActionEntries ?? []).isEmpty
-                && scheme.profileAction == nil
-                && scheme.launchAction == nil
+                && scheme.profileAction?.buildableProductRunnable == nil
+                && scheme.launchAction?.runnable == nil
         }
 
         let schemesForRemove = customSchemesForRemove.map(\.name) + pods
