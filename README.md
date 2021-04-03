@@ -50,15 +50,14 @@ $ rugby
 | Command | Description |
 | :----- | :------ |
 🏈 [`Cache`](Docs/Cache.md) | Remove remote pods from project, build them and integrate as frameworks and bundles.
-⚠️ [`Drop`](Docs/Drop.md) | Remove any targets by RegEx.
+🏈 [`Drop`](Docs/Drop.md) | Remove any targets by RegEx.
 
 ### `Maybe Roadmap`
 
-- [x] New command: Drop
-- [ ] Stable Drop command ✈️
-- [ ] Run-in, stabilisation ✈️
 - [ ] Pause for refactoring, tests, pipelines
+- [ ] Output metrics
 - [ ] New command
+- [ ] Rugby plans :)
 - [ ] Open source
 
 ### `Author`

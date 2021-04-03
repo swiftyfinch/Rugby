@@ -1,6 +1,5 @@
 
-## `Drop`
-<img src="https://img.shields.io/badge/version-beta-orange.svg" />
+## 🏈 `Drop`
 
 Remove any targets by `RegEx`.\
 `-` Use backward slashes `\` for escaping special characters;\
@@ -30,6 +29,15 @@ $ rugby drop --keep-sources
 
 # short
 $ rugby drop -k
+```
+
+### Invert RegEx
+
+```bash
+$ rugby drop --invert "MainTarget"
+
+# short
+$ rugby drop -i "MainTarget"
 ```
 
 ### Exclude targets
