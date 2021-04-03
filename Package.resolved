@@ -11,30 +11,12 @@
         }
       },
       {
-        "package": "Commandant",
-        "repositoryURL": "https://github.com/Carthage/Commandant.git",
-        "state": {
-          "branch": null,
-          "revision": "ab68611013dec67413628ac87c1f29e8427bc8e4",
-          "version": "0.17.0"
-        }
-      },
-      {
         "package": "Files",
         "repositoryURL": "https://github.com/JohnSundell/Files",
         "state": {
           "branch": null,
           "revision": "d273b5b7025d386feef79ef6bad7de762e106eaf",
           "version": "4.2.0"
-        }
-      },
-      {
-        "package": "Nimble",
-        "repositoryURL": "https://github.com/Quick/Nimble.git",
-        "state": {
-          "branch": null,
-          "revision": "7a46a5fc86cb917f69e3daf79fcb045283d8f008",
-          "version": "8.1.2"
         }
       },
       {
@@ -47,21 +29,12 @@
         }
       },
       {
-        "package": "Quick",
-        "repositoryURL": "https://github.com/Quick/Quick.git",
-        "state": {
-          "branch": null,
-          "revision": "09b3becb37cb2163919a3842a4c5fa6ec7130792",
-          "version": "2.2.1"
-        }
-      },
-      {
         "package": "Rainbow",
         "repositoryURL": "https://github.com/onevcat/Rainbow",
         "state": {
           "branch": null,
-          "revision": "626c3d4b6b55354b4af3aa309f998fae9b31a3d9",
-          "version": "3.2.0"
+          "revision": "7c3dad0e918534c6d19dd1048bde734c246d05fe",
+          "version": "4.0.0"
         }
       },
       {
@@ -87,8 +60,8 @@
         "repositoryURL": "https://github.com/jpsim/SourceKitten.git",
         "state": {
           "branch": null,
-          "revision": "c0f960f72fa1e6151695074ffa696e4da6c45ce8",
-          "version": "0.30.1"
+          "revision": "7f4be006fe73211b0fd9666c73dc2f2303ffa756",
+          "version": "0.31.0"
         }
       },
       {
@@ -114,8 +87,8 @@
         "repositoryURL": "https://github.com/realm/SwiftLint",
         "state": {
           "branch": null,
-          "revision": "d53fc2664df92ef322bfa9ce5238d34f1461526a",
-          "version": "0.42.0"
+          "revision": "180d94132758dd183124ab1e63d6aa8e10023ec2",
+          "version": "0.43.1"
         }
       },
       {
@@ -141,8 +114,8 @@
         "repositoryURL": "https://github.com/tuist/xcodeproj",
         "state": {
           "branch": null,
-          "revision": "82bf5efcaa27e94ed8c761c1eb3e397b6dea82b9",
-          "version": "7.18.0"
+          "revision": "6943d5c5f9085d070dbde3c669144e30d41ec635",
+          "version": "7.20.0"
         }
       },
       {
