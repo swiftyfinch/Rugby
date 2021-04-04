@@ -5,19 +5,6 @@
 //  Created by v.khorkov on 31.01.2021.
 //
 
-import ArgumentParser
-
-enum SDK: String, Codable, ExpressibleByArgument {
-    case sim, ios
-
-    var xcodebuild: String {
-        switch self {
-        case .sim: return "iphonesimulator"
-        case .ios: return "iphoneos"
-        }
-    }
-}
-
 extension String {
     static let podfileLock = "Podfile.lock"
     static let podsProject = "Pods/Pods.xcodeproj"
