@@ -14,17 +14,17 @@ struct Clean: ParsableCommand {
     )
 
     func run() throws {
-        let step = CleanStep(verbose: false, isLast: true)
-        try step.run()
+        let logger = RugbyProgressBar(title: "Clean")
+        CleanStep(progress: logger).run()
     }
 }
 
-private final class CleanStep: Step {
-    init(verbose: Bool, isLast: Bool) {
-        super.init(name: "Clean", verbose: verbose, isLast: isLast)
-    }
+struct CleanStep: NewStep {
+    let name = "Clean"
+    let isLast = true
+    let progress: RugbyProgressBar
 
-    func run() throws {
+    func run(_ input: Void) {
         try? Folder.current.subfolder(at: .supportFolder).delete()
         done()
     }
