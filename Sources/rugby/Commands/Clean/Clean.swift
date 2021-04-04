@@ -14,8 +14,7 @@ struct Clean: ParsableCommand {
     )
 
     func run() throws {
-        let logger = RugbyProgressBar(title: "Clean")
-        CleanStep(progress: logger).run()
+        CleanStep().run()
     }
 }
 
@@ -23,6 +22,10 @@ struct CleanStep: NewStep {
     let name = "Clean"
     let isLast = true
     let progress: RugbyProgressBar
+
+    init() {
+        self.progress = RugbyProgressBar(title: name)
+    }
 
     func run(_ input: Void) {
         try? Folder.current.subfolder(at: .supportFolder).delete()
