@@ -12,10 +12,8 @@ import XcodeProj
 final class CachePrepareStep: Step {
     struct Output {
         let scheme: String?
-        let buildPods: [String]
         let remotePods: Set<String>
         let checksums: [String]
-        let podsCount: Int
         let products: Set<String>
     }
 
@@ -91,11 +89,11 @@ final class CachePrepareStep: Step {
         let products = Set(remotePodsChain.compactMap(\.product?.name))
 
         done()
+        metrics.podsCount = buildPodsChain.count
+        metrics.checksums = remoteChecksums.count
         return Output(scheme: buildPods.isEmpty ? nil : buildTarget,
-                      buildPods: buildPodsChain,
                       remotePods: Set(remotePodsChain.map(\.name)),
                       checksums: remoteChecksums,
-                      podsCount: remoteChecksums.count,
                       products: products)
     }
 
