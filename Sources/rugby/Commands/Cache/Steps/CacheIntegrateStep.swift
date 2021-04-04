@@ -7,7 +7,7 @@
 
 import Files
 
-final class CacheIntegrateStep: NewStep {
+final class CacheIntegrateStep: Step {
     let name = "Integration"
     let verbose: Bool
     let isLast: Bool

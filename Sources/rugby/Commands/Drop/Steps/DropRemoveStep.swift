@@ -9,7 +9,7 @@ import Files
 import RegEx
 import XcodeProj
 
-final class DropRemoveStep: NewStep {
+final class DropRemoveStep: Step {
     let name = "Drop"
     let verbose: Bool
     let isLast: Bool

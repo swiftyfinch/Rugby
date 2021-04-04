@@ -8,7 +8,7 @@
 import Files
 import XcodeProj
 
-final class CacheCleanupStep: NewStep {
+final class CacheCleanupStep: Step {
     let name = "Clean up"
     let verbose: Bool
     let isLast: Bool

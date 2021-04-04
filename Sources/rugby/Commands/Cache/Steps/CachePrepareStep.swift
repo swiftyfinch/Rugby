@@ -9,7 +9,7 @@ import Files
 import ShellOut
 import XcodeProj
 
-final class CachePrepareStep: NewStep {
+final class CachePrepareStep: Step {
     struct Output {
         let scheme: String?
         let buildPods: [String]

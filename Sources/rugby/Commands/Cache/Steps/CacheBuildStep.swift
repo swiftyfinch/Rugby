@@ -8,7 +8,7 @@
 import Files
 import XcodeProj
 
-final class CacheBuildStep: NewStep {
+final class CacheBuildStep: Step {
     let name = "Build"
     let verbose: Bool
     let isLast: Bool

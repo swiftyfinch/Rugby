@@ -9,7 +9,7 @@ import Files
 import RegEx
 import XcodeProj
 
-final class DropPrepareStep: NewStep {
+final class DropPrepareStep: Step {
     struct Output {
         let foundTargets: [String]
         let products: Set<String>
