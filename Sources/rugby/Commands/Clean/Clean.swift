@@ -14,7 +14,7 @@ struct Clean: ParsableCommand {
     )
 
     func run() throws {
-        CleanStep().run()
+        try CleanStep().run()
     }
 }
 
