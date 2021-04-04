@@ -8,12 +8,23 @@
 import Files
 import XcodeProj
 
-final class CacheBuildStep: Step {
-    init(logFile: File, verbose: Bool) {
-        super.init(name: "Build", logFile: logFile, verbose: verbose)
+final class CacheBuildStep: NewStep {
+    let name = "Build"
+    let verbose: Bool
+    let isLast: Bool
+    let progress: RugbyProgressBar
+
+    private let command: Cache
+
+    init(command: Cache, logFile: File, isLast: Bool = false) {
+        self.command = command
+        self.verbose = command.verbose
+        self.isLast = isLast
+        self.progress = RugbyProgressBar(title: name, logFile: logFile, verbose: verbose)
     }
 
-    func run(scheme: String?, checksums: [String], command: Cache) throws {
+    func run(_ input: CachePrepareStep.Output) throws -> CachePrepareStep.Output {
+        let (scheme, checksums) = (input.scheme, input.checksums)
         if let scheme = scheme {
             progress.update(info: "Building ⏱".yellow)
             do {
@@ -33,5 +44,6 @@ final class CacheBuildStep: Step {
             progress.update(info: "Skip".yellow)
         }
         done()
+        return input
     }
 }

@@ -8,19 +8,27 @@
 import Files
 import XcodeProj
 
-final class CacheCleanupStep: Step {
-    init(logFile: File, verbose: Bool) {
-        super.init(name: "Clean up", logFile: logFile, verbose: verbose)
+final class CacheCleanupStep: NewStep {
+    let name = "Clean up"
+    let verbose: Bool
+    let isLast: Bool
+    let progress: RugbyProgressBar
+
+    private let command: Cache
+
+    init(command: Cache, logFile: File, isLast: Bool = false) {
+        self.command = command
+        self.verbose = command.verbose
+        self.isLast = isLast
+        self.progress = RugbyProgressBar(title: name, logFile: logFile, verbose: verbose)
     }
 
-    func run(remotePods: Set<String>,
-             buildTarget: String,
-             keepSources: Bool,
-             products: Set<String>) throws {
+    func run(_ input: CachePrepareStep.Output) throws {
+        let (remotePods, products) = (input.remotePods, input.products)
         var hasChanges = false
         let podsProject = try XcodeProj(pathString: .podsProject)
 
-        if !keepSources {
+        if !command.keepSources {
             progress.update(info: "Remove sources from project".yellow)
             hasChanges = removeSources(project: podsProject.pbxproj, pods: remotePods) || hasChanges
         }
@@ -36,7 +44,7 @@ final class CacheCleanupStep: Step {
         }
 
         progress.update(info: "Remove build target".yellow)
-        if podsProject.pbxproj.removeTarget(name: buildTarget) {
+        if let target = input.scheme, podsProject.pbxproj.removeTarget(name: target) {
             hasChanges = true
         }
 

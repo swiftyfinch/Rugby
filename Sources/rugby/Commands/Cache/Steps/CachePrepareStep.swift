@@ -9,8 +9,9 @@ import Files
 import ShellOut
 import XcodeProj
 
-final class CachePrepareStep: Step {
+final class CachePrepareStep: NewStep {
     struct Output {
+        let scheme: String?
         let buildPods: [String]
         let remotePods: Set<String>
         let checksums: [String]
@@ -18,11 +19,23 @@ final class CachePrepareStep: Step {
         let products: Set<String>
     }
 
-    init(logFile: File, verbose: Bool) {
-        super.init(name: "Prepare", logFile: logFile, verbose: verbose)
+    let name = "Prepare"
+    let verbose: Bool
+    let isLast: Bool
+    let progress: RugbyProgressBar
+
+    private let command: Cache
+    private let metrics: Cache.Metrics
+
+    init(command: Cache, metrics: Cache.Metrics, logFile: File, isLast: Bool = false) {
+        self.command = command
+        self.metrics = metrics
+        self.verbose = command.verbose
+        self.isLast = isLast
+        self.progress = RugbyProgressBar(title: name, logFile: logFile, verbose: verbose)
     }
 
-    func run(buildTarget: String, command: Cache) throws -> Output {
+    func run(_ buildTarget: String) throws -> Output {
         if try shellOut(to: "xcode-select -p") == .defaultXcodeCLTPath {
             throw CacheError.cantFineXcodeCommandLineTools
         }
@@ -78,7 +91,8 @@ final class CachePrepareStep: Step {
         let products = Set(remotePodsChain.compactMap(\.product?.name))
 
         done()
-        return Output(buildPods: buildPodsChain,
+        return Output(scheme: buildPods.isEmpty ? nil : buildTarget,
+                      buildPods: buildPodsChain,
                       remotePods: Set(remotePodsChain.map(\.name)),
                       checksums: remoteChecksums,
                       podsCount: remoteChecksums.count,
