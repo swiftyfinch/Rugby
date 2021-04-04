@@ -41,17 +41,11 @@ struct Drop: ParsableCommand {
         let totalTime = try measure {
             let logFile = try Folder.current.createFile(at: .log)
 
-            let prepareStep = DropPrepareStep(logFile: logFile, verbose: verbose)
-            let info = try prepareStep.run(command: self)
+            let prepare = DropPrepareStep(command: self, logFile: logFile, isLast: testFlight)
+            let remove = DropRemoveStep(command: self, logFile: logFile, isLast: true)
+            let info = try (prepare.run | remove.run)(none)
 
-            if !testFlight {
-                let removeStep = DropRemoveStep(logFile: logFile, verbose: verbose)
-                try removeStep.run(projectPath: project,
-                                   targets: info.foundTargets,
-                                   products: info.products,
-                                   keepSources: keepSources)
-                outputMessage = "Removed \(info.foundTargets.count)/\(info.targetsCount) targets. ".green
-            }
+            outputMessage = "Removed \(info.foundTargets.count)/\(info.targetsCount) targets. ".green
             outputMessage += "Let's roll 🏈".green
         }
         print("[\(totalTime.formatTime())] ".yellow + outputMessage)

@@ -9,18 +9,27 @@ import Files
 import RegEx
 import XcodeProj
 
-final class DropPrepareStep: Step {
+final class DropPrepareStep: NewStep {
     struct Output {
         let foundTargets: [String]
         let products: Set<String>
         let targetsCount: Int
     }
 
-    init(logFile: File, verbose: Bool) {
-        super.init(name: "Prepare", logFile: logFile, verbose: verbose)
+    let name = "Prepare"
+    let command: Drop
+    let verbose: Bool
+    let isLast: Bool
+    let progress: RugbyProgressBar
+
+    init(command: Drop, logFile: File, isLast: Bool) {
+        self.command = command
+        self.verbose = command.verbose
+        self.isLast = isLast
+        self.progress = RugbyProgressBar(title: name, logFile: logFile, verbose: verbose)
     }
 
-    func run(command: Drop) throws -> Output {
+    func run(_ input: Void) throws -> Output {
         let podsProject = try XcodeProj(pathString: command.project)
         let projectTargets = podsProject.pbxproj.main.targets
 

@@ -9,19 +9,36 @@ import Files
 import RegEx
 import XcodeProj
 
-final class DropRemoveStep: Step {
+final class DropRemoveStep: NewStep {
+    let name = "Drop"
+    let command: Drop
+    let verbose: Bool
+    let isLast: Bool
+    let progress: RugbyProgressBar
 
-    init(logFile: File, verbose: Bool) {
-        super.init(name: "Drop", logFile: logFile, verbose: verbose)
+    init(command: Drop, logFile: File, isLast: Bool) {
+        self.command = command
+        self.verbose = command.verbose
+        self.isLast = isLast
+        self.progress = RugbyProgressBar(title: name, logFile: logFile, verbose: verbose)
     }
 
-    func run(projectPath: String, targets: [String], products: Set<String>, keepSources: Bool) throws {
-        guard !targets.isEmpty else {
-            progress.update(info: "Can't find any targets. Skip".yellow)
-            return done()
+    func run(_ input: DropPrepareStep.Output) throws -> DropPrepareStep.Output {
+        if command.testFlight {
+            progress.update(info: "Skip".yellow)
+            done()
+            return input
         }
 
-        let project = try XcodeProj(pathString: projectPath)
+        let (targets, products) = (input.foundTargets, input.products)
+
+        guard !targets.isEmpty else {
+            progress.update(info: "Can't find any targets. Skip".yellow)
+            done()
+            return input
+        }
+
+        let project = try XcodeProj(pathString: command.project)
 
         progress.update(info: "Remove frameworks".yellow)
         products.forEach { project.pbxproj.removeFrameworks(productName: $0) }
@@ -37,7 +54,7 @@ final class DropRemoveStep: Step {
         progress.update(info: "Remove products".yellow)
         removeFrameworkPaths(project: project.pbxproj, groups: ["Frameworks", "Products"], products: products)
 
-        if !keepSources {
+        if !command.keepSources {
             progress.update(info: "Remove sources & resources".yellow)
             let filesRemainingTargets = try findFilesRemainingTargets(project: project.pbxproj,
                                                                       targetsForRemove: Set(targets))
@@ -47,7 +64,7 @@ final class DropRemoveStep: Step {
         }
 
         progress.update(info: "Remove schemes".yellow)
-        try project.removeSchemes(pods: Set(targets), projectPath: projectPath)
+        try project.removeSchemes(pods: Set(targets), projectPath: command.project)
 
         progress.update(info: "Remove targets".yellow)
         let removedTargets = Set(targets.filter(project.pbxproj.removeTarget))
@@ -59,9 +76,10 @@ final class DropRemoveStep: Step {
         removedTargets.caseInsensitiveSorted().forEach { progress.update(info: "* ".red + "\($0)") }
 
         progress.update(info: "Save project".yellow)
-        try project.write(pathString: projectPath, override: true)
+        try project.write(pathString: command.project, override: true)
 
         done()
+        return input
     }
 
     // Need to verify if some files for removing depends on remaining targets
