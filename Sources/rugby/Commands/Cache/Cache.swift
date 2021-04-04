@@ -43,26 +43,32 @@ struct Cache: ParsableCommand {
         let totalTime = try measure {
             let logFile = try Folder.current.createFile(at: .log)
 
-            let prepareStep = CachePrepareStep(logFile: logFile, verbose: verbose)
-            let info = try prepareStep.run(buildTarget: Context.buildTarget, command: self)
+            let metrics = Metrics()
+            let prepare = CachePrepareStep(command: self, metrics: metrics, logFile: logFile)
+            let build = CacheBuildStep(command: self, logFile: logFile)
+            let integrate = CacheIntegrateStep(command: self, logFile: logFile)
+            let cleanup = CacheCleanupStep(command: self, logFile: logFile)
+            try (prepare.run | build.run | integrate.run | cleanup.run)(Context.buildTarget)
 
-            let buildStep = CacheBuildStep(logFile: logFile, verbose: verbose)
-            try buildStep.run(scheme: info.buildPods.isEmpty ? nil : Context.buildTarget,
-                              checksums: info.checksums,
-                              command: self)
-
-            let integrateStep = CacheIntegrateStep(logFile: logFile, verbose: verbose)
-            try integrateStep.run(remotePods: info.remotePods, cacheFolder: .cacheFolder(sdk: sdk))
-
-            let cleanupStep = CacheCleanupStep(logFile: logFile, verbose: verbose)
-            try cleanupStep.run(remotePods: info.remotePods,
-                                buildTarget: Context.buildTarget,
-                                keepSources: keepSources,
-                                products: info.products)
-
-            let (podsCount, cachedPodsCount) = (info.podsCount, info.checksums.count)
-            outputMessage = "Cached \(cachedPodsCount)/\(podsCount) pods. Let's roll 🏈".green
+            if let podsCount = metrics.podsCount, let cachedPodsCount = metrics.checksums {
+                outputMessage = "Cached \(cachedPodsCount)/\(podsCount) pods. ".green
+            }
+            outputMessage += "Let's roll 🏈".green
         }
         print("[\(totalTime.formatTime())] ".yellow + outputMessage)
+    }
+}
+
+// MARK: - Metrics
+
+extension Cache {
+    final class Metrics {
+        var podsCount: Int?
+        var checksums: Int?
+
+        init(podsCount: Int? = nil, checksums: Int? = nil) {
+            self.podsCount = podsCount
+            self.checksums = checksums
+        }
     }
 }
