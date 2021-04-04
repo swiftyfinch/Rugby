@@ -44,17 +44,13 @@ protocol NewStep {
 
 // MARK: - Default implementation
 
-private extension String {
-    static let logSeparator = String(repeating: "-", count: 48)
-}
-
 extension NewStep {
     var verbose: Bool { false }
     var isLast: Bool { false }
 
     func done() {
         progress.done()
-        if verbose && !isLast { print(String.logSeparator.yellow) }
+        if verbose && !isLast { /* do nothing */ }
     }
 }
 
