@@ -16,26 +16,24 @@ final class DropRemoveStep: NewStep {
     let isLast: Bool
     let progress: RugbyProgressBar
 
-    init(command: Drop, logFile: File, isLast: Bool) {
+    init(command: Drop, logFile: File, isLast: Bool = false) {
         self.command = command
         self.verbose = command.verbose
         self.isLast = isLast
         self.progress = RugbyProgressBar(title: name, logFile: logFile, verbose: verbose)
     }
 
-    func run(_ input: DropPrepareStep.Output) throws -> DropPrepareStep.Output {
+    func run(_ input: DropPrepareStep.Output) throws {
         if command.testFlight {
             progress.update(info: "Skip".yellow)
-            done()
-            return input
+            return done()
         }
 
         let (targets, products) = (input.foundTargets, input.products)
 
         guard !targets.isEmpty else {
             progress.update(info: "Can't find any targets. Skip".yellow)
-            done()
-            return input
+            return done()
         }
 
         let project = try XcodeProj(pathString: command.project)
@@ -78,8 +76,7 @@ final class DropRemoveStep: NewStep {
         progress.update(info: "Save project".yellow)
         try project.write(pathString: command.project, override: true)
 
-        done()
-        return input
+        return done()
     }
 
     // Need to verify if some files for removing depends on remaining targets

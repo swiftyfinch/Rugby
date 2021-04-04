@@ -13,17 +13,18 @@ final class DropPrepareStep: NewStep {
     struct Output {
         let foundTargets: [String]
         let products: Set<String>
-        let targetsCount: Int
     }
 
     let name = "Prepare"
     let command: Drop
+    let metrics: Drop.Metrics
     let verbose: Bool
     let isLast: Bool
     let progress: RugbyProgressBar
 
-    init(command: Drop, logFile: File, isLast: Bool) {
+    init(command: Drop, metrics: Drop.Metrics, logFile: File, isLast: Bool = false) {
         self.command = command
+        self.metrics = metrics
         self.verbose = command.verbose
         self.isLast = isLast
         self.progress = RugbyProgressBar(title: name, logFile: logFile, verbose: verbose)
@@ -48,9 +49,11 @@ final class DropPrepareStep: NewStep {
         // Prepare list of products like: Some.framework, Some.bundle
         let products = Set(foundTargets.compactMap(\.product?.displayName))
 
+        metrics.removedTargets = foundTargets.count
+        metrics.targets = projectTargets.count
+
         done()
         return Output(foundTargets: foundTargets.map(\.name),
-                      products: products,
-                      targetsCount: projectTargets.count)
+                      products: products)
     }
 }
