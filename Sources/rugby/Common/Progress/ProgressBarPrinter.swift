@@ -27,10 +27,9 @@ final class ProgressOneLinePrinter: ProgressBarPrinter {
         return dateFormatter
     }()
 
-    init() { print() }
-
     private func setupTimer() -> Bool {
         guard timer == nil else { return false }
+        print()
         let timer = Timer(timeInterval: .printInterval, repeats: true, block: { [weak self] _ in
             guard let self = self else { return }
             guard !self.queue.isEmpty else { return }

@@ -28,7 +28,6 @@ final class RugbyProgressBar {
             formatter: self.formatter,
             printers: printers
         )
-        self.progressBar.setValue(0)
         self.verbose = verbose
     }
 
