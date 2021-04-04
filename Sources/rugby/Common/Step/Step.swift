@@ -7,28 +7,7 @@
 
 import Files
 
-class Step {
-    private let verbose: Bool
-    private let isLast: Bool
-    let progress: RugbyProgressBar
-
-    init(name: String, logFile: File? = nil, verbose: Bool, isLast: Bool = false) {
-        self.verbose = verbose
-        self.isLast = isLast
-        self.progress = RugbyProgressBar(title: name,
-                                         logFile: logFile,
-                                         verbose: verbose)
-    }
-
-    func done() {
-        progress.done()
-        if verbose && !isLast { print("------------------------------------------------".yellow) }
-    }
-}
-
-// ---------------------------------------------------------------------------------------------------------------------
-
-protocol NewStep {
+protocol Step {
     var name: String { get }
 
     var verbose: Bool { get }
@@ -44,7 +23,7 @@ protocol NewStep {
 
 // MARK: - Default implementation
 
-extension NewStep {
+extension Step {
     var verbose: Bool { false }
     var isLast: Bool { false }
 
@@ -54,7 +33,7 @@ extension NewStep {
     }
 }
 
-extension NewStep where Input == Void {
+extension Step where Input == Void {
     func run() throws -> Output {
         try run(Void())
     }

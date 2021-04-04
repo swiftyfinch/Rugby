@@ -18,7 +18,7 @@ struct Clean: ParsableCommand {
     }
 }
 
-struct CleanStep: NewStep {
+struct CleanStep: Step {
     let name = "Clean"
     let isLast = true
     let progress: RugbyProgressBar
