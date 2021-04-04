@@ -33,12 +33,11 @@ protocol NewStep {
 
     var verbose: Bool { get }
     var isLast: Bool { get }
-    var logFile: File? { get }
     var progress: RugbyProgressBar { get }
 
     associatedtype Input
     associatedtype Output
-    func run(_ input: Input) -> Output
+    func run(_ input: Input) throws -> Output
 
     func done()
 }
@@ -52,7 +51,6 @@ private extension String {
 extension NewStep {
     var verbose: Bool { false }
     var isLast: Bool { false }
-    var logFile: File? { nil }
 
     func done() {
         progress.done()
@@ -61,7 +59,7 @@ extension NewStep {
 }
 
 extension NewStep where Input == Void {
-    func run() -> Output {
-        run(Void())
+    func run() throws -> Output {
+        try run(Void())
     }
 }
