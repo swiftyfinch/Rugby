@@ -11,8 +11,8 @@ import Files
 private extension ArgumentHelp {
     static let targetsHelp: ArgumentHelp = """
     RegEx targets for removing.
-    \("- Use backward slashes \\ for escaping special characters; ".lightBlack)
-    \("- Add \"\" for safer use (without shell's interpretation).".lightBlack)
+    \("- Use backward slashes \\ for escaping special characters; ".yellow)
+    \("- Add \"\" for safer use (without shell's interpretation).".yellow)
     """
 }
 
@@ -29,7 +29,7 @@ struct Drop: ParsableCommand {
     @Flag(name: .shortAndLong, help: "Print more information.") var verbose = false
 
     static var configuration: CommandConfiguration = .init(
-        abstract: "Remove any targets by RegEx. \("(beta)".yellow)"
+        abstract: "Remove any targets by RegEx."
     )
 
     func run() throws {
