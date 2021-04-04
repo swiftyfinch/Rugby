@@ -1,5 +1,5 @@
 //
-//  FileContentReplacer.swift
+//  FilePatcher.swift
 //  
 //
 //  Created by Vyacheslav Khorkov on 03.03.2021.
@@ -8,7 +8,7 @@
 import Files
 import RegEx
 
-struct FileContentReplacer {
+struct FilePatcher {
     /// Replacing content of each file by regex criteria in selected folder.
     func replace(_ lookup: String,
                  with replace: String,

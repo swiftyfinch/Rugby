@@ -1,5 +1,5 @@
 //
-//  XcodeProj+Scheme.swift
+//  XcodeProj+RemoveSchemes.swift
 //  
 //
 //  Created by Vyacheslav Khorkov on 14.02.2021.

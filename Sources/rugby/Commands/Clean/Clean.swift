@@ -18,3 +18,14 @@ struct Clean: ParsableCommand {
         try step.run()
     }
 }
+
+private final class CleanStep: Step {
+    init(verbose: Bool, isLast: Bool) {
+        super.init(name: "Clean", verbose: verbose, isLast: isLast)
+    }
+
+    func run() throws {
+        try? Folder.current.subfolder(at: .supportFolder).delete()
+        done()
+    }
+}
