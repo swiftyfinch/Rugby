@@ -16,11 +16,12 @@ final class DropPrepareStep: NewStep {
     }
 
     let name = "Prepare"
-    let command: Drop
-    let metrics: Drop.Metrics
     let verbose: Bool
     let isLast: Bool
     let progress: RugbyProgressBar
+
+    private let command: Drop
+    private let metrics: Drop.Metrics
 
     init(command: Drop, metrics: Drop.Metrics, logFile: File, isLast: Bool = false) {
         self.command = command

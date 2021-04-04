@@ -11,10 +11,11 @@ import XcodeProj
 
 final class DropRemoveStep: NewStep {
     let name = "Drop"
-    let command: Drop
     let verbose: Bool
     let isLast: Bool
     let progress: RugbyProgressBar
+
+    private let command: Drop
 
     init(command: Drop, logFile: File, isLast: Bool = false) {
         self.command = command
