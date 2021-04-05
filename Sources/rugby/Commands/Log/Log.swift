@@ -10,7 +10,7 @@ import Files
 import Foundation
 import ShellOut
 
-enum LogError: Error, LocalizedError {
+private enum LogError: Error, LocalizedError {
     case cantFindLog
 
     var errorDescription: String? {
@@ -21,11 +21,15 @@ enum LogError: Error, LocalizedError {
 }
 
 struct Log: ParsableCommand {
-    static var configuration: CommandConfiguration = .init(
+    static var configuration = CommandConfiguration(
         abstract: "Print last command log verbosely."
     )
 
-    func run() throws {
+    func run() throws { try WrappedError.wrap(wrappedRun) }
+}
+
+extension Log {
+    private func wrappedRun() throws {
         guard Folder.current.containsFile(at: .log) else { throw LogError.cantFindLog }
         try shellOut(to: "cat " + .log, outputHandle: FileHandle.standardOutput)
     }

@@ -9,14 +9,18 @@ import ArgumentParser
 import Files
 
 struct Clean: ParsableCommand {
-    static var configuration: CommandConfiguration = .init(
+    static var configuration = CommandConfiguration(
         abstract: "Remove .rugby cache folder."
     )
 
     func run() throws {
-        try CleanStep().run()
+        try WrappedError.wrap {
+            try CleanStep().run()
+        }
     }
 }
+
+// MARK: - CleanStep
 
 struct CleanStep: Step {
     let name = "Clean"
