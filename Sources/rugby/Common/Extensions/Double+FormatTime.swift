@@ -8,7 +8,7 @@
 import Foundation
 
 extension Double {
-    func formatTime() -> String {
+    private func formatTime() -> String {
         let formatter = DateComponentsFormatter()
 
         var calendar = Calendar.current
