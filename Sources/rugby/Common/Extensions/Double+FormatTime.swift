@@ -21,4 +21,8 @@ extension Double {
         formatter.maximumUnitCount = 2
         return formatter.string(from: max(1, self)) ?? "NaN"
     }
+
+    func output() -> String {
+        "[\(formatTime())] ".yellow
+    }
 }
