@@ -49,6 +49,7 @@ final class ProgressOneLinePrinter: ProgressBarPrinter {
             return
         }
         if isEnd {
+            if timer == nil { print() }
             timer?.invalidate()
             return queue.forEach { print($0) }
         }

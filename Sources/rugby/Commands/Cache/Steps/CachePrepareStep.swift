@@ -89,7 +89,7 @@ final class CachePrepareStep: Step {
         let products = Set(remotePodsChain.compactMap(\.product?.name))
 
         done()
-        metrics.podsCount = buildPodsChain.count
+        metrics.podsCount = remotePods.count
         metrics.checksums = remoteChecksums.count
         return Output(scheme: buildPods.isEmpty ? nil : buildTarget,
                       remotePods: Set(remotePodsChain.map(\.name)),
