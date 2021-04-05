@@ -29,7 +29,6 @@ extension Step {
 
     func done() {
         progress.done()
-        if verbose && !isLast { /* do nothing */ }
     }
 }
 

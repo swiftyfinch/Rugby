@@ -17,6 +17,6 @@ struct Podfile {
     }
 
     func read() throws -> String {
-        return try file.readAsString()
+        try file.readAsString()
     }
 }
