@@ -11,7 +11,7 @@ import XcodeProj
 
 final class DropPrepareStep: Step {
     struct Output {
-        let foundTargets: [String]
+        let foundTargets: Set<String>
         let products: Set<String>
     }
 
@@ -32,29 +32,22 @@ final class DropPrepareStep: Step {
     }
 
     func run(_ input: Void) throws -> Output {
-        let podsProject = try XcodeProj(pathString: command.project)
-        let projectTargets = podsProject.pbxproj.main.targets
-
         progress.update(info: "Find targets ".yellow)
         let exclude = Set(command.exclude)
         let regEx = try RegEx(pattern: "(" + command.targets.joined(separator: "|") + ")")
-        let foundTargets = projectTargets.filter {
+        let project = try XcodeProj(pathString: command.project)
+        let foundTargets = project.targets.filter {
             if exclude.contains($0.name) { return false }
             let passedRegEx = regEx.test($0.name)
             return command.invert ? !passedRegEx : passedRegEx
         }
+        progress.output(foundTargets.map(\.name))
 
-        progress.update(info: "Found targets ".yellow + "(\(foundTargets.count))" + ":".yellow)
-        foundTargets.map(\.name).caseInsensitiveSorted().forEach { progress.update(info: "* ".yellow + "\($0)") }
+        metrics.collect(removedTargets: command.testFlight ? 0 : foundTargets.count,
+                        targets: project.targets.count)
+        defer { done() }
 
-        // Prepare list of products like: Some.framework, Some.bundle
         let products = Set(foundTargets.compactMap(\.product?.displayName))
-
-        metrics.removedTargets = foundTargets.count
-        metrics.targets = projectTargets.count
-
-        done()
-        return Output(foundTargets: foundTargets.map(\.name),
-                      products: products)
+        return Output(foundTargets: Set(foundTargets.map(\.name)), products: products)
     }
 }

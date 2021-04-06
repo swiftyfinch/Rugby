@@ -7,14 +7,15 @@
 
 import XcodeProj
 
-extension PBXProj {
+extension XcodeProj {
     @discardableResult
-    func removeFrameworks(productName: String) -> Bool {
+    func removeFrameworks(products: Set<String>) -> Bool {
         var hasChanges = false
-        for target in main.targets {
+        for target in pbxproj.main.targets {
             try? target.frameworksBuildPhase()?.files?.removeAll {
-                guard $0.file?.displayName == productName else { return false }
-                delete(object: $0)
+                guard let displayName = $0.file?.displayName else { return false }
+                guard products.contains(displayName) else { return false }
+                pbxproj.delete(object: $0)
                 hasChanges = true
                 return true
             }

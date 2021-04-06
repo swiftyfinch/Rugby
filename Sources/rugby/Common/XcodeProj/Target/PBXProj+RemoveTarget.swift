@@ -7,31 +7,36 @@
 
 import XcodeProj
 
-extension PBXProj {
+extension XcodeProj {
     @discardableResult
     func removeTarget(name: String) -> Bool {
-        guard let target = main.targets.first(where: { $0.name == name }) else { return false }
+        guard let target = pbxproj.main.targets.first(where: { $0.name == name }) else { return false }
 
         for phase in target.buildPhases {
             for file in phase.files ?? [] {
-                delete(object: file)
+                pbxproj.delete(object: file)
             }
-            delete(object: phase)
+            pbxproj.delete(object: phase)
         }
-        target.buildRules.forEach(delete)
+        target.buildRules.forEach(pbxproj.delete)
 
         for configuration in target.buildConfigurationList?.buildConfigurations ?? [] {
-            delete(object: configuration)
+            pbxproj.delete(object: configuration)
         }
-        target.buildConfigurationList.map(delete)
+        target.buildConfigurationList.map(pbxproj.delete)
 
-        target.dependencies.forEach { $0.targetProxy.map(delete) }
-        target.dependencies.forEach(delete)
-        target.product.map(delete)
+        target.dependencies.forEach { $0.targetProxy.map(pbxproj.delete) }
+        target.dependencies.forEach(pbxproj.delete)
+        target.product.map(pbxproj.delete)
 
-        delete(object: target)
-        main.targets.removeAll(where: { $0.name == name })
+        pbxproj.delete(object: target)
+        pbxproj.main.targets.removeAll(where: { $0.name == name })
 
         return true
+    }
+
+    @discardableResult
+    func removeTargets(names: Set<String>) -> Bool {
+        names.reduce(false) { removeTarget(name: $1) || $0 }
     }
 }

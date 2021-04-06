@@ -2,6 +2,7 @@ disabled_rules:
   - let_var_whitespace
   - conditional_returns_on_newline
   - todo
+  - reduce_boolean
 
 opt_in_rules:
   - identifier_name
@@ -58,7 +59,6 @@ opt_in_rules:
   - private_over_fileprivate
   - private_unit_test
   - protocol_property_accessors_order
-  - reduce_boolean
   - redundant_discardable_let
   - redundant_objc_attribute
   - redundant_optional_initialization

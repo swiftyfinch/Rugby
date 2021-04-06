@@ -7,8 +7,13 @@
 
 extension Drop {
     final class Metrics {
-        var removedTargets: Int?
-        var targets: Int?
+        private var removedTargets: Int?
+        private var targets: Int?
+
+        func collect(removedTargets: Int?, targets: Int?) {
+            self.removedTargets = removedTargets
+            self.targets = targets
+        }
 
         func output() -> String {
             guard let removedTargets = removedTargets, let targets = targets else { return "" }

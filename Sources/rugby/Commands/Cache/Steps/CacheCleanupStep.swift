@@ -34,25 +34,22 @@ final class CacheCleanupStep: Step {
         }
 
         progress.update(info: "Remove frameworks".yellow)
-        products.forEach {
-            hasChanges = podsProject.pbxproj.removeFrameworks(productName: $0) || hasChanges
-        }
+        hasChanges = podsProject.removeFrameworks(products: products) || hasChanges
 
         progress.update(info: "Remove products".yellow)
-        if removeFrameworkPaths(project: podsProject.pbxproj, groups: ["Frameworks", "Products"], products: products) {
+        if podsProject.removeFrameworkPaths(products: products) {
             hasChanges = true
         }
 
         progress.update(info: "Remove build target".yellow)
-        if let target = input.scheme, podsProject.pbxproj.removeTarget(name: target) {
+        if let target = input.scheme, podsProject.removeTarget(name: target) {
             hasChanges = true
         }
 
         progress.update(info: "Remove builded pods".yellow)
-        var removeBuildedPods = false
+        var removeBuildedPods = podsProject.removeDependencies(names: remotePods)
         remotePods.forEach {
-            removeBuildedPods = podsProject.pbxproj.removeDependency(name: $0) || removeBuildedPods
-            removeBuildedPods = podsProject.pbxproj.removeTarget(name: $0) || removeBuildedPods
+            removeBuildedPods = podsProject.removeTarget(name: $0) || removeBuildedPods
         }
 
         if hasChanges || removeBuildedPods {
@@ -77,26 +74,5 @@ final class CacheCleanupStep: Step {
             (podsGroup.parent as? PBXGroup)?.children.removeAll { $0.name == .podsGroup }
         }
         return true
-    }
-
-    private func removeFrameworkPaths(project: PBXProj, groups: Set<String>, products: Set<String>) -> Bool {
-        var hasChanges = false
-        let frameworks = project.groups.filter {
-            ($0.name.map(groups.contains) ?? false) && $0.parent?.parent == nil
-        }
-        frameworks.forEach {
-            $0.children.forEach { child in
-                if let name = child.name, products.contains(name) {
-                    project.delete(object: child)
-                    (child.parent as? PBXGroup)?.children.removeAll(where: { child.uuid == $0.uuid })
-                    hasChanges = true
-                } else if let path = child.path, products.contains(path) {
-                    project.delete(object: child)
-                    (child.parent as? PBXGroup)?.children.removeAll(where: { child.uuid == $0.uuid })
-                    hasChanges = true
-                }
-            }
-        }
-        return hasChanges
     }
 }
