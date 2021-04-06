@@ -7,23 +7,32 @@
 
 import XcodeProj
 
-extension PBXProj {
-    func removeAppExtensions(productName: String) {
-        for target in main.targets {
+extension XcodeProj {
+    func removeAppExtensions(products: Set<String>) {
+        let appExtensionsProducts = Set(products.filter { $0.hasSuffix("appex") })
+
+        for target in pbxproj.main.targets {
             target.buildPhases.removeAll { phase in
-                if phase.name() == "Embed App Extensions" {
-                    phase.files?.removeAll {
-                        guard $0.file?.displayName == productName else { return false }
-                        delete(object: $0)
-                        return true
-                    }
-                    if (phase.files ?? []).isEmpty {
-                        delete(object: phase)
-                        return true
-                    }
+                guard phase.name() == .appExtensionsPhase else { return false }
+
+                phase.files?.removeAll {
+                    guard let displayName = $0.file?.displayName else { return false }
+                    guard appExtensionsProducts.contains(displayName) else { return false }
+                    pbxproj.delete(object: $0)
+                    return true
                 }
+
+                if (phase.files ?? []).isEmpty {
+                    pbxproj.delete(object: phase)
+                    return true
+                }
+
                 return false
             }
         }
     }
+}
+
+private extension String {
+    static let appExtensionsPhase = "Embed App Extensions"
 }

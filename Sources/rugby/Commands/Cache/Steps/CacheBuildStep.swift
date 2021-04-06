@@ -31,7 +31,7 @@ final class CacheBuildStep: Step {
                 try XcodeBuild(project: .podsProject, scheme: scheme, sdk: command.sdk, arch: command.arch).build()
             } catch {
                 let podsProject = try XcodeProj(pathString: .podsProject)
-                podsProject.pbxproj.removeTarget(name: scheme)
+                podsProject.removeTarget(name: scheme)
                 try podsProject.write(pathString: .podsProject, override: true)
                 progress.update(info: "Full build log: ".yellow + .buildLog)
                 throw error

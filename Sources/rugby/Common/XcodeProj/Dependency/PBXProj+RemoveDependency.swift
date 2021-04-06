@@ -7,15 +7,16 @@
 
 import XcodeProj
 
-extension PBXProj {
+extension XcodeProj {
     @discardableResult
-    func removeDependency(name: String) -> Bool {
+    func removeDependencies(names: Set<String>) -> Bool {
         var hasChanges = false
-        for target in main.targets {
+        for target in pbxproj.main.targets {
             target.dependencies.removeAll {
-                guard $0.displayName == name else { return false }
-                delete(object: $0)
-                $0.targetProxy.map(delete)
+                guard let displayName = $0.displayName else { return false }
+                guard names.contains(displayName) else { return false }
+                pbxproj.delete(object: $0)
+                $0.targetProxy.map(pbxproj.delete)
                 hasChanges = true
                 return true
             }
