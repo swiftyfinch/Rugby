@@ -24,25 +24,31 @@ final class CacheBuildStep: Step {
     }
 
     func run(_ input: CachePrepareStep.Output) throws -> CachePrepareStep.Output {
-        let (scheme, checksums) = (input.scheme, input.checksums)
-        if let scheme = scheme {
-            progress.update(info: "Building ⏱".yellow)
-            do {
-                try XcodeBuild(project: .podsProject, scheme: scheme, sdk: command.sdk, arch: command.arch).build()
-            } catch {
-                let podsProject = try XcodeProj(pathString: .podsProject)
-                podsProject.removeTarget(name: scheme)
-                try podsProject.write(pathString: .podsProject, override: true)
-                progress.update(info: "Full build log: ".yellow + .buildLog)
-                throw error
-            }
-            progress.update(info: "Finish".yellow)
-
-            progress.update(info: "Update checksums".yellow)
-            try CacheManager().save(CacheFile(checksums: checksums, sdk: command.sdk, arch: command.arch))
-        } else {
+        guard let scheme = input.scheme else {
             progress.update(info: "Skip".yellow)
+            done()
+            return input
         }
+
+        progress.update(info: "Building ⏱".yellow)
+        do {
+            try XcodeBuild(project: .podsProject,
+                           scheme: scheme,
+                           sdk: command.sdk,
+                           arch: command.arch).build()
+        } catch {
+            let podsProject = try XcodeProj(pathString: .podsProject)
+            podsProject.removeTarget(name: scheme)
+            try podsProject.write(pathString: .podsProject, override: true)
+            progress.update(info: "Full build log: ".yellow + .buildLog)
+            throw error
+        }
+
+        progress.update(info: "Update checksums".yellow)
+        try CacheManager().save(CacheFile(checksums: input.checksums,
+                                          sdk: command.sdk,
+                                          arch: command.arch))
+
         done()
         return input
     }

@@ -41,7 +41,7 @@ final class DropPrepareStep: Step {
             let passedRegEx = regEx.test($0.name)
             return command.invert ? !passedRegEx : passedRegEx
         }
-        progress.output(foundTargets.map(\.name))
+        progress.output(foundTargets.map(\.name), text: "Found targets")
 
         metrics.collect(removedTargets: command.testFlight ? 0 : foundTargets.count,
                         targets: project.targets.count)

@@ -6,8 +6,8 @@
 //
 
 extension RugbyProgressBar {
-    func output<T: Collection>(_ collection: T, deletion: Bool = false) where T.Element == String {
-        update(info: "Found targets ".yellow + "(\(collection.count))" + ":".yellow)
+    func output<T: Collection>(_ collection: T, text: String, deletion: Bool = false) where T.Element == String {
+        update(info: "\(text) ".yellow + "(\(collection.count))" + ":".yellow)
         collection.caseInsensitiveSorted().forEach {
             let bullet = deletion ? "* ".red : "* ".yellow
             update(info: bullet + "\($0)")

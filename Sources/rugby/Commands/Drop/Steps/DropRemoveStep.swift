@@ -43,9 +43,8 @@ final class DropRemoveStep: Step {
         progress.update(info: "Remove dependencies".yellow)
         project.removeDependencies(names: targets)
 
-        project.removeAppExtensions(products: products)
-
         progress.update(info: "Remove products".yellow)
+        project.removeAppExtensions(products: products)
         project.removeFrameworkPaths(products: products)
 
         if !command.keepSources {
@@ -63,7 +62,7 @@ final class DropRemoveStep: Step {
         progress.update(info: "Update configs".yellow)
         try DropUpdateConfigs(products: products).removeProducts()
 
-        progress.output(removedTargets, deletion: true)
+        progress.output(removedTargets, text: "Removed targets", deletion: true)
 
         progress.update(info: "Save project".yellow)
         try project.write(pathString: command.project, override: true)

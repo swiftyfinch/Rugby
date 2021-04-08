@@ -14,5 +14,10 @@ extension Cache {
             guard let podsCount = podsCount, let cachedPodsCount = checksums else { return "" }
             return "Cached \(cachedPodsCount)/\(podsCount) pods. ".green
         }
+
+        func collect(podsCount: Int?, checksums: Int?) {
+            self.podsCount = podsCount
+            self.checksums = checksums
+        }
     }
 }
