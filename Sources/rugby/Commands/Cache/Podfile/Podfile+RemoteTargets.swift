@@ -28,6 +28,6 @@ extension Podfile {
                 .compactMap { $0.map(String.init) }
         }
 
-        return podsByVersion + podsByGitOptions
+        return (podsByVersion + podsByGitOptions).map { $0.trimmingCharacters(in: ["\""]) }
     }
 }

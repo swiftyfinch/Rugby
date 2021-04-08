@@ -32,122 +32,100 @@ final class CachePrepareStep: Step {
         self.isLast = isLast
         self.progress = RugbyProgressBar(title: name, logFile: logFile, verbose: verbose)
     }
+}
+
+extension CachePrepareStep {
+
+    // todo: Remove "" from checksums
+    // todo: Add substeps
 
     func run(_ buildTarget: String) throws -> Output {
         if try shellOut(to: "xcode-select -p") == .defaultXcodeCLTPath {
             throw CacheError.cantFineXcodeCommandLineTools
         }
 
-        // Get remote pods from Podfile.lock
-        let podfile = try Podfile(.podfileLock)
-        let remotePods = try podfile.getRemotePods().map { $0.trimmingCharacters(in: ["\""]) }
-        progress.update(info: "Remote pods ".yellow + "(\(remotePods.count))" + ":".yellow)
-        remotePods.caseInsensitiveSorted().forEach { progress.update(info: "* ".yellow + "\($0)") }
-
-        var filteredRemotePods = exclude(pods: Set(command.exclude), from: remotePods)
-
-        // Exclude aggregated targets, which contain scripts with the installation of some xcframeworks.
         let podsProject = try XcodeProj(pathString: .podsProject)
-        filteredRemotePods = excludeXCFrameworksTargets(project: podsProject, pods: filteredRemotePods)
+        let (remotePods, filteredPods) = try findRemotePods(project: podsProject)
+        let (buildPods, remoteChecksums) = try findBuildPods(pods: filteredPods)
+        let targets = try buildTargetsChain(project: podsProject, pods: filteredPods)
+        try addBuildTarget(project: podsProject, target: buildTarget, buildPods: buildPods, pods: filteredPods)
+        let products = Set(targets.compactMap(\.product?.name))
 
-        let checksums = try podfile.getChecksums()
-        let remoteChecksums = checksums.filter {
-            guard let name = $0.components(separatedBy: ": ").first?
-                    .trimmingCharacters(in: ["\""]) else { return false }
-            return filteredRemotePods.contains(name)
-        }
-
-        let buildPods = try findBuildPods(remotePods: filteredRemotePods, checksums: remoteChecksums, command: command)
-
-        // Collect all remote pods chain
-        let remotePodsChain = buildRemotePodsChain(project: podsProject, remotePods: Set(filteredRemotePods))
-        guard remotePodsChain.count >= filteredRemotePods.count else { throw CacheError.cantFindRemotePodsTargets }
-
-        let additionalBuildTargets = Set(remotePodsChain.map(\.name)).subtracting(filteredRemotePods)
-        if !additionalBuildTargets.isEmpty {
-            progress.update(info: "Additional build targets ".yellow + "(\(additionalBuildTargets.count))" + ":".yellow)
-            additionalBuildTargets.caseInsensitiveSorted().forEach { progress.update(info: "* ".yellow + "\($0)") }
-        }
-
-        // Include parents of build pods
-        let buildPodsChain = podsProject.findParentDependencies(Set(buildPods), allTargets: filteredRemotePods)
-
-        if buildPodsChain.isEmpty {
-            progress.update(info: "Skip".yellow)
-        } else {
-            progress.update(info: "Build pods ".yellow + "(\(buildPodsChain.count))" + ":".yellow)
-            buildPodsChain.caseInsensitiveSorted().forEach { progress.update(info: "* ".yellow + "\($0)") }
-
-            progress.update(info: "Add build target: ".yellow + buildTarget)
-            podsProject.pbxproj.addTarget(name: buildTarget, dependencies: buildPodsChain)
-
-            progress.update(info: "Save project".yellow)
-            try podsProject.write(pathString: .podsProject, override: true)
-        }
-
-        // Prepare list of products like: Some.framework, Some.bundle
-        let products = Set(remotePodsChain.compactMap(\.product?.name))
-
+        metrics.collect(podsCount: remotePods.count, checksums: remoteChecksums.count)
         done()
-        metrics.podsCount = remotePods.count
-        metrics.checksums = remoteChecksums.count
         return Output(scheme: buildPods.isEmpty ? nil : buildTarget,
-                      remotePods: Set(remotePodsChain.map(\.name)),
+                      remotePods: Set(targets.map(\.name)),
                       checksums: remoteChecksums,
                       products: products)
     }
 
-    private func exclude(pods: Set<String>, from remotePods: [String]) -> [String] {
-        var remotePods = remotePods
-        if !pods.isEmpty {
-            progress.update(info: "Exclude pods ".yellow + "(\(pods.count))" + ":".yellow)
-            pods.caseInsensitiveSorted().forEach { progress.update(info: "* ".yellow + "\($0)") }
-            remotePods.removeAll(where: { pods.contains($0) })
-        }
-        return remotePods
-    }
+    private func findRemotePods(project: XcodeProj) throws -> (all: Set<String>, filtered: Set<String>) {
+        // Get remote pods from Podfile.lock
+        let remotePods = Set(try Podfile(.podfileLock).getRemotePods())
+        progress.output(remotePods, text: "Remote pods")
 
-    private func excludeXCFrameworksTargets(project: XcodeProj, pods: [String]) -> [String] {
-        let aggregateTargets = project.pbxproj.aggregateTargets.reduce(into: Set<String>()) { set, target in
-            let phaseNames = target.buildPhases.compactMap { $0.name() }
-            if phaseNames.contains(where: { $0.contains("XCFrameworks") }) {
-                set.insert(target.name)
-            }
+        // Exclude by command argument
+        var remotePodsWithoutExcluded = remotePods
+        if !command.exclude.isEmpty {
+            progress.output(command.exclude, text: "Exclude pods")
+            remotePodsWithoutExcluded.subtract(command.exclude)
         }
-        let excluded = pods.filter { aggregateTargets.contains($0) }
+
+        // Exclude aggregated targets, which contain scripts with the installation of some xcframeworks.
+        let (filteredPods, excluded) = project.excludeXCFrameworksTargets(pods: remotePodsWithoutExcluded)
         if !excluded.isEmpty {
-            progress.update(info: "Exclude XCFrameworks ".yellow + "(\(excluded.count))" + ":".yellow)
-            excluded.caseInsensitiveSorted().forEach { progress.update(info: "* ".yellow + "\($0)") }
+            progress.output(excluded, text: "Exclude XCFrameworks")
         }
-        return Array(Set(pods).subtracting(excluded))
+
+        return (remotePods, filteredPods)
     }
 
-    private func findBuildPods(remotePods: [String], checksums: [String], command: Cache) throws -> [String] {
-        if command.rebuild { return remotePods }
+    func findBuildPods(pods: Set<String>) throws -> (buildPods: Set<String>, buildPodsChecksums: [String]) {
+        let checksums = try Podfile(.podfileLock).getChecksums()
+        let remoteChecksums = checksums.filter {
+            guard let name = $0.components(separatedBy: ": ").first?
+                    .trimmingCharacters(in: ["\""]) else { return false }
+            return pods.contains(name)
+        }
+
+        // Find checksums difference from cache file
+        if command.rebuild { return (pods, remoteChecksums) }
 
         let cacheFile = try CacheManager().load()
-        if command.sdk != cacheFile.sdk || command.arch != cacheFile.arch { return remotePods }
+        if command.sdk != cacheFile.sdk || command.arch != cacheFile.arch { return (pods, remoteChecksums) }
 
         let cachedChecksums = cacheFile.checksums
-        let changes = Set(checksums).subtracting(cachedChecksums)
-        let changedPods = changes.compactMap { $0.components(separatedBy: ": ").first?.trimmingCharacters(in: ["\""]) }
-        return changedPods.caseInsensitiveSorted()
+        let changes = Set(remoteChecksums).subtracting(cachedChecksums)
+        let changedPods = changes.compactMap {
+            $0.components(separatedBy: ": ").first?.trimmingCharacters(in: ["\""])
+        }
+        return (Set(changedPods), remoteChecksums)
     }
 
-    private func buildRemotePodsChain(project: XcodeProj, remotePods: Set<String>) -> Set<PBXTarget> {
-        remotePods.reduce(into: Set<PBXTarget>()) { chain, name in
-            let targets = Set(project.pbxproj.targets(named: name))
-            chain.formUnion(targets)
+    private func buildTargetsChain(project: XcodeProj, pods: Set<String>) throws -> Set<PBXTarget> {
+        let remotePodsChain = project.buildRemotePodsChain(remotePods: Set(pods))
+        guard remotePodsChain.count >= pods.count else { throw CacheError.cantFindRemotePodsTargets }
 
-            let dependencies = targets.reduce(Set<PBXTarget>()) { set, target in
-                let dependencies = target.dependencies.filter {
-                    // Check that it's a part of remote pod
-                    guard let prefix = $0.name?.components(separatedBy: "-").first else { return true }
-                    return remotePods.contains(prefix)
-                }
-                return set.union(dependencies.compactMap(\.target))
-            }
-            chain.formUnion(dependencies)
+        let additionalBuildTargets = Set(remotePodsChain.map(\.name)).subtracting(pods)
+        if !additionalBuildTargets.isEmpty {
+            progress.output(additionalBuildTargets, text: "Additional build targets")
+        }
+        return remotePodsChain
+    }
+
+    private func addBuildTarget(project: XcodeProj, target: String, buildPods: Set<String>, pods: Set<String>) throws {
+        // Include parents of build pods. Maybe it's not necessary?
+        let buildPodsChain = project.findParentDependencies(Set(buildPods), allTargets: pods)
+        if buildPodsChain.isEmpty {
+            progress.update(info: "Skip".yellow)
+        } else {
+            progress.output(buildPodsChain, text: "Build pods")
+
+            progress.update(info: "Add build target: ".yellow + target)
+            project.pbxproj.addTarget(name: target, dependencies: buildPodsChain)
+
+            progress.update(info: "Save project".yellow)
+            try project.write(pathString: .podsProject, override: true)
         }
     }
 }
