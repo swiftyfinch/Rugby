@@ -9,7 +9,6 @@ import Files
 import XcodeProj
 
 final class CacheCleanupStep: Step {
-    let name = "Clean up"
     let verbose: Bool
     let isLast: Bool
     let progress: RugbyProgressBar
@@ -20,7 +19,7 @@ final class CacheCleanupStep: Step {
         self.command = command
         self.verbose = command.verbose
         self.isLast = isLast
-        self.progress = RugbyProgressBar(title: name, logFile: logFile, verbose: verbose)
+        self.progress = RugbyProgressBar(title: "Clean up", logFile: logFile, verbose: verbose)
     }
 
     func run(_ input: CachePrepareStep.Output) throws {

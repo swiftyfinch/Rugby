@@ -8,8 +8,6 @@
 import Files
 
 protocol Step {
-    var name: String { get }
-
     var verbose: Bool { get }
     var isLast: Bool { get }
     var progress: RugbyProgressBar { get }
