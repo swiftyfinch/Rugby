@@ -9,7 +9,6 @@ import Files
 import XcodeProj
 
 final class CacheBuildStep: Step {
-    let name = "Build"
     let verbose: Bool
     let isLast: Bool
     let progress: RugbyProgressBar
@@ -20,7 +19,7 @@ final class CacheBuildStep: Step {
         self.command = command
         self.verbose = command.verbose
         self.isLast = isLast
-        self.progress = RugbyProgressBar(title: name, logFile: logFile, verbose: verbose)
+        self.progress = RugbyProgressBar(title: "Build", logFile: logFile, verbose: verbose)
     }
 
     func run(_ input: CachePrepareStep.Output) throws -> CachePrepareStep.Output {

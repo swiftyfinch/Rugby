@@ -23,12 +23,11 @@ struct Clean: ParsableCommand {
 // MARK: - CleanStep
 
 struct CleanStep: Step {
-    let name = "Clean"
     let isLast = true
     let progress: RugbyProgressBar
 
     init() {
-        self.progress = RugbyProgressBar(title: name)
+        self.progress = RugbyProgressBar(title: "Clean")
     }
 
     func run(_ input: Void) {

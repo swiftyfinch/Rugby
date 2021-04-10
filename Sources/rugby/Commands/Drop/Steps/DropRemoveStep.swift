@@ -9,7 +9,6 @@ import Files
 import XcodeProj
 
 final class DropRemoveStep: Step {
-    let name = "Drop"
     let verbose: Bool
     let isLast: Bool
     let progress: RugbyProgressBar
@@ -20,7 +19,7 @@ final class DropRemoveStep: Step {
         self.command = command
         self.verbose = command.verbose
         self.isLast = isLast
-        self.progress = RugbyProgressBar(title: name, logFile: logFile, verbose: verbose)
+        self.progress = RugbyProgressBar(title: "Drop", logFile: logFile, verbose: verbose)
     }
 
     func run(_ input: DropPrepareStep.Output) throws {

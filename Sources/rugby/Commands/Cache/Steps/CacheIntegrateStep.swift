@@ -8,7 +8,6 @@
 import Files
 
 final class CacheIntegrateStep: Step {
-    let name = "Integration"
     let verbose: Bool
     let isLast: Bool
     let progress: RugbyProgressBar
@@ -19,7 +18,7 @@ final class CacheIntegrateStep: Step {
         self.command = command
         self.verbose = command.verbose
         self.isLast = isLast
-        self.progress = RugbyProgressBar(title: name, logFile: logFile, verbose: verbose)
+        self.progress = RugbyProgressBar(title: "Integration", logFile: logFile, verbose: verbose)
     }
 
     func run(_ input: CachePrepareStep.Output) throws -> CachePrepareStep.Output {

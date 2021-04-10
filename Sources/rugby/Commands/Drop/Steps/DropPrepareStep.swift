@@ -15,7 +15,6 @@ final class DropPrepareStep: Step {
         let products: Set<String>
     }
 
-    let name = "Prepare"
     let verbose: Bool
     let isLast: Bool
     let progress: RugbyProgressBar
@@ -28,7 +27,7 @@ final class DropPrepareStep: Step {
         self.metrics = metrics
         self.verbose = command.verbose
         self.isLast = isLast
-        self.progress = RugbyProgressBar(title: name, logFile: logFile, verbose: verbose)
+        self.progress = RugbyProgressBar(title: "Prepare", logFile: logFile, verbose: verbose)
     }
 
     func run(_ input: Void) throws -> Output {
