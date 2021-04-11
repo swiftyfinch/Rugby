@@ -1,5 +1,5 @@
 //
-//  PBXProj+RemoveGroupIfEmpty.swift
+//  XcodeProj+RemoveGroupIfEmpty.swift
 //  
 //
 //  Created by Vyacheslav Khorkov on 05.03.2021.

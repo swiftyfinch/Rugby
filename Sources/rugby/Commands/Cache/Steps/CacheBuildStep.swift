@@ -9,6 +9,11 @@ import Files
 import XcodeProj
 
 final class CacheBuildStep: Step {
+    struct Input {
+        let scheme: String?
+        let checksums: [String]
+    }
+
     let verbose: Bool
     let isLast: Bool
     let progress: RugbyProgressBar
@@ -22,11 +27,10 @@ final class CacheBuildStep: Step {
         self.progress = RugbyProgressBar(title: "Build", logFile: logFile, verbose: verbose)
     }
 
-    func run(_ input: CachePrepareStep.Output) throws -> CachePrepareStep.Output {
+    func run(_ input: Input) throws {
         guard let scheme = input.scheme else {
             progress.update(info: "Skip".yellow)
-            done()
-            return input
+            return done()
         }
 
         progress.update(info: "Building ⏱".yellow)
@@ -47,8 +51,6 @@ final class CacheBuildStep: Step {
         try CacheManager().save(CacheFile(checksums: input.checksums,
                                           sdk: command.sdk,
                                           arch: command.arch))
-
         done()
-        return input
     }
 }

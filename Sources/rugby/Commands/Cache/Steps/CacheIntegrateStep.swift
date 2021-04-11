@@ -21,11 +21,10 @@ final class CacheIntegrateStep: Step {
         self.progress = RugbyProgressBar(title: "Integration", logFile: logFile, verbose: verbose)
     }
 
-    func run(_ input: CachePrepareStep.Output) throws -> CachePrepareStep.Output {
+    func run(_ pods: Set<String>) throws {
         progress.update(info: "Update paths to builded pods".yellow)
         try CacheIntegration(cacheFolder: .cacheFolder(sdk: command.sdk),
-                             buildedProducts: input.remotePods).replacePathsToCache()
+                             buildedProducts: pods).replacePathsToCache()
         done()
-        return input
     }
 }

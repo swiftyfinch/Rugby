@@ -9,6 +9,11 @@ import Files
 import XcodeProj
 
 final class DropRemoveStep: Step {
+    struct Input {
+        let targets: Set<String>
+        let products: Set<String>
+    }
+
     let verbose: Bool
     let isLast: Bool
     let progress: RugbyProgressBar
@@ -22,13 +27,13 @@ final class DropRemoveStep: Step {
         self.progress = RugbyProgressBar(title: "Drop", logFile: logFile, verbose: verbose)
     }
 
-    func run(_ input: DropPrepareStep.Output) throws {
+    func run(_ input: Input) throws {
         if command.testFlight {
             progress.update(info: "Skip".yellow)
             return done()
         }
 
-        let (targets, products) = (input.foundTargets, input.products)
+        let (targets, products) = (input.targets, input.products)
         guard !targets.isEmpty else {
             progress.update(info: "Can't find any targets. Skip".yellow)
             return done()
