@@ -9,6 +9,12 @@ import Files
 import XcodeProj
 
 final class CacheCleanupStep: Step {
+    struct Input {
+        let scheme: String?
+        let pods: Set<String>
+        let products: Set<String>
+    }
+
     let verbose: Bool
     let isLast: Bool
     let progress: RugbyProgressBar
@@ -22,14 +28,14 @@ final class CacheCleanupStep: Step {
         self.progress = RugbyProgressBar(title: "Clean up", logFile: logFile, verbose: verbose)
     }
 
-    func run(_ input: CachePrepareStep.Output) throws {
-        let (remotePods, products) = (input.remotePods, input.products)
+    func run(_ input: Input) throws {
+        let (remotePods, products) = (input.pods, input.products)
         var hasChanges = false
         let podsProject = try XcodeProj(pathString: .podsProject)
 
         if !command.keepSources {
             progress.update(info: "Remove sources from project".yellow)
-            hasChanges = removeSources(project: podsProject.pbxproj, pods: remotePods) || hasChanges
+            hasChanges = podsProject.removeSources(pods: remotePods) || hasChanges
         }
 
         progress.update(info: "Remove frameworks".yellow)
@@ -61,17 +67,5 @@ final class CacheCleanupStep: Step {
         }
 
         done()
-    }
-
-    private func removeSources(project: PBXProj, pods: Set<String>) -> Bool {
-        guard let podsGroup = project.groups.first(where: { $0.name == .podsGroup && $0.parent?.parent == nil }) else {
-            return false
-        }
-        podsGroup.removeFilesRecursively(from: project, pods: pods)
-        if podsGroup.children.isEmpty {
-            project.delete(object: podsGroup)
-            (podsGroup.parent as? PBXGroup)?.children.removeAll { $0.name == .podsGroup }
-        }
-        return true
     }
 }

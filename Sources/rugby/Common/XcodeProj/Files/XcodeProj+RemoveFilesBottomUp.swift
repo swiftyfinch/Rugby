@@ -1,5 +1,5 @@
 //
-//  PBXBuildFile+RemoveFilesBottomUp.swift
+//  XcodeProj+RemoveFilesBottomUp.swift
 //  
 //
 //  Created by Vyacheslav Khorkov on 05.03.2021.

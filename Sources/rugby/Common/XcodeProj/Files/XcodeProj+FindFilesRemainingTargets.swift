@@ -1,5 +1,5 @@
 //
-//  PBXProj+FindFilesRemainingTargets.swift
+//  XcodeProj+FindFilesRemainingTargets.swift
 //  
 //
 //  Created by Vyacheslav Khorkov on 06.04.2021.

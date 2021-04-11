@@ -1,5 +1,5 @@
 //
-//  PBXProj+RemoveTarget.swift
+//  XcodeProj+RemoveTarget.swift
 //  
 //
 //  Created by Vyacheslav Khorkov on 04.04.2021.

@@ -16,7 +16,11 @@ extension Cache {
             let build = CacheBuildStep(command: self, logFile: logFile)
             let integrate = CacheIntegrateStep(command: self, logFile: logFile)
             let cleanup = CacheCleanupStep(command: self, logFile: logFile)
-            try (prepare.run | build.run | integrate.run | cleanup.run)(.buildTarget)
+
+            let info = try prepare.run(.buildTarget)
+            try build.run(.init(scheme: info.scheme, checksums: info.checksums))
+            try integrate.run(info.remotePods)
+            try cleanup.run(.init(scheme: info.scheme, pods: info.remotePods, products: info.products))
         }
         print(time.output() + metrics.output() + .finalMessage)
     }

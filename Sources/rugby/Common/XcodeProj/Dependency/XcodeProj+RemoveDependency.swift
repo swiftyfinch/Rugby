@@ -1,5 +1,5 @@
 //
-//  PBXProj+RemoveDependency.swift
+//  XcodeProj+RemoveDependency.swift
 //  
 //
 //  Created by v.khorkov on 30.01.2021.

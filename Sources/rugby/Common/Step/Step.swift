@@ -14,6 +14,7 @@ protocol Step {
 
     associatedtype Input
     associatedtype Output
+    associatedtype Run = (Input) throws -> Output
     func run(_ input: Input) throws -> Output
 
     func done()

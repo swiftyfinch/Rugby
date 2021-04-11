@@ -37,30 +37,23 @@ struct CachePrepareStep: Step {
 
 extension CachePrepareStep {
 
-    typealias Substeps = CacheSubstep
-
     func run(_ buildTarget: String) throws -> Output {
         if try shellOut(to: "xcode-select -p") == .defaultXcodeCLTPath {
             throw CacheError.cantFineXcodeCommandLineTools
         }
 
         let podsProject = try XcodeProj(pathString: .podsProject)
-        let findRemotePods = Substeps.FindRemotePods(progress: progress, command: command, metrics: metrics)
-        let findBuildPods = Substeps.FindBuildPods(progress: progress, command: command, metrics: metrics)
-        let buildTargetsChain = Substeps.BuildTargetsChain(progress: progress)
-        let addBuildTarget = Substeps.AddBuildTarget(progress: progress)
-        let flow =
-            findRemotePods.run
-            | findBuildPods.run
-            | buildTargetsChain.run
-            | addBuildTarget.run
-        let result = try flow(.init(target: buildTarget, project: podsProject))
-        let products = Set(result.targets.compactMap(\.product?.name))
+        let factory = CacheSubstep.CacheSubstepFactory(progress: progress, command: command, metrics: metrics)
+        let pods = try factory.findRemotePods(podsProject)
+        let (buildPods, remoteChecksums) = try factory.findBuildPods(pods)
+        let targets = try factory.buildTargetsChain(.init(project: podsProject, pods: pods))
+        try factory.addBuildTarget(.init(target: buildTarget, project: podsProject, pods: pods, buildPods: buildPods))
+        let products = Set(targets.compactMap(\.product?.name))
 
         done()
-        return Output(scheme: result.buildPods.isEmpty ? nil : buildTarget,
-                      remotePods: Set(result.targets.map(\.name)),
-                      checksums: result.remoteChecksums,
+        return Output(scheme: buildPods.isEmpty ? nil : buildTarget,
+                      remotePods: Set(targets.map(\.name)),
+                      checksums: remoteChecksums,
                       products: products)
     }
 }

@@ -10,11 +10,6 @@ import RegEx
 import XcodeProj
 
 final class DropPrepareStep: Step {
-    struct Output {
-        let foundTargets: Set<String>
-        let products: Set<String>
-    }
-
     let verbose: Bool
     let isLast: Bool
     let progress: RugbyProgressBar
@@ -30,7 +25,7 @@ final class DropPrepareStep: Step {
         self.progress = RugbyProgressBar(title: "Prepare", logFile: logFile, verbose: verbose)
     }
 
-    func run(_ input: Void) throws -> Output {
+    func run(_ input: Void) throws -> (foundTargets: Set<String>, products: Set<String>) {
         progress.update(info: "Find targets ".yellow)
         let exclude = Set(command.exclude)
         let regEx = try RegEx(pattern: "(" + command.targets.joined(separator: "|") + ")")

@@ -1,5 +1,5 @@
 //
-//  PBXProj+RemoveFramework.swift
+//  XcodeProj+RemoveFramework.swift
 //  
 //
 //  Created by Vyacheslav Khorkov on 04.04.2021.

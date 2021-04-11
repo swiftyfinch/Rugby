@@ -9,18 +9,14 @@ import XcodeProj
 
 extension CacheSubstep {
     struct BuildTargetsChain: Step {
-        struct Output {
-            let target: String
+        struct Input {
             let project: XcodeProj
             let pods: Set<String>
-            let buildPods: Set<String>
-            let remoteChecksums: [String]
-            let targets: Set<PBXTarget>
         }
 
         let progress: RugbyProgressBar
 
-        func run(_ input: FindBuildPods.Output) throws -> Output {
+        func run(_ input: Input) throws -> Set<PBXTarget> {
             let remotePodsChain = input.project.buildRemotePodsChain(remotePods: Set(input.pods))
             guard remotePodsChain.count >= input.pods.count else { throw CacheError.cantFindRemotePodsTargets }
 
@@ -28,12 +24,7 @@ extension CacheSubstep {
             if !additionalBuildTargets.isEmpty {
                 progress.output(additionalBuildTargets, text: "Additional build targets")
             }
-            return .init(target: input.target,
-                         project: input.project,
-                         pods: input.pods,
-                         buildPods: input.buildPods,
-                         remoteChecksums: input.remoteChecksums,
-                         targets: remotePodsChain)
+            return remotePodsChain
         }
     }
 }

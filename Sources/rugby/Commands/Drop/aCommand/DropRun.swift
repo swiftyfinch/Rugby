@@ -14,8 +14,13 @@ extension Drop {
         let time = try measure {
             let prepare = DropPrepareStep(command: self, metrics: metrics, logFile: logFile)
             let remove = DropRemoveStep(command: self, logFile: logFile, isLast: true)
-            try (prepare.run | remove.run)(none)
+
+            let (targets, products) = try prepare.run(none)
+            try remove.run(.init(targets: targets, products: products))
         }
         print(time.output() + metrics.output() + .finalMessage)
     }
 }
+
+/// Shortcut for Void()
+let none: Void = ()

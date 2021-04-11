@@ -1,5 +1,5 @@
 //
-//  PBXProj+RemoveAppExtensions.swift
+//  XcodeProj+RemoveAppExtensions.swift
 //  
 //
 //  Created by Vyacheslav Khorkov on 04.04.2021.
