@@ -54,7 +54,7 @@ $ rugby
 
 ### `Maybe Roadmap`
 
-- [ ] Pause for refactoring, tests, pipelines
+- [x] Pause for refactoring, tests, pipelines
 - [ ] Output metrics
 - [ ] New command
 - [ ] Rugby plans :)
