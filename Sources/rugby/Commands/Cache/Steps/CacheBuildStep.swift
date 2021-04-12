@@ -8,7 +8,7 @@
 import Files
 import XcodeProj
 
-final class CacheBuildStep: Step {
+struct CacheBuildStep: Step {
     struct Input {
         let scheme: String?
         let checksums: [String]

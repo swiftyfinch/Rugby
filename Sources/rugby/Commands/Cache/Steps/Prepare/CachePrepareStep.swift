@@ -9,8 +9,6 @@ import Files
 import ShellOut
 import XcodeProj
 
-enum CacheSubstep {}
-
 struct CachePrepareStep: Step {
     struct Output {
         let scheme: String?
@@ -43,7 +41,7 @@ extension CachePrepareStep {
         }
 
         let podsProject = try XcodeProj(pathString: .podsProject)
-        let factory = CacheSubstep.CacheSubstepFactory(progress: progress, command: command, metrics: metrics)
+        let factory = CacheSubstepFactory(progress: progress, command: command, metrics: metrics)
         let pods = try factory.findRemotePods(podsProject)
         let (buildPods, remoteChecksums) = try factory.findBuildPods(pods)
         let targets = try factory.buildTargetsChain(.init(project: podsProject, pods: pods))

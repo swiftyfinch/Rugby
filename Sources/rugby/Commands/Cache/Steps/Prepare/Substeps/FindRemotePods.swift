@@ -7,7 +7,7 @@
 
 import XcodeProj
 
-extension CacheSubstep {
+extension CacheSubstepFactory {
     struct FindRemotePods: Step {
         let progress: RugbyProgressBar
         let command: Cache

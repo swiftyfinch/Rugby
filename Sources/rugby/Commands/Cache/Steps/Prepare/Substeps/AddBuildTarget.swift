@@ -7,7 +7,7 @@
 
 import XcodeProj
 
-extension CacheSubstep {
+extension CacheSubstepFactory {
     struct AddBuildTarget: Step {
         struct Input {
             let target: String

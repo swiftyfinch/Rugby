@@ -8,7 +8,7 @@
 import Files
 import XcodeProj
 
-final class DropRemoveStep: Step {
+struct DropRemoveStep: Step {
     struct Input {
         let targets: Set<String>
         let products: Set<String>
