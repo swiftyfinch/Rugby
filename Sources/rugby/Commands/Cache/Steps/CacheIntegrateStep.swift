@@ -7,7 +7,7 @@
 
 import Files
 
-final class CacheIntegrateStep: Step {
+struct CacheIntegrateStep: Step {
     let verbose: Bool
     let isLast: Bool
     let progress: RugbyProgressBar

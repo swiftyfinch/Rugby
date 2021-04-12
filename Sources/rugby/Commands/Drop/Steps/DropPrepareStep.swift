@@ -9,7 +9,7 @@ import Files
 import RegEx
 import XcodeProj
 
-final class DropPrepareStep: Step {
+struct DropPrepareStep: Step {
     let verbose: Bool
     let isLast: Bool
     let progress: RugbyProgressBar

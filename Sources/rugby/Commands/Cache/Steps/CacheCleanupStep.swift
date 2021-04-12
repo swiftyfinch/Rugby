@@ -8,7 +8,7 @@
 import Files
 import XcodeProj
 
-final class CacheCleanupStep: Step {
+struct CacheCleanupStep: Step {
     struct Input {
         let scheme: String?
         let pods: Set<String>
