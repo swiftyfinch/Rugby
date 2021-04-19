@@ -16,7 +16,7 @@ struct DropRemoveStep: Step {
 
     let verbose: Bool
     let isLast: Bool
-    let progress: RugbyProgressBar
+    let progress: Printer
 
     private let command: Drop
 
@@ -24,51 +24,51 @@ struct DropRemoveStep: Step {
         self.command = command
         self.verbose = command.verbose
         self.isLast = isLast
-        self.progress = RugbyProgressBar(title: "Drop", logFile: logFile, verbose: verbose)
+        self.progress = RugbyPrinter(title: "Drop", logFile: logFile, verbose: verbose)
     }
 
     func run(_ input: Input) throws {
         if command.testFlight {
-            progress.update(info: "Skip".yellow)
+            progress.print("Skip".yellow)
             return done()
         }
 
         let (targets, products) = (input.targets, input.products)
         guard !targets.isEmpty else {
-            progress.update(info: "Can't find any targets. Skip".yellow)
+            progress.print("Can't find any targets. Skip".yellow)
             return done()
         }
 
         let project = try XcodeProj(pathString: command.project)
 
-        progress.update(info: "Remove frameworks".yellow)
+        progress.print("Remove frameworks".yellow)
         project.removeFrameworks(products: products)
 
-        progress.update(info: "Remove dependencies".yellow)
+        progress.print("Remove dependencies".yellow)
         project.removeDependencies(names: targets)
 
-        progress.update(info: "Remove products".yellow)
+        progress.print("Remove products".yellow)
         project.removeAppExtensions(products: products)
         project.removeFrameworkPaths(products: products)
 
         if !command.keepSources {
-            progress.update(info: "Remove sources & resources".yellow)
+            progress.print("Remove sources & resources".yellow)
             let filesRemainingTargets = try project.findFilesRemainingTargets(targetsForRemove: Set(targets))
             try project.removeSources(fromTargets: targets, excludeFiles: filesRemainingTargets)
         }
 
-        progress.update(info: "Remove schemes".yellow)
+        progress.print("Remove schemes".yellow)
         try project.removeSchemes(pods: Set(targets), projectPath: command.project)
 
-        progress.update(info: "Remove targets".yellow)
+        progress.print("Remove targets".yellow)
         let removedTargets = Set(targets.filter(project.removeTarget))
 
-        progress.update(info: "Update configs".yellow)
+        progress.print("Update configs".yellow)
         try DropUpdateConfigs(products: products).removeProducts()
 
-        progress.output(removedTargets, text: "Removed targets", deletion: true)
+        progress.print(removedTargets, text: "Removed targets", deletion: true)
 
-        progress.update(info: "Save project".yellow)
+        progress.print("Save project".yellow)
         try project.write(pathString: command.project, override: true)
 
         return done()

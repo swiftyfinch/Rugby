@@ -19,7 +19,7 @@ struct CachePrepareStep: Step {
 
     let verbose: Bool
     let isLast: Bool
-    let progress: RugbyProgressBar
+    let progress: Printer
 
     private let command: Cache
     private let metrics: Cache.Metrics
@@ -29,7 +29,7 @@ struct CachePrepareStep: Step {
         self.metrics = metrics
         self.verbose = command.verbose
         self.isLast = isLast
-        self.progress = RugbyProgressBar(title: "Prepare", logFile: logFile, verbose: verbose)
+        self.progress = RugbyPrinter(title: "Prepare", logFile: logFile, verbose: verbose)
     }
 }
 

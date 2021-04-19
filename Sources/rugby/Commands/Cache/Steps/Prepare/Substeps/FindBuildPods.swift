@@ -9,7 +9,7 @@ import XcodeProj
 
 extension CacheSubstepFactory {
     struct FindBuildPods: Step {
-        let progress: RugbyProgressBar
+        let progress: Printer
         let command: Cache
         let metrics: Cache.Metrics
 

@@ -10,7 +10,7 @@ import Files
 struct CacheIntegrateStep: Step {
     let verbose: Bool
     let isLast: Bool
-    let progress: RugbyProgressBar
+    let progress: Printer
 
     private let command: Cache
 
@@ -18,11 +18,11 @@ struct CacheIntegrateStep: Step {
         self.command = command
         self.verbose = command.verbose
         self.isLast = isLast
-        self.progress = RugbyProgressBar(title: "Integration", logFile: logFile, verbose: verbose)
+        self.progress = RugbyPrinter(title: "Integration", logFile: logFile, verbose: verbose)
     }
 
     func run(_ pods: Set<String>) throws {
-        progress.update(info: "Update paths to builded pods".yellow)
+        progress.print("Update paths to builded pods".yellow)
         try CacheIntegration(cacheFolder: .cacheFolder(sdk: command.sdk),
                              buildedProducts: pods).replacePathsToCache()
         done()

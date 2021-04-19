@@ -24,10 +24,10 @@ struct Clean: ParsableCommand {
 
 struct CleanStep: Step {
     let isLast = true
-    let progress: RugbyProgressBar
+    let progress: Printer
 
     init() {
-        self.progress = RugbyProgressBar(title: "Clean")
+        self.progress = RugbyPrinter(title: "Clean")
     }
 
     func run(_ input: Void) {

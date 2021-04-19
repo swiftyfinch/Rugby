@@ -9,26 +9,26 @@ import XcodeProj
 
 extension CacheSubstepFactory {
     struct FindRemotePods: Step {
-        let progress: RugbyProgressBar
+        let progress: Printer
         let command: Cache
         let metrics: Cache.Metrics
 
         func run(_ project: XcodeProj) throws -> Set<String> {
             // Get remote pods from Podfile.lock
             let remotePods = Set(try Podfile(.podfileLock).getRemotePods())
-            progress.output(remotePods, text: "Remote pods")
+            progress.print(remotePods, text: "Remote pods")
 
             // Exclude by command argument
             var remotePodsWithoutExcluded = remotePods
             if !command.exclude.isEmpty {
-                progress.output(command.exclude, text: "Exclude pods")
+                progress.print(command.exclude, text: "Exclude pods")
                 remotePodsWithoutExcluded.subtract(command.exclude)
             }
 
             // Exclude aggregated targets, which contain scripts with the installation of some xcframeworks.
             let (filteredPods, excluded) = project.excludeXCFrameworksTargets(pods: remotePodsWithoutExcluded)
             if !excluded.isEmpty {
-                progress.output(excluded, text: "Exclude XCFrameworks")
+                progress.print(excluded, text: "Exclude XCFrameworks")
             }
 
             metrics.podsCount = remotePods.count

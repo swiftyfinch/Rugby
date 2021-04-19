@@ -6,7 +6,7 @@
 //
 
 struct CacheSubstepFactory {
-    let progress: RugbyProgressBar
+    let progress: Printer
     let command: Cache
     let metrics: Cache.Metrics
 
