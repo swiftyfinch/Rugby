@@ -14,7 +14,7 @@ extension CacheSubstepFactory {
             let pods: Set<String>
         }
 
-        let progress: RugbyProgressBar
+        let progress: Printer
 
         func run(_ input: Input) throws -> Set<PBXTarget> {
             let remotePodsChain = input.project.buildRemotePodsChain(remotePods: Set(input.pods))
@@ -22,7 +22,7 @@ extension CacheSubstepFactory {
 
             let additionalBuildTargets = Set(remotePodsChain.map(\.name)).subtracting(input.pods)
             if !additionalBuildTargets.isEmpty {
-                progress.output(additionalBuildTargets, text: "Additional build targets")
+                progress.print(additionalBuildTargets, text: "Additional build targets")
             }
             return remotePodsChain
         }

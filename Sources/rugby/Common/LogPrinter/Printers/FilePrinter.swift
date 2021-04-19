@@ -1,0 +1,19 @@
+//
+//  FilePrinter.swift
+//  
+//
+//  Created by Vyacheslav Khorkov on 19.04.2021.
+//
+
+import Files
+import Foundation
+
+final class FilePrinter: Printer {
+    private let logFile: File
+    init(file: File) { self.logFile = file }
+
+    func print(_ value: String) {
+        try? logFile.append(value + "\n")
+    }
+    func done() {}
+}

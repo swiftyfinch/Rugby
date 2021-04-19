@@ -16,7 +16,7 @@ struct CacheBuildStep: Step {
 
     let verbose: Bool
     let isLast: Bool
-    let progress: RugbyProgressBar
+    let progress: Printer
 
     private let command: Cache
 
@@ -24,16 +24,16 @@ struct CacheBuildStep: Step {
         self.command = command
         self.verbose = command.verbose
         self.isLast = isLast
-        self.progress = RugbyProgressBar(title: "Build", logFile: logFile, verbose: verbose)
+        self.progress = RugbyPrinter(title: "Build", logFile: logFile, verbose: verbose)
     }
 
     func run(_ input: Input) throws {
         guard let scheme = input.scheme else {
-            progress.update(info: "Skip".yellow)
+            progress.print("Skip".yellow)
             return done()
         }
 
-        progress.update(info: "Building ⏱".yellow)
+        progress.print("Building ⏱".yellow)
         do {
             try XcodeBuild(project: .podsProject,
                            scheme: scheme,
@@ -43,11 +43,11 @@ struct CacheBuildStep: Step {
             let podsProject = try XcodeProj(pathString: .podsProject)
             podsProject.removeTarget(name: scheme)
             try podsProject.write(pathString: .podsProject, override: true)
-            progress.update(info: "Full build log: ".yellow + .buildLog)
+            progress.print("Full build log: ".yellow + .buildLog)
             throw error
         }
 
-        progress.update(info: "Update checksums".yellow)
+        progress.print("Update checksums".yellow)
         try CacheManager().save(CacheFile(checksums: input.checksums,
                                           sdk: command.sdk,
                                           arch: command.arch))

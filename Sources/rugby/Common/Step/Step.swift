@@ -10,7 +10,7 @@ import Files
 protocol Step {
     var verbose: Bool { get }
     var isLast: Bool { get }
-    var progress: RugbyProgressBar { get }
+    var progress: Printer { get }
 
     associatedtype Input
     associatedtype Output

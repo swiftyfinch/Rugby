@@ -17,7 +17,7 @@ struct CacheCleanupStep: Step {
 
     let verbose: Bool
     let isLast: Bool
-    let progress: RugbyProgressBar
+    let progress: Printer
 
     private let command: Cache
 
@@ -25,7 +25,7 @@ struct CacheCleanupStep: Step {
         self.command = command
         self.verbose = command.verbose
         self.isLast = isLast
-        self.progress = RugbyProgressBar(title: "Clean up", logFile: logFile, verbose: verbose)
+        self.progress = RugbyPrinter(title: "Clean up", logFile: logFile, verbose: verbose)
     }
 
     func run(_ input: Input) throws {
@@ -34,24 +34,24 @@ struct CacheCleanupStep: Step {
         let podsProject = try XcodeProj(pathString: .podsProject)
 
         if !command.keepSources {
-            progress.update(info: "Remove sources from project".yellow)
+            progress.print("Remove sources from project".yellow)
             hasChanges = podsProject.removeSources(pods: remotePods) || hasChanges
         }
 
-        progress.update(info: "Remove frameworks".yellow)
+        progress.print("Remove frameworks".yellow)
         hasChanges = podsProject.removeFrameworks(products: products) || hasChanges
 
-        progress.update(info: "Remove products".yellow)
+        progress.print("Remove products".yellow)
         if podsProject.removeFrameworkPaths(products: products) {
             hasChanges = true
         }
 
-        progress.update(info: "Remove build target".yellow)
+        progress.print("Remove build target".yellow)
         if let target = input.scheme, podsProject.removeTarget(name: target) {
             hasChanges = true
         }
 
-        progress.update(info: "Remove builded pods".yellow)
+        progress.print("Remove builded pods".yellow)
         var removeBuildedPods = podsProject.removeDependencies(names: remotePods)
         remotePods.forEach {
             removeBuildedPods = podsProject.removeTarget(name: $0) || removeBuildedPods
@@ -59,10 +59,10 @@ struct CacheCleanupStep: Step {
 
         if hasChanges || removeBuildedPods {
             // Remove schemes if has changes (it should be changes in targets)
-            progress.update(info: "Remove schemes".yellow)
+            progress.print("Remove schemes".yellow)
             try podsProject.removeSchemes(pods: remotePods, projectPath: .podsProject)
 
-            progress.update(info: "Save project".yellow)
+            progress.print("Save project".yellow)
             try podsProject.write(pathString: .podsProject, override: true)
         }
 

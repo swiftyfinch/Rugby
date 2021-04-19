@@ -12,7 +12,7 @@ import XcodeProj
 struct DropPrepareStep: Step {
     let verbose: Bool
     let isLast: Bool
-    let progress: RugbyProgressBar
+    let progress: Printer
 
     private let command: Drop
     private let metrics: Drop.Metrics
@@ -22,11 +22,11 @@ struct DropPrepareStep: Step {
         self.metrics = metrics
         self.verbose = command.verbose
         self.isLast = isLast
-        self.progress = RugbyProgressBar(title: "Prepare", logFile: logFile, verbose: verbose)
+        self.progress = RugbyPrinter(title: "Prepare", logFile: logFile, verbose: verbose)
     }
 
     func run(_ input: Void) throws -> (foundTargets: Set<String>, products: Set<String>) {
-        progress.update(info: "Find targets ".yellow)
+        progress.print("Find targets ".yellow)
         let exclude = Set(command.exclude)
         let regEx = try RegEx(pattern: "(" + command.targets.joined(separator: "|") + ")")
         let project = try XcodeProj(pathString: command.project)
@@ -35,7 +35,7 @@ struct DropPrepareStep: Step {
             let passedRegEx = regEx.test($0.name)
             return command.invert ? !passedRegEx : passedRegEx
         }
-        progress.output(foundTargets.map(\.name), text: "Found targets")
+        progress.print(foundTargets.map(\.name), text: "Found targets")
 
         metrics.collect(removedTargets: command.testFlight ? 0 : foundTargets.count,
                         targets: project.targets.count)
