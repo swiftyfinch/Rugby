@@ -35,7 +35,7 @@ final class RugbyPrinter: Printer {
 }
 
 extension RugbyPrinter {
-    convenience init(title: String, logFile: File? = nil, verbose: Bool = false) {
+    convenience init(title: String? = nil, logFile: File? = nil, verbose: Bool = false) {
         var printers: [Printer] = [verbose ? DefaultPrinter() : OneLinePrinter()]
         logFile.map { printers.append(FilePrinter(file: $0)) }
         self.init(formatter: RugbyFormatter(title: title), printers: printers)

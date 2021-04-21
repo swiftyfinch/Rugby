@@ -1,12 +1,5 @@
 import ArgumentParser
 
-extension ParsableCommand {
-    // swiftlint:disable:next identifier_name
-    static var _errorLabel: String {
-        "⛔️ \u{1B}[31mError"
-    }
-}
-
 struct Rugby: ParsableCommand {
     static var configuration = CommandConfiguration(
         abstract: """
