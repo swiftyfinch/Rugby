@@ -6,11 +6,11 @@
 //
 
 protocol Formatter {
-    func format(text: String, time: String?) -> String
+    func format(text: String, time: String?, chop: Int?) -> String
 }
 
 extension Formatter {
-    func format(text: String, time: String? = nil) -> String {
-        format(text: text, time: time)
+    func format(text: String, time: String? = nil, chop: Int? = nil) -> String {
+        format(text: text, time: time, chop: chop)
     }
 }
