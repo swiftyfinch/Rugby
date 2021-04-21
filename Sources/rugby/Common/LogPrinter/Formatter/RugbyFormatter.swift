@@ -6,11 +6,12 @@
 //
 
 struct RugbyFormatter: Formatter {
-    let title: String
+    let title: String?
 
     func format(text: String, time: String?, chop: Int?) -> String {
         let choppendText = chop.map { text.width($0) } ?? text
-        return (time ?? "") + "\(title) ".green + choppendText
+        let ouputTitle = title.map { "\($0) ".green } ?? ""
+        return (time ?? "") + ouputTitle + choppendText
     }
 }
 
