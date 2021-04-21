@@ -19,16 +19,15 @@ final class RugbyPrinter: Printer {
     }
 
     func print(_ value: String) {
-        let formattedValue = formatter.format(text: value)
         printers.forEach {
-            $0.print(formattedValue)
+            $0.print(formatter.format(text: value, chop: $0.chop))
         }
     }
 
     func done() {
         let time = ProcessInfo.processInfo.systemUptime - begin
-        let value = formatter.format(text: "✓", time: time.output())
         printers.forEach {
+            let value = formatter.format(text: "✓", time: time.output(), chop: $0.chop)
             $0.print(value)
             $0.done()
         }
