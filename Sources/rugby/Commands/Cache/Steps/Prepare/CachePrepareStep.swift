@@ -40,6 +40,7 @@ extension CachePrepareStep {
             throw CacheError.cantFineXcodeCommandLineTools
         }
 
+        progress.print("Read project ⏱".yellow)
         let podsProject = try XcodeProj(pathString: .podsProject)
         let factory = CacheSubstepFactory(progress: progress, command: command, metrics: metrics)
         let pods = try factory.findRemotePods(podsProject)

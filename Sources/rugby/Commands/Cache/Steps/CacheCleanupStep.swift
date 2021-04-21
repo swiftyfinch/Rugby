@@ -31,6 +31,7 @@ struct CacheCleanupStep: Step {
     func run(_ input: Input) throws {
         let (remotePods, products) = (input.pods, input.products)
         var hasChanges = false
+        progress.print("Read project ⏱".yellow)
         let podsProject = try XcodeProj(pathString: .podsProject)
 
         if !command.keepSources {
@@ -62,7 +63,7 @@ struct CacheCleanupStep: Step {
             progress.print("Remove schemes".yellow)
             try podsProject.removeSchemes(pods: remotePods, projectPath: .podsProject)
 
-            progress.print("Save project".yellow)
+            progress.print("Save project ⏱".yellow)
             try podsProject.write(pathString: .podsProject, override: true)
         }
 

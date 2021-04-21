@@ -29,7 +29,7 @@ extension CacheSubstepFactory {
                 progress.print("Add build target: ".yellow + input.target)
                 input.project.addTarget(name: input.target, dependencies: buildPodsChain)
 
-                progress.print("Save project".yellow)
+                progress.print("Save project ⏱".yellow)
                 try input.project.write(pathString: .podsProject, override: true)
             }
         }

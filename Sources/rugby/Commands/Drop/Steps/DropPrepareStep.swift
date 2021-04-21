@@ -26,10 +26,12 @@ struct DropPrepareStep: Step {
     }
 
     func run(_ input: Void) throws -> (foundTargets: Set<String>, products: Set<String>) {
-        progress.print("Find targets ".yellow)
+        progress.print("Read project ⏱".yellow)
+        let project = try XcodeProj(pathString: command.project)
+
+        progress.print("Find targets".yellow)
         let exclude = Set(command.exclude)
         let regEx = try RegEx(pattern: "(" + command.targets.joined(separator: "|") + ")")
-        let project = try XcodeProj(pathString: command.project)
         let foundTargets = project.targets.filter {
             if exclude.contains($0.name) { return false }
             let passedRegEx = regEx.test($0.name)

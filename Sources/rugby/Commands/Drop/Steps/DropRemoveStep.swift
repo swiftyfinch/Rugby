@@ -63,12 +63,12 @@ struct DropRemoveStep: Step {
         progress.print("Remove targets".yellow)
         let removedTargets = Set(targets.filter(project.removeTarget))
 
-        progress.print("Update configs".yellow)
+        progress.print("Update configs ⏱".yellow)
         try DropUpdateConfigs(products: products).removeProducts()
 
         progress.print(removedTargets, text: "Removed targets", deletion: true)
 
-        progress.print("Save project".yellow)
+        progress.print("Save project ⏱".yellow)
         try project.write(pathString: command.project, override: true)
 
         return done()
