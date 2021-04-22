@@ -23,6 +23,6 @@ extension Double {
     }
 
     func output() -> String {
-        "[\(formatTime())] ".yellow
+        "[\(formatTime())]".yellow
     }
 }

@@ -18,6 +18,6 @@ extension ParsableCommand {
 extension ParsableCommand {
     func printFinalMessage(logFile: File, time: Double, metrics: String) {
         RugbyPrinter(logFile: logFile, verbose: true)
-            .print(time.output() + metrics + .finalMessage)
+            .print(time.output() + " " + metrics + .finalMessage)
     }
 }
