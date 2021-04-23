@@ -20,7 +20,7 @@ extension CacheSubstepFactory {
                         .trimmingCharacters(in: ["\""]) else { return false }
                 return pods.contains(name)
             }
-            metrics.checksums = remoteChecksums.count
+            metrics.remotePodsCount.after = remoteChecksums.count
 
             // Find checksums difference from cache file
             let buildPods: Set<String>

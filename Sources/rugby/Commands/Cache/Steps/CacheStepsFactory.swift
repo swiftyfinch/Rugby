@@ -25,6 +25,6 @@ struct CacheStepsFactory {
     }
 
     var cleanup: CacheCleanupStep.Run {
-        CacheCleanupStep(command: command, logFile: logFile, isLast: true).run
+        CacheCleanupStep(command: command, metrics: metrics, logFile: logFile, isLast: true).run
     }
 }

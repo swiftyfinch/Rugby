@@ -16,6 +16,7 @@ struct Cache: ParsableCommand {
     @Option(name: .shortAndLong,
             parsing: .upToNextOption,
             help: "Exclude pods from cache.") var exclude: [String] = []
+    @Flag(name: .shortAndLong, inversion: .prefixedNo, help: "Show more metrics.") var metrics = true
     @Flag(name: .shortAndLong, help: "Ignore already cached pods checksums.\n") var rebuild = false
 
     @Flag(name: .shortAndLong, help: "Print more information.") var verbose = false

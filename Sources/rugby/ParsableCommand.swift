@@ -16,8 +16,12 @@ extension ParsableCommand {
 }
 
 extension ParsableCommand {
-    func printFinalMessage(logFile: File, time: Double, metrics: String) {
-        RugbyPrinter(logFile: logFile, verbose: true)
-            .print(time.output() + " " + metrics + .finalMessage)
+    func printFinalMessage(logFile: File, time: Double, metrics: MetricsOutput, more: Bool = false) {
+        let logger = RugbyPrinter(logFile: logFile, verbose: true)
+        logger.print(time.output() + " " + metrics.short() + " " + .finalMessage)
+        if more {
+            let shift = String(repeating: " ", count: time.output().raw.count)
+            metrics.more().forEach { logger.print("\(shift + " " + $0)") }
+        }
     }
 }
