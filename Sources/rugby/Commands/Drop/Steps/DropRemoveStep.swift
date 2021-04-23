@@ -19,9 +19,11 @@ struct DropRemoveStep: Step {
     let progress: Printer
 
     private let command: Drop
+    private let metrics: Drop.Metrics
 
-    init(command: Drop, logFile: File, isLast: Bool = false) {
+    init(command: Drop, metrics: Drop.Metrics, logFile: File, isLast: Bool = false) {
         self.command = command
+        self.metrics = metrics
         self.verbose = command.verbose
         self.isLast = isLast
         self.progress = RugbyPrinter(title: "Drop", logFile: logFile, verbose: verbose)
@@ -70,6 +72,8 @@ struct DropRemoveStep: Step {
 
         progress.print("Save project ⏱".yellow)
         try project.write(pathString: command.project, override: true)
+        metrics.projectSize.after = (try Folder.current.subfolder(at: .podsProject)).size()
+        metrics.compileFilesCount.after = project.pbxproj.buildFiles.count
 
         return done()
     }

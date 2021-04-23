@@ -25,6 +25,7 @@ struct Drop: ParsableCommand {
     @Option(name: .shortAndLong,
             parsing: .upToNextOption,
             help: "Exclude targets.\n") var exclude: [String] = []
+    @Flag(name: .shortAndLong, inversion: .prefixedNo, help: "Show more metrics.") var metrics = true
 
     @Flag(name: .shortAndLong, help: "Print more information.") var verbose = false
 
