@@ -31,7 +31,7 @@ extension CacheSubstepFactory {
                 progress.print(excluded, text: "Exclude XCFrameworks")
             }
 
-            metrics.podsCount = remotePods.count
+            metrics.remotePodsCount.before = remotePods.count
             return filteredPods
         }
     }

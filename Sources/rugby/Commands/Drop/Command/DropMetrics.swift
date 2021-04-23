@@ -6,7 +6,7 @@
 //
 
 extension Drop {
-    final class Metrics {
+    final class Metrics: MetricsOutput {
         private var removedTargets: Int?
         private var targets: Int?
 
@@ -15,9 +15,11 @@ extension Drop {
             self.targets = targets
         }
 
-        func output() -> String {
+        func short() -> String {
             guard let removedTargets = removedTargets, let targets = targets else { return "" }
-            return "Removed \(removedTargets)/\(targets) targets. ".green
+            return "Removed \(removedTargets)/\(targets) targets.".green
         }
+
+        func more() -> [String] { [] }
     }
 }

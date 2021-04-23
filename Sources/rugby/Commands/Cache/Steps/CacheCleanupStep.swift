@@ -6,6 +6,7 @@
 //
 
 import Files
+import Foundation
 import XcodeProj
 
 struct CacheCleanupStep: Step {
@@ -20,9 +21,11 @@ struct CacheCleanupStep: Step {
     let progress: Printer
 
     private let command: Cache
+    private let metrics: Cache.Metrics
 
-    init(command: Cache, logFile: File, isLast: Bool = false) {
+    init(command: Cache, metrics: Cache.Metrics, logFile: File, isLast: Bool = false) {
         self.command = command
+        self.metrics = metrics
         self.verbose = command.verbose
         self.isLast = isLast
         self.progress = RugbyPrinter(title: "Clean up", logFile: logFile, verbose: verbose)
@@ -65,6 +68,10 @@ struct CacheCleanupStep: Step {
 
             progress.print("Save project ⏱".yellow)
             try podsProject.write(pathString: .podsProject, override: true)
+
+            metrics.projectSize.after = (try Folder.current.subfolder(at: .podsProject)).size()
+            metrics.compileFilesCount.after = podsProject.pbxproj.buildFiles.count
+            metrics.targetsCount.after = podsProject.pbxproj.main.targets.count
         }
 
         done()

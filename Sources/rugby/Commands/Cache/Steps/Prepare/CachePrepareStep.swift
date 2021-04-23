@@ -41,7 +41,10 @@ extension CachePrepareStep {
         }
 
         progress.print("Read project ⏱".yellow)
+        metrics.projectSize.before = (try Folder.current.subfolder(at: .podsProject)).size()
         let podsProject = try XcodeProj(pathString: .podsProject)
+        metrics.compileFilesCount.before = podsProject.pbxproj.buildFiles.count
+        metrics.targetsCount.before = podsProject.pbxproj.main.targets.count
         let factory = CacheSubstepFactory(progress: progress, command: command, metrics: metrics)
         let pods = try factory.findRemotePods(podsProject)
         let (buildPods, remoteChecksums) = try factory.findBuildPods(pods)

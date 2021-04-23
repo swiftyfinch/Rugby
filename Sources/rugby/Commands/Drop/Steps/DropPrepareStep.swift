@@ -30,6 +30,7 @@ struct DropPrepareStep: Step {
         let project = try XcodeProj(pathString: command.project)
 
         progress.print("Find targets".yellow)
+        progress.print(command.exclude, text: "Exclude")
         let exclude = Set(command.exclude)
         let regEx = try RegEx(pattern: "(" + command.targets.joined(separator: "|") + ")")
         let foundTargets = project.targets.filter {
