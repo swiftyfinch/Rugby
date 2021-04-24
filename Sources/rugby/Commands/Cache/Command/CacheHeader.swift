@@ -10,8 +10,7 @@ import Rainbow
 
 struct Cache: ParsableCommand {
     @Option(name: .shortAndLong, help: "Build architechture.") var arch: String?
-    @Option(name: .shortAndLong,
-            help: "Build sdk: sim or ios.\nUse --rebuild after switch.") var sdk: SDK = .sim
+    @Option(name: .shortAndLong, help: "Build sdk: sim or ios.") var sdk: SDK = .sim
     @Flag(name: .shortAndLong, help: "Keep Pods group in project.") var keepSources = false
     @Option(name: .shortAndLong, parsing: .upToNextOption, help: "Exclude pods from cache.") var exclude: [String] = []
     @Flag(help: "Show more metrics.") var hideMetrics = false
