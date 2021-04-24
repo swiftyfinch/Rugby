@@ -23,7 +23,7 @@ struct Drop: ParsableCommand {
     @Flag(name: .shortAndLong, help: "Show output without any changes.") var testFlight = false
     @Flag(name: .shortAndLong, help: "Keep sources & resources in project.") var keepSources = false
     @Option(name: .shortAndLong, parsing: .upToNextOption, help: "Exclude targets.") var exclude: [String] = []
-    @Flag(help: "Show more metrics.\n") var hideMetrics = false
+    @Flag(help: "Hide metrics.\n") var hideMetrics = false
 
     @Flag(name: .shortAndLong, help: "Print more information.") var verbose = false
 
