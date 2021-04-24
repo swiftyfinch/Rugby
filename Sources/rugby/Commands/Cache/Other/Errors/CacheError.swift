@@ -13,6 +13,7 @@ enum CacheError: Error, LocalizedError {
     case cantParseCachedChecksums
     case cantFindRemotePodsTargets
     case cantFineXcodeCommandLineTools
+    case buildFailed
 
     var errorDescription: String? {
         let output: String
@@ -27,6 +28,10 @@ enum CacheError: Error, LocalizedError {
         case .cantFineXcodeCommandLineTools:
             output = "Couldn't find Xcode CLT.\n".red
                 + "🚑 Check Xcode Preferences → Locations → Command Line Tools.".yellow
+        case .buildFailed:
+            let buildCommand = "cat \(String.buildLog) | xcpretty"
+            output = "Build failed.\n".red
+                + "🚑 Run for more information: ".white + buildCommand.yellow
         }
         // Need to clear color because in _errorLabel we don't do that
         return "\u{1B}[0m" + output

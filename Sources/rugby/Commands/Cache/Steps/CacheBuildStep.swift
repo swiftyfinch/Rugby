@@ -43,8 +43,7 @@ struct CacheBuildStep: Step {
             let podsProject = try XcodeProj(pathString: .podsProject)
             podsProject.removeTarget(name: scheme)
             try podsProject.write(pathString: .podsProject, override: true)
-            progress.print("Full build log: ".yellow + .buildLog)
-            throw error
+            throw CacheError.buildFailed
         }
 
         progress.print("Update checksums".yellow)
