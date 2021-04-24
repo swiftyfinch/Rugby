@@ -16,7 +16,7 @@ extension Drop {
             let (targets, products) = try factory.prepare(none)
             try factory.remove(.init(targets: targets, products: products))
         }
-        printFinalMessage(logFile: logFile, time: time, metrics: metrics, more: self.metrics)
+        printFinalMessage(logFile: logFile, time: time, metrics: metrics, more: !hideMetrics)
     }
 }
 
