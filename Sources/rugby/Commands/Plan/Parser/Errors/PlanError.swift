@@ -1,0 +1,28 @@
+//
+//  PlanError.swift
+//  
+//
+//  Created by Vyacheslav Khorkov on 29.04.2021.
+//
+
+import Foundation
+
+enum PlanError: Error, LocalizedError {
+    case incorrectYMLFormat
+    case incorrectCommandName
+    case incorrectArgument
+    case cantFindPlan
+
+    var errorDescription: String? {
+        switch self {
+        case .incorrectYMLFormat:
+            return "Incorrect format in plans.yml."
+        case .incorrectCommandName:
+            return "Incorrect command name in plans.yml."
+        case .incorrectArgument:
+            return "Incorrect arguments in plans.yml."
+        case .cantFindPlan:
+            return "Couldn't find selected plan."
+        }
+    }
+}

@@ -6,6 +6,7 @@
 //
 
 import ArgumentParser
+import Files
 import Rainbow
 
 struct Cache: ParsableCommand {
@@ -24,7 +25,7 @@ struct Cache: ParsableCommand {
         abstract: "Convert remote pods to prebuilt dependencies."
     )
 
-    func run() throws {
+    mutating func run() throws {
         try WrappedError.wrap(playBell: bell) {
             try wrappedRun()
         }

@@ -14,13 +14,3 @@ extension ParsableCommand {
         "⛔️ \u{1B}[31mError"
     }
 }
-
-extension ParsableCommand {
-    func printFinalMessage(logFile: File, time: Double, metrics: MetricsOutput, more: Bool) {
-        let logger = RugbyPrinter(logFile: logFile, verbose: true)
-        if more {
-            metrics.more().forEach { logger.print("[!] ".yellow + $0) }
-        }
-        logger.print(time.output() + " " + metrics.short() + " " + .finalMessage)
-    }
-}
