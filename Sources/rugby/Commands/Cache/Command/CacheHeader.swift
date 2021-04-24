@@ -19,7 +19,7 @@ struct Cache: ParsableCommand {
     @Flag(name: .shortAndLong, help: "Print more information.") var verbose = false
 
     static var configuration: CommandConfiguration = .init(
-        abstract: "Remove remote pods, build them and integrate as frameworks and bundles."
+        abstract: "Convert remote pods to prebuilt dependencies."
     )
 
     func run() throws {
