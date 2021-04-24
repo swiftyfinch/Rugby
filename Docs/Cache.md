@@ -1,7 +1,7 @@
 
 ## 🏈 `Cache`
 
-Remove remote pods from project, build them and integrate as frameworks and bundles.\
+Convert remote pods to prebuilt dependencies.\
 Call it after each `pod install` or `pod update`.
 
 ### General usage
@@ -56,13 +56,4 @@ $ rugby --sdk ios
 
 # short
 $ rugby -s ios
-```
-
-##### In any unclear situation (ignore cache)
-
-```bash
-$ rugby --rebuild
-
-# short
-$ rugby -r
 ```

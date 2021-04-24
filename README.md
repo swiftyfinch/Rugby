@@ -3,7 +3,7 @@
   <sup>(<ins>like Ruby but with g</ins>)</sup>
 </h3>
 <p align="center">
-    <img src="https://github.com/swiftyfinch/Rugby/blob/main/Demo.gif" width="400"/>
+    <img src="https://github.com/swiftyfinch/Rugby/blob/main/Demo.gif" width="600"/>
 </p>
 <p align="center">
   <img src="https://img.shields.io/badge/Swift-orange.svg?logo=swift&logoColor=white" />
@@ -54,10 +54,9 @@ $ rugby
 
 ### `Maybe Roadmap`
 
-- [x] Pause for refactoring, tests, pipelines
-- [ ] Output metrics
+- [x] Output metrics
+- [ ] Rugby plans
 - [ ] New command
-- [ ] Rugby plans :)
 - [ ] Open source
 
 ### `Author`
