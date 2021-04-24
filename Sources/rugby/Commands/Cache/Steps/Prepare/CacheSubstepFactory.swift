@@ -23,6 +23,6 @@ struct CacheSubstepFactory {
     }
 
     var addBuildTarget: AddBuildTarget.Run {
-        AddBuildTarget(progress: progress).run
+        AddBuildTarget(progress: progress, command: command).run
     }
 }
