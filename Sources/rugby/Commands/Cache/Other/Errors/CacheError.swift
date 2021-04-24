@@ -33,7 +33,6 @@ enum CacheError: Error, LocalizedError {
             output = "Build failed.\n".red
                 + "🚑 Run for more information: ".white + buildCommand.yellow
         }
-        // Need to clear color because in _errorLabel we don't do that
-        return "\u{1B}[0m" + output
+        return output
     }
 }

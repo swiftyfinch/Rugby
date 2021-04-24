@@ -15,9 +15,9 @@ struct DropPrepareStep: Step {
     let progress: Printer
 
     private let command: Drop
-    private let metrics: Drop.Metrics
+    private let metrics: Metrics
 
-    init(command: Drop, metrics: Drop.Metrics, logFile: File, isLast: Bool = false) {
+    init(command: Drop, metrics: Metrics, logFile: File, isLast: Bool = false) {
         self.command = command
         self.metrics = metrics
         self.verbose = command.verbose
@@ -27,7 +27,7 @@ struct DropPrepareStep: Step {
 
     func run(_ input: Void) throws -> (foundTargets: Set<String>, products: Set<String>) {
         progress.print("Read project ⏱".yellow)
-        metrics.projectSize.before = (try Folder.current.subfolder(at: .podsProject)).size()
+        metrics.projectSize.before = (try Folder.current.subfolder(at: command.project)).size()
         let project = try XcodeProj(pathString: command.project)
         metrics.compileFilesCount.before = project.pbxproj.buildFiles.count
 
@@ -43,7 +43,7 @@ struct DropPrepareStep: Step {
         progress.print(foundTargets.map(\.name), text: "Found targets")
 
         metrics.targetsCount.before = project.targets.count
-        metrics.targetsCount.after = command.testFlight ? 0 : foundTargets.count
+        metrics.targetsCount.after = (command.testFlight ? 0 : foundTargets.count)
         defer { done() }
 
         let products = Set(foundTargets.compactMap(\.product?.displayName))

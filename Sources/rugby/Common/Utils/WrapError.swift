@@ -13,7 +13,8 @@ enum WrappedError: Error, LocalizedError {
     var errorDescription: String? {
         switch self {
         case .common(let description):
-            return description
+            // Need to clear color because in _errorLabel we don't do that
+            return "\u{1B}[0m" + description
         }
     }
 

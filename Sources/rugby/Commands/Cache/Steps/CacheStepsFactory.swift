@@ -9,7 +9,7 @@ import Files
 
 struct CacheStepsFactory {
     let command: Cache
-    let metrics: Cache.Metrics
+    let metrics: Metrics
     let logFile: File
 
     var prepare: CachePrepareStep.Run {

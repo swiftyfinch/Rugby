@@ -11,7 +11,7 @@ extension CacheSubstepFactory {
     struct FindRemotePods: Step {
         let progress: Printer
         let command: Cache
-        let metrics: Cache.Metrics
+        let metrics: Metrics
 
         func run(_ project: XcodeProj) throws -> Set<String> {
             // Get remote pods from Podfile.lock

@@ -9,7 +9,7 @@ import Files
 
 struct DropStepFactory {
     let command: Drop
-    let metrics: Drop.Metrics
+    let metrics: Metrics
     let logFile: File
 
     var prepare: DropPrepareStep.Run {

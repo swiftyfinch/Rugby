@@ -8,5 +8,11 @@
 import Foundation
 
 extension String {
-    func filename() -> String? { components(separatedBy: "/").last }
+    /// With extension
+    func filename() -> String { components(separatedBy: "/").last ?? self }
+
+    /// Without extension
+    func basename() -> String {
+        filename().components(separatedBy: ".").first ?? self
+    }
 }

@@ -11,7 +11,7 @@ extension CacheSubstepFactory {
     struct FindBuildPods: Step {
         let progress: Printer
         let command: Cache
-        let metrics: Cache.Metrics
+        let metrics: Metrics
 
         func run(_ pods: Set<String>) throws -> (buildPods: Set<String>, remoteChecksums: [String]) {
             let checksums = try Podfile(.podfileLock).getChecksums()

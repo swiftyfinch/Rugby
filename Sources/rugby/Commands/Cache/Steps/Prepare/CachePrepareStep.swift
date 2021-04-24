@@ -22,9 +22,9 @@ struct CachePrepareStep: Step {
     let progress: Printer
 
     private let command: Cache
-    private let metrics: Cache.Metrics
+    private let metrics: Metrics
 
-    init(command: Cache, metrics: Cache.Metrics, logFile: File, isLast: Bool = false) {
+    init(command: Cache, metrics: Metrics, logFile: File, isLast: Bool = false) {
         self.command = command
         self.metrics = metrics
         self.verbose = command.verbose
