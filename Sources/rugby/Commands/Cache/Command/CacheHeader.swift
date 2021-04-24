@@ -14,7 +14,7 @@ struct Cache: ParsableCommand {
     @Flag(name: .shortAndLong, help: "Keep Pods group in project.") var keepSources = false
     @Option(name: .shortAndLong, parsing: .upToNextOption, help: "Exclude pods from cache.") var exclude: [String] = []
     @Flag(help: "Show more metrics.") var hideMetrics = false
-    @Flag(name: .shortAndLong, help: "Ignore already cached pods checksums.\n") var rebuild = false
+    @Flag(help: "Ignore already cached pods checksums.\n") var ignoreCache = false
 
     @Flag(name: .shortAndLong, help: "Print more information.") var verbose = false
 
