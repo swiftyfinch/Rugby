@@ -18,6 +18,6 @@ extension Cache {
             try factory.integrate(info.remotePods)
             try factory.cleanup(.init(scheme: info.scheme, pods: info.remotePods, products: info.products))
         }
-        printFinalMessage(logFile: logFile, time: time, metrics: metrics, more: self.metrics)
+        printFinalMessage(logFile: logFile, time: time, metrics: metrics, more: !hideMetrics)
     }
 }
