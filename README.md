@@ -49,7 +49,7 @@ $ rugby
 
 | Command | Description |
 | :----- | :------ |
-🏈 [`Cache`](Docs/Cache.md) | Remove remote pods from project, build them and integrate as frameworks and bundles.
+🏈 [`Cache`](Docs/Cache.md) | Convert remote pods to prebuilt dependencies.
 🏈 [`Drop`](Docs/Drop.md) | Remove any targets by RegEx.
 
 ### `Maybe Roadmap`
