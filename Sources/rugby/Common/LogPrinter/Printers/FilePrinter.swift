@@ -8,7 +8,7 @@
 import Files
 import Foundation
 
-final class FilePrinter: Printer {
+struct FilePrinter: Printer {
     private let logFile: File
     init(file: File) { self.logFile = file }
 

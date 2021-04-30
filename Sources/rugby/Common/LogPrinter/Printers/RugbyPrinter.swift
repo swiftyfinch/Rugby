@@ -8,7 +8,7 @@
 import Files
 import Foundation
 
-final class RugbyPrinter: Printer {
+struct RugbyPrinter: Printer {
     private let begin = ProcessInfo.processInfo.systemUptime
     private let formatter: Formatter
     private let printers: [Printer]
@@ -35,7 +35,7 @@ final class RugbyPrinter: Printer {
 }
 
 extension RugbyPrinter {
-    convenience init(title: String? = nil, logFile: File? = nil, verbose: Bool = false) {
+    init(title: String? = nil, logFile: File? = nil, verbose: Bool = false) {
         var printers: [Printer] = [verbose ? DefaultPrinter() : OneLinePrinter()]
         logFile.map { printers.append(FilePrinter(file: $0)) }
         self.init(formatter: RugbyFormatter(title: title), printers: printers)
