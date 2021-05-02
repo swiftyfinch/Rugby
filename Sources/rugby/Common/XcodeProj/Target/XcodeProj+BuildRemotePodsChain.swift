@@ -10,7 +10,7 @@ import XcodeProj
 extension XcodeProj {
     func buildRemotePodsChain(remotePods: Set<String>) -> Set<PBXTarget> {
         remotePods.reduce(into: Set<PBXTarget>()) { chain, name in
-            let targets = Set(pbxproj.targets(named: name))
+            let targets = findAllPodTargets(name)
             chain.formUnion(targets)
 
             let dependencies = targets.reduce(Set<PBXTarget>()) { set, target in
@@ -23,5 +23,17 @@ extension XcodeProj {
             }
             chain.formUnion(dependencies)
         }
+    }
+}
+
+private extension XcodeProj {
+    /// Include subspecs
+    func findAllPodTargets(_ name: String) -> Set<PBXTarget> {
+        let targets = pbxproj.main.targets
+        let filtered = targets.filter {
+            // todo: how to find all remote pods targets for sure?
+            $0.name == name || $0.name.hasPrefix(name + ".") || $0.name.hasPrefix(name + "-")
+        }
+        return Set(filtered)
     }
 }

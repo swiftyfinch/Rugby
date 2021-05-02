@@ -42,19 +42,23 @@ extension CachePrepareStep {
 
         progress.print("Read project ⏱".yellow)
         metrics.projectSize.before = (try Folder.current.subfolder(at: .podsProject)).size()
-        let podsProject = try XcodeProj(pathString: .podsProject)
-        metrics.compileFilesCount.before = podsProject.pbxproj.buildFiles.count
-        metrics.targetsCount.before = podsProject.pbxproj.main.targets.count
+        let project = try XcodeProj(pathString: .podsProject)
+        metrics.compileFilesCount.before = project.pbxproj.buildFiles.count
+        metrics.targetsCount.before = project.pbxproj.main.targets.count
         let factory = CacheSubstepFactory(progress: progress, command: command, metrics: metrics)
-        let pods = try factory.findRemotePods(podsProject)
+        let pods = try factory.findRemotePods(project)
         let (buildPods, remoteChecksums) = try factory.findBuildPods(pods)
-        let targets = try factory.buildTargetsChain(.init(project: podsProject, pods: pods))
-        try factory.addBuildTarget(.init(target: buildTarget, project: podsProject, pods: pods, buildPods: buildPods))
+        let (targets, buildTargets) = try factory.buildTargets((project: project, pods: pods, buildPods: buildPods))
+        let targetsNames = Set(targets.map(\.name))
+        if !buildTargets.isEmpty {
+            let dependencies = buildTargets.union(targetsNames)
+            try factory.addBuildTarget(.init(target: buildTarget, project: project, dependencies: dependencies))
+        }
         let products = Set(targets.compactMap(\.product?.name))
 
         done()
-        return Output(scheme: buildPods.isEmpty ? nil : buildTarget,
-                      remotePods: Set(targets.map(\.name)),
+        return Output(scheme: buildTargets.isEmpty ? nil : buildTarget,
+                      remotePods: targetsNames.union(pods),
                       checksums: remoteChecksums,
                       products: products)
     }

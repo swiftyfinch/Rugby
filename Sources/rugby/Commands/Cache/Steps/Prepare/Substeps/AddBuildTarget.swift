@@ -12,34 +12,20 @@ extension CacheSubstepFactory {
         struct Input {
             let target: String
             let project: XcodeProj
-            let pods: Set<String>
-            let buildPods: Set<String>
+            let dependencies: Set<String>
         }
 
         let progress: Printer
         let command: Cache
 
         func run(_ input: Input) throws {
-            let buildPodsChain: [String]
-            if command.skipParents {
-                buildPodsChain = Array(input.buildPods)
-                progress.print("Skip parents".yellow)
-            } else {
-                // Include parents of build pods. Maybe it's not necessary?
-                buildPodsChain = input.project.findParentDependencies(input.buildPods, allTargets: input.pods)
-            }
+            progress.print(input.dependencies, text: "Build targets")
 
-            if buildPodsChain.isEmpty {
-                progress.print("Skip".yellow)
-            } else {
-                progress.print(buildPodsChain, text: "Build pods")
+            progress.print("Add build target: ".yellow + input.target)
+            input.project.addTarget(name: input.target, dependencies: input.dependencies)
 
-                progress.print("Add build target: ".yellow + input.target)
-                input.project.addTarget(name: input.target, dependencies: buildPodsChain)
-
-                progress.print("Save project ⏱".yellow)
-                try input.project.write(pathString: .podsProject, override: true)
-            }
+            progress.print("Save project ⏱".yellow)
+            try input.project.write(pathString: .podsProject, override: true)
         }
     }
 }
