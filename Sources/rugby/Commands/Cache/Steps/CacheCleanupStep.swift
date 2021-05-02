@@ -56,7 +56,7 @@ struct CacheCleanupStep: Step {
         }
 
         progress.print("Remove builded pods".yellow)
-        var removeBuildedPods = podsProject.removeDependencies(names: remotePods)
+        var removeBuildedPods = podsProject.removeDependencies(names: remotePods, exclude: command.exclude)
         remotePods.forEach {
             removeBuildedPods = podsProject.removeTarget(name: $0) || removeBuildedPods
         }
