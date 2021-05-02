@@ -18,8 +18,8 @@ struct CacheSubstepFactory {
         FindBuildPods(progress: progress, command: command, metrics: metrics).run
     }
 
-    var buildTargetsChain: BuildTargetsChain.Run {
-        BuildTargetsChain(progress: progress).run
+    var buildTargets: BuildTargets.Run {
+        BuildTargets(progress: progress, command: command).run
     }
 
     var addBuildTarget: AddBuildTarget.Run {

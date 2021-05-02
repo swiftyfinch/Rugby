@@ -10,7 +10,7 @@ import XcodeProj
 extension XcodeProj {
     // Maybe will be better to make tree for better performance.
     // But for now, don't see easier way to get target parents.
-    func findParentDependencies(_ usedTargets: Set<String>, allTargets: Set<String>) -> [String] {
+    func findParentDependencies(_ usedTargets: Set<String>, allTargets: Set<String>) -> Set<String> {
         var hasChanges = false
         var used = usedTargets
         repeat {
@@ -23,6 +23,6 @@ extension XcodeProj {
                 hasChanges = true
             }
         } while hasChanges
-        return Array(used)
+        return used
     }
 }
