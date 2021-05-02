@@ -14,12 +14,12 @@ extension XcodeProj {
             chain.formUnion(targets)
 
             let dependencies = targets.reduce(Set<PBXTarget>()) { set, target in
-                let dependencies = target.dependencies.filter {
+                let filteredDependencies = target.dependencies.filter {
                     // Check that it's a part of remote pod
                     guard let prefix = $0.name?.components(separatedBy: "-").first else { return true }
                     return remotePods.contains(prefix)
                 }
-                return set.union(dependencies.compactMap(\.target))
+                return set.union(filteredDependencies.compactMap(\.target))
             }
             chain.formUnion(dependencies)
         }
