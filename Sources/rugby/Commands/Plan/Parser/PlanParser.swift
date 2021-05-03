@@ -39,12 +39,11 @@ extension PlanParser {
     }
 
     private func parseCommand(_ dictionary: [String: Any]) throws -> Command {
-        guard let commandName = dictionary.keys.first.flatMap(Commands.init(rawValue:)) else {
+        guard let command = dictionary["command"] as? String, let commandName = Commands(rawValue: command) else {
             throw PlanError.incorrectCommandName
         }
 
-        let arguments = dictionary.values.first ?? [:]
-        let dataArguments = try JSONSerialization.data(withJSONObject: arguments)
+        let dataArguments = try JSONSerialization.data(withJSONObject: dictionary)
         switch commandName {
         case .cache:
             let yml = try JSONDecoder().decode(CacheYML.self, from: dataArguments)
