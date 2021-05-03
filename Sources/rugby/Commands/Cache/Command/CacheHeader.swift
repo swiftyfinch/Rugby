@@ -17,6 +17,7 @@ struct Cache: ParsableCommand {
     @Flag(help: "Ignore already cached pods checksums.") var ignoreCache = false
     @Flag(help: "Skip building parents of changed pods.\n") var skipParents = false
 
+    @Flag(name: .long, inversion: .prefixedNo, help: "Play bell sound on finish.") var bell = true
     @Flag(name: .shortAndLong, help: "Print more information.") var verbose = false
 
     static var configuration: CommandConfiguration = .init(
@@ -24,6 +25,8 @@ struct Cache: ParsableCommand {
     )
 
     func run() throws {
-        try WrappedError.wrap(wrappedRun)
+        try WrappedError.wrap(playBell: bell) {
+            try wrappedRun()
+        }
     }
 }
