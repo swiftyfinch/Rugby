@@ -8,7 +8,8 @@
 import Files
 
 extension Drop {
-    func wrappedRun() throws {
+    mutating func wrappedRun() throws {
+        if testFlight { verbose = true }
         let logFile = try Folder.current.createFile(at: .log)
         let metrics = Metrics()
         let time = try measure {

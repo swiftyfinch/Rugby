@@ -31,7 +31,9 @@ struct Drop: ParsableCommand {
         abstract: "Remove any targets by RegEx."
     )
 
-    func run() throws {
-        try WrappedError.wrap(wrappedRun)
+    mutating func run() throws {
+        try WrappedError.wrap {
+            try wrappedRun()
+        }
     }
 }
