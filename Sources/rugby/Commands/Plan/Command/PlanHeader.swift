@@ -11,7 +11,7 @@ import Rainbow
 struct Plans: ParsableCommand {
     @Argument(help: "Plan name. (default: the first plan)\n") var plan: String?
 
-    @OptionGroup var cacheOptions: Cache
+    @OptionGroup(_hiddenFromHelp: true) var cacheOptions: Cache
 
     static var configuration = CommandConfiguration(
         abstract: "Run selected plan from \(".rugby/plans.yml".yellow)\n"
