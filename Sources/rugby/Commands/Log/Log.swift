@@ -25,7 +25,11 @@ struct Log: ParsableCommand {
         abstract: "Print last command log verbosely."
     )
 
-    func run() throws { try WrappedError.wrap(wrappedRun) }
+    func run() throws {
+        try WrappedError.wrap(playBell: false) {
+            try wrappedRun()
+        }
+    }
 }
 
 extension Log {

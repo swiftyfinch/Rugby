@@ -17,7 +17,10 @@ enum WrappedError: Error, LocalizedError {
         }
     }
 
-    static func wrap(_ block: () throws -> Void) throws {
+    static func wrap(playBell: Bool, _ block: () throws -> Void) throws {
+        defer {
+            if playBell { playBellSound() }
+        }
         do {
             try block()
         } catch {

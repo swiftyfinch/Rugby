@@ -15,7 +15,7 @@ struct Clean: ParsableCommand {
     )
 
     func run() throws {
-        try WrappedError.wrap {
+        try WrappedError.wrap(playBell: false) {
             try CleanStep().run()
         }
     }

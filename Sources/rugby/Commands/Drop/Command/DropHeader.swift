@@ -25,6 +25,7 @@ struct Drop: ParsableCommand {
     @Option(name: .shortAndLong, parsing: .upToNextOption, help: "Exclude targets.") var exclude: [String] = []
     @Flag(help: "Hide metrics.\n") var hideMetrics = false
 
+    @Flag(name: .long, inversion: .prefixedNo, help: "Play bell sound on finish.") var bell = true
     @Flag(name: .shortAndLong, help: "Print more information.") var verbose = false
 
     static var configuration = CommandConfiguration(
@@ -32,7 +33,7 @@ struct Drop: ParsableCommand {
     )
 
     mutating func run() throws {
-        try WrappedError.wrap {
+        try WrappedError.wrap(playBell: bell) {
             try wrappedRun()
         }
     }
