@@ -41,10 +41,10 @@ struct PlansInit: ParsableCommand {
           - command: drop
             targets:
               - Test
-          # And so on: rugby drop -i "TestProjectTests" -p TestProject/TestProject.xcodeproj
+          # And so on: rugby drop -i "TestProject" -p TestProject/TestProject.xcodeproj
           - command: drop
             targets:
-              - TestProjectTests
+              - TestProject$
             invert: true
             project: TestProject/TestProject.xcodeproj
 
