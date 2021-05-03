@@ -15,7 +15,8 @@ struct Plans: ParsableCommand {
 
     static var configuration = CommandConfiguration(
         abstract: "Run selected plan from \(".rugby/plans.yml".yellow)\n"
-            + "or use cache command if file not found."
+            + "or use cache command if file not found.",
+        subcommands: [PlansInit.self]
     )
 
     func run() throws {
