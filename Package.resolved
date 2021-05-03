@@ -48,7 +48,7 @@
       },
       {
         "package": "ShellOut",
-        "repositoryURL": "https://github.com/JohnSundell/ShellOut.git",
+        "repositoryURL": "https://github.com/JohnSundell/ShellOut",
         "state": {
           "branch": null,
           "revision": "e1577acf2b6e90086d01a6d5e2b8efdaae033568",
@@ -114,8 +114,8 @@
         "repositoryURL": "https://github.com/tuist/xcodeproj",
         "state": {
           "branch": null,
-          "revision": "6943d5c5f9085d070dbde3c669144e30d41ec635",
-          "version": "7.20.0"
+          "revision": "94e55232d227f9d78b811c98cb2e5d0cbd08987b",
+          "version": "7.22.0"
         }
       },
       {
@@ -123,8 +123,8 @@
         "repositoryURL": "https://github.com/jpsim/Yams.git",
         "state": {
           "branch": null,
-          "revision": "4ec0a3c5d6a2446667a2b22c8c7d0fc82dd1d3de",
-          "version": "4.0.5"
+          "revision": "9ff1cc9327586db4e0c8f46f064b6a82ec1566fa",
+          "version": "4.0.6"
         }
       }
     ]

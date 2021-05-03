@@ -13,11 +13,11 @@ let package = Package(
         .package(url: "https://github.com/apple/swift-argument-parser", from: "0.3.2"),
         .package(url: "https://github.com/onevcat/Rainbow", from: "4.0.0"),
         .package(url: "https://github.com/JohnSundell/Files", from: "4.2.0"),
-        .package(name: "XcodeProj", url: "https://github.com/tuist/xcodeproj", from: "7.20.0"),
+        .package(name: "XcodeProj", url: "https://github.com/tuist/xcodeproj", from: "7.22.0"),
         .package(url: "https://github.com/eneko/RegEx.git", from: "0.3.0"),
-        .package(url: "https://github.com/JohnSundell/ShellOut.git", from: "2.3.0"),
+        .package(url: "https://github.com/JohnSundell/ShellOut", from: "2.3.0"),
         .package(url: "https://github.com/realm/SwiftLint", from: "0.43.1"),
-        .package(url: "https://github.com/jpsim/Yams.git", from: "4.0.5")
+        .package(url: "https://github.com/jpsim/Yams.git", from: "4.0.6")
     ],
     targets: [
         .target(name: "rugby", dependencies: [
