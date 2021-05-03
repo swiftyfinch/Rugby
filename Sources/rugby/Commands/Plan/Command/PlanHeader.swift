@@ -9,7 +9,7 @@ import ArgumentParser
 import Rainbow
 
 struct Plans: ParsableCommand {
-    @Argument(help: "Plan name. (default: the first plan)\n") var plan: String?
+    @Option(help: "Plan name. (default: the first plan)\n") var plan: String?
 
     @OptionGroup(_hiddenFromHelp: true) var cacheOptions: Cache
 
