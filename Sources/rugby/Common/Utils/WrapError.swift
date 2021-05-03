@@ -18,8 +18,10 @@ enum WrappedError: Error, LocalizedError {
     }
 
     static func wrap(playBell: Bool, _ block: () throws -> Void) throws {
+        let begin = ProcessInfo.processInfo.systemUptime
         defer {
-            if playBell { playBellSound() }
+            let time = ProcessInfo.processInfo.systemUptime - begin
+            if playBell && time > 1 { playBellSound() }
         }
         do {
             try block()
