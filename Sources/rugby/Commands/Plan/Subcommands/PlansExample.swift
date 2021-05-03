@@ -1,5 +1,5 @@
 //
-//  PlansInit.swift
+//  PlansExample.swift
 //  
 //
 //  Created by Vyacheslav Khorkov on 03.05.2021.
@@ -9,7 +9,7 @@ import ArgumentParser
 import Files
 import Foundation
 
-enum PlansInitError: Error, LocalizedError {
+enum PlansExampleError: Error, LocalizedError {
     case alreadyExists
 
     var errorDescription: String? {
@@ -20,15 +20,15 @@ enum PlansInitError: Error, LocalizedError {
     }
 }
 
-struct PlansInit: ParsableCommand {
+struct PlansExample: ParsableCommand {
     static var configuration = CommandConfiguration(
-        commandName: "init",
-        abstract: "Generate base template \(String.plans.yellow)."
+        commandName: "example",
+        abstract: "Generate example \(String.plans.yellow)"
     )
 
     func run() throws {
         guard (try? Folder.current.file(at: .plans)) == nil else {
-            throw PlansInitError.alreadyExists
+            throw PlansExampleError.alreadyExists
         }
 
         let plansFile = try Folder.current.createFile(at: .plans)
