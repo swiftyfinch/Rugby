@@ -12,6 +12,7 @@ struct CacheBuildStep: Step {
     struct Input {
         let scheme: String?
         let checksums: [String]
+        let swiftVersion: String?
     }
 
     let verbose: Bool
@@ -49,7 +50,8 @@ struct CacheBuildStep: Step {
         progress.print("Update checksums".yellow)
         try CacheManager().save(CacheFile(checksums: input.checksums,
                                           sdk: command.sdk,
-                                          arch: command.arch))
+                                          arch: command.arch,
+                                          swift: input.swiftVersion))
         done()
     }
 }

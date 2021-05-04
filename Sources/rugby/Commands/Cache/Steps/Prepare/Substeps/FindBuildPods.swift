@@ -13,7 +13,11 @@ extension CacheSubstepFactory {
         let command: Cache
         let metrics: Metrics
 
-        func run(_ pods: Set<String>) throws -> (buildPods: Set<String>, remoteChecksums: [String]) {
+        func run(_ pods: Set<String>) throws -> (
+            buildPods: Set<String>,
+            remoteChecksums: [String],
+            swiftVersion: String?
+        ) {
             let checksums = try Podfile(.podfileLock).getChecksums()
             let remoteChecksums = checksums.filter {
                 guard let name = $0.components(separatedBy: ": ").first?
@@ -24,18 +28,20 @@ extension CacheSubstepFactory {
 
             // Find checksums difference from cache file
             let buildPods: Set<String>
-            let cacheFile = try CacheManager().load()
-            if command.ignoreCache || command.sdk != cacheFile.sdk || command.arch != cacheFile.arch {
+            let cache = try CacheManager().load()
+            let swiftVersion = SwiftVersionProvider().swiftVersion()
+            let unsuitableCache = command.sdk != cache.sdk || command.arch != cache.arch || swiftVersion != cache.swift
+            if command.ignoreCache || unsuitableCache {
                 buildPods = pods
             } else {
-                let cachedChecksums = cacheFile.checksums
+                let cachedChecksums = cache.checksums
                 let changes = Set(remoteChecksums).subtracting(cachedChecksums)
                 let changedPods = changes.compactMap {
                     $0.components(separatedBy: ": ").first?.trimmingCharacters(in: ["\""])
                 }
                 buildPods = Set(changedPods)
             }
-            return (buildPods, remoteChecksums)
+            return (buildPods, remoteChecksums, swiftVersion)
         }
     }
 }
