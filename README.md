@@ -49,6 +49,7 @@ $ rugby
 
 | Command | Description |
 | :----- | :------ |
+🚧 `Plans` | Run a predefined sequence of commands.
 🏈 [`Cache`](Docs/Cache.md) | Convert remote pods to prebuilt dependencies.
 🏈 [`Drop`](Docs/Drop.md) | Remove any targets by RegEx.
 
