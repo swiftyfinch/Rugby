@@ -1,6 +1,6 @@
 <h3 align="center">
   Rugby 🏈<br>
-  <sup>(<ins>like Ruby but with g</ins>)</sup>
+  <sup>"Like Ruby but with g"</sup>
 </h3>
 <p align="center">
     <img src="https://github.com/swiftyfinch/Rugby/blob/main/Demo.gif" width="600"/>
@@ -29,7 +29,7 @@ You can read 📖 [full story](https://swiftyfinch.github.io/en/2021-03-09-rugby
 `+` Remove unnecessary sources from a project and reduce project size;\
 `+` Drop any unneeded targets with sources and resources by RegEx.
 
-### ✈️ Quick start with [`Homebrew`](https://brew.sh)
+### Quick start with [`Homebrew`](https://brew.sh) 🍺
 
 ```bash
 # First install
@@ -43,20 +43,20 @@ $ brew upgrade rugby
 ### `How to use`
 
 ```bash
-# For basic usage just run one command in your project directory
-$ rugby
+$ pod install
+$ rugby # Run in your project directory after each pod install
 ```
 
 | Command | Description |
 | :----- | :------ |
-🚧 `Plans` | Run a predefined sequence of commands.
+✈️ [`Plans`](Docs/Plans.md) | Run a predefined sequence of commands.
 🏈 [`Cache`](Docs/Cache.md) | Convert remote pods to prebuilt dependencies.
-🏈 [`Drop`](Docs/Drop.md) | Remove any targets by RegEx.
+🗑 [`Drop`](Docs/Drop.md) | Remove any targets by RegEx.
 
 ### `Maybe Roadmap`
 
 - [x] Output metrics
-- [ ] Rugby plans
+- [x] Rugby plans
 - [ ] New command
 - [ ] Open source
 
