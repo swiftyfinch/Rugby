@@ -15,7 +15,11 @@ enum PlansExampleError: Error, LocalizedError {
     var errorDescription: String? {
         switch self {
         case .alreadyExists:
-            return "\(String.plans.yellow) already exists."
+            return """
+            \(String.plans.red + " already exists.".red)
+            \("🚑 You can find example here".yellow) (⌘ + double click on link)
+            \("https://github.com/swiftyfinch/Rugby/blob/main/Docs/Plans.md#-generate-example".cyan)
+            """
         }
     }
 }
