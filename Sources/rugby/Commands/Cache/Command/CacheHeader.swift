@@ -22,7 +22,10 @@ struct Cache: ParsableCommand {
     @Flag(name: .shortAndLong, help: "Print more information.") var verbose = false
 
     static var configuration: CommandConfiguration = .init(
-        abstract: "Convert remote pods to prebuilt dependencies."
+        abstract: """
+        • Convert remote pods to prebuilt dependencies.
+        Call it after each \("pod install".yellow).
+        """
     )
 
     mutating func run() throws {

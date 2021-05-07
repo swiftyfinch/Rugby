@@ -14,8 +14,10 @@ struct Plans: ParsableCommand {
     @OptionGroup(_hiddenFromHelp: true) var cacheOptions: Cache
 
     static var configuration = CommandConfiguration(
-        abstract: "Run selected plan from \(".rugby/plans.yml".yellow)\n"
-            + "or use cache command if file not found.",
+        abstract: """
+        • Run selected plan from \(".rugby/plans.yml".yellow)
+        or use cache command if file not found.
+        """,
         subcommands: [PlansExample.self]
     )
 

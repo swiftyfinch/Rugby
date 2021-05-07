@@ -29,7 +29,7 @@ struct Drop: ParsableCommand {
     @Flag(name: .shortAndLong, help: "Print more information.") var verbose = false
 
     static var configuration = CommandConfiguration(
-        abstract: "Remove any targets by RegEx."
+        abstract: "• Remove any targets by RegEx."
     )
 
     mutating func run() throws {
