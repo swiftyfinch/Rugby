@@ -22,7 +22,7 @@ private enum LogError: Error, LocalizedError {
 
 struct Log: ParsableCommand {
     static var configuration = CommandConfiguration(
-        abstract: "Print last command log verbosely."
+        abstract: "• Print last command log verbosely."
     )
 
     func run() throws {
