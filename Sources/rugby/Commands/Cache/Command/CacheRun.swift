@@ -8,7 +8,10 @@
 import Files
 
 extension Cache: Command {
-    func run(logFile: File) throws -> Metrics {
+    mutating func run(logFile: File) throws -> Metrics {
+        // For simulators use arch x86_64 by default.
+        if sdk == .sim && arch == nil { arch = "x86_64" }
+
         let metrics = CacheMetrics(project: String.podsProject.basename())
         let factory = CacheStepsFactory(command: self, metrics: metrics, logFile: logFile)
         let info = try factory.prepare(.buildTarget)
