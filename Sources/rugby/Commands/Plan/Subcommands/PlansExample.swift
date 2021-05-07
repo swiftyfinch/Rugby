@@ -37,6 +37,7 @@ struct PlansExample: ParsableCommand {
 
         let plansFile = try Folder.current.createFile(at: .plans)
         try plansFile.write(Self.template)
+        print("🏈 Example was saved at ".green + ".rugby/plans.yml".yellow + ".")
     }
 
     private static let template: String = """
