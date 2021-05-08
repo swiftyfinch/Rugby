@@ -68,19 +68,20 @@ struct PlansExample: ParsableCommand {
             targets:
               - Test
             # Optional parameters:
+            exclude:
+              - Pods-TestProject
             #targets: []
             #invert: false
             #project: "Pods/Pods.xcodeproj"
             #testFlight: false
             #keepSources: false
-            #exclude: []
             #hideMetrics: false
             #verbose: false
 
           # And so on: rugby drop -i "TestProject" -p TestProject/TestProject.xcodeproj
           - command: drop
             targets:
-              - TestProject$
+              - ^TestProject$
             invert: true
             project: TestProject/TestProject.xcodeproj
 
