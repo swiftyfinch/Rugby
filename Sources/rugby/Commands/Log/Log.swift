@@ -8,7 +8,6 @@
 import ArgumentParser
 import Files
 import Foundation
-import ShellOut
 
 private enum LogError: Error, LocalizedError {
     case cantFindLog
@@ -35,6 +34,6 @@ struct Log: ParsableCommand {
 extension Log {
     private func wrappedRun() throws {
         guard Folder.current.containsFile(at: .log) else { throw LogError.cantFindLog }
-        try shellOut(to: "cat " + .log, outputHandle: FileHandle.standardOutput)
+        try printShell("cat " + .log)
     }
 }

@@ -6,8 +6,7 @@
 //
 
 import Foundation
-import ShellOut
 
 func playBellSound() {
-    _ = try? shellOut(to: "tput bel", outputHandle: .standardOutput)
+    _ = try? printShell("tput bel")
 }

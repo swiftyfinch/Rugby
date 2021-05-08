@@ -6,7 +6,6 @@
 //
 
 import Files
-import ShellOut
 import XcodeProj
 
 struct CachePrepareStep: Step {
@@ -37,7 +36,7 @@ struct CachePrepareStep: Step {
 extension CachePrepareStep {
 
     func run(_ buildTarget: String) throws -> Output {
-        if try shellOut(to: "xcode-select -p") == .defaultXcodeCLTPath {
+        if try shell("xcode-select -p") == .defaultXcodeCLTPath {
             throw CacheError.cantFineXcodeCommandLineTools
         }
 
