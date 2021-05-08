@@ -55,6 +55,7 @@ private final class ShellRunner {
 
         let output = SwiftShell.run(bash: "echo $SHELL")
         if output.succeeded {
+            shell = output.stdout
             return output.stdout
         } else if let error = output.error {
             throw error
