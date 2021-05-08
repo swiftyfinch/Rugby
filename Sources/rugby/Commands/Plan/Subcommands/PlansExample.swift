@@ -49,7 +49,7 @@ struct PlansExample: ParsableCommand {
 
           # Install pods before each rugby call
           - command: shell
-            run: pod install # You can use any shell commands
+            run: bundle exec pod install # You can use any shell commands
 
           # The first Rugby command without arguments like: rugby cache
           - command: cache
