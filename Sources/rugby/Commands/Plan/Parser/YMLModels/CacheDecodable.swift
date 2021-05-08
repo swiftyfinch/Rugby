@@ -1,17 +1,17 @@
 //
-//  DropYML.swift
+//  CacheDecodable.swift
 //  
 //
 //  Created by Vyacheslav Khorkov on 24.04.2021.
 //
 
-struct DropYML: Decodable {
-    let targets: [String]?
-    let invert: Bool?
-    let project: String?
-    let testFlight: Bool?
+struct CacheDecodable: Decodable {
+    let arch: String?
+    let sdk: SDK?
     let keepSources: Bool?
     let exclude: [String]?
     let hideMetrics: Bool?
+    let ignoreCache: Bool?
+    let skipParents: Bool?
     let verbose: Bool?
 }
