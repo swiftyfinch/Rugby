@@ -75,7 +75,6 @@ struct PlansExample: ParsableCommand {
             exclude: # Optional
               - Pods-TestProject # It's just for example
             # Optional parameters with default values:
-            targets: []
             invert: false
             project: "Pods/Pods.xcodeproj"
             testFlight: false
