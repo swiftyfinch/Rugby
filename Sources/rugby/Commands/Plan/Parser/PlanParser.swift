@@ -46,7 +46,7 @@ extension PlanParser {
         let dataArguments = try JSONSerialization.data(withJSONObject: dictionary)
         switch commandName {
         case .cache:
-            let yml = try JSONDecoder().decode(CacheYML.self, from: dataArguments)
+            let yml = try JSONDecoder().decode(CacheDecodable.self, from: dataArguments)
             var cache = Cache()
             cache.arch = yml.arch
             cache.sdk = yml.sdk ?? .sim
@@ -58,7 +58,7 @@ extension PlanParser {
             cache.verbose = yml.verbose ?? false
             return cache
         case .drop:
-            let yml = try JSONDecoder().decode(DropYML.self, from: dataArguments)
+            let yml = try JSONDecoder().decode(DropDecodable.self, from: dataArguments)
             var drop = Drop()
             drop.targets = yml.targets ?? []
             drop.invert = yml.invert ?? false
