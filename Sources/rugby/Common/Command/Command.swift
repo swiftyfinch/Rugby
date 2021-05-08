@@ -12,11 +12,12 @@ protocol Command {
     var project: String { get }
     var hideMetrics: Bool { get }
 
-    mutating func run(logFile: File) throws -> Metrics
+    mutating func run(logFile: File) throws -> Metrics?
 }
 
 extension Command {
     var project: String { .podsProject }
+    var hideMetrics: Bool { false }
 }
 
 extension Command where Self: ParsableCommand {

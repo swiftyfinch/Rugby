@@ -8,7 +8,7 @@
 import Files
 
 extension Cache: Command {
-    mutating func run(logFile: File) throws -> Metrics {
+    mutating func run(logFile: File) throws -> Metrics? {
         // For simulators use arch x86_64 by default.
         if sdk == .sim && arch == nil { arch = "x86_64" }
 
