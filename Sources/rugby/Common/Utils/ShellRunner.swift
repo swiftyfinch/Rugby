@@ -21,13 +21,24 @@ func printShell(_ command: String, args: Any ...) throws {
 
 extension ShellRunner {
     func runAndPrint(_ command: String, args: Any ...) throws {
+        let stringArgs = args.flatten().map(String.init(describing:))
+        let commandWithArgs = command + " " + stringArgs.joined(separator: " ")
         let currentShell = try getCurrentShell()
-        try SwiftShell.runAndPrint(currentShell, "-c", command, args)
+        try SwiftShell.runAndPrint(currentShell, "-c", commandWithArgs)
     }
 
     func run(_ command: String, args: Any ...) throws -> String {
+        let stringArgs = args.flatten().map(String.init(describing:))
+        let commandWithArgs = command + " " + stringArgs.joined(separator: " ")
         let currentShell = try getCurrentShell()
-        return SwiftShell.run(currentShell, "-c", command, args).stdout
+        let output = SwiftShell.run(currentShell, "-c", commandWithArgs)
+        if output.succeeded {
+            return output.stdout
+        } else if let error = output.error {
+            throw error
+        } else {
+            throw Error.unknown(output.stderror)
+        }
     }
 }
 
@@ -61,6 +72,17 @@ private final class ShellRunner {
             throw error
         } else {
             throw Error.unknown(output.stderror)
+        }
+    }
+}
+
+private extension Array where Element: Any {
+    func flatten() -> [Any] {
+        flatMap { x -> [Any] in
+            if let anyarray = x as? [Any] {
+                return anyarray.map { $0 as Any }.flatten()
+            }
+            return [x]
         }
     }
 }
