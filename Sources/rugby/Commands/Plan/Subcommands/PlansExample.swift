@@ -43,7 +43,15 @@ struct PlansExample: ParsableCommand {
     private static let template: String = """
         # The first plan in file always run by default.
         - usual:
-          # The first command without arguments like: rugby cache
+          # Optionally you can generate project if you use Xcodegen or something like that
+          #- command: shell
+          #  run: xcodegen
+
+          # Install pods before each rugby call
+          - command: shell
+            run: pod install # You can use any shell commands
+
+          # The first Rugby command without arguments like: rugby cache
           - command: cache
             # Optional parameters:
             skipParents: true
@@ -54,6 +62,7 @@ struct PlansExample: ParsableCommand {
             #hideMetrics: false
             #ignoreCache: false
             #verbose: false
+
           # The second command: rugby drop "Test"
           - command: drop
             targets:
@@ -67,6 +76,7 @@ struct PlansExample: ParsableCommand {
             #exclude: []
             #hideMetrics: false
             #verbose: false
+
           # And so on: rugby drop -i "TestProject" -p TestProject/TestProject.xcodeproj
           - command: drop
             targets:
@@ -74,7 +84,8 @@ struct PlansExample: ParsableCommand {
             invert: true
             project: TestProject/TestProject.xcodeproj
 
-        # Also, you can use custom plan: rugby --plan unit
+
+        # Also, you can use another custom plan: rugby --plan unit
         - unit:
           - command: cache
             exclude: [Alamofire]
