@@ -5,8 +5,6 @@
 //  Created by v.khorkov on 31.01.2021.
 //
 
-import ShellOut
-
 struct XcodeBuild {
     let project: String
     let scheme: String
@@ -29,9 +27,9 @@ struct XcodeBuild {
         }
         arguments.append("| tee " + .buildLog)
 
-        try shellOut(
-            to: "set -o pipefail && NSUnbufferedIO=YES xcodebuild",
-            arguments: arguments
+        try shell(
+            "set -o pipefail && NSUnbufferedIO=YES xcodebuild",
+            args: arguments
         )
     }
 }

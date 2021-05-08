@@ -6,7 +6,6 @@
 //
 
 import Files
-import ShellOut
 import XcodeProj
 
 extension XcodeProj {
@@ -54,7 +53,7 @@ extension XcodeProj {
             try? sharedSchemes?.file(at: $0 + ".xcscheme").delete()
         }
 
-        let username = try shellOut(to: "echo ${USER}")
+        let username = try shell("echo ${USER}")
         schemesForRemove.forEach {
             let userSchemesFolder = try? Folder(path: projectPath + "/xcuserdata/\(username).xcuserdatad/xcschemes")
             try? userSchemesFolder?.file(at: $0 + ".xcscheme").delete()
