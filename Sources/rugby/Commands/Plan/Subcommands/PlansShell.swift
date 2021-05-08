@@ -11,6 +11,8 @@ struct Shell: Command {
     let run: String
 
     func run(logFile: File) throws -> Metrics? {
+        let progress = RugbyPrinter(title: "Shell 🐚")
+        progress.print(run.yellow)
         try printShell(run)
         return nil
     }
