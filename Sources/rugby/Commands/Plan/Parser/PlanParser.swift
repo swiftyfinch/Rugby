@@ -35,7 +35,7 @@ struct PlanParser {
 
 extension PlanParser {
     private enum Commands: String {
-        case cache, drop
+        case cache, drop, shell
     }
 
     private func parseCommand(_ dictionary: [String: Any]) throws -> Command {
@@ -69,6 +69,9 @@ extension PlanParser {
             drop.hideMetrics = yml.hideMetrics ?? false
             drop.verbose = yml.verbose ?? false
             return drop
+        case .shell:
+            let yml = try JSONDecoder().decode(ShellDecodable.self, from: dataArguments)
+            return Shell(run: yml.run)
         }
     }
 }
