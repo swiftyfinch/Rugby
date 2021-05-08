@@ -37,25 +37,30 @@ struct PlansExample: ParsableCommand {
 
         let plansFile = try Folder.current.createFile(at: .plans)
         try plansFile.write(Self.template)
-        print("🏈 Example was saved at ".green + ".rugby/plans.yml".yellow + ".")
+        print("🏈 Example file was saved at ".green + ".rugby/plans.yml".yellow)
+        print("Also, you can find example here: (⌘ + double click on link)")
+        print("https://github.com/swiftyfinch/Rugby/blob/main/Docs/Plans.md#-generate-example".cyan)
     }
 
     private static let template: String = """
-        # The first plan in file always run by default.
+        # You can find more information here:
+        # https://github.com/swiftyfinch/Rugby/blob/main/Docs/Plans.md
+
+        # The first plan in the file always run by default
         - usual:
-          # Optionally you can generate project if you use Xcodegen or something like that
+          # 🐚 Optionally you can generate project if you use Xcodegen or something like that
           #- command: shell
           #  run: xcodegen
 
-          # Install pods before each rugby call
+          # 🐚 Also, you can install pods before each rugby call right here
           - command: shell
-            run: bundle exec pod install # You can use any shell commands
+            run: bundle exec pod install # Or you can use any shell command
 
-          # The first Rugby command without arguments like: rugby cache
+          # 🏈 The first Rugby command without arguments like: $ rugby cache
           - command: cache
-            # Optional parameters:
+            # Optional parameters with default values:
             skipParents: true
-            #arch: null
+            #arch: null # By default x86_64 if sdk == sim
             #sdk: sim
             #keepSources: false
             #exclude: []
@@ -63,22 +68,22 @@ struct PlansExample: ParsableCommand {
             #ignoreCache: false
             #verbose: false
 
-          # The second command: rugby drop "Test"
+          # 🗑 The second command: $ rugby drop "Test"
           - command: drop
             targets:
               - Test
-            # Optional parameters:
-            exclude:
-              - Pods-TestProject
-            #targets: []
-            #invert: false
-            #project: "Pods/Pods.xcodeproj"
-            #testFlight: false
-            #keepSources: false
-            #hideMetrics: false
-            #verbose: false
+            exclude: # Optional
+              - Pods-TestProject # It's just for example
+            # Optional parameters with default values:
+            targets: []
+            invert: false
+            project: "Pods/Pods.xcodeproj"
+            testFlight: false
+            keepSources: false
+            hideMetrics: false
+            verbose: false
 
-          # And so on: rugby drop -i "TestProject" -p TestProject/TestProject.xcodeproj
+          # 🗑 And so on: $ rugby drop -i "TestProject" -p TestProject/TestProject.xcodeproj
           - command: drop
             targets:
               - ^TestProject$
@@ -86,7 +91,7 @@ struct PlansExample: ParsableCommand {
             project: TestProject/TestProject.xcodeproj
 
 
-        # Also, you can use another custom plan: rugby --plan unit
+        # Also, you can use another custom plan: $ rugby --plan unit
         - unit:
           - command: cache
             exclude: [Alamofire]
