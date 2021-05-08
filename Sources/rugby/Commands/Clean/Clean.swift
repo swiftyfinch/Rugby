@@ -28,11 +28,22 @@ struct CleanStep: Step {
     let progress: Printer
 
     init() {
-        self.progress = RugbyPrinter(title: "Clean")
+        self.progress = RugbyPrinter(title: "Clean", verbose: true)
     }
 
     func run(_ input: Void) {
-        try? Folder.current.subfolder(at: .supportFolder).delete()
+        try? Folder.current.subfolder(at: .buildFolder).delete()
+        progress.print("Removed \(String.buildFolder)".yellow)
+
+        try? Folder.current.file(at: .buildLog).delete()
+        progress.print("Removed \(String.buildLog)".yellow)
+
+        try? Folder.current.file(at: .log).delete()
+        progress.print("Removed \(String.log)".yellow)
+
+        try? Folder.current.file(at: .cacheFile).delete()
+        progress.print("Removed \(String.cacheFile)".yellow)
+
         done()
     }
 }
