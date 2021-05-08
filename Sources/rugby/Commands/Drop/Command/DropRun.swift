@@ -8,7 +8,7 @@
 import Files
 
 extension Drop: Command {
-    mutating func run(logFile: File) throws -> Metrics {
+    mutating func run(logFile: File) throws -> Metrics? {
         if testFlight { verbose = true }
         let metrics = DropMetrics(project: project.basename())
         let factory = DropStepFactory(command: self, metrics: metrics, logFile: logFile)
