@@ -19,43 +19,53 @@ SUBCOMMANDS:
 ### 🗺 Generate example
 
 Generate example at `.rugby/plans.yml`:\
-`$ rugby plans example`
+`$ rugby example`
 
 ```yml
-# The first plan in file always run by default.
+# The first plan in the file always run by default
 - usual:
-  # The first command without arguments like: rugby cache
+  # 🐚 Optionally you can generate project if you use Xcodegen or something like that
+  - command: shell
+    run: xcodegen
+
+  # 🐚 Also, you can install pods before each rugby call right here
+  - command: shell
+    run: bundle exec pod install # Or you can use any shell command
+
+  # 🏈 The first Rugby command without arguments like: $ rugby cache
   - command: cache
-    # Optional parameters:
-    skipParents: true
-    #arch: null
-    #sdk: sim
-    #keepSources: false
-    #exclude: []
-    #hideMetrics: false
-    #ignoreCache: false
-    #verbose: false
-  # The second command: rugby drop "Test"
+    # Optional parameters with default values:
+    skipParents: false
+    arch: null # By default x86_64 if sdk == sim
+    sdk: sim
+    keepSources: false
+    exclude: []
+    hideMetrics: false
+    ignoreCache: false
+    verbose: false
+
+  # 🗑 The second command: $ rugby drop "Test"
   - command: drop
     targets:
       - Test
-    # Optional parameters:
-    #targets: []
-    #invert: false
-    #project: "Pods/Pods.xcodeproj"
-    #testFlight: false
-    #keepSources: false
-    #exclude: []
-    #hideMetrics: false
-    #verbose: false
-  # And so on: rugby drop -i "TestProject" -p TestProject/TestProject.xcodeproj
+    exclude: # Optional
+      - Pods-TestProject # It's just for example
+    # Optional parameters with default values:
+    invert: false
+    project: "Pods/Pods.xcodeproj"
+    testFlight: false
+    keepSources: false
+    hideMetrics: false
+    verbose: false
+
+  # 🗑 And so on: $ rugby drop -i "TestProject" -p TestProject/TestProject.xcodeproj
   - command: drop
-    targets:
-      - TestProject$
+    targets: [^TestProject$] # Alternative array syntax
     invert: true
     project: TestProject/TestProject.xcodeproj
 
-# Also, you can use custom plan: rugby --plan unit
+
+# Also, you can use another custom plan: $ rugby --plan unit
 - unit:
   - command: cache
     exclude: [Alamofire]

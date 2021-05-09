@@ -57,7 +57,7 @@ $ rugby # Run in your project directory after each pod install
 
 - [x] Output metrics
 - [x] Rugby plans
-- [ ] New command
+- [ ] New commands
 - [ ] Open source
 
 ### `Author`
