@@ -6,7 +6,6 @@
 //
 
 import ArgumentParser
-import Files
 import Rainbow
 
 struct Cache: ParsableCommand {

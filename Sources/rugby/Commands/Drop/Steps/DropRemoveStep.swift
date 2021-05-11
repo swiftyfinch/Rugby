@@ -12,25 +12,26 @@ struct DropRemoveStep: Step {
     struct Input {
         let targets: Set<String>
         let products: Set<String>
+        let testFlight: Bool
+        let project: String
+        let keepSources: Bool
     }
 
     let verbose: Bool
     let isLast: Bool
     let progress: Printer
 
-    private let command: Drop
     private let metrics: Metrics
 
-    init(command: Drop, metrics: Metrics, logFile: File, isLast: Bool = false) {
-        self.command = command
+    init(verbose: Bool, metrics: Metrics, logFile: File, isLast: Bool = false) {
         self.metrics = metrics
-        self.verbose = command.verbose
+        self.verbose = verbose
         self.isLast = isLast
         self.progress = RugbyPrinter(title: "Drop", logFile: logFile, verbose: verbose)
     }
 
     func run(_ input: Input) throws {
-        if command.testFlight {
+        if input.testFlight {
             progress.print("Skip".yellow)
             return done()
         }
@@ -41,7 +42,7 @@ struct DropRemoveStep: Step {
             return done()
         }
 
-        let project = try XcodeProj(pathString: command.project)
+        let project = try XcodeProj(pathString: input.project)
 
         progress.print("Remove frameworks".yellow)
         project.removeFrameworks(products: products)
@@ -53,14 +54,14 @@ struct DropRemoveStep: Step {
         project.removeAppExtensions(products: products)
         project.removeFrameworkPaths(products: products)
 
-        if !command.keepSources {
+        if !input.keepSources {
             progress.print("Remove sources & resources".yellow)
             let filesRemainingTargets = try project.findFilesRemainingTargets(targetsForRemove: Set(targets))
             try project.removeSources(fromTargets: targets, excludeFiles: filesRemainingTargets)
         }
 
         progress.print("Remove schemes".yellow)
-        try project.removeSchemes(pods: Set(targets), projectPath: command.project)
+        try project.removeSchemes(pods: Set(targets), projectPath: input.project)
 
         progress.print("Remove targets".yellow)
         let removedTargets = Set(targets.filter(project.removeTarget))
@@ -71,8 +72,8 @@ struct DropRemoveStep: Step {
         progress.print(removedTargets, text: "Removed targets", deletion: true)
 
         progress.print("Save project ⏱".yellow)
-        try project.write(pathString: command.project, override: true)
-        metrics.projectSize.after = (try Folder.current.subfolder(at: command.project)).size()
+        try project.write(pathString: input.project, override: true)
+        metrics.projectSize.after = (try Folder.current.subfolder(at: input.project)).size()
         metrics.compileFilesCount.after = project.pbxproj.buildFiles.count
 
         return done()
