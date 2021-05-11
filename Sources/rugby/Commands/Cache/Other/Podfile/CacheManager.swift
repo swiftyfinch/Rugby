@@ -13,16 +13,17 @@ struct CacheFile: Codable {
     let sdk: SDK?
     let arch: String?
     let swift: String?
+    let xcargs: [String]?
 }
 
 extension CacheFile {
-    static let empty = CacheFile(checksums: [], sdk: nil, arch: nil, swift: nil)
+    static let empty = CacheFile(checksums: [], sdk: nil, arch: nil, swift: nil, xcargs: nil)
 }
 
 struct CacheManager {
     func load() throws -> CacheFile {
         if let oldStyleChecksums = try? Podfile(.cachedChecksums).getChecksums() {
-            return CacheFile(checksums: oldStyleChecksums, sdk: nil, arch: nil, swift: nil)
+            return CacheFile(checksums: oldStyleChecksums, sdk: nil, arch: nil, swift: nil, xcargs: nil)
         }
 
         guard let cacheFileData = try? File(path: .cacheFile).read() else { return CacheFile.empty }

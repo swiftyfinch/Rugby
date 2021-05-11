@@ -20,6 +20,8 @@ struct CacheBuildStep: Step {
     let progress: Printer
 
     private let command: Cache
+    private let defaultXCArgs = ["COMPILER_INDEX_STORE_ENABLE=NO",
+                                 "SWIFT_COMPILATION_MODE=wholemodule"]
 
     init(command: Cache, logFile: File, isLast: Bool = false) {
         self.command = command
@@ -36,10 +38,13 @@ struct CacheBuildStep: Step {
 
         progress.print("Building ⏱".yellow)
         do {
-            try XcodeBuild(project: .podsProject,
-                           scheme: scheme,
-                           sdk: command.sdk,
-                           arch: command.arch).build()
+            try XcodeBuild(
+                project: .podsProject,
+                scheme: scheme,
+                sdk: command.sdk,
+                arch: command.arch,
+                xcargs: defaultXCArgs
+            ).build()
         } catch {
             let podsProject = try XcodeProj(pathString: .podsProject)
             podsProject.removeTarget(name: scheme)
@@ -51,7 +56,8 @@ struct CacheBuildStep: Step {
         try CacheManager().save(CacheFile(checksums: input.checksums,
                                           sdk: command.sdk,
                                           arch: command.arch,
-                                          swift: input.swiftVersion))
+                                          swift: input.swiftVersion,
+                                          xcargs: defaultXCArgs))
         done()
     }
 }
