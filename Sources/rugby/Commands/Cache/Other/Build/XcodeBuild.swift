@@ -10,16 +10,16 @@ struct XcodeBuild {
     let scheme: String
     let sdk: SDK
     let arch: String?
+    let xcargs: [String]
 
     func build() throws {
         var arguments = [
             "-project \(project)",
             "-scheme \(scheme)",
             "-sdk \(sdk.xcodebuild)",
-            "SYMROOT=$(PWD)/" + .buildFolder,
-            "COMPILER_INDEX_STORE_ENABLE=NO",
-            "SWIFT_COMPILATION_MODE=wholemodule"
+            "SYMROOT=$(PWD)/" + .buildFolder
         ]
+        arguments.append(contentsOf: xcargs)
 
         if let arch = arch {
             arguments.append("ARCHS=\(arch)")
