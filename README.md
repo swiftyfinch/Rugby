@@ -23,11 +23,24 @@ You can read 📖 [full story](https://swiftyfinch.github.io/en/2021-03-09-rugby
 
 ### `Description`
 
-`Rugby` is CLI tool that was developed to solve the above problems:\
+🏈 `Rugby` is CLI tool that was developed to solve the above problems:\
 `+` Cache all remote pods dependencies and remove their targets from the Pods project;\
 `+` Rebuild only changed remote pods;\
 `+` Remove unnecessary sources from a project and reduce project size;\
 `+` Drop any unneeded targets with sources and resources by RegEx.
+
+### `What makes it different?`
+
+🕊 Not a dependency\
+🔒 Doesn't change Podfile\
+🛠 [Custom steps](Docs/Plans.md)\
+📈 Metrics after each command\
+✨ Fancy log output\
+🚀 Swiftish!
+
+Alternatives:\
+`-` [cocoapods-binary](https://github.com/leavez/cocoapods-binary)\
+`-` [PodBuilder](https://github.com/Subito-it/PodBuilder)
 
 ### Quick start with [`Homebrew`](https://brew.sh) 🍺
 
@@ -55,8 +68,6 @@ $ rugby # Run in your project directory after each pod install
 
 ### `Maybe Roadmap`
 
-- [x] Output metrics
-- [x] Rugby plans
 - [ ] New commands
 - [ ] Open source
 
