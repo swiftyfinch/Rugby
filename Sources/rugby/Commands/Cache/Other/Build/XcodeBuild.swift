@@ -21,7 +21,6 @@ struct XcodeBuild {
             "SWIFT_COMPILATION_MODE=wholemodule"
         ]
 
-        if sdk == .ios { arguments.append("ENABLE_BITCODE=NO") }
         if let arch = arch {
             arguments.append("ARCHS=\(arch)")
         }
