@@ -35,7 +35,7 @@ struct PlanParser {
 
 extension PlanParser {
     private enum Commands: String {
-        case cache, drop, shell
+        case cache, focus, drop, shell
     }
 
     private func parseCommand(_ dictionary: [String: Any]) throws -> Command {
@@ -46,29 +46,14 @@ extension PlanParser {
         let dataArguments = try JSONSerialization.data(withJSONObject: dictionary)
         switch commandName {
         case .cache:
-            let yml = try JSONDecoder().decode(CacheDecodable.self, from: dataArguments)
-            var cache = Cache()
-            cache.arch = yml.arch
-            cache.sdk = yml.sdk ?? .sim
-            cache.keepSources = yml.keepSources ?? false
-            cache.exclude = yml.exclude ?? []
-            cache.hideMetrics = yml.hideMetrics ?? false
-            cache.ignoreCache = yml.ignoreCache ?? false
-            cache.skipParents = yml.skipParents ?? false
-            cache.verbose = yml.verbose ?? false
-            return cache
+            let decodable = try JSONDecoder().decode(CacheDecodable.self, from: dataArguments)
+            return Cache(from: decodable)
+        case .focus:
+            let decodable = try JSONDecoder().decode(FocusDecodable.self, from: dataArguments)
+            return Focus(from: decodable)
         case .drop:
-            let yml = try JSONDecoder().decode(DropDecodable.self, from: dataArguments)
-            var drop = Drop()
-            drop.targets = yml.targets ?? []
-            drop.invert = yml.invert ?? false
-            drop.project = yml.project ?? .podsProject
-            drop.testFlight = yml.testFlight ?? false
-            drop.keepSources = yml.keepSources ?? false
-            drop.exclude = yml.exclude ?? []
-            drop.hideMetrics = yml.hideMetrics ?? false
-            drop.verbose = yml.verbose ?? false
-            return drop
+            let decodable = try JSONDecoder().decode(DropDecodable.self, from: dataArguments)
+            return Drop(from: decodable)
         case .shell:
             let yml = try JSONDecoder().decode(ShellDecodable.self, from: dataArguments)
             return Shell(run: yml.run, verbose: yml.verbose ?? false)

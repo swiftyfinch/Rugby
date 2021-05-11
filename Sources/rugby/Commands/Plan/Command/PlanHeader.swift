@@ -6,7 +6,6 @@
 //
 
 import ArgumentParser
-import Rainbow
 
 struct Plans: ParsableCommand {
     @Option(help: "Plan name. (default: the first plan)\n") var plan: String?

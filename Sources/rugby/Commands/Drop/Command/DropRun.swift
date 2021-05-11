@@ -13,7 +13,11 @@ extension Drop: Command {
         let metrics = DropMetrics(project: project.basename())
         let factory = DropStepFactory(command: self, metrics: metrics, logFile: logFile)
         let (targets, products) = try factory.prepare(none)
-        try factory.remove(.init(targets: targets, products: products))
+        try factory.remove(.init(targets: targets,
+                                 products: products,
+                                 testFlight: testFlight,
+                                 project: project,
+                                 keepSources: keepSources))
         return metrics
     }
 }
