@@ -24,7 +24,11 @@ extension ShellRunner {
         let stringArgs = args.flatten().map(String.init(describing:))
         let commandWithArgs = command + " " + stringArgs.joined(separator: " ")
         let currentShell = try getCurrentShell()
-        try SwiftShell.runAndPrint(currentShell, "-c", commandWithArgs)
+        do {
+            try SwiftShell.runAndPrint(currentShell, "-c", commandWithArgs)
+        } catch {
+            throw ShellError.common("🐚 " + commandWithArgs)
+        }
     }
 
     func run(_ command: String, args: Any ...) throws -> String {
@@ -34,21 +38,19 @@ extension ShellRunner {
         let output = SwiftShell.run(currentShell, "-c", commandWithArgs)
         if output.succeeded {
             return output.stdout
-        } else if let error = output.error {
-            throw error
         } else {
-            throw Error.unknown(output.stderror)
+            throw wrapError(output)
         }
     }
 }
 
 extension ShellRunner {
-    enum Error: Swift.Error, LocalizedError {
-        case unknown(String)
+    enum ShellError: Swift.Error, LocalizedError {
+        case common(String)
 
         var errorDescription: String? {
             switch self {
-            case .unknown(let stderror):
+            case .common(let stderror):
                 return stderror
             }
         }
@@ -68,11 +70,13 @@ private final class ShellRunner {
         if output.succeeded {
             shell = output.stdout
             return output.stdout
-        } else if let error = output.error {
-            throw error
         } else {
-            throw Error.unknown(output.stderror)
+            throw wrapError(output)
         }
+    }
+
+    private func wrapError(_ output: RunOutput) -> Error {
+        ShellError.common(output.stdout.trimmingCharacters(in: .newlines))
     }
 }
 
