@@ -27,10 +27,12 @@ Generate example at `.rugby/plans.yml`:\
   # 🐚 Optionally you can generate project if you use Xcodegen or something like that
   - command: shell
     run: xcodegen
+    verbose: false
 
   # 🐚 Also, you can install pods before each rugby call right here
   - command: shell
     run: bundle exec pod install # Or you can use any shell command
+    verbose: true
 
   # 🏈 The first Rugby command without arguments like: $ rugby cache
   - command: cache
