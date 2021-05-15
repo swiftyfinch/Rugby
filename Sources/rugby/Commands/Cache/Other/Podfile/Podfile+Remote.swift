@@ -1,5 +1,5 @@
 //
-//  Podfile+RemotePods.swift
+//  Podfile+Remote.swift
 //  
 //
 //  Created by v.khorkov on 31.01.2021.
@@ -8,7 +8,7 @@
 import RegEx
 
 extension Podfile {
-    func getRemotePods() throws -> [String] {
+    func getRemotePods() throws -> Set<String> {
         let content = try read()
         let specReposRegex = try RegEx(pattern: #"(?<=SPEC REPOS:\n)[\s\S]*?(?=\n\n)"#)
         let specRepos = try (specReposRegex.firstMatch(in: content)?.values.first)
@@ -28,6 +28,9 @@ extension Podfile {
                 .compactMap { $0.map(String.init) }
         }
 
-        return (podsByVersion + podsByGitOptions).map { $0.trimmingCharacters(in: ["\""]) }
+        let pods = (podsByVersion + podsByGitOptions)
+            .map { $0.trimmingCharacters(in: ["\""]) }
+
+        return Set(pods)
     }
 }

@@ -15,15 +15,11 @@ extension CacheSubstepFactory {
 
         func run(_ pods: Set<String>) throws -> (
             buildPods: Set<String>,
-            focusChecksums: [String],
+            focusChecksums: [Checksum],
             swiftVersion: String?
         ) {
-            let checksums = try Podfile(.podfileLock).getChecksums()
-            let focusChecksums = checksums.filter {
-                guard let name = $0.components(separatedBy: ": ").first?
-                        .trimmingCharacters(in: ["\""]) else { return false }
-                return pods.contains(name)
-            }
+            let checksumsProvider = try ChecksumsProvider(podfile: Podfile(.podfileLock))
+            let focusChecksums = try checksumsProvider.getChecksums(forPods: pods)
             metrics.podsCount.after = focusChecksums.count
 
             // Find checksums difference from cache file
@@ -34,11 +30,9 @@ extension CacheSubstepFactory {
             if command.ignoreCache || unsuitableCache {
                 buildPods = pods
             } else {
-                let cachedChecksums = cache.checksums
+                let cachedChecksums = cache.checksums.compactMap(Checksum.init)
                 let changes = Set(focusChecksums).subtracting(cachedChecksums)
-                let changedPods = changes.compactMap {
-                    $0.components(separatedBy: ": ").first?.trimmingCharacters(in: ["\""])
-                }
+                let changedPods = changes.map(\.name)
                 buildPods = Set(changedPods)
             }
             return (buildPods, focusChecksums, swiftVersion)

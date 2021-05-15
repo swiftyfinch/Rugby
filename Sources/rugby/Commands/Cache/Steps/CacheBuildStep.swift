@@ -11,7 +11,7 @@ import XcodeProj
 struct CacheBuildStep: Step {
     struct Input {
         let scheme: String?
-        let checksums: [String]
+        let checksums: [Checksum]
         let swiftVersion: String?
     }
 
@@ -53,7 +53,8 @@ struct CacheBuildStep: Step {
         }
 
         progress.print("Update checksums".yellow)
-        try CacheManager().save(CacheFile(checksums: input.checksums,
+        let checksums = input.checksums.map(\.string)
+        try CacheManager().save(CacheFile(checksums: checksums,
                                           sdk: command.sdk,
                                           arch: command.arch,
                                           swift: input.swiftVersion,
