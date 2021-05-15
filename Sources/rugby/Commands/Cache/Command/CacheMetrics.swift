@@ -8,7 +8,7 @@
 final class CacheMetrics {
     let project: String
 
-    var remotePodsCount: MetricValue<Int> = .init()
+    var podsCount: MetricValue<Int> = .init()
     var targetsCount: MetricValue<Int> = .init()
     var compileFilesCount: MetricValue<Int> = .init()
     var projectSize: MetricValue<Int> = .init()
@@ -20,8 +20,8 @@ final class CacheMetrics {
 
 extension CacheMetrics: Metrics {
     func short() -> String? {
-        if let podsBefore = remotePodsCount.before, let podsAfter = remotePodsCount.after {
-            return "Cached \(podsAfter)/\(podsBefore) remote pods.".green
+        if let podsBefore = podsCount.before, let podsAfter = podsCount.after {
+            return "Cached \(podsAfter)/\(podsBefore) pods.".green
         }
         return nil
     }

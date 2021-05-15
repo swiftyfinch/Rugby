@@ -10,8 +10,8 @@ struct CacheSubstepFactory {
     let command: Cache
     let metrics: Metrics
 
-    var findRemotePods: FindRemotePods.Run {
-        FindRemotePods(progress: progress, command: command, metrics: metrics).run
+    var findPods: FindPods.Run {
+        FindPods(progress: progress, command: command, metrics: metrics).run
     }
 
     var findBuildPods: FindBuildPods.Run {

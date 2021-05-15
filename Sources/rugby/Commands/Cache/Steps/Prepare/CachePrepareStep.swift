@@ -11,7 +11,7 @@ import XcodeProj
 struct CachePrepareStep: Step {
     struct Output {
         let scheme: String?
-        let remotePods: Set<String>
+        let pods: Set<String>
         let checksums: [String]
         let products: Set<String>
         let swiftVersion: String?
@@ -37,7 +37,7 @@ extension CachePrepareStep {
 
     func run(_ buildTarget: String) throws -> Output {
         if try shell("xcode-select -p") == .defaultXcodeCLTPath {
-            throw CacheError.cantFineXcodeCommandLineTools
+            throw CacheError.cantFindXcodeCommandLineTools
         }
 
         progress.print("Read project ⏱".yellow)
@@ -46,8 +46,8 @@ extension CachePrepareStep {
         metrics.compileFilesCount.before = project.pbxproj.buildFiles.count
         metrics.targetsCount.before = project.pbxproj.main.targets.count
         let factory = CacheSubstepFactory(progress: progress, command: command, metrics: metrics)
-        let pods = try factory.findRemotePods(project)
-        let (buildPods, remoteChecksums, swiftVersion) = try factory.findBuildPods(pods)
+        let pods = try factory.findPods(project)
+        let (buildPods, focusChecksums, swiftVersion) = try factory.findBuildPods(pods)
         let (targets, buildTargets) = try factory.buildTargets((project: project, pods: pods, buildPods: buildPods))
         let targetsNames = Set(targets.map(\.name))
         if !buildTargets.isEmpty {
@@ -58,8 +58,8 @@ extension CachePrepareStep {
 
         done()
         return Output(scheme: buildTargets.isEmpty ? nil : buildTarget,
-                      remotePods: targetsNames.union(pods),
-                      checksums: remoteChecksums,
+                      pods: targetsNames.union(pods),
+                      checksums: focusChecksums,
                       products: products,
                       swiftVersion: swiftVersion)
     }
