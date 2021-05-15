@@ -31,8 +31,14 @@ private extension XcodeProj {
     func findAllPodTargets(_ name: String) -> Set<PBXTarget> {
         let targets = pbxproj.main.targets
         let filtered = targets.filter {
-            // todo: how to find all pods targets for sure?
-            $0.name == name || $0.name.hasPrefix(name + ".") || $0.name.hasPrefix(name + "-")
+            if $0.name == name { return true }
+
+            // Get all subspecs
+            guard $0.name.hasPrefix(name + ".") || $0.name.hasPrefix(name + "-") else { return false }
+
+            // But ignore all testspecs and its resources
+            let suffix = String($0.name.dropFirst((name + ".").count))
+            return !suffix.contains("Test")
         }
         return Set(filtered)
     }
