@@ -13,12 +13,12 @@ extension CacheSubstepFactory {
         let command: Cache
 
         func run(_ input: (project: XcodeProj,
-                           pods: Set<String>,
+                           selectedPods: Set<String>,
                            buildPods: Set<String>)) throws -> (Set<PBXTarget>, Set<String>) {
-            let podsChain = input.project.buildPodsChain(pods: Set(input.pods))
-            guard podsChain.count >= input.pods.count else { throw CacheError.cantFindPodsTargets }
+            let selectedPodsChain = input.project.buildPodsChain(pods: Set(input.selectedPods))
+            guard selectedPodsChain.count >= input.selectedPods.count else { throw CacheError.cantFindPodsTargets }
 
-            let additionalBuildTargets = Set(podsChain.map(\.name)).subtracting(input.pods)
+            let additionalBuildTargets = Set(selectedPodsChain.map(\.name)).subtracting(input.selectedPods)
             if !additionalBuildTargets.isEmpty {
                 progress.print(additionalBuildTargets, text: "Additional build targets")
             }
@@ -35,10 +35,10 @@ extension CacheSubstepFactory {
                 progress.print("Skip parents".yellow)
             } else {
                 // Include parents of build pods. Maybe it's not necessary?
-                buildPodsChain = input.project.findParentDependencies(buildTargets, allTargets: input.pods)
+                buildPodsChain = input.project.findParentDependencies(buildTargets, allTargets: input.selectedPods)
             }
 
-            return (podsChain, buildPodsChain)
+            return (selectedPodsChain, buildPodsChain)
         }
     }
 }

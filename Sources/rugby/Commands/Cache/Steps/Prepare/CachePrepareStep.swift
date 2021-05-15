@@ -46,21 +46,20 @@ extension CachePrepareStep {
         metrics.compileFilesCount.before = project.pbxproj.buildFiles.count
         metrics.targetsCount.before = project.pbxproj.main.targets.count
         let factory = CacheSubstepFactory(progress: progress, command: command, metrics: metrics)
-        let pods = try factory.findPods(project)
-        let (buildPods, focusChecksums, swiftVersion) = try factory.findBuildPods(pods)
-        let (targets, buildTargets) = try factory.buildTargets((project: project, pods: pods, buildPods: buildPods))
-        let targetsNames = Set(targets.map(\.name))
+        let selectedPods = try factory.selectPods(project)
+        let (buildPods, focusChecksums, swiftVersion) = try factory.findBuildPods(selectedPods)
+        let (selectedTargets, buildTargets) = try factory.buildTargets((project: project,
+                                                                        selectedPods: selectedPods,
+                                                                        buildPods: buildPods))
         if !buildTargets.isEmpty {
-            let dependencies = buildTargets.union(targetsNames)
-            try factory.addBuildTarget(.init(target: buildTarget, project: project, dependencies: dependencies))
+            try factory.addBuildTarget(.init(target: buildTarget, project: project, dependencies: buildTargets))
         }
-        let products = Set(targets.compactMap(\.product?.name))
 
         done()
         return Output(scheme: buildTargets.isEmpty ? nil : buildTarget,
-                      pods: targetsNames.union(pods),
+                      pods: Set(selectedTargets.map(\.name)).union(selectedPods),
                       checksums: focusChecksums,
-                      products: products,
+                      products: Set(selectedTargets.compactMap(\.product?.name)),
                       swiftVersion: swiftVersion)
     }
 }

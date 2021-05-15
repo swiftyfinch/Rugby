@@ -1,5 +1,5 @@
 //
-//  FindPods.swift
+//  SelectPods.swift
 //  
 //
 //  Created by Vyacheslav Khorkov on 10.04.2021.
@@ -8,7 +8,8 @@
 import XcodeProj
 
 extension CacheSubstepFactory {
-    struct FindPods: Step {
+    /// Find out which pods selected for caching
+    struct SelectPods: Step {
         let progress: Printer
         let command: Cache
         let metrics: Metrics
