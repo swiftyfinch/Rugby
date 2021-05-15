@@ -1,5 +1,5 @@
 //
-//  Podfile+RemoteTargets.swift
+//  Podfile+RemotePods.swift
 //  
 //
 //  Created by v.khorkov on 31.01.2021.

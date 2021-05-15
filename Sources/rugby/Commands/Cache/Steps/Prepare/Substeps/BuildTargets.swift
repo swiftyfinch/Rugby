@@ -15,10 +15,10 @@ extension CacheSubstepFactory {
         func run(_ input: (project: XcodeProj,
                            pods: Set<String>,
                            buildPods: Set<String>)) throws -> (Set<PBXTarget>, Set<String>) {
-            let remotePodsChain = input.project.buildRemotePodsChain(remotePods: Set(input.pods))
-            guard remotePodsChain.count >= input.pods.count else { throw CacheError.cantFindRemotePodsTargets }
+            let podsChain = input.project.buildPodsChain(pods: Set(input.pods))
+            guard podsChain.count >= input.pods.count else { throw CacheError.cantFindPodsTargets }
 
-            let additionalBuildTargets = Set(remotePodsChain.map(\.name)).subtracting(input.pods)
+            let additionalBuildTargets = Set(podsChain.map(\.name)).subtracting(input.pods)
             if !additionalBuildTargets.isEmpty {
                 progress.print(additionalBuildTargets, text: "Additional build targets")
             }
@@ -38,7 +38,7 @@ extension CacheSubstepFactory {
                 buildPodsChain = input.project.findParentDependencies(buildTargets, allTargets: input.pods)
             }
 
-            return (remotePodsChain, buildPodsChain)
+            return (podsChain, buildPodsChain)
         }
     }
 }

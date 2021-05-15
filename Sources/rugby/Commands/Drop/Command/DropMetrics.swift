@@ -8,7 +8,7 @@
 final class DropMetrics {
     let project: String
 
-    var remotePodsCount: MetricValue<Int> = .init()
+    var podsCount: MetricValue<Int> = .init()
     var targetsCount: MetricValue<Int> = .init()
     var compileFilesCount: MetricValue<Int> = .init()
     var projectSize: MetricValue<Int> = .init()

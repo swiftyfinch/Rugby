@@ -13,7 +13,7 @@ struct MetricValue<T> {
 protocol Metrics: AnyObject {
     var project: String { get }
 
-    var remotePodsCount: MetricValue<Int> { get set }
+    var podsCount: MetricValue<Int> { get set }
     var targetsCount: MetricValue<Int> { get set }
     var compileFilesCount: MetricValue<Int> { get set }
     var projectSize: MetricValue<Int> { get set }
@@ -29,8 +29,8 @@ extension Array where Element == Metrics {
 
         let metrics = CacheMetrics(project: project)
 
-        metrics.remotePodsCount.before = first?.remotePodsCount.before
-        metrics.remotePodsCount.after = last?.remotePodsCount.after
+        metrics.podsCount.before = first?.podsCount.before
+        metrics.podsCount.after = last?.podsCount.after
 
         metrics.targetsCount.before = first?.targetsCount.before
         metrics.targetsCount.after = last?.targetsCount.after

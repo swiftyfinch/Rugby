@@ -32,14 +32,14 @@ struct CacheCleanupStep: Step {
     }
 
     func run(_ input: Input) throws {
-        let (remotePods, products) = (input.pods, input.products)
+        let (pods, products) = (input.pods, input.products)
         var hasChanges = false
         progress.print("Read project ⏱".yellow)
         let podsProject = try XcodeProj(pathString: .podsProject)
 
         if !command.keepSources {
             progress.print("Remove sources from project".yellow)
-            hasChanges = podsProject.removeSources(pods: remotePods) || hasChanges
+            hasChanges = podsProject.removeSources(pods: pods) || hasChanges
         }
 
         progress.print("Remove frameworks".yellow)
@@ -56,15 +56,15 @@ struct CacheCleanupStep: Step {
         }
 
         progress.print("Remove builded pods".yellow)
-        var removeBuildedPods = podsProject.removeDependencies(names: remotePods, exclude: command.exclude)
-        remotePods.forEach {
+        var removeBuildedPods = podsProject.removeDependencies(names: pods, exclude: command.exclude)
+        pods.forEach {
             removeBuildedPods = podsProject.removeTarget(name: $0) || removeBuildedPods
         }
 
         if hasChanges || removeBuildedPods {
             // Remove schemes if has changes (it should be changes in targets)
             progress.print("Remove schemes".yellow)
-            try podsProject.removeSchemes(pods: remotePods, projectPath: .podsProject)
+            try podsProject.removeSchemes(pods: pods, projectPath: .podsProject)
 
             progress.print("Save project ⏱".yellow)
             try podsProject.write(pathString: .podsProject, override: true)

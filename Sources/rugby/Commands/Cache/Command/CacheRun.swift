@@ -16,8 +16,8 @@ extension Cache: Command {
         let factory = CacheStepsFactory(command: self, metrics: metrics, logFile: logFile)
         let info = try factory.prepare(.buildTarget)
         try factory.build(.init(scheme: info.scheme, checksums: info.checksums, swiftVersion: info.swiftVersion))
-        try factory.integrate(info.remotePods)
-        try factory.cleanup(.init(scheme: info.scheme, pods: info.remotePods, products: info.products))
+        try factory.integrate(info.pods)
+        try factory.cleanup(.init(scheme: info.scheme, pods: info.pods, products: info.products))
         return metrics
     }
 }

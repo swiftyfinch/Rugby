@@ -11,8 +11,8 @@ import Rainbow
 enum CacheError: Error, LocalizedError {
     case cantParsePodfileLock
     case cantParseCachedChecksums
-    case cantFindRemotePodsTargets
-    case cantFineXcodeCommandLineTools
+    case cantFindPodsTargets
+    case cantFindXcodeCommandLineTools
     case buildFailed
 
     var errorDescription: String? {
@@ -22,10 +22,10 @@ enum CacheError: Error, LocalizedError {
             output = "Couldn't parse Podfile.lock.".red
         case .cantParseCachedChecksums:
             output = "Couldn't parse cached checksums.".red
-        case .cantFindRemotePodsTargets:
-            output = "Couldn't find remote pods targets.\n".red
+        case .cantFindPodsTargets:
+            output = "Couldn't find pods targets.\n".red
                 + "🚑 Try to call pod install.".yellow
-        case .cantFineXcodeCommandLineTools:
+        case .cantFindXcodeCommandLineTools:
             output = "Couldn't find Xcode CLT.\n".red
                 + "🚑 Check Xcode Preferences → Locations → Command Line Tools.".yellow
         case .buildFailed:
