@@ -13,13 +13,13 @@ extension CacheSubstepFactory {
         let command: Cache
         let metrics: Metrics
 
-        func run(_ pods: Set<String>) throws -> (
+        func run(_ selectedPods: Set<String>) throws -> (
             buildPods: Set<String>,
             focusChecksums: [Checksum],
             swiftVersion: String?
         ) {
             let checksumsProvider = try ChecksumsProvider(podfile: Podfile(.podfileLock))
-            let focusChecksums = try checksumsProvider.getChecksums(forPods: pods)
+            let focusChecksums = try checksumsProvider.getChecksums(forPods: selectedPods)
             metrics.podsCount.after = focusChecksums.count
 
             // Find checksums difference from cache file
@@ -28,7 +28,7 @@ extension CacheSubstepFactory {
             let swiftVersion = SwiftVersionProvider().swiftVersion()
             let unsuitableCache = command.sdk != cache.sdk || command.arch != cache.arch || swiftVersion != cache.swift
             if command.ignoreCache || unsuitableCache {
-                buildPods = pods
+                buildPods = selectedPods
             } else {
                 let cachedChecksums = cache.checksums.compactMap(Checksum.init(string:))
                 let changes = Set(focusChecksums).subtracting(cachedChecksums)
