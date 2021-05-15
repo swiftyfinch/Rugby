@@ -13,6 +13,7 @@ extension String {
     // MARK: - Common
 
     static let podsGroup = "Pods"
+    static let developmentPodsGroup = "Development Pods"
     static let supportFolder = ".rugby"
     static let log = supportFolder + "/rugby.log"
     static let plans = supportFolder + "/plans.yml"
