@@ -18,7 +18,7 @@ struct Checksum: Hashable {
     init?(string: String) {
         let parts = string.components(separatedBy: Self.separator)
         guard parts.count == 2 else { return nil }
-        self.name = parts[0]
+        self.name = parts[0].trimmingCharacters(in: ["\""])
         self.checksum = parts[1]
     }
 }
