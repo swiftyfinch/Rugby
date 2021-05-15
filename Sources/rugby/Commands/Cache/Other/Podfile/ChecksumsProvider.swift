@@ -60,7 +60,7 @@ private extension Podfile {
             let values = match.values
                 .compactMap { $0 }
                 .compactMap(String.init)
-            guard values.count == 3 else { return nil }
+            guard values.count == 1 else { return nil }
             return Checksum(string: values[0])
         }
     }
