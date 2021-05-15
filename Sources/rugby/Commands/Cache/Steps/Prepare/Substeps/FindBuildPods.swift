@@ -30,7 +30,7 @@ extension CacheSubstepFactory {
             if command.ignoreCache || unsuitableCache {
                 buildPods = pods
             } else {
-                let cachedChecksums = cache.checksums.compactMap(Checksum.init)
+                let cachedChecksums = cache.checksums.compactMap(Checksum.init(string:))
                 let changes = Set(focusChecksums).subtracting(cachedChecksums)
                 let changedPods = changes.map(\.name)
                 buildPods = Set(changedPods)
