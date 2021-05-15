@@ -15,7 +15,13 @@ extension CacheSubstepFactory {
 
         func run(_ project: XcodeProj) throws -> Set<String> {
             // Get pods from Podfile.lock
-            let pods = Set(try Podfile(.podfileLock).getRemotePods())
+            let pods: Set<String>
+            if command.focus.isEmpty {
+                pods = try Podfile(.podfileLock).getRemotePods()
+            } else {
+                let allPods = try Podfile(.podfileLock).getPods()
+                pods = allPods.subtracting(command.focus)
+            }
             progress.print(pods, text: "Pods")
 
             // Exclude by command argument
