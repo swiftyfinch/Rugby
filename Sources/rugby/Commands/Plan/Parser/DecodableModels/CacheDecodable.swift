@@ -13,6 +13,7 @@ struct CacheDecodable: Decodable {
     let hideMetrics: Bool?
     let ignoreCache: Bool?
     let skipParents: Bool?
+    let focus: [String]?
     let verbose: Bool?
 }
 
@@ -24,6 +25,7 @@ extension Cache {
         self.exclude = decodable.exclude ?? []
         self.hideMetrics = decodable.hideMetrics ?? false
         self.ignoreCache = decodable.ignoreCache ?? false
+        self.focus = decodable.focus ?? []
         self.skipParents = decodable.skipParents ?? false
         self.verbose = decodable.verbose ?? false
     }
