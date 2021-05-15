@@ -12,7 +12,7 @@ struct CachePrepareStep: Step {
     struct Output {
         let scheme: String?
         let pods: Set<String>
-        let checksums: [String]
+        let checksums: [Checksum]
         let products: Set<String>
         let swiftVersion: String?
     }

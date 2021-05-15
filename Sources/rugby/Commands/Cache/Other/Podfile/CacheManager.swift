@@ -22,10 +22,6 @@ extension CacheFile {
 
 struct CacheManager {
     func load() throws -> CacheFile {
-        if let oldStyleChecksums = try? Podfile(.cachedChecksums).getChecksums() {
-            return CacheFile(checksums: oldStyleChecksums, sdk: nil, arch: nil, swift: nil, xcargs: nil)
-        }
-
         guard let cacheFileData = try? File(path: .cacheFile).read() else { return CacheFile.empty }
         let decoder = YAMLDecoder()
         let cacheFile = try decoder.decode(CacheFile.self, from: cacheFileData)
