@@ -20,8 +20,8 @@ struct CacheBuildStep: Step {
     let progress: Printer
 
     private let command: Cache
-    private let defaultXCArgs = ["COMPILER_INDEX_STORE_ENABLE=NO",
-                                 "SWIFT_COMPILATION_MODE=wholemodule"]
+    private let xcargs = ["COMPILER_INDEX_STORE_ENABLE=NO",
+                          "SWIFT_COMPILATION_MODE=wholemodule"]
 
     init(command: Cache, logFile: File, isLast: Bool = false) {
         self.command = command
@@ -43,7 +43,7 @@ struct CacheBuildStep: Step {
                 scheme: scheme,
                 sdk: command.sdk,
                 arch: command.arch,
-                xcargs: defaultXCArgs
+                xcargs: xcargs
             ).build()
         } catch {
             let podsProject = try XcodeProj(pathString: .podsProject)
@@ -57,7 +57,7 @@ struct CacheBuildStep: Step {
                                           sdk: command.sdk,
                                           arch: command.arch,
                                           swift: input.swiftVersion,
-                                          xcargs: defaultXCArgs))
+                                          xcargs: xcargs))
         done()
     }
 }
