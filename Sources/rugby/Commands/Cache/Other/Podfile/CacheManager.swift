@@ -37,3 +37,13 @@ struct CacheManager {
         try file.write(cacheFileData)
     }
 }
+
+// MARK: - Checksums
+
+extension CacheManager {
+    func checksumsSet() -> Set<Checksum> {
+        let loaded = try? load().checksums
+        let checksums = (loaded ?? []).compactMap(Checksum.init(string:))
+        return Set(checksums)
+    }
+}

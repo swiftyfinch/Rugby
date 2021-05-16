@@ -22,6 +22,7 @@ struct CacheBuildStep: Step {
     private let command: Cache
     private let xcargs = ["COMPILER_INDEX_STORE_ENABLE=NO",
                           "SWIFT_COMPILATION_MODE=wholemodule"]
+    private let cacheManager = CacheManager()
 
     init(command: Cache, logFile: File, isLast: Bool = false) {
         self.command = command
@@ -53,12 +54,14 @@ struct CacheBuildStep: Step {
         }
 
         progress.print("Update checksums".yellow)
-        let checksums = input.checksums.map(\.string)
-        try CacheManager().save(CacheFile(checksums: checksums,
-                                          sdk: command.sdk,
-                                          arch: command.arch,
-                                          swift: input.swiftVersion,
-                                          xcargs: xcargs))
+        let newChecksums = Set(input.checksums)
+        let cachedChecksums = cacheManager.checksumsSet()
+        let updatedChecksums = newChecksums.inserts(cachedChecksums).map(\.string).sorted()
+        try cacheManager.save(CacheFile(checksums: updatedChecksums,
+                                        sdk: command.sdk,
+                                        arch: command.arch,
+                                        swift: input.swiftVersion,
+                                        xcargs: xcargs))
         done()
     }
 }
