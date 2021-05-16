@@ -14,7 +14,7 @@ extension XcodeProj {
         var remainingUUIDs = Set(remainingTargets.map(\.uuid))
 
         if !projectPath.hasSuffix(.podsProject) {
-            let podsProject = try XcodeProj(pathString: .podsProject)
+            let podsProject = try ProjectProvider.shared.readProject(.podsProject)
             remainingUUIDs.formUnion(podsProject.pbxproj.main.targets.map(\.uuid))
         }
 

@@ -6,7 +6,6 @@
 //
 
 import Files
-import XcodeProj
 
 struct DropRemoveStep: Step {
     struct Input {
@@ -42,7 +41,7 @@ struct DropRemoveStep: Step {
             return done()
         }
 
-        let project = try XcodeProj(pathString: input.project)
+        let project = try ProjectProvider.shared.readProject(input.project)
 
         progress.print("Remove frameworks".yellow)
         project.removeFrameworks(products: products)

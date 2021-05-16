@@ -6,7 +6,6 @@
 //
 
 import Files
-import XcodeProj
 
 struct CacheBuildStep: Step {
     struct Input {
@@ -47,7 +46,7 @@ struct CacheBuildStep: Step {
                 xcargs: xcargs
             ).build()
         } catch {
-            let podsProject = try XcodeProj(pathString: .podsProject)
+            let podsProject = try ProjectProvider.shared.readProject(.podsProject)
             podsProject.removeTarget(name: scheme)
             try podsProject.write(pathString: .podsProject, override: true)
             throw CacheError.buildFailed
