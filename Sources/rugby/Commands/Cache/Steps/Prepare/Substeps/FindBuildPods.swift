@@ -24,16 +24,16 @@ extension CacheSubstepFactory {
 
             // Find checksums difference from cache file
             let buildPods: Set<String>
-            let cache = try CacheManager().load()
+            let cache = CacheManager().load()?[command.sdk]
             let swiftVersion = SwiftVersionProvider().swiftVersion()
-            let unsuitableCache = command.sdk != cache.sdk || command.arch != cache.arch || swiftVersion != cache.swift
-            if command.ignoreCache || unsuitableCache {
-                buildPods = selectedPods
-            } else {
-                let cachedChecksums = cache.checksums.compactMap(Checksum.init(string:))
+            let invalidCache = (command.arch != cache?.arch || swiftVersion != cache?.swift)
+            if let checksums = cache?.checksums, !command.ignoreCache, !invalidCache {
+                let cachedChecksums = checksums.compactMap(Checksum.init(string:))
                 let changes = Set(focusChecksums).subtracting(cachedChecksums)
                 let changedPods = changes.map(\.name)
                 buildPods = Set(changedPods)
+            } else {
+                buildPods = selectedPods
             }
             return (buildPods, focusChecksums, swiftVersion)
         }
