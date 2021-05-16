@@ -41,10 +41,8 @@ struct FocusPrepareStep: Step {
         let foundTargets = project.pbxproj.main.targets.filter { !recursiveTargets.contains($0) }
         progress.print(foundTargets.map(\.name), text: "Found targets")
 
-        metrics.targetsCount.before = project.targets.count
-        metrics.targetsCount.after = (command.testFlight ? 0 : foundTargets.count)
+        if !command.testFlight { metrics.targetsCount.before = project.pbxproj.main.targets.count }
         defer { done() }
-
         let products = Set(foundTargets.compactMap(\.product?.displayName))
         return Output(foundTargets: Set(foundTargets.map(\.name)), products: products)
     }

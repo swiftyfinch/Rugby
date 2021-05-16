@@ -74,6 +74,7 @@ struct DropRemoveStep: Step {
         try project.write(pathString: input.project, override: true)
         metrics.projectSize.after = (try Folder.current.subfolder(at: input.project)).size()
         metrics.compileFilesCount.after = project.pbxproj.buildFiles.count
+        if !input.testFlight { metrics.targetsCount.after = project.pbxproj.main.targets.count }
 
         return done()
     }

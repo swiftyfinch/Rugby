@@ -30,17 +30,24 @@ extension Array where Element == Metrics {
         let metrics = CacheMetrics(project: project)
 
         metrics.podsCount.before = first?.podsCount.before
-        metrics.podsCount.after = last?.podsCount.after
-
         metrics.targetsCount.before = first?.targetsCount.before
-        metrics.targetsCount.after = last?.targetsCount.after
-
         metrics.compileFilesCount.before = first?.compileFilesCount.before
-        metrics.compileFilesCount.after = last?.compileFilesCount.after
-
         metrics.projectSize.before = first?.projectSize.before
-        metrics.projectSize.after = last?.projectSize.after
+
+        metrics.podsCount.after = lastNotNil(where: \.podsCount.after)
+        metrics.targetsCount.after = lastNotNil(where: \.targetsCount.after)
+        metrics.compileFilesCount.after = lastNotNil(where: \.compileFilesCount.after)
+        metrics.projectSize.after = lastNotNil(where: \.projectSize.after)
 
         return metrics
+    }
+
+    /// Iterate from tail each element and stop when mapped element returns not nil.
+    private func lastNotNil<T>(where mapBlock: (Element) -> T?) -> T? {
+        for element in reversed() {
+            guard let notNil = mapBlock(element) else { continue }
+            return notNil
+        }
+        return nil
     }
 }
