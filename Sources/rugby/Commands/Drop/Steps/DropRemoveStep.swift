@@ -56,12 +56,12 @@ struct DropRemoveStep: Step {
 
         if !input.keepSources {
             progress.print("Remove sources & resources".yellow)
-            let filesRemainingTargets = try project.findFilesRemainingTargets(targetsForRemove: Set(targets))
+            let filesRemainingTargets = try project.findFilesRemainingTargets(targetsForRemove: targets)
             try project.removeSources(fromTargets: targets, excludeFiles: filesRemainingTargets)
         }
 
         progress.print("Remove schemes".yellow)
-        try project.removeSchemes(pods: Set(targets), projectPath: input.project)
+        try project.removeSchemes(pods: targets, projectPath: input.project)
 
         progress.print("Remove targets".yellow)
         let removedTargets = Set(targets.filter(project.removeTarget))
