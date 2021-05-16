@@ -12,7 +12,7 @@ import XcodeProj
 struct CacheCleanupStep: Step {
     struct Input {
         let scheme: String?
-        let pods: Set<String>
+        let targets: Set<String>
         let products: Set<String>
     }
 
@@ -32,47 +32,47 @@ struct CacheCleanupStep: Step {
     }
 
     func run(_ input: Input) throws {
-        let (pods, products) = (input.pods, input.products)
+        let (targets, products) = (input.targets, input.products)
         var hasChanges = false
         progress.print("Read project ⏱".yellow)
-        let podsProject = try XcodeProj(pathString: .podsProject)
+        let project = try XcodeProj(pathString: .podsProject)
 
         if !command.keepSources {
             progress.print("Remove sources from project".yellow)
-            hasChanges = podsProject.removeSources(pods: pods, fromGroup: .podsGroup) || hasChanges
-            hasChanges = podsProject.removeSources(pods: pods, fromGroup: .developmentPodsGroup) || hasChanges
+            hasChanges = project.removeSources(pods: targets, fromGroup: .podsGroup) || hasChanges
+            hasChanges = project.removeSources(pods: targets, fromGroup: .developmentPodsGroup) || hasChanges
         }
 
         progress.print("Remove frameworks".yellow)
-        hasChanges = podsProject.removeFrameworks(products: products) || hasChanges
+        hasChanges = project.removeFrameworks(products: products) || hasChanges
 
         progress.print("Remove products".yellow)
-        if podsProject.removeFrameworkPaths(products: products) {
+        if project.removeFrameworkPaths(products: products) {
             hasChanges = true
         }
 
         progress.print("Remove build target".yellow)
-        if let target = input.scheme, podsProject.removeTarget(name: target) {
+        if let target = input.scheme, project.removeTarget(name: target) {
             hasChanges = true
         }
 
         progress.print("Remove builded pods".yellow)
-        var removeBuildedPods = podsProject.removeDependencies(names: pods, exclude: command.exclude)
-        pods.forEach {
-            removeBuildedPods = podsProject.removeTarget(name: $0) || removeBuildedPods
+        var removeBuildedPods = project.removeDependencies(names: targets, exclude: command.exclude)
+        targets.forEach {
+            removeBuildedPods = project.removeTarget(name: $0) || removeBuildedPods
         }
 
         if hasChanges || removeBuildedPods {
             // Remove schemes if has changes (it should be changes in targets)
             progress.print("Remove schemes".yellow)
-            try podsProject.removeSchemes(pods: pods, projectPath: .podsProject)
+            try project.removeSchemes(pods: targets, projectPath: .podsProject)
 
             progress.print("Save project ⏱".yellow)
-            try podsProject.write(pathString: .podsProject, override: true)
+            try project.write(pathString: .podsProject, override: true)
 
             metrics.projectSize.after = (try Folder.current.subfolder(at: .podsProject)).size()
-            metrics.compileFilesCount.after = podsProject.pbxproj.buildFiles.count
-            metrics.targetsCount.after = podsProject.pbxproj.main.targets.count
+            metrics.compileFilesCount.after = project.pbxproj.buildFiles.count
+            metrics.targetsCount.after = project.pbxproj.main.targets.count
         }
 
         done()

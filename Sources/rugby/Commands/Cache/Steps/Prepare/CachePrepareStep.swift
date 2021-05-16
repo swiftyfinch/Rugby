@@ -11,7 +11,7 @@ import XcodeProj
 struct CachePrepareStep: Step {
     struct Output {
         let scheme: String?
-        let pods: Set<String>
+        let targets: Set<String>
         let checksums: [Checksum]
         let products: Set<String>
         let swiftVersion: String?
@@ -57,7 +57,7 @@ extension CachePrepareStep {
 
         done()
         return Output(scheme: buildTargets.isEmpty ? nil : buildTarget,
-                      pods: Set(selectedTargets.map(\.name)).union(selectedPods),
+                      targets: Set(selectedTargets.map(\.name)).union(selectedPods),
                       checksums: focusChecksums,
                       products: Set(selectedTargets.compactMap(\.product?.name)),
                       swiftVersion: swiftVersion)
