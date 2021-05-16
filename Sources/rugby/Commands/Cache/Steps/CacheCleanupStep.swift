@@ -7,7 +7,6 @@
 
 import Files
 import Foundation
-import XcodeProj
 
 struct CacheCleanupStep: Step {
     struct Input {
@@ -35,7 +34,7 @@ struct CacheCleanupStep: Step {
         let (targets, products) = (input.targets, input.products)
         var hasChanges = false
         progress.print("Read project ⏱".yellow)
-        let project = try XcodeProj(pathString: .podsProject)
+        let project = try ProjectProvider.shared.readProject(.podsProject)
 
         if !command.keepSources {
             progress.print("Remove sources from project".yellow)

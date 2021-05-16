@@ -28,7 +28,7 @@ struct FocusPrepareStep: Step {
     func run(_ input: Void) throws -> (foundTargets: Set<String>, products: Set<String>) {
         progress.print("Read project ⏱".yellow)
         metrics.projectSize.before = (try Folder.current.subfolder(at: command.project)).size()
-        let project = try XcodeProj(pathString: command.project)
+        let project = try ProjectProvider.shared.readProject(command.project)
         metrics.compileFilesCount.before = project.pbxproj.buildFiles.count
 
         progress.print("Find targets".yellow)
