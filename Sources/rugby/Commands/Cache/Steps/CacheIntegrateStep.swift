@@ -21,10 +21,10 @@ struct CacheIntegrateStep: Step {
         self.progress = RugbyPrinter(title: "Integration", logFile: logFile, verbose: verbose)
     }
 
-    func run(_ pods: Set<String>) throws {
+    func run(_ targets: Set<String>) throws {
         progress.print("Update paths to builded pods ⏱".yellow)
         try CacheIntegration(cacheFolder: .cacheFolder(sdk: command.sdk),
-                             buildedProducts: pods).replacePathsToCache()
+                             buildedTargets: targets).replacePathsToCache()
         done()
     }
 }
