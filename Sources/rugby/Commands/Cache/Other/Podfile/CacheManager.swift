@@ -8,29 +8,30 @@
 import Files
 import Yams
 
-struct CacheFile: Codable {
-    let checksums: [String]
-    let sdk: SDK?
+struct SDKCache: Codable {
     let arch: String?
     let swift: String?
     let xcargs: [String]?
+    let checksums: [String]?
 }
 
-extension CacheFile {
-    static let empty = CacheFile(checksums: [], sdk: nil, arch: nil, swift: nil, xcargs: nil)
-}
+typealias CacheFile = [SDK: SDKCache]
 
 struct CacheManager {
-    func load() throws -> CacheFile {
-        guard let cacheFileData = try? File(path: .cacheFile).read() else { return CacheFile.empty }
+    func load() -> CacheFile? {
+        guard let cacheFileData = try? File(path: .cacheFile).read() else { return nil }
         let decoder = YAMLDecoder()
-        let cacheFile = try decoder.decode(CacheFile.self, from: cacheFileData)
+        // Format was changed, so parsing can fail
+        let cacheFile = try? decoder.decode(CacheFile.self, from: cacheFileData)
         return cacheFile
     }
 
-    func save(_ cacheFile: CacheFile) throws {
-        try? File(path: .cachedChecksums).delete()
+    func update(sdk: SDK, _ cache: SDKCache) throws {
+        // Update only selected sdk cache
+        var cacheFile = load() ?? [:]
+        cacheFile[sdk] = cache
 
+        // Save
         let file = try Folder.current.createFileIfNeeded(at: .cacheFile)
         let encoder = YAMLEncoder()
         let cacheFileData = try encoder.encode(cacheFile)
@@ -41,9 +42,9 @@ struct CacheManager {
 // MARK: - Checksums
 
 extension CacheManager {
-    func checksumsSet() -> Set<Checksum> {
-        let loaded = try? load().checksums
-        let checksums = (loaded ?? []).compactMap(Checksum.init(string:))
+    func checksumsSet(sdk: SDK) -> Set<Checksum> {
+        guard let loaded = load()?[sdk] else { return [] }
+        let checksums = (loaded.checksums ?? []).compactMap(Checksum.init(string:))
         return Set(checksums)
     }
 }

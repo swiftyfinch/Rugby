@@ -12,7 +12,7 @@ struct CacheBuildStep: Step {
     struct Input {
         let scheme: String?
         let checksums: [Checksum]
-        let swiftVersion: String?
+        let swift: String?
     }
 
     let verbose: Bool
@@ -55,13 +55,10 @@ struct CacheBuildStep: Step {
 
         progress.print("Update checksums".yellow)
         let newChecksums = Set(input.checksums)
-        let cachedChecksums = cacheManager.checksumsSet()
+        let cachedChecksums = cacheManager.checksumsSet(sdk: command.sdk)
         let updatedChecksums = newChecksums.inserts(cachedChecksums).map(\.string).sorted()
-        try cacheManager.save(CacheFile(checksums: updatedChecksums,
-                                        sdk: command.sdk,
-                                        arch: command.arch,
-                                        swift: input.swiftVersion,
-                                        xcargs: xcargs))
+        let newCache = SDKCache(arch: command.arch, swift: input.swift, xcargs: xcargs, checksums: updatedChecksums)
+        try cacheManager.update(sdk: command.sdk, newCache)
         done()
     }
 }
