@@ -12,6 +12,7 @@ struct DropDecodable: Decodable {
     let testFlight: Bool?
     let keepSources: Bool?
     let exclude: [String]?
+    let bell: Bool?
     let hideMetrics: Bool?
     let verbose: Bool?
 }
@@ -24,6 +25,7 @@ extension Drop {
         self.testFlight = decodable.testFlight ?? false
         self.keepSources = decodable.keepSources ?? false
         self.exclude = decodable.exclude ?? []
+        self.bell = decodable.bell ?? true
         self.hideMetrics = decodable.hideMetrics ?? false
         self.verbose = decodable.verbose ?? false
     }

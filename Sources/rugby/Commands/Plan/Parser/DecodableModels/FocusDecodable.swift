@@ -10,6 +10,7 @@ struct FocusDecodable: Decodable {
     let project: String?
     let testFlight: Bool?
     let keepSources: Bool?
+    let bell: Bool?
     let hideMetrics: Bool?
     let verbose: Bool?
 }
@@ -20,6 +21,7 @@ extension Focus {
         self.project = decodable.project ?? .podsProject
         self.testFlight = decodable.testFlight ?? false
         self.keepSources = decodable.keepSources ?? false
+        self.bell = decodable.bell ?? true
         self.hideMetrics = decodable.hideMetrics ?? false
         self.verbose = decodable.verbose ?? false
     }

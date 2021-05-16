@@ -10,10 +10,11 @@ struct CacheDecodable: Decodable {
     let sdk: SDK?
     let keepSources: Bool?
     let exclude: [String]?
-    let hideMetrics: Bool?
     let ignoreCache: Bool?
     let skipParents: Bool?
     let focus: [String]?
+    let bell: Bool?
+    let hideMetrics: Bool?
     let verbose: Bool?
 }
 
@@ -23,10 +24,11 @@ extension Cache {
         self.sdk = decodable.sdk ?? .sim
         self.keepSources = decodable.keepSources ?? false
         self.exclude = decodable.exclude ?? []
-        self.hideMetrics = decodable.hideMetrics ?? false
         self.ignoreCache = decodable.ignoreCache ?? false
         self.focus = decodable.focus ?? []
         self.skipParents = decodable.skipParents ?? false
+        self.bell = decodable.bell ?? true
+        self.hideMetrics = decodable.hideMetrics ?? false
         self.verbose = decodable.verbose ?? false
     }
 }
