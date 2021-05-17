@@ -17,8 +17,10 @@ private extension ArgumentHelp {
 
 struct Drop: ParsableCommand {
     @Argument(parsing: .remaining, help: .targetsHelp) var targets: [String]
-    @Flag(name: .shortAndLong, help: "Invert regEx.") var invert = false
-    @Option(name: .shortAndLong, parsing: .upToNextOption, help: "Exclude targets.") var exclude: [String] = []
+    @Flag(name: .shortAndLong, help: "Invert RegEx.") var invert = false
+    @Option(name: .shortAndLong,
+            parsing: .upToNextOption,
+            help: "Exclude targets. (not RegEx)") var exclude: [String] = []
     @Flag(name: .shortAndLong, help: "Show output without any changes.") var testFlight = false
     @Option(name: .shortAndLong, help: "Project location.") var project: String = .podsProject
     @Flag(name: .shortAndLong, help: "Keep sources & resources in project.\n") var keepSources = false
