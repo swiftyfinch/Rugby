@@ -27,6 +27,10 @@ struct Cache: ParsableCommand {
         abstract: """
         • Convert remote pods to prebuilt dependencies.
         Call it after each \("pod install".yellow).
+        """,
+        discussion: """
+        Checkout documentation for more info:
+        📖 \("https://github.com/swiftyfinch/Rugby/blob/main/Docs/Cache.md".cyan)
         """
     )
 

@@ -28,7 +28,11 @@ struct Drop: ParsableCommand {
     @Flag(name: .shortAndLong, help: "Print more information.") var verbose = false
 
     static var configuration = CommandConfiguration(
-        abstract: "• Remove any targets by RegEx."
+        abstract: "• Remove any targets by RegEx.",
+        discussion: """
+        Checkout documentation for more info:
+        📖 \("https://github.com/swiftyfinch/Rugby/blob/main/Docs/Drop.md".cyan)
+        """
     )
 
     mutating func run() throws {

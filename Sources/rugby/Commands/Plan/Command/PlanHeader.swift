@@ -17,6 +17,10 @@ struct Plans: ParsableCommand {
         • Run selected plan from \(".rugby/plans.yml".yellow)
         or use cache command if file not found.
         """,
+        discussion: """
+        Checkout documentation for more info:
+        📖 \("https://github.com/swiftyfinch/Rugby/blob/main/Docs/Plans.md".cyan)
+        """,
         subcommands: [PlansExample.self]
     )
 
