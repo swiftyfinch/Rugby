@@ -17,7 +17,7 @@ struct Cache: ParsableCommand {
     @Option(name: .long,
             parsing: .upToNextOption,
             help: ArgumentHelp("Keep selected pods.", shouldDisplay: false)) var focus: [String] = []
-    @Flag(help: "Skip building parents of changed pods.\n") var skipParents = false
+    @Flag(help: "Add parents of changed pods to build process.\n") var graph = false
 
     @Flag(name: .long, inversion: .prefixedNo, help: "Play bell sound on finish.") var bell = true
     @Flag(help: "Hide metrics.") var hideMetrics = false

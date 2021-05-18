@@ -45,7 +45,7 @@ struct Plans: ParsableCommand {
         cache.hideMetrics = cacheOptions.hideMetrics
         cache.ignoreCache = cacheOptions.ignoreCache
         cache.focus = cacheOptions.focus
-        cache.skipParents = cacheOptions.skipParents
+        cache.graph = cacheOptions.graph
         cache.verbose = cacheOptions.verbose
         try cache.wrappedRun()
     }

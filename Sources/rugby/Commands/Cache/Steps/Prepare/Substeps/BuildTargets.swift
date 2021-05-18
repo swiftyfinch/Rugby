@@ -25,13 +25,12 @@ extension CacheSubstepFactory {
 
             let buildPodsChain = Set(input.project.buildPodsChain(pods: input.buildPods).map(\.name))
             let extendedBuildPodsChain: Set<String>
-            if command.skipParents {
-                extendedBuildPodsChain = buildPodsChain
-                progress.print("Skip parents".yellow)
-            } else {
-                // Include parents of build pods. Maybe it's not necessary?
+            if command.graph {
+                progress.print("Resolving dependencies graph".yellow)
                 extendedBuildPodsChain = input.project.findParentDependencies(buildPodsChain,
                                                                               allTargets: input.selectedPods)
+            } else {
+                extendedBuildPodsChain = buildPodsChain
             }
 
             return (selectedPodsChain, extendedBuildPodsChain)
