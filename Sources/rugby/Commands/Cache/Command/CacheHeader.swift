@@ -13,7 +13,7 @@ struct Cache: ParsableCommand {
     @Option(name: .shortAndLong, help: "Build sdk: sim or ios.") var sdk: SDK = .sim
     @Flag(name: .shortAndLong, help: "Keep Pods group in project.") var keepSources = false
     @Option(name: .shortAndLong, parsing: .upToNextOption, help: "Exclude pods from cache.") var exclude: [String] = []
-    @Flag(help: "Ignore already cached pods checksums.") var ignoreCache = false
+    @Flag(help: "Ignore already cached pods checksums.") var ignoreChecksums = false
     @Option(name: .long,
             parsing: .upToNextOption,
             help: ArgumentHelp("Keep selected pods.", shouldDisplay: false)) var focus: [String] = []

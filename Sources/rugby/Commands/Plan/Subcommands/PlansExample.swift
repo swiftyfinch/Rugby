@@ -66,7 +66,7 @@ struct PlansExample: ParsableCommand {
             #keepSources: false
             #exclude: []
             #hideMetrics: false
-            #ignoreCache: false
+            #ignoreChecksums: false
             #verbose: false
 
           # 🗑 The second command: $ rugby drop "Test"
