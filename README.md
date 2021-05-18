@@ -38,9 +38,10 @@ You can read 📖 [full story](https://swiftyfinch.github.io/en/2021-03-09-rugby
 ✨ Fancy log output\
 🚀 Swiftish!
 
-Alternatives:\
-`-` [cocoapods-binary](https://github.com/leavez/cocoapods-binary)\
-`-` [PodBuilder](https://github.com/Subito-it/PodBuilder)
+Ruby alternatives:\
+`-` [CocoaPods Binary](https://github.com/leavez/cocoapods-binary)\
+`-` [PodBuilder](https://github.com/Subito-it/PodBuilder)\
+`-` [CocoaPods Binary Cache](https://github.com/grab/cocoapods-binary-cache)
 
 ### Quick start with [`Homebrew`](https://brew.sh) 🍺
 
