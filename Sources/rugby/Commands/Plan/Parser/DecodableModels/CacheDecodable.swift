@@ -11,7 +11,7 @@ struct CacheDecodable: Decodable {
     let keepSources: Bool?
     let exclude: [String]?
     let ignoreCache: Bool?
-    let skipParents: Bool?
+    let graph: Bool?
     let focus: [String]?
     let bell: Bool?
     let hideMetrics: Bool?
@@ -26,7 +26,7 @@ extension Cache {
         self.exclude = decodable.exclude ?? []
         self.ignoreCache = decodable.ignoreCache ?? false
         self.focus = decodable.focus ?? []
-        self.skipParents = decodable.skipParents ?? false
+        self.graph = decodable.graph ?? false
         self.bell = decodable.bell ?? true
         self.hideMetrics = decodable.hideMetrics ?? false
         self.verbose = decodable.verbose ?? false
