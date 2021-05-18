@@ -22,8 +22,7 @@ struct Focus: ParsableCommand {
         discussion: """
         Checkout documentation for more info:
         📖 \("https://github.com/swiftyfinch/Rugby/blob/main/Docs/Focus.md".cyan)
-        """,
-        shouldDisplay: false
+        """
     )
 
     mutating func run() throws {

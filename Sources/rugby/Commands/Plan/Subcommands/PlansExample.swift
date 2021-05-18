@@ -69,14 +69,10 @@ struct PlansExample: ParsableCommand {
             #ignoreChecksums: false
             #verbose: false
 
-          # 🗑 The second command: $ rugby drop "Test"
-          - command: drop
+          # 🔍 The second command: $ rugby focus "Pods-Main"
+          - command: focus
             targets:
-              - Test
-            exclude: # Optional
-              - Pods-TestProject # It's just for example
-            # Optional parameters with default values:
-            invert: false
+              - Pods-TestProject # It's the main target in RugbyTesting project
             project: "Pods/Pods.xcodeproj"
             testFlight: false
             keepSources: false
