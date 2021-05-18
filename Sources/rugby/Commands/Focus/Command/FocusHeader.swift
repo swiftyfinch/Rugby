@@ -18,7 +18,7 @@ struct Focus: ParsableCommand {
     @Flag(name: .shortAndLong, help: "Print more information.") var verbose = false
 
     static var configuration = CommandConfiguration(
-        abstract: "• Keep selected targets and all their dependencies.",
+        abstract: "• Keep only selected targets and all their dependencies.",
         discussion: """
         Checkout documentation for more info:
         📖 \("https://github.com/swiftyfinch/Rugby/blob/main/Docs/Focus.md".cyan)
