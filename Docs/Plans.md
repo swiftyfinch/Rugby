@@ -14,12 +14,15 @@ SUBCOMMANDS:
   example           Generate example .rugby/plans.yml
 ```
 
----
+<br>
 
-### 🗺 Generate example
+## 🗺 Generate example
 
-Generate example at `.rugby/plans.yml`:\
-`$ rugby example`
+Generate example at `.rugby/plans.yml`:
+
+```bash
+rugby example
+```
 
 ```yml
 # The first plan in the file always run by default
@@ -37,23 +40,19 @@ Generate example at `.rugby/plans.yml`:\
   # 🏈 The first Rugby command without arguments like: $ rugby cache
   - command: cache
     # Optional parameters with default values:
-    skipParents: false
+    graph: false
     arch: null # By default x86_64 if sdk == sim
     sdk: sim
     keepSources: false
     exclude: []
     hideMetrics: false
-    ignoreCache: false
+    ignoreChecksums: false
     verbose: false
 
-  # 🗑 The second command: $ rugby drop "Test"
-  - command: drop
+  # 🔍 The second command: $ rugby focus "Pods-Main"
+  - command: focus
     targets:
-      - Test
-    exclude: # Optional
-      - Pods-TestProject # It's just for example
-    # Optional parameters with default values:
-    invert: false
+      - Pods-Main
     project: "Pods/Pods.xcodeproj"
     testFlight: false
     keepSources: false
@@ -76,13 +75,22 @@ Generate example at `.rugby/plans.yml`:\
     exclude: [MyFeatureTests]
 ```
 
----
+<br>
 
-### 📍 Select plan
+## 📍 Select plan
 
-Run the plan with name `usual`:\
-`$ rugby` or\
-`$ rugby plans` or\
-`$ rugby plans --plan usual`
+Run the plan with name `usual` (It's all the same):
+
+```bash
+rugby
+```
+
+```bash
+rugby plans
+```
+
+```bash
+rugby plans --plan usual
+```
 
 <img src="https://github.com/swiftyfinch/Rugby/blob/main/Imgs/Plans.png" width="360"/>

@@ -43,33 +43,50 @@ Ruby alternatives:\
 `-` [PodBuilder](https://github.com/Subito-it/PodBuilder)\
 `-` [CocoaPods Binary Cache](https://github.com/grab/cocoapods-binary-cache)
 
-### Quick start with [`Homebrew`](https://brew.sh) 🍺
+### `Discussions`
+
+You can read more about 🏈 Rugby in `discussions` section.\
+Feel free to report any issues or suggest some new feature requests.
+
+<br>
+
+## Quick start with <a href="https://brew.sh">Homebrew</a>🍺
 
 ```bash
-# First install
-$ brew tap swiftyfinch/Rugby https://github.com/swiftyfinch/Rugby.git
-$ brew install rugby
-
-# Or get new version
-$ brew upgrade rugby
+brew tap swiftyfinch/Rugby https://github.com/swiftyfinch/Rugby.git
+brew install rugby
 ```
 
-### `How to use`
-
+Get new version:
 ```bash
-$ pod install
-$ rugby # Run in your project directory after each pod install
+brew upgrade rugby
 ```
+
+## How to use 🏈
+
+Run in your project directory after each pod install:
+```bash
+pod install && rugby
+```
+Or read more [about Plans](Docs/Plans.md#-generate-example) ✈️
+
+## Documentation 📚
 
 | Command | Description |
 | :----- | :------ |
-✈️ [`Plans`](Docs/Plans.md) | Run a predefined sequence of commands.
+🚑 [`Help`](Docs/README.md) | General Rugby documentation.
 🏈 [`Cache`](Docs/Cache.md) | Convert remote pods to prebuilt dependencies.
+✈️ [`Plans`](Docs/Plans.md) | Run a predefined sequence of commands.
+🔍 [`Focus`](Docs/Focus.md) | Keep only selected targets and all their dependencies.
 🗑 [`Drop`](Docs/Drop.md) | Remove any targets by RegEx.
+
+<br>
 
 ### `Maybe Roadmap`
 
-- [ ] New commands
+- [x] New command - Focus
+- [ ] Optimization
+- [ ] Improve Cache command
 - [ ] Open source
 
 ### `Author`
