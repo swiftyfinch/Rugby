@@ -42,9 +42,16 @@ struct CacheManager {
 // MARK: - Checksums
 
 extension CacheManager {
-    func checksumsSet(sdk: SDK) -> Set<Checksum> {
-        guard let loaded = load()?[sdk] else { return [] }
-        let checksums = (loaded.checksums ?? []).compactMap(Checksum.init(string:))
-        return Set(checksums)
+    func checksumsMap(sdk: SDK) -> [String: Checksum] {
+        load()?[sdk]?.checksumsMap() ?? [:]
+    }
+}
+
+extension SDKCache {
+    func checksumsMap() -> [String: Checksum] {
+        (checksums ?? []).reduce(into: [:]) { checksums, element in
+            guard let checksum = Checksum(string: element) else { return }
+            checksums[checksum.name] = checksum
+        }
     }
 }

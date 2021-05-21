@@ -28,9 +28,8 @@ extension CacheSubstepFactory {
             let cache = CacheManager().load()?[command.sdk]
             let swiftVersion = SwiftVersionProvider().swiftVersion()
             let invalidCache = (command.arch != cache?.arch || swiftVersion != cache?.swift)
-            if let checksums = cache?.checksums, !command.ignoreChecksums, !invalidCache {
-                let cachedChecksums = checksums.compactMap(Checksum.init(string:))
-                let changes = Set(focusChecksums).subtracting(cachedChecksums)
+            if let checksums = cache?.checksumsMap(), !command.ignoreChecksums, !invalidCache {
+                let changes = focusChecksums.filter { checksums[$0.name] == nil }
                 let changedPods = changes.map(\.name)
                 buildPods = Set(changedPods)
             } else {

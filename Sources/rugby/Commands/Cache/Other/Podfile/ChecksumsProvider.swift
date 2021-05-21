@@ -8,7 +8,7 @@
 import Files
 import RegEx
 
-struct Checksum: Hashable {
+struct Checksum {
     static let separator = ": "
     let name: String
     var checksum: String
