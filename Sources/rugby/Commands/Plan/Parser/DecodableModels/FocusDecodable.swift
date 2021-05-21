@@ -12,7 +12,7 @@ struct FocusDecodable: Decodable {
     let keepSources: Bool?
     let bell: Bool?
     let hideMetrics: Bool?
-    let verbose: Bool?
+    @BoolableIntDecodable var verbose: Int?
 }
 
 extension Focus {
@@ -23,6 +23,6 @@ extension Focus {
         self.keepSources = decodable.keepSources ?? false
         self.bell = decodable.bell ?? true
         self.hideMetrics = decodable.hideMetrics ?? false
-        self.verbose = decodable.verbose ?? false
+        self.verbose = decodable.verbose ?? 0
     }
 }

@@ -6,6 +6,10 @@
 //
 
 struct DefaultPrinter: Printer {
-    func print(_ value: String) { Swift.print(value) }
+    let verbose: Int
+    func print(_ value: String, level: Int) {
+        guard level <= verbose else { return }
+        Swift.print(value)
+    }
     func done() {}
 }

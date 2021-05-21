@@ -18,9 +18,9 @@ struct RugbyPrinter: Printer {
         self.printers = printers
     }
 
-    func print(_ value: String) {
+    func print(_ value: String, level: Int) {
         printers.forEach {
-            $0.print(formatter.format(text: value, chop: $0.chop))
+            $0.print(formatter.format(text: value, chop: $0.chop), level: level)
         }
     }
 
@@ -35,8 +35,8 @@ struct RugbyPrinter: Printer {
 }
 
 extension RugbyPrinter {
-    init(title: String? = nil, logFile: File? = nil, verbose: Bool = false) {
-        var printers: [Printer] = [verbose ? DefaultPrinter() : OneLinePrinter()]
+    init(title: String? = nil, logFile: File? = nil, verbose: Int = 0) {
+        var printers: [Printer] = [verbose.bool ? DefaultPrinter(verbose: verbose) : OneLinePrinter()]
         logFile.map { printers.append(FilePrinter(file: $0)) }
         self.init(formatter: RugbyFormatter(title: title), printers: printers)
     }

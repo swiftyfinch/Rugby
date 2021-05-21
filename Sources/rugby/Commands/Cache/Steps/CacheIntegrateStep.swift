@@ -8,7 +8,7 @@
 import Files
 
 struct CacheIntegrateStep: Step {
-    let verbose: Bool
+    let verbose: Int
     let isLast: Bool
     let progress: Printer
 
@@ -22,7 +22,7 @@ struct CacheIntegrateStep: Step {
     }
 
     func run(_ targets: Set<String>) throws {
-        progress.print("Update paths to builded pods ⏱".yellow)
+        progress.print("Update paths to builded pods ⏱".yellow, level: .vv)
         try CacheIntegration(cacheFolder: .cacheFolder(sdk: command.sdk),
                              buildedTargets: targets).replacePathsToCache()
         done()

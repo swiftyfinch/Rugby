@@ -8,7 +8,7 @@
 import Files
 
 protocol Step {
-    var verbose: Bool { get }
+    var verbose: Int { get }
     var isLast: Bool { get }
     var progress: Printer { get }
 
@@ -23,7 +23,7 @@ protocol Step {
 // MARK: - Default implementation
 
 extension Step {
-    var verbose: Bool { false }
+    var verbose: Int { 0 }
     var isLast: Bool { false }
 
     func done() {

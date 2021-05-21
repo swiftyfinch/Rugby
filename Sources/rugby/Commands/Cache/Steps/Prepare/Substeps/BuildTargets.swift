@@ -20,7 +20,7 @@ extension CacheSubstepFactory {
 
             let additionalBuildTargets = Set(selectedPodsChain.map(\.name)).subtracting(input.selectedPods)
             if !additionalBuildTargets.isEmpty {
-                progress.print(additionalBuildTargets, text: "Additional build targets")
+                progress.print(additionalBuildTargets, text: "Additional build targets", level: .vv)
             }
 
             let buildPodsChain = Set(input.project.buildPodsChain(pods: input.buildPods).map(\.name))

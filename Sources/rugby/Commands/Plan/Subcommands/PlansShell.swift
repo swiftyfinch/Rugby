@@ -9,12 +9,12 @@ import Files
 
 struct Shell: Command {
     let run: String
-    let verbose: Bool
+    let verbose: Int
 
     func run(logFile: File) throws -> Metrics? {
-        let progress = RugbyPrinter(title: "Shell 🐚", logFile: logFile, verbose: true)
+        let progress = RugbyPrinter(title: "Shell 🐚", logFile: logFile, verbose: .verbose)
         progress.print(run.yellow)
-        if verbose {
+        if verbose.bool {
             try printShell(run)
         } else {
             try shell(run)

@@ -28,7 +28,7 @@ struct CleanStep: Step {
     let progress: Printer
 
     init() {
-        self.progress = RugbyPrinter(title: "Clean", verbose: true)
+        self.progress = RugbyPrinter(title: "Clean", verbose: .verbose)
     }
 
     func run(_ input: Void) {

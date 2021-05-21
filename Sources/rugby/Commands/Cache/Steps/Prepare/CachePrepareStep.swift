@@ -16,7 +16,7 @@ struct CachePrepareStep: Step {
         let swiftVersion: String?
     }
 
-    let verbose: Bool
+    let verbose: Int
     let isLast: Bool
     let progress: Printer
 
@@ -39,7 +39,7 @@ extension CachePrepareStep {
             throw CacheError.cantFindXcodeCommandLineTools
         }
 
-        progress.print("Read project ⏱".yellow)
+        progress.print("Read project ⏱".yellow, level: .vv)
         metrics.projectSize.before = (try Folder.current.subfolder(at: .podsProject)).size()
         let project = try ProjectProvider.shared.readProject(.podsProject)
         metrics.compileFilesCount.before = project.pbxproj.buildFiles.count

@@ -14,7 +14,7 @@ struct DropDecodable: Decodable {
     let exclude: [String]?
     let bell: Bool?
     let hideMetrics: Bool?
-    let verbose: Bool?
+    @BoolableIntDecodable var verbose: Int?
 }
 
 extension Drop {
@@ -27,6 +27,6 @@ extension Drop {
         self.exclude = decodable.exclude ?? []
         self.bell = decodable.bell ?? true
         self.hideMetrics = decodable.hideMetrics ?? false
-        self.verbose = decodable.verbose ?? false
+        self.verbose = decodable.verbose ?? 0
     }
 }

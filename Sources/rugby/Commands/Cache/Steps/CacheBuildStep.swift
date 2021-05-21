@@ -14,7 +14,7 @@ struct CacheBuildStep: Step {
         let swift: String?
     }
 
-    let verbose: Bool
+    let verbose: Int
     let isLast: Bool
     let progress: Printer
 
@@ -52,7 +52,7 @@ struct CacheBuildStep: Step {
             throw CacheError.buildFailed
         }
 
-        progress.print("Update checksums".yellow)
+        progress.print("Update checksums".yellow, level: .vv)
         let newChecksums = Set(input.checksums)
         let cachedChecksums = cacheManager.checksumsSet(sdk: command.sdk)
         let updatedChecksums = newChecksums.inserts(cachedChecksums).map(\.string).sorted()

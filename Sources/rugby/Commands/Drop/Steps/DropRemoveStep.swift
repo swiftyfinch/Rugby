@@ -16,13 +16,13 @@ struct DropRemoveStep: Step {
         let keepSources: Bool
     }
 
-    let verbose: Bool
+    let verbose: Int
     let isLast: Bool
     let progress: Printer
 
     private let metrics: Metrics
 
-    init(verbose: Bool, metrics: Metrics, logFile: File, isLast: Bool = false) {
+    init(verbose: Int, metrics: Metrics, logFile: File, isLast: Bool = false) {
         self.metrics = metrics
         self.verbose = verbose
         self.isLast = isLast
