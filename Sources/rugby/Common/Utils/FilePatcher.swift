@@ -6,6 +6,7 @@
 //
 
 import Files
+import Foundation
 import RegEx
 
 struct FilePatcher {
@@ -16,9 +17,11 @@ struct FilePatcher {
                  folder: Folder) throws {
         let regex = try RegEx(pattern: fileRegEx)
         for file in folder.files.recursive where regex.test(file.path) {
-            var content = try file.readAsString()
-            content = content.replacingOccurrences(of: lookup, with: replace, options: .regularExpression)
-            try file.write(content)
+            try autoreleasepool {
+                var content = try file.readAsString()
+                content = content.replacingOccurrences(of: lookup, with: replace, options: .regularExpression)
+                try file.write(content)
+            }
         }
     }
 }
