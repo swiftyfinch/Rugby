@@ -7,5 +7,5 @@
 
 struct ShellDecodable: Decodable {
     let run: String
-    let verbose: Bool?
+    @BoolableIntDecodable var verbose: Int?
 }

@@ -10,7 +10,7 @@ import RegEx
 import XcodeProj
 
 struct FocusPrepareStep: Step {
-    let verbose: Bool
+    let verbose: Int
     let isLast: Bool
     let progress: Printer
 

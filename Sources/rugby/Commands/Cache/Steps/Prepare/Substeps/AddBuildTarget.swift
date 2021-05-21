@@ -21,10 +21,10 @@ extension CacheSubstepFactory {
         func run(_ input: Input) throws {
             progress.print(input.dependencies, text: "Build targets")
 
-            progress.print("Add build target: ".yellow + input.target)
+            progress.print("Add build target: ".yellow + input.target, level: .vv)
             input.project.addTarget(name: input.target, dependencies: input.dependencies)
 
-            progress.print("Save project ⏱".yellow)
+            progress.print("Save project ⏱".yellow, level: .vv)
             try input.project.write(pathString: .podsProject, override: true)
         }
     }

@@ -14,3 +14,8 @@ extension ParsableCommand {
         "⛔️ \u{1B}[31mError"
     }
 }
+
+extension Int {
+    static var verbose = 1
+    static var vv = 2
+}

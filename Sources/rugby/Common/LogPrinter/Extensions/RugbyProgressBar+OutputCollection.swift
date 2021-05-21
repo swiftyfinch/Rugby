@@ -6,11 +6,16 @@
 //
 
 extension Printer {
-    func print<T: Collection>(_ collection: T, text: String, deletion: Bool = false) where T.Element == String {
-        print("\(text) ".yellow + "(\(collection.count))" + ":".yellow)
+    func print<T: Collection>(
+        _ collection: T,
+        text: String,
+        level: Int = .verbose,
+        deletion: Bool = false
+    ) where T.Element == String {
+        print("\(text) ".yellow + "(\(collection.count))" + ":".yellow, level: level)
         collection.caseInsensitiveSorted().forEach {
             let bullet = deletion ? "* ".red : "* ".yellow
-            print(bullet + "\($0)")
+            print(bullet + "\($0)", level: level)
         }
     }
 }

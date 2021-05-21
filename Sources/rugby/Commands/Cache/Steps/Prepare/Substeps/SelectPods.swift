@@ -23,19 +23,19 @@ extension CacheSubstepFactory {
                 let allPods = try Podfile(.podfileLock).getPods()
                 pods = allPods.subtracting(command.focus)
             }
-            progress.print(pods, text: "Pods")
+            progress.print(pods, text: "Pods", level: .vv)
 
             // Exclude by command argument
             var podsWithoutExcluded = pods
             if !command.exclude.isEmpty {
-                progress.print(command.exclude, text: "Exclude pods")
+                progress.print(command.exclude, text: "Exclude pods", level: .vv)
                 podsWithoutExcluded.subtract(command.exclude)
             }
 
             // Exclude aggregated targets, which contain scripts with the installation of some xcframeworks.
             let (filteredPods, excluded) = project.excludeXCFrameworksTargets(pods: podsWithoutExcluded)
             if !excluded.isEmpty {
-                progress.print(excluded, text: "Exclude XCFrameworks")
+                progress.print(excluded, text: "Exclude XCFrameworks", level: .vv)
             }
 
             metrics.podsCount.before = pods.count

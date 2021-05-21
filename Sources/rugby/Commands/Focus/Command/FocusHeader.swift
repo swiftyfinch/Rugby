@@ -15,7 +15,7 @@ struct Focus: ParsableCommand {
 
     @Flag(name: .long, inversion: .prefixedNo, help: "Play bell sound on finish.") var bell = true
     @Flag(help: "Hide metrics.") var hideMetrics = false
-    @Flag(name: .shortAndLong, help: "Print more information.") var verbose = false
+    @Flag(name: .shortAndLong, help: "Print more information.") var verbose: Int
 
     static var configuration = CommandConfiguration(
         abstract: "• Keep only selected targets and all their dependencies.",

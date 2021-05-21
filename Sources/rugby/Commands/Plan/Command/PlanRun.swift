@@ -67,13 +67,13 @@ extension Plans {
     private func outputProjectMetrics(_ metrics: [Metrics], logFile: File) {
         guard let combinedMetrics = metrics.combine() else { return }
         let projectHeader = "[!] " + combinedMetrics.project + ":"
-        RugbyPrinter(logFile: logFile, verbose: true).print(projectHeader.green)
+        RugbyPrinter(logFile: logFile, verbose: .verbose).print(projectHeader.green)
         outputMore(combinedMetrics, logFile: logFile)
         printEmptyLine(logFile: logFile)
     }
 
     private func printEmptyLine(logFile: File) {
-        RugbyPrinter(logFile: logFile, verbose: true)
+        RugbyPrinter(logFile: logFile, verbose: .verbose)
             .print("---------------------------------".yellow)
     }
 }

@@ -15,7 +15,7 @@ struct CacheCleanupStep: Step {
         let products: Set<String>
     }
 
-    let verbose: Bool
+    let verbose: Int
     let isLast: Bool
     let progress: Printer
 
@@ -33,29 +33,29 @@ struct CacheCleanupStep: Step {
     func run(_ input: Input) throws {
         let (targets, products) = (input.targets, input.products)
         var hasChanges = false
-        progress.print("Read project ⏱".yellow)
+        progress.print("Read project ⏱".yellow, level: .vv)
         let project = try ProjectProvider.shared.readProject(.podsProject)
 
         if !command.keepSources {
-            progress.print("Remove sources from project".yellow)
+            progress.print("Remove sources from project".yellow, level: .vv)
             hasChanges = project.removeSources(pods: targets, fromGroup: .podsGroup) || hasChanges
             try project.removeSources(fromTargets: targets)
         }
 
-        progress.print("Remove frameworks".yellow)
+        progress.print("Remove frameworks".yellow, level: .vv)
         hasChanges = project.removeFrameworks(products: products) || hasChanges
 
-        progress.print("Remove products".yellow)
+        progress.print("Remove products".yellow, level: .vv)
         if project.removeFrameworkPaths(products: products) {
             hasChanges = true
         }
 
-        progress.print("Remove build target".yellow)
+        progress.print("Remove build target".yellow, level: .vv)
         if let target = input.scheme, project.removeTarget(name: target) {
             hasChanges = true
         }
 
-        progress.print("Remove builded pods".yellow)
+        progress.print("Remove builded pods".yellow, level: .vv)
         var removeBuildedPods = project.removeDependencies(names: targets, exclude: command.exclude)
         targets.forEach {
             removeBuildedPods = project.removeTarget(name: $0) || removeBuildedPods
@@ -63,10 +63,10 @@ struct CacheCleanupStep: Step {
 
         if hasChanges || removeBuildedPods {
             // Remove schemes if has changes (it should be changes in targets)
-            progress.print("Remove schemes".yellow)
+            progress.print("Remove schemes".yellow, level: .vv)
             try project.removeSchemes(pods: targets, projectPath: .podsProject)
 
-            progress.print("Save project ⏱".yellow)
+            progress.print("Save project ⏱".yellow, level: .vv)
             try project.write(pathString: .podsProject, override: true)
 
             metrics.projectSize.after = (try Folder.current.subfolder(at: .podsProject)).size()

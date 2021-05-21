@@ -9,7 +9,7 @@ import Files
 import RegEx
 
 struct DropPrepareStep: Step {
-    let verbose: Bool
+    let verbose: Int
     let isLast: Bool
     let progress: Printer
 
