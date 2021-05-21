@@ -53,10 +53,12 @@ struct CacheBuildStep: Step {
         }
 
         progress.print("Update checksums".yellow, level: .vv)
-        let newChecksums = Set(input.checksums)
-        let cachedChecksums = cacheManager.checksumsSet(sdk: command.sdk)
-        let updatedChecksums = newChecksums.inserts(cachedChecksums).map(\.string).sorted()
-        let newCache = SDKCache(arch: command.arch, swift: input.swift, xcargs: xcargs, checksums: updatedChecksums)
+        let cachedChecksums = cacheManager.checksumsMap(sdk: command.sdk)
+        let updatedChecksums = input.checksums.reduce(into: cachedChecksums) { checksums, new in
+            checksums[new.name] = new
+        }
+        let checksums = updatedChecksums.map(\.value.string).sorted()
+        let newCache = SDKCache(arch: command.arch, swift: input.swift, xcargs: xcargs, checksums: checksums)
         try cacheManager.update(sdk: command.sdk, newCache)
         done()
     }
