@@ -17,7 +17,7 @@ extension String {
     static let supportFolder = ".rugby"
     static let log = supportFolder + "/rugby.log"
     static let plans = supportFolder + "/plans.yml"
-    static let podfileLock = "Podfile.lock"
+    static let lockfile = "Podfile.lock"
     static let podsProject = "Pods/Pods.xcodeproj"
     static let podsTargetSupportFiles = "Pods/Target Support Files"
 

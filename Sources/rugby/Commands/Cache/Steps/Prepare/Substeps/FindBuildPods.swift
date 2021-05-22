@@ -12,6 +12,7 @@ extension CacheSubstepFactory {
         let progress: Printer
         let command: Cache
         let metrics: Metrics
+        let checksumsProvider = ChecksumsProvider()
 
         func run(_ selectedPods: Set<String>) throws -> (
             buildPods: Set<String>,
@@ -19,7 +20,6 @@ extension CacheSubstepFactory {
             swiftVersion: String?
         ) {
             progress.print("Caclulate checksums ⏱".yellow, level: .vv)
-            let checksumsProvider = try ChecksumsProvider(podfile: Podfile(.podfileLock))
             let focusChecksums = try checksumsProvider.getChecksums(forPods: selectedPods)
             metrics.podsCount.after = focusChecksums.count
 
