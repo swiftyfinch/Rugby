@@ -9,8 +9,6 @@ import Foundation
 import Rainbow
 
 enum CacheError: Error, LocalizedError {
-    case cantParsePodfileLock
-    case cantParseCachedChecksums
     case cantFindPodsTargets
     case cantFindXcodeCommandLineTools
     case buildFailed
@@ -18,10 +16,6 @@ enum CacheError: Error, LocalizedError {
     var errorDescription: String? {
         let output: String
         switch self {
-        case .cantParsePodfileLock:
-            output = "Couldn't parse Podfile.lock.".red
-        case .cantParseCachedChecksums:
-            output = "Couldn't parse cached checksums.".red
         case .cantFindPodsTargets:
             output = "Couldn't find pods targets.\n".red
                 + "🚑 Try to call pod install.".yellow
