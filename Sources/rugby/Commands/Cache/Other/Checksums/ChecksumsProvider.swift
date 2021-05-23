@@ -41,9 +41,11 @@ final class ChecksumsProvider {
         var checksums: [Checksum] = []
         try podsProvider.remotePods()
             .filter { pods.contains($0.name) }
+            .map { try $0.combinedChecksum() }
             .forEach { checksums.append($0) }
         try podsProvider.localPods()
             .filter { pods.contains($0.name) }
+            .map { try $0.combinedChecksum() }
             .forEach { checksums.append($0) }
         cachedChecksums = checksums.reduce(into: [:]) { $0[$1.name] = $1 }
         return checksums
