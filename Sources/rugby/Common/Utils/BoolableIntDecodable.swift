@@ -8,8 +8,13 @@
 import Foundation
 
 @propertyWrapper
-struct BoolableIntDecodable: Decodable {
+struct BoolableIntDecodable: Decodable, OptionalCodingWrapper {
+
     let wrappedValue: Int?
+
+    init(wrappedValue: Int?) {
+        self.wrappedValue = wrappedValue
+    }
 
     init(from decoder: Decoder) throws {
         let container = try decoder.singleValueContainer()
