@@ -6,7 +6,6 @@
 //
 
 import Files
-import RegEx
 
 struct Checksum {
     static let separator = ": "

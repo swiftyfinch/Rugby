@@ -14,7 +14,6 @@ let package = Package(
         .package(url: "https://github.com/onevcat/Rainbow", from: "4.0.0"),
         .package(url: "https://github.com/JohnSundell/Files", from: "4.2.0"),
         .package(name: "XcodeProj", url: "https://github.com/tuist/xcodeproj", from: "7.22.0"),
-        .package(url: "https://github.com/eneko/RegEx.git", from: "0.3.0"),
         .package(url: "https://github.com/kareman/SwiftShell", from: "5.1.0"),
         .package(url: "https://github.com/jpsim/Yams.git", from: "4.0.6")
     ],
@@ -24,7 +23,6 @@ let package = Package(
             "Rainbow",
             "Files",
             "XcodeProj",
-            "RegEx",
             "SwiftShell",
             "Yams",
         ])

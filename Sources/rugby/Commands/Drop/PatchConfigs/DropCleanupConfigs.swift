@@ -6,7 +6,6 @@
 //
 
 import Files
-import RegEx
 
 struct DropUpdateConfigs {
     let products: Set<String>
