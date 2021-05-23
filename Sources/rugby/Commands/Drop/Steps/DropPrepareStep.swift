@@ -6,7 +6,6 @@
 //
 
 import Files
-import RegEx
 
 struct DropPrepareStep: Step {
     let verbose: Int
@@ -33,10 +32,10 @@ struct DropPrepareStep: Step {
         progress.print("Find targets".yellow)
         progress.print(command.exclude, text: "Exclude")
         let exclude = Set(command.exclude)
-        let regEx = try RegEx(pattern: "(" + command.targets.joined(separator: "|") + ")")
+        let regex = try regex("(" + command.targets.joined(separator: "|") + ")")
         let foundTargets = project.targets.filter {
             if exclude.contains($0.name) { return false }
-            let passedRegEx = regEx.test($0.name)
+            let passedRegEx = $0.name.match(regex)
             return command.invert ? !passedRegEx : passedRegEx
         }
         progress.print(foundTargets.map(\.name), text: "Found targets")

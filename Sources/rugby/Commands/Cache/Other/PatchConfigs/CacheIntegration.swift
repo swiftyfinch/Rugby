@@ -6,7 +6,6 @@
 //
 
 import Files
-import RegEx
 
 struct CacheIntegration {
     let cacheFolder: String

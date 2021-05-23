@@ -7,7 +7,6 @@
 
 import Files
 import Foundation
-import RegEx
 
 struct FilePatcher {
     /// Replacing content of each file by regex criteria in selected folder.
@@ -15,8 +14,8 @@ struct FilePatcher {
                  with replace: String,
                  inFilesByRegEx fileRegEx: String,
                  folder: Folder) throws {
-        let regex = try RegEx(pattern: fileRegEx)
-        for file in folder.files.recursive where regex.test(file.path) {
+        let regex = try regex(fileRegEx)
+        for file in folder.files.recursive where file.path.match(regex) {
             try autoreleasepool {
                 var content = try file.readAsString()
                 content = content.replacingOccurrences(of: lookup, with: replace, options: .regularExpression)

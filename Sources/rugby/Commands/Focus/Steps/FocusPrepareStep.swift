@@ -6,7 +6,6 @@
 //
 
 import Files
-import RegEx
 import XcodeProj
 
 struct FocusPrepareStep: Step {
