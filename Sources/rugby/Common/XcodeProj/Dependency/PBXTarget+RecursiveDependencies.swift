@@ -8,15 +8,15 @@
 import XcodeProj
 
 extension PBXTarget {
-    func recursiveDependencies() -> [String: PBXTargetDependency] {
-        var result: [String: PBXTargetDependency] = [:]
+    func recursiveDependencies(used: [String: PBXTargetDependency] = [:]) -> [String: PBXTargetDependency] {
+        var used = used
         for dependency in dependencies {
-            guard let name = dependency.displayName else { continue }
-            result[name] = dependency
-            if let names = dependency.target?.recursiveDependencies() {
-                result.merge(names, uniquingKeysWith: { lhs, _ in lhs })
+            guard let name = dependency.displayName, used[name] == nil else { continue }
+            used[name] = dependency
+            if let names = dependency.target?.recursiveDependencies(used: used) {
+                used.merge(names, uniquingKeysWith: { lhs, _ in lhs })
             }
         }
-        return result
+        return used
     }
 }
