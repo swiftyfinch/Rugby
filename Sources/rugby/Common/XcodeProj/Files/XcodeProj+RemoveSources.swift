@@ -8,6 +8,7 @@
 import XcodeProj
 
 extension XcodeProj {
+    @discardableResult
     func removeSources(pods: Set<String>, fromGroup groupName: String) -> Bool {
         guard let group = pbxproj.groups.first(where: { $0.name == groupName && $0.parent?.parent == nil }) else {
             return false
