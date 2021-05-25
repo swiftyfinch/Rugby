@@ -38,7 +38,8 @@ struct CacheCleanupStep: Step {
 
         if !command.keepSources {
             progress.print("Remove sources from project".yellow, level: .vv)
-            hasChanges = project.removeSources(pods: targets, fromGroup: .podsGroup) || hasChanges
+            hasChanges = true
+            project.removeSources(pods: targets, fromGroup: .podsGroup)
             try project.removeSources(fromTargets: targets)
         }
 
