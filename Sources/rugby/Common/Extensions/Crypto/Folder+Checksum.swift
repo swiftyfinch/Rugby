@@ -11,14 +11,20 @@ import Foundation
 extension Folder {
     func generateChecksum() -> String? {
         files.recursive.reduce(into: nil) { checksum, file in
-            autoreleasepool {
-                guard let content = try? file.readAsString() else { return }
-                if let existChecksum = checksum {
-                    checksum = (existChecksum + content.sha1()).sha1()
-                } else {
-                    checksum = content.sha1()
-                }
+            guard let fileChecksum = file.generateChecksum() else { return }
+            if let existChecksum = checksum {
+                checksum = calculateChecksum(existChecksum, fileChecksum)
+            } else {
+                checksum = fileChecksum
             }
+        }
+    }
+}
+
+extension File {
+    func generateChecksum() -> String? {
+        autoreleasepool {
+            return try? calculateChecksum(readAsString())
         }
     }
 }
