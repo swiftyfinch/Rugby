@@ -13,11 +13,11 @@ protocol CombinedChecksum {
 
 extension RemotePod: CombinedChecksum {
     func combinedChecksum() throws -> Checksum {
-        let checksum = options
+        let combined = options
             .map { $0.key + ":" + $0.value }
             .sorted()
             .reduce(checksum.value) { calculateChecksum($0, $1) }
-        return Checksum(name: name, checksum: checksum)
+        return Checksum(name: name, checksum: combined)
     }
 }
 
