@@ -14,7 +14,7 @@ struct FilePatcher {
                  with replace: String,
                  inFilesByRegEx fileRegEx: String,
                  folder: Folder) throws {
-        let regex = try regex(fileRegEx)
+        let regex = try fileRegEx.regex()
         for file in folder.files.recursive where file.path.match(regex) {
             try autoreleasepool {
                 var content = try file.readAsString()

@@ -32,7 +32,7 @@ struct DropPrepareStep: Step {
         progress.print("Find targets".yellow)
         progress.print(command.exclude, text: "Exclude")
         let exclude = Set(command.exclude)
-        let regex = try regex("(" + command.targets.joined(separator: "|") + ")")
+        let regex = try ("(" + command.targets.joined(separator: "|") + ")").regex()
         let foundTargets = project.targets.filter {
             if exclude.contains($0.name) { return false }
             let passedRegEx = $0.name.match(regex)

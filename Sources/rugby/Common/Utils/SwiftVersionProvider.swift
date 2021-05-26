@@ -9,7 +9,7 @@ struct SwiftVersionProvider {
     func swiftVersion() -> String? {
         guard
             let commandOutput = try? shell("swift --version"),
-            let versionRegEx = try? regex(#"(?<=Apple Swift version )(\d+\.\d+)"#),
+            let versionRegEx = try? #"(?<=Apple Swift version )(\d+\.\d+)"#.regex(),
             let version = try? commandOutput.groups(versionRegEx).first
         else { return nil }
         return String(version)

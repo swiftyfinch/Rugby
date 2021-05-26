@@ -11,11 +11,11 @@ enum RegexError: Error {
     case incorrectStringRange
 }
 
-func regex(_ pattern: String) throws -> NSRegularExpression {
-    try NSRegularExpression(pattern: pattern)
-}
-
 extension String {
+    func regex() throws -> NSRegularExpression {
+        try NSRegularExpression(pattern: self)
+    }
+
     func match(_ regex: NSRegularExpression) -> Bool {
         let matches = try? groups(regex)
         return matches?.isEmpty == false
