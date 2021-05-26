@@ -1,0 +1,231 @@
+name: Regress
+
+on: [workflow_dispatch]
+
+jobs:
+  lint:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v2
+      - name: GitHub Action for SwiftLint with --strict
+        uses: norio-nomura/action-swiftlint@3.2.1
+        with:
+          args: --strict
+  rugby:
+    runs-on: macos-latest
+    steps:
+      - uses: actions/checkout@v2
+      - name: Build Rugby
+        run: |
+          swift build -c release
+          path=`swift build -c release --show-bin-path`
+          echo "rugby_path=$path/rugby" >> $GITHUB_ENV
+          swift run rugby --version
+      - name: Keep artifact
+        uses: actions/upload-artifact@v2
+        with:
+          name: rugby
+          path: ${{ env.rugby_path }}
+#==========================================================================
+  cache:
+    needs: rugby
+    runs-on: macos-latest
+    steps:
+      - uses: actions/checkout@v2
+      - uses: actions/download-artifact@v2
+        with:
+          name: rugby
+      - run: chmod +x rugby
+      - run: ./rugby -h
+
+      # Prepare TestProject
+      - name: Get gems cache
+        uses: ruby/setup-ruby@v1
+        with:
+          ruby-version: 2.7.2
+          bundler-cache: true
+          
+      - name: Bundle install
+        run: bundle
+        
+      - name: Get CocoaPods cache
+        uses: actions/cache@v2
+        with:
+          path: Pods
+          key: ${{ runner.os }}-pods-${{ hashFiles('Podfile.lock') }}
+          
+      # Basic usage
+      - name: Pod install
+        run: bundle exec pod install
+        
+      - name: Cache for simulator
+        run: ./rugby
+        
+      - name: Run tests on simulator
+        run: bundle exec fastlane run_unit_tests
+        
+      # Cache for iOS
+      - name: Pod install
+        run: bundle exec pod install
+        
+      - name: Cache for iOS
+        run: ./rugby -s ios
+        
+      - name: Build for iOS
+        run: bundle exec fastlane build_ios
+        
+      # Cache for simulator with Alamofire excluding
+      - name: Pod install
+        run: bundle exec pod install
+        
+      - name: Cache for simulator with -e
+        run: ./rugby -e Alamofire
+        
+      - name: Run tests on simulator
+        run: bundle exec fastlane run_unit_tests
+#==========================================================================
+  drop:
+    needs: rugby
+    runs-on: macos-latest
+    steps:
+      - uses: actions/checkout@v2
+      - uses: actions/download-artifact@v2
+        with:
+          name: rugby
+      - run: chmod +x rugby
+      - run: ./rugby -h
+
+      # Prepare TestProject
+      - name: Get gems cache
+        uses: ruby/setup-ruby@v1
+        with:
+          ruby-version: 2.7.2
+          bundler-cache: true
+          
+      - name: Bundle install
+        run: bundle
+        
+      - name: Get CocoaPods cache
+        uses: actions/cache@v2
+        with:
+          path: Pods
+          key: ${{ runner.os }}-pods-${{ hashFiles('Podfile.lock') }}
+          
+      # Basic usage
+      - name: Pod install
+        run: bundle exec pod install
+        
+      - name: Cache for simulator
+        run: ./rugby
+        
+      - name: Drop Pods tests
+        run: ./rugby drop "Unit-Tests"
+        
+      - name: Run tests
+        run: bundle exec fastlane run_unit_tests
+        
+      - name: Drop Unit tests in main project
+        run: ./rugby drop "TestProjectTests" -p TestProject/TestProject.xcodeproj
+        
+      - name: Run tests again
+        run: bundle exec fastlane run_unit_tests
+        
+      - name: Drop UI tests in main project
+        run: ./rugby drop "UI" -p TestProject/TestProject.xcodeproj
+        
+      - name: Run tests again and again
+        run: bundle exec fastlane build
+        
+      - name: Drop Localizable target
+        run: ./rugby drop "TestLocalizable" -p TestProject/TestProject.xcodeproj
+        
+      - name: Run final tests
+        run: bundle exec fastlane build
+        
+      - name: Drop last target in TestProject
+        run: ./rugby drop "TestProject" -p TestProject/TestProject.xcodeproj
+        
+      - name: Check that schemes is empty
+        run: bundle exec fastlane check_that_scemes_empty
+#==========================================================================
+  focus:
+    needs: rugby
+    runs-on: macos-latest
+    steps:
+      - uses: actions/checkout@v2
+      - uses: actions/download-artifact@v2
+        with:
+          name: rugby
+      - run: chmod +x rugby
+      - run: ./rugby -h
+
+      # Prepare TestProject
+      - name: Get gems cache
+        uses: ruby/setup-ruby@v1
+        with:
+          ruby-version: 2.7.2
+          bundler-cache: true
+          
+      - name: Bundle install
+        run: bundle
+        
+      - name: Get CocoaPods cache
+        uses: actions/cache@v2
+        with:
+          path: Pods
+          key: ${{ runner.os }}-pods-${{ hashFiles('Podfile.lock') }}
+          
+      # Basic usage
+      - name: Pod install
+        run: bundle exec pod install
+        
+      - name: Cache for simulator
+        run: ./rugby
+        
+      - name: Focus Pods main target
+        run: ./rugby focus "Pods-TestProject"
+        
+      - name: Focus TestProject main target
+        run: ./rugby focus "TestProject" -p TestProject/TestProject.xcodeproj
+        
+      - name: Build
+        run: bundle exec fastlane build
+#==========================================================================
+  plans:
+    needs: rugby
+    runs-on: macos-latest
+    steps:
+      - uses: actions/checkout@v2
+      - uses: actions/download-artifact@v2
+        with:
+          name: rugby
+      - run: chmod +x rugby
+      - run: ./rugby -h
+
+      # Prepare TestProject
+      - name: Get gems cache
+        uses: ruby/setup-ruby@v1
+        with:
+          ruby-version: 2.7.2
+          bundler-cache: true
+          
+      - name: Bundle install
+        run: bundle
+        
+      - name: Get CocoaPods cache
+        uses: actions/cache@v2
+        with:
+          path: Pods
+          key: ${{ runner.os }}-pods-${{ hashFiles('Podfile.lock') }}
+          
+      # Basic usage
+      - name: Rugby Plans Gen
+        run: |
+          ./rugby example
+          cat .rugby/plans.yml
+      
+      - name: Run usual plan
+        run: ./rugby --plan usual
+        
+      - name: Build
+        run: bundle exec fastlane build
