@@ -5,7 +5,7 @@
 OVERVIEW: Keep only selected targets and all their dependencies.
 
 ARGUMENTS:
-  <targets>                   RegEx targets for removing.
+  <targets>                   RegEx targets for focusing.
                               - Use backward slashes \ for escaping special characters;
                               - Add "" for safer use (without shell's interpretation). 
 
