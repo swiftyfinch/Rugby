@@ -7,8 +7,16 @@
 
 import ArgumentParser
 
+private extension ArgumentHelp {
+    static let targetsHelp: ArgumentHelp = """
+    RegEx targets for focusing.
+    \("- Use backward slashes \\ for escaping special characters; ".yellow)
+    \("- Add \"\" for safer use (without shell's interpretation).".yellow)
+    """
+}
+
 struct Focus: ParsableCommand {
-    @Argument(parsing: .remaining) var targets: [String]
+    @Argument(parsing: .remaining, help: .targetsHelp) var targets: [String]
     @Flag(name: .shortAndLong, help: "Show output without any changes.") var testFlight = false
     @Option(name: .shortAndLong, help: "Project location.") var project: String = .podsProject
     @Flag(name: .shortAndLong, help: "Keep sources & resources in project.\n") var keepSources = false
