@@ -11,3 +11,5 @@ Tests/TestProject/LocalPod/Sources/R.generated.swift
 Tests/TestProject/fastlane/README.md
 Tests/TestProject/fastlane/report.xml
 Tests/TestProject/fastlane/Appfile
+Fastlane/test_output
+Fastlane/report.xml
