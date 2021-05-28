@@ -3,12 +3,12 @@
   <sup>"Like Ruby but with g"</sup>
 </h3>
 <p align="center">
-    <img src="https://github.com/swiftyfinch/Rugby/blob/main/Demo.gif" width="600"/>
+  <img src="https://github.com/swiftyfinch/Rugby/blob/main/Demo.gif" width="600"/>
 </p>
 <p align="center">
   <img src="https://img.shields.io/badge/Swift-orange.svg?logo=swift&logoColor=white" />
   <img src="https://img.shields.io/badge/12+-blue.svg?logo=xcode&logoColor=white" />
-  <img src="https://img.shields.io/badge/Brew-8B4513?logo=homebrew&logoColor=white" />
+  <img src="https://img.shields.io/badge/Mint-darkgreen?logo=leaflet&logoColor=white" />
   <img src="https://img.shields.io/badge/CocoaPods-red?logo=cocoapods&logoColor=white" />
 </p>
 
@@ -50,22 +50,10 @@ Feel free to report any issues or suggest some new feature requests.
 
 <br>
 
-## New distribution way starts with 1.7.0 <a href="https://github.com/yonaskolb/Mint">Mint</a>🌱
+## Quick start with <a href="https://github.com/yonaskolb/Mint">Mint</a> 🌱
 
 ```bash
-mint install swiftyfinch/rugby@1.7.0
-```
-
-## Old way prior 1.7.0 <a href="https://brew.sh">Homebrew</a>🍺
-
-```bash
-brew tap swiftyfinch/Rugby https://github.com/swiftyfinch/Rugby.git
-brew install rugby
-```
-
-Get new version:
-```bash
-brew upgrade rugby
+mint install swiftyfinch/rugby
 ```
 
 ## How to use 🏈
