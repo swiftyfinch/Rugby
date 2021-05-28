@@ -7,8 +7,7 @@ jobs:
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v2
-      - name: GitHub Action for SwiftLint with --strict
-        uses: norio-nomura/action-swiftlint@3.2.1
+      - uses: norio-nomura/action-swiftlint@3.2.1
         with:
           args: --strict
   rugby:
@@ -30,13 +29,19 @@ jobs:
   cache:
     needs: rugby
     runs-on: macos-latest
+    env:
+      project-directory: ./TestProject
     steps:
       - uses: actions/checkout@v2
       - uses: actions/download-artifact@v2
         with:
           name: rugby
       - run: chmod +x rugby
-      - run: ./rugby -h
+      - run: echo $PATH
+      - run: export PATH="${PATH}:`pwd`"
+      - run: echo $PATH
+      - run: which rugby
+      - run: rugby -h
 
       # Prepare TestProject
       - name: Get gems cache
@@ -44,56 +49,69 @@ jobs:
         with:
           ruby-version: 2.7.2
           bundler-cache: true
-          
+          working-directory: TestProject
       - name: Bundle install
         run: bundle
-        
+        working-directory: ${{env.project-directory}}
       - name: Get CocoaPods cache
         uses: actions/cache@v2
         with:
-          path: Pods
+          path: TestProject/Pods
           key: ${{ runner.os }}-pods-${{ hashFiles('Podfile.lock') }}
-          
+          restore-keys: ${{ runner.os }}-pods-
+
       # Basic usage
       - name: Pod install
         run: bundle exec pod install
-        
+        working-directory: ${{env.project-directory}}
+
       - name: Cache for simulator
-        run: ./rugby
-        
+        run: rugby
+        working-directory: ${{env.project-directory}}
+
       - name: Run tests on simulator
         run: bundle exec fastlane run_unit_tests
-        
+        working-directory: ${{env.project-directory}}
+
       # Cache for iOS
       - name: Pod install
         run: bundle exec pod install
-        
+        working-directory: ${{env.project-directory}}
+
       - name: Cache for iOS
-        run: ./rugby -s ios
-        
+        run: rugby -s ios
+        working-directory: ${{env.project-directory}}
+
       - name: Build for iOS
         run: bundle exec fastlane build_ios
-        
+        working-directory: ${{env.project-directory}}
+
       # Cache for simulator with Alamofire excluding
       - name: Pod install
         run: bundle exec pod install
-        
+        working-directory: ${{env.project-directory}}
+
       - name: Cache for simulator with -e
-        run: ./rugby -e Alamofire
-        
+        run: rugby -e Alamofire
+        working-directory: ${{env.project-directory}}
+
       - name: Run tests on simulator
         run: bundle exec fastlane run_unit_tests
+        working-directory: ${{env.project-directory}}
 #==========================================================================
   drop:
     needs: rugby
     runs-on: macos-latest
+    env:
+      project-directory: ./TestProject
     steps:
       - uses: actions/checkout@v2
       - uses: actions/download-artifact@v2
         with:
           name: rugby
       - run: chmod +x rugby
-      - run: ./rugby -h
+      - run: export PATH="${PATH}:`pwd`"
+      - run: rugby -h
 
       # Prepare TestProject
       - name: Get gems cache
@@ -101,62 +119,78 @@ jobs:
         with:
           ruby-version: 2.7.2
           bundler-cache: true
-          
+          working-directory: TestProject
       - name: Bundle install
         run: bundle
-        
+        working-directory: ${{env.project-directory}}
       - name: Get CocoaPods cache
         uses: actions/cache@v2
         with:
-          path: Pods
+          path: TestProject/Pods
           key: ${{ runner.os }}-pods-${{ hashFiles('Podfile.lock') }}
-          
+          restore-keys: ${{ runner.os }}-pods-
+
       # Basic usage
       - name: Pod install
         run: bundle exec pod install
-        
+        working-directory: ${{env.project-directory}}
+
       - name: Cache for simulator
-        run: ./rugby
-        
+        run: rugby
+        working-directory: ${{env.project-directory}}
+
       - name: Drop Pods tests
-        run: ./rugby drop "Unit-Tests"
-        
+        run: rugby drop "Unit-Tests"
+        working-directory: ${{env.project-directory}}
+
       - name: Run tests
         run: bundle exec fastlane run_unit_tests
-        
+        working-directory: ${{env.project-directory}}
+
       - name: Drop Unit tests in main project
-        run: ./rugby drop "TestProjectTests" -p TestProject/TestProject.xcodeproj
-        
+        run: rugby drop "TestProjectTests" -p TestProject/TestProject.xcodeproj
+        working-directory: ${{env.project-directory}}
+
       - name: Run tests again
         run: bundle exec fastlane run_unit_tests
-        
+        working-directory: ${{env.project-directory}}
+
       - name: Drop UI tests in main project
-        run: ./rugby drop "UI" -p TestProject/TestProject.xcodeproj
-        
+        run: rugby drop "UI" -p TestProject/TestProject.xcodeproj
+        working-directory: ${{env.project-directory}}
+
       - name: Run tests again and again
         run: bundle exec fastlane build
-        
+        working-directory: ${{env.project-directory}}
+
       - name: Drop Localizable target
-        run: ./rugby drop "TestLocalizable" -p TestProject/TestProject.xcodeproj
-        
+        run: rugby drop "TestLocalizable" -p TestProject/TestProject.xcodeproj
+        working-directory: ${{env.project-directory}}
+
       - name: Run final tests
         run: bundle exec fastlane build
-        
+        working-directory: ${{env.project-directory}}
+
       - name: Drop last target in TestProject
-        run: ./rugby drop "TestProject" -p TestProject/TestProject.xcodeproj
-        
+        run: rugby drop "TestProject" -p TestProject/TestProject.xcodeproj
+        working-directory: ${{env.project-directory}}
+
       - name: Check that schemes is empty
         run: bundle exec fastlane check_that_scemes_empty
+        working-directory: ${{env.project-directory}}
 #==========================================================================
   focus:
     needs: rugby
     runs-on: macos-latest
+    env:
+      project-directory: ./TestProject
     steps:
       - uses: actions/checkout@v2
       - uses: actions/download-artifact@v2
         with:
           name: rugby
       - run: chmod +x rugby
+      - run: export PATH="${PATH}:`pwd`"
       - run: ./rugby -h
 
       # Prepare TestProject
@@ -165,42 +199,51 @@ jobs:
         with:
           ruby-version: 2.7.2
           bundler-cache: true
-          
+          working-directory: TestProject
       - name: Bundle install
         run: bundle
-        
+        working-directory: ${{env.project-directory}}
       - name: Get CocoaPods cache
         uses: actions/cache@v2
         with:
-          path: Pods
+          path: TestProject/Pods
           key: ${{ runner.os }}-pods-${{ hashFiles('Podfile.lock') }}
-          
+          restore-keys: ${{ runner.os }}-pods-
+
       # Basic usage
       - name: Pod install
         run: bundle exec pod install
-        
+        working-directory: ${{env.project-directory}}
+
       - name: Cache for simulator
-        run: ./rugby
-        
+        run: rugby
+        working-directory: ${{env.project-directory}}
+
       - name: Focus Pods main target
-        run: ./rugby focus "Pods-TestProject"
-        
+        run: rugby focus "Pods-TestProject"
+        working-directory: ${{env.project-directory}}
+
       - name: Focus TestProject main target
-        run: ./rugby focus "TestProject" -p TestProject/TestProject.xcodeproj
-        
+        run: rugby focus "TestProject" -p TestProject/TestProject.xcodeproj
+        working-directory: ${{env.project-directory}}
+
       - name: Build
         run: bundle exec fastlane build
+        working-directory: ${{env.project-directory}}
 #==========================================================================
   plans:
     needs: rugby
     runs-on: macos-latest
+    env:
+      project-directory: ./TestProject
     steps:
       - uses: actions/checkout@v2
       - uses: actions/download-artifact@v2
         with:
           name: rugby
       - run: chmod +x rugby
-      - run: ./rugby -h
+      - run: export PATH="${PATH}:`pwd`"
+      - run: rugby -h
 
       # Prepare TestProject
       - name: Get gems cache
@@ -208,24 +251,28 @@ jobs:
         with:
           ruby-version: 2.7.2
           bundler-cache: true
-          
+          working-directory: TestProject
       - name: Bundle install
         run: bundle
-        
+        working-directory: ${{env.project-directory}}
       - name: Get CocoaPods cache
         uses: actions/cache@v2
         with:
-          path: Pods
+          path: TestProject/Pods
           key: ${{ runner.os }}-pods-${{ hashFiles('Podfile.lock') }}
-          
+          restore-keys: ${{ runner.os }}-pods-
+
       # Basic usage
       - name: Rugby Plans Gen
         run: |
-          ./rugby example
+          rugby example
           cat .rugby/plans.yml
-      
+        working-directory: ${{env.project-directory}}
+
       - name: Run usual plan
-        run: ./rugby --plan usual
-        
+        run: rugby --plan usual
+        working-directory: ${{env.project-directory}}
+
       - name: Build
         run: bundle exec fastlane build
+        working-directory: ${{env.project-directory}}

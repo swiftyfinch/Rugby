@@ -1,0 +1,6 @@
+framework module AutoMate {
+  umbrella header "AutoMate-umbrella.h"
+
+  export *
+  module * { export * }
+}
