@@ -50,7 +50,13 @@ Feel free to report any issues or suggest some new feature requests.
 
 <br>
 
-## Quick start with <a href="https://brew.sh">Homebrew</a>🍺
+## New distribution way starts with 1.7.0 <a href="https://github.com/yonaskolb/Mint">Mint</a>🌱
+
+```bash
+mint install swiftyfinch/rugby@1.7.0
+```
+
+## Old way prior 1.7.0 <a href="https://brew.sh">Homebrew</a>🍺
 
 ```bash
 brew tap swiftyfinch/Rugby https://github.com/swiftyfinch/Rugby.git
