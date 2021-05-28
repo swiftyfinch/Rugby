@@ -93,4 +93,4 @@ rugby plans
 rugby plans --plan usual
 ```
 
-<img src="https://github.com/swiftyfinch/Rugby/blob/main/Imgs/Plans.png" width="360"/>
+<img src="https://github.com/swiftyfinch/Rugby/blob/main/Assets/Plans.png" width="360"/>

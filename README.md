@@ -3,7 +3,7 @@
   <sup>"Like Ruby but with g"</sup>
 </h3>
 <p align="center">
-  <img src="https://github.com/swiftyfinch/Rugby/blob/main/Demo.gif" width="600"/>
+  <img src="https://github.com/swiftyfinch/Rugby/blob/main/Assets/Demo.gif" width="600"/>
 </p>
 <p align="center">
   <img src="https://img.shields.io/badge/Swift-orange.svg?logo=swift&logoColor=white" />
