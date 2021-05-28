@@ -37,10 +37,7 @@ jobs:
         with:
           name: rugby
       - run: chmod +x rugby
-      - run: echo $PATH
-      - run: export PATH="${PATH}:`pwd`"
-      - run: echo $PATH
-      - run: which rugby
+      - run: echo `pwd` >> $GITHUB_PATH
       - run: rugby -h
 
       # Prepare TestProject
@@ -110,7 +107,7 @@ jobs:
         with:
           name: rugby
       - run: chmod +x rugby
-      - run: export PATH="${PATH}:`pwd`"
+      - run: echo `pwd` >> $GITHUB_PATH
       - run: rugby -h
 
       # Prepare TestProject
@@ -190,8 +187,8 @@ jobs:
         with:
           name: rugby
       - run: chmod +x rugby
-      - run: export PATH="${PATH}:`pwd`"
-      - run: ./rugby -h
+      - run: echo `pwd` >> $GITHUB_PATH
+      - run: rugby -h
 
       # Prepare TestProject
       - name: Get gems cache
@@ -242,7 +239,7 @@ jobs:
         with:
           name: rugby
       - run: chmod +x rugby
-      - run: export PATH="${PATH}:`pwd`"
+      - run: echo `pwd` >> $GITHUB_PATH
       - run: rugby -h
 
       # Prepare TestProject
