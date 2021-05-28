@@ -1,0 +1,6 @@
+framework module Moya {
+  umbrella header "Moya-Core-RxSwift-umbrella.h"
+
+  export *
+  module * { export * }
+}

@@ -1,0 +1,51 @@
+{
+  "name": "LocalPod",
+  "version": "1.0.0",
+  "summary": "LocalPod",
+  "homepage": "none",
+  "authors": "Khorkov Vyacheslav",
+  "source": {
+    "path": "*"
+  },
+  "platforms": {
+    "ios": "11.0.1"
+  },
+  "swift_versions": "5.2",
+  "static_framework": true,
+  "prefix_header_file": false,
+  "source_files": "LocalPod/Sources/**/*.swift",
+  "dependencies": {
+    "R.swift": [
+
+    ],
+    "Moya/Core": [
+
+    ]
+  },
+  "prepare_command": "ruby -e '    require \"fileutils\"\n    FileUtils.touch \"LocalPod/Sources/R.generated.swift\"\n'",
+  "resource_bundles": {
+    "LocalPodResources": [
+      "LocalPod/{Sources,Resources}/**/*.{strings}"
+    ]
+  },
+  "script_phases": [
+    {
+      "name": "R.swift",
+      "output_files": [
+        "${PODS_TARGET_SRCROOT}/LocalPod/Sources/R.generated.swift"
+      ],
+      "script": "export TARGET_NAME='LocalPod-LocalPodResources'\nresult=`\"$PODS_ROOT/R.swift/rswift\" generate \"${PODS_TARGET_SRCROOT}/LocalPod/Sources/R.generated.swift\" --disable-input-output-files-validation`\n\nif [[ $result =~ \"warning\" ]]; then\n  echo \"${result}\" | sed \"s/warning:/error:/\" >&2\n  exit 1\nfi\n",
+      "execution_position": "before_compile",
+      "show_env_vars_in_log": "0"
+    }
+  ],
+  "testspecs": [
+    {
+      "name": "Tests",
+      "test_type": "unit",
+      "source_files": "LocalPod/Tests/**/*.swift",
+      "resources": "LocalPod/Tests/**/*.{json,xcassets}"
+    }
+  ],
+  "swift_version": "5.2"
+}
