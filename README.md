@@ -80,7 +80,8 @@ Or read more [about Plans](Docs/Plans.md#-generate-example) ✈️
 
 - [x] New command - Focus
 - [x] Open source
-- [ ] Pull requests CI
+- [x] Pull requests CI
+- [ ] Move e2e tests to Fastlane
 - [ ] Optimization
 - [ ] [Improve Cache command](https://github.com/apple/swift-argument-parser/pull/317)
 
