@@ -1,8 +1,0 @@
-${PODS_ROOT}/Target Support Files/Pods-TestProject-TestProjectUITests/Pods-TestProject-TestProjectUITests-frameworks.sh
-${BUILT_PRODUCTS_DIR}/Alamofire/Alamofire.framework
-${BUILT_PRODUCTS_DIR}/Keyboard+LayoutGuide/KeyboardLayoutGuide.framework
-${BUILT_PRODUCTS_DIR}/Kingfisher/Kingfisher.framework
-${BUILT_PRODUCTS_DIR}/Moya-Core-RxSwift/Moya.framework
-${BUILT_PRODUCTS_DIR}/R.swift.Library/Rswift.framework
-${BUILT_PRODUCTS_DIR}/SnapKit/SnapKit.framework
-${BUILT_PRODUCTS_DIR}/RxSwift/RxSwift.framework

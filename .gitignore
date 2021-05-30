@@ -8,8 +8,8 @@ xcuserdata
 */Fastlane/report.xml
 */Fastlane/README.md
 
-TestProject/Pods/*
+*/Pods/*
 # Keep shared schemes for iOS build
-!TestProject/Pods/Pods.xcodeproj
-TestProject/Pods/Pods.xcodeproj/*
-!TestProject/Pods/Pods.xcodeproj/xcshareddata
+!*/Pods/Pods.xcodeproj
+*/Pods/Pods.xcodeproj/*
+!*/Pods/Pods.xcodeproj/xcshareddata

@@ -1,6 +1,0 @@
-framework module LocalPod {
-  umbrella header "LocalPod-umbrella.h"
-
-  export *
-  module * { export * }
-}
