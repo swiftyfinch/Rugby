@@ -18,7 +18,7 @@ final class PodsProvider {
         try parse().remotePods
     }
 
-    func pods() throws -> [Pod] {
+    func pods() throws -> [Pod & CombinedChecksum] {
         let parsed = try parse()
         return parsed.localPods + parsed.remotePods
     }
