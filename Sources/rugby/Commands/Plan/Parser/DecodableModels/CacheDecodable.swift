@@ -11,8 +11,9 @@ struct CacheDecodable: Decodable {
     let keepSources: Bool?
     let exclude: [String]?
     let ignoreChecksums: Bool?
-    let graph: Bool?
+    let include: [String]?
     let focus: [String]?
+    let graph: Bool?
     let bell: Bool?
     let hideMetrics: Bool?
     @BoolableIntDecodable var verbose: Int?
@@ -25,6 +26,7 @@ extension Cache {
         self.keepSources = decodable.keepSources ?? false
         self.exclude = decodable.exclude ?? []
         self.ignoreChecksums = decodable.ignoreChecksums ?? false
+        self.include = decodable.include ?? []
         self.focus = decodable.focus ?? []
         self.graph = decodable.graph ?? false
         self.bell = decodable.bell ?? true

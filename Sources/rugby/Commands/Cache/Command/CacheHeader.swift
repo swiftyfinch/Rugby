@@ -16,6 +16,9 @@ struct Cache: ParsableCommand {
     @Flag(help: "Ignore already cached pods checksums.") var ignoreChecksums = false
     @Option(name: .long,
             parsing: .upToNextOption,
+            help: ArgumentHelp("Include local pods.", shouldDisplay: false)) var include: [String] = []
+    @Option(name: .long,
+            parsing: .upToNextOption,
             help: ArgumentHelp("Keep selected pods.", shouldDisplay: false)) var focus: [String] = []
     @Flag(help: "Add parents of changed pods to build process.\n") var graph = false
 
