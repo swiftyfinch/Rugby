@@ -78,11 +78,10 @@ Or read more [about Plans](Docs/Plans.md#-generate-example) ✈️
 
 ### `Maybe Roadmap`
 
-- [x] New command - Focus
 - [x] Open source
 - [x] Pull requests CI
+- [x] Optimization
 - [ ] Move e2e tests to Fastlane
-- [ ] Optimization
 - [ ] [Improve Cache command](https://github.com/apple/swift-argument-parser/pull/317)
 
 ### `Author`
