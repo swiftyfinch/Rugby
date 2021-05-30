@@ -6,8 +6,8 @@
 //
 
 extension Printer {
-    func spinner<R>(_ text: String, job: @escaping () throws -> R) rethrows -> R {
-        let result = try Progress().show(text: text, job)
+    func spinner<Result>(_ text: String, job: @escaping () throws -> Result) rethrows -> Result {
+        let result = try Spinner().show(text: text, job)
         print("\(text) ⏱".yellow, level: .vv)
         return result
     }
