@@ -7,7 +7,7 @@
 
 import Foundation
 
-final class Progress {
+final class Spinner {
     private static let frames = [
         "",
         "•".red,
@@ -15,11 +15,10 @@ final class Progress {
         "•".red + "•".yellow + "•".green,
         "•".red + "•".yellow + "•".green // It's delay
     ]
-
     private static let delay: UInt32 = 200_000
-    private weak var sharedItem: DispatchWorkItem?
+    private var sharedItem: DispatchWorkItem?
 
-    func show<R>(text: String? = nil, _ job: @escaping () throws -> R) rethrows -> R {
+    func show<Result>(text: String? = nil, _ job: @escaping () throws -> Result) rethrows -> Result {
         // Run progress
         let item = makeProgressItem(text: text)
         sharedItem = item
@@ -35,12 +34,12 @@ final class Progress {
     }
 
     private func makeProgressItem(text: String? = nil) -> DispatchWorkItem {
-        DispatchWorkItem { [weak sharedItem] in
+        DispatchWorkItem { [weak self] in
             print() // Go to newline
             while true {
                 for frame in Self.frames {
                     var output = "\u{1B}[1A\u{1B}[K"
-                    if sharedItem?.isCancelled == true {
+                    if self?.sharedItem?.isCancelled == true {
                         output.append("\u{1B}[1A")
                         return print(output)
                     } else {
