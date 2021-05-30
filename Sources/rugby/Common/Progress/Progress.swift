@@ -40,7 +40,7 @@ final class Progress {
             while true {
                 for frame in Self.frames {
                     var output = "\u{1B}[1A\u{1B}[K"
-                    if self.sharedItem?.isCancelled == true {
+                    if sharedItem?.isCancelled == true {
                         output.append("\u{1B}[1A")
                         return print(output)
                     } else {
