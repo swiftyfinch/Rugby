@@ -37,15 +37,10 @@ final class ChecksumsProvider {
         let selectedCachedChecksums = pods.compactMap { cachedChecksums?[$0] }
         if selectedCachedChecksums.count == pods.count { return selectedCachedChecksums }
 
-        var checksums: [Checksum] = []
-        try podsProvider.remotePods()
+        let checksums = try podsProvider.pods()
             .filter { pods.contains($0.name) }
             .map { try $0.combinedChecksum() }
-            .forEach { checksums.append($0) }
-        try podsProvider.localPods()
-            .filter { pods.contains($0.name) }
-            .map { try $0.combinedChecksum() }
-            .forEach { checksums.append($0) }
+
         cachedChecksums = checksums.reduce(into: [:]) { $0[$1.name] = $1 }
         return checksums
     }

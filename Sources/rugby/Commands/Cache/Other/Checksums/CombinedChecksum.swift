@@ -6,6 +6,12 @@
 //
 
 import Files
+import Foundation
+
+enum CombinedChecksumError: Error {
+    case cantBuildFilesEnumerator
+    case cantGetModificationDate
+}
 
 protocol CombinedChecksum {
     func combinedChecksum() throws -> Checksum
@@ -24,27 +30,46 @@ extension RemotePod: CombinedChecksum {
 extension LocalPod: CombinedChecksum {
     func combinedChecksum() throws -> Checksum {
         let rootFolder = try folder()
-        let subfolders = rootFolder.subfolders
-            .filter { !$0.name.contains("Test") }
-        let subfoldersChecksum = subfolders.reduce(into: checksum.value) { checksum, subfolder in
-            guard let subfolderChecksum = subfolder.generateChecksum() else { return }
-            checksum = calculateChecksum(checksum, subfolderChecksum)
-        }
+        let subfolders = rootFolder.subfolders.filter { !$0.name.contains("Test") }
 
-        let finalChecksum = rootFolder.files.reduce(into: subfoldersChecksum) { checksum, file in
-            guard let fileChecksum = file.generateChecksum() else { return }
-            checksum = calculateChecksum(checksum, fileChecksum)
-        }
+        let subfoldersModificationDates = try subfolders.flatMap { try folderModificationDates($0.url, deep: true) }
+        let rootFilesModificationDates = try folderModificationDates(rootFolder.url, deep: false)
 
-        return Checksum(name: name, checksum: finalChecksum)
+        let checksums = [checksum.value] + subfoldersModificationDates + rootFilesModificationDates
+        return Checksum(name: name, checksum: calculateChecksum(checksums))
     }
 
     private func folder() throws -> Folder {
         let subpath = path == "." ? name : path
         return try Folder.current.subfolder(at: subpath)
     }
+
+    /// Collect modification dates from all files in folder. Use `deep` for recursively search.
+    private func folderModificationDates(_ url: URL, deep: Bool) throws -> [String] {
+        typealias Error = CombinedChecksumError
+        guard let enumerator = FileManager.default.enumerator(
+            at: url,
+            includingPropertiesForKeys: [.attributeModificationDateKey],
+            options: deep ? [.skipsHiddenFiles] : [.skipsHiddenFiles, .skipsSubdirectoryDescendants]
+        ) else { throw Error.cantBuildFilesEnumerator }
+
+        var dates: [String] = []
+        for case let url as URL in enumerator where !url.hasDirectoryPath {
+            let resources = try url.resourceValues(forKeys: [.attributeModificationDateKey])
+            guard let date = resources.attributeModificationDate else { throw Error.cantGetModificationDate }
+            let string = String(date.timeIntervalSinceReferenceDate)
+            dates.append(string)
+        }
+        return dates
+    }
 }
 
-func calculateChecksum(_ values: String...) -> String {
+// MARK: - Calculate checksum from sequence
+
+private func calculateChecksum(_ values: [String]) -> String {
     values.joined(separator: "|").sha1()
+}
+
+private func calculateChecksum(_ values: String...) -> String {
+    calculateChecksum(values)
 }
