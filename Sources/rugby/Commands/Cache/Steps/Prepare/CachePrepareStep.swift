@@ -39,9 +39,10 @@ extension CachePrepareStep {
             throw CacheError.cantFindXcodeCommandLineTools
         }
 
-        progress.print("Read project ⏱".yellow, level: .vv)
         metrics.projectSize.before = (try Folder.current.subfolder(at: .podsProject)).size()
-        let project = try ProjectProvider.shared.readProject(.podsProject)
+        let project = try progress.spinner("Read project".yellow) {
+            try ProjectProvider.shared.readProject(.podsProject)
+        }
         metrics.compileFilesCount.before = project.pbxproj.buildFiles.count
         metrics.targetsCount.before = project.pbxproj.main.targets.count
         let factory = CacheSubstepFactory(progress: progress, command: command, metrics: metrics)
