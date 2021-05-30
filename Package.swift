@@ -4,10 +4,10 @@
 import PackageDescription
 
 let package = Package(
-    name: "rugby",
+    name: "Rugby",
     platforms: [.macOS(.v11)],
     products: [
-        .executable(name: "rugby", targets: ["rugby"])
+        .executable(name: "rugby", targets: ["Rugby"])
     ],
     dependencies: [
         .package(url: "https://github.com/apple/swift-argument-parser", from: "0.4.3"),
@@ -18,7 +18,7 @@ let package = Package(
         .package(url: "https://github.com/jpsim/Yams.git", from: "4.0.6")
     ],
     targets: [
-        .target(name: "rugby", dependencies: [
+        .target(name: "Rugby", dependencies: [
             .product(name: "ArgumentParser", package: "swift-argument-parser"),
             "Rainbow",
             "Files",
