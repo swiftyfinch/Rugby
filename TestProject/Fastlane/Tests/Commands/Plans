@@ -1,0 +1,14 @@
+#!/bin/ruby
+
+lane :plans_tests do
+    plans_basic_usage
+end
+
+private_lane :plans_basic_usage do
+    Dir.chdir("..") do
+        sh "rugby example"
+        sh "cat .rugby/plans.yml"
+        sh "rugby --plan usual"
+    end
+    build
+end

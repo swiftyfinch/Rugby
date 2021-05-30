@@ -3,12 +3,10 @@
 .build
 Packages
 .swiftpm
-
 xcuserdata
 
-Fastlane/test_output
-Fastlane/report.xml
-.product
+*/Fastlane/report.xml
+*/Fastlane/README.md
 
 Pods/*
 # Keep shared schemes for iOS build

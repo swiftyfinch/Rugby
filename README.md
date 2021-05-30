@@ -79,9 +79,12 @@ Or read more [about Plans](Docs/Plans.md#-generate-example) ✈️
 ### `Maybe Roadmap`
 
 - [x] Open source
-- [x] Pull requests CI
 - [x] Optimization
-- [ ] Move e2e tests to Fastlane
+- [ ] CI
+  - [x] Pull requests CI
+  - [x] Move e2e tests to Fastlane
+  - [ ] Unit tests
+  - [ ] Speed up e2e tests
 - [ ] [Improve Cache command](https://github.com/apple/swift-argument-parser/pull/317)
 
 ### `Author`

@@ -1,0 +1,25 @@
+#!/bin/ruby
+
+lane :drop_tests do
+    drop_basic_usage
+end
+
+private_lane :drop_basic_usage do
+    cocoapods(try_repo_update_on_error: true)
+    sh "cd .. && rugby"
+    
+    sh "cd .. && rugby drop \"Unit-Tests\""
+    run_unit_tests
+    
+    sh "cd .. && rugby drop \"TestProjectTests\" -p TestProject/TestProject.xcodeproj"
+    run_unit_tests
+    
+    sh "cd .. && rugby drop \"UI\" -p TestProject/TestProject.xcodeproj"
+    build
+    
+    sh "cd .. && rugby drop \"TestLocalizable\" -p TestProject/TestProject.xcodeproj"
+    build
+    
+    sh "cd .. && rugby drop \"TestProject\" -p TestProject/TestProject.xcodeproj"
+    check_that_scemes_empty
+end
