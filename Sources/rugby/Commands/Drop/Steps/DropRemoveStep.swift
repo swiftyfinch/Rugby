@@ -65,13 +65,15 @@ struct DropRemoveStep: Step {
         progress.print("Remove targets".yellow)
         let removedTargets = Set(targets.filter(project.removeTarget))
 
-        progress.print("Update configs ⏱".yellow)
-        try DropUpdateConfigs(products: products).removeProducts()
-
+        try progress.spinner("Update configs".yellow) {
+            try DropUpdateConfigs(products: products).removeProducts()
+        }
         progress.print(removedTargets, text: "Removed targets", deletion: true)
 
-        progress.print("Save project ⏱".yellow)
-        try project.write(pathString: input.project, override: true)
+        try progress.spinner("Save project".yellow) {
+            try project.write(pathString: input.project, override: true)
+        }
+
         metrics.projectSize.after = (try Folder.current.subfolder(at: input.project)).size()
         metrics.compileFilesCount.after = project.pbxproj.buildFiles.count
         if !input.testFlight { metrics.targetsCount.after = project.pbxproj.main.targets.count }

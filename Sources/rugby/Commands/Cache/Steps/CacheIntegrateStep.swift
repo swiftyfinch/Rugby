@@ -22,9 +22,10 @@ struct CacheIntegrateStep: Step {
     }
 
     func run(_ targets: Set<String>) throws {
-        progress.print("Update paths to builded pods ⏱".yellow, level: .vv)
-        try CacheIntegration(cacheFolder: .cacheFolder(sdk: command.sdk),
-                             buildedTargets: targets).replacePathsToCache()
+        try progress.spinner("Update paths to builded pods".yellow) {
+            try CacheIntegration(cacheFolder: .cacheFolder(sdk: command.sdk),
+                                 buildedTargets: targets).replacePathsToCache()
+        }
         done()
     }
 }

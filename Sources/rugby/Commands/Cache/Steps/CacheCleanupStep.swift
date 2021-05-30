@@ -33,8 +33,10 @@ struct CacheCleanupStep: Step {
     func run(_ input: Input) throws {
         let (targets, products) = (input.targets, input.products)
         var hasChanges = false
-        progress.print("Read project ⏱".yellow, level: .vv)
-        let project = try ProjectProvider.shared.readProject(.podsProject)
+
+        let project = try progress.spinner("Read project".yellow) {
+            try ProjectProvider.shared.readProject(.podsProject)
+        }
 
         if !command.keepSources {
             progress.print("Remove sources from project".yellow, level: .vv)
@@ -67,8 +69,9 @@ struct CacheCleanupStep: Step {
             progress.print("Remove schemes".yellow, level: .vv)
             try project.removeSchemes(pods: targets, projectPath: .podsProject)
 
-            progress.print("Save project ⏱".yellow, level: .vv)
-            try project.write(pathString: .podsProject, override: true)
+            try progress.spinner("Save project".yellow) {
+                try project.write(pathString: .podsProject, override: true)
+            }
 
             metrics.projectSize.after = (try Folder.current.subfolder(at: .podsProject)).size()
             metrics.compileFilesCount.after = project.pbxproj.buildFiles.count

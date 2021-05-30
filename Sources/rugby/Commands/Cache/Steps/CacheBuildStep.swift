@@ -36,20 +36,21 @@ struct CacheBuildStep: Step {
             return done()
         }
 
-        progress.print("Building ⏱".yellow)
-        do {
-            try XcodeBuild(
-                project: .podsProject,
-                scheme: scheme,
-                sdk: command.sdk,
-                arch: command.arch,
-                xcargs: xcargs
-            ).build()
-        } catch {
-            let podsProject = try ProjectProvider.shared.readProject(.podsProject)
-            podsProject.removeTarget(name: scheme)
-            try podsProject.write(pathString: .podsProject, override: true)
-            throw CacheError.buildFailed
+        try progress.spinner("Building".yellow) {
+            do {
+                try XcodeBuild(
+                    project: .podsProject,
+                    scheme: scheme,
+                    sdk: command.sdk,
+                    arch: command.arch,
+                    xcargs: xcargs
+                ).build()
+            } catch {
+                let podsProject = try ProjectProvider.shared.readProject(.podsProject)
+                podsProject.removeTarget(name: scheme)
+                try podsProject.write(pathString: .podsProject, override: true)
+                throw CacheError.buildFailed
+            }
         }
 
         progress.print("Update checksums".yellow, level: .vv)
