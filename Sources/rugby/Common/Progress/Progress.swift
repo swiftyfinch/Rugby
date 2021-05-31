@@ -18,6 +18,7 @@ final class Spinner {
     private static let delay: UInt32 = 200_000
     private var sharedItem: DispatchWorkItem?
 
+    @discardableResult
     func show<Result>(text: String? = nil, _ job: @escaping () throws -> Result) rethrows -> Result {
         // Run progress
         let item = makeProgressItem(text: text)

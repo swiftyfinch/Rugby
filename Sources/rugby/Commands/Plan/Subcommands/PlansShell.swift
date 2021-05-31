@@ -17,7 +17,9 @@ struct Shell: Command {
         if verbose.bool {
             try printShell(run)
         } else {
-            try shell(run)
+            try progress.spinner("Running") {
+                try shell(run)
+            }
         }
         progress.done()
         return nil
