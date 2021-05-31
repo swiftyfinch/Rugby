@@ -36,7 +36,7 @@ struct CacheBuildStep: Step {
             return done()
         }
 
-        try progress.spinner("Building".yellow) {
+        try progress.spinner("Building") {
             do {
                 try XcodeBuild(
                     project: .podsProject,
