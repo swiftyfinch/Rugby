@@ -34,7 +34,7 @@ struct CacheCleanupStep: Step {
         let (targets, products) = (input.targets, input.products)
         var hasChanges = false
 
-        let project = try progress.spinner("Read project".yellow) {
+        let project = try progress.spinner("Read project") {
             try ProjectProvider.shared.readProject(.podsProject)
         }
 
@@ -69,7 +69,7 @@ struct CacheCleanupStep: Step {
             progress.print("Remove schemes".yellow, level: .vv)
             try project.removeSchemes(pods: targets, projectPath: .podsProject)
 
-            try progress.spinner("Save project".yellow) {
+            try progress.spinner("Save project") {
                 try project.write(pathString: .podsProject, override: true)
             }
 

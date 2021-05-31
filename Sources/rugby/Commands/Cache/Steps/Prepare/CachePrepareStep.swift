@@ -40,7 +40,7 @@ extension CachePrepareStep {
         }
 
         metrics.projectSize.before = (try Folder.current.subfolder(at: .podsProject)).size()
-        let project = try progress.spinner("Read project".yellow) {
+        let project = try progress.spinner("Read project") {
             try ProjectProvider.shared.readProject(.podsProject)
         }
         metrics.compileFilesCount.before = project.pbxproj.buildFiles.count

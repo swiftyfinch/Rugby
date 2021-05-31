@@ -26,7 +26,7 @@ struct DropPrepareStep: Step {
     func run(_ input: Void) throws -> (foundTargets: Set<String>, products: Set<String>) {
         metrics.projectSize.before = (try Folder.current.subfolder(at: command.project)).size()
 
-        let project = try progress.spinner("Read project".yellow) {
+        let project = try progress.spinner("Read project") {
             try ProjectProvider.shared.readProject(command.project)
         }
         metrics.compileFilesCount.before = project.pbxproj.buildFiles.count
