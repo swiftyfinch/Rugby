@@ -17,3 +17,7 @@ enum SDK: String, Codable, ExpressibleByArgument {
         }
     }
 }
+
+enum ARCH {
+    static let x86_64 = "x86_64" // swiftlint:disable:this identifier_name
+}
