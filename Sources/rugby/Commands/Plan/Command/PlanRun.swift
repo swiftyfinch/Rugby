@@ -9,8 +9,12 @@ import Files
 
 extension Plans {
     func runPlans(_ plans: [PlanParser.Plan]) throws {
+        defer { try? HistoryWriter().save() }
+
         let selectedPlan = try selectPlan(plans)
         let logFile = try Folder.current.createFile(at: .log)
+        EnvironmentCollector().write(to: logFile)
+
         var allMetrics: [String: [Metrics]] = [:]
         let time = try measure {
             try selectedPlan.commands.forEach { command in
