@@ -21,6 +21,10 @@ extension String {
     static let podsProject = "Pods/Pods.xcodeproj"
     static let podsTargetSupportFiles = "Pods/Target Support Files"
 
+    // MARK: - History
+
+    static let history = supportFolder + "/history"
+
     // MARK: - Cache command
 
     static let defaultXcodeCLTPath = "/Library/Developer/CommandLineTools"
@@ -28,7 +32,6 @@ extension String {
     static let buildTarget = "RugbyPods"
     static let buildLog = supportFolder + "/build.log"
     static let buildFolder = supportFolder + "/build"
-    static let cachedChecksums = supportFolder + "/Checksums"
     static let cacheFile = supportFolder + "/cache.yml"
     static func cacheFolder(sdk: SDK) -> String {
         "${PODS_ROOT}/../" + supportFolder + "/build/Debug-\(sdk.xcodebuild)"
