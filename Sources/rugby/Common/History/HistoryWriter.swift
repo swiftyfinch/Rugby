@@ -18,7 +18,7 @@ struct HistoryWriter {
         }
 
         let newRecordFolder = try historyFolder.createSubfolder(at: generateFolderName())
-        let filesForCopy: [String] = [.cacheFile, .log, .buildLog]
+        let filesForCopy: [String] = [.cacheFile, .log, .buildLog, .plans]
         try filesForCopy.forEach {
             let file = try? Folder.current.file(at: $0)
             try file?.copy(to: newRecordFolder)
