@@ -13,6 +13,7 @@ struct EnvironmentCollector {
         let printer = FilePrinter(file: logFile)
         let environment = [
             "Rugby version: " + Rugby.configuration.version,
+            "Command: rugby " + CommandLine.arguments.dropFirst().joined(separator: " "),
             getXcodeVersion(),
             getSwiftVersion(),
             getCPU(),
