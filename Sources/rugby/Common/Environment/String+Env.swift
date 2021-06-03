@@ -9,6 +9,7 @@ extension String {
 
     // MARK: - Output
     static let finalMessage = "Let's roll 🏈".green
+    static let separator = "---------------------------------".yellow
 
     // MARK: - Common
 

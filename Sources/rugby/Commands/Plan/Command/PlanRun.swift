@@ -73,7 +73,6 @@ extension Plans {
     }
 
     private func printEmptyLine(logFile: File) {
-        RugbyPrinter(logFile: logFile, verbose: .verbose)
-            .print("---------------------------------".yellow)
+        RugbyPrinter(logFile: logFile, verbose: .verbose).print(.separator)
     }
 }

@@ -26,6 +26,7 @@ extension Command where Self: ParsableCommand {
 
         var metrics: Metrics?
         let logFile = try Folder.current.createFile(at: .log)
+        EnvironmentCollector().write(to: logFile)
         let time = try measure { metrics = try run(logFile: logFile) }
         output(metrics, time: time, logFile: logFile, extended: !hideMetrics)
         done(logFile: logFile, time: time)
