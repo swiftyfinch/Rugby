@@ -22,6 +22,8 @@ extension Command {
 
 extension Command where Self: ParsableCommand {
     mutating func wrappedRun() throws {
+        defer { try? HistoryWriter().save() }
+
         var metrics: Metrics?
         let logFile = try Folder.current.createFile(at: .log)
         let time = try measure { metrics = try run(logFile: logFile) }
