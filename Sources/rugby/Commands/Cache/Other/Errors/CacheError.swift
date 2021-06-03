@@ -23,7 +23,7 @@ enum CacheError: Error, LocalizedError {
             output = "Couldn't find Xcode CLT.\n".red
                 + "🚑 Check Xcode Preferences → Locations → Command Line Tools.".yellow
         case .buildFailed:
-            let buildCommand = "cat \(String.buildLog) | xcpretty --color | less -r +G"
+            let buildCommand = "cat \(String.buildLog) | xcpretty"
             output = "Build failed.\n".red
                 + "🚑 Run for more info: ".yellow + buildCommand.white
         }
