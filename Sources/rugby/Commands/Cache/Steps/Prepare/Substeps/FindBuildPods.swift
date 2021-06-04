@@ -16,7 +16,6 @@ extension CacheSubstepFactory {
 
         func run(_ selectedPods: Set<String>) throws -> (
             buildPods: Set<String>,
-            focusChecksums: [Checksum],
             swiftVersion: String?
         ) {
             let focusChecksums = try progress.spinner("Caclulate checksums") {
@@ -36,7 +35,7 @@ extension CacheSubstepFactory {
             } else {
                 buildPods = selectedPods
             }
-            return (buildPods, focusChecksums, swiftVersion)
+            return (buildPods, swiftVersion)
         }
     }
 }

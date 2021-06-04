@@ -11,7 +11,7 @@ struct CachePrepareStep: Step {
     struct Output {
         let scheme: String?
         let targets: Set<String>
-        let checksums: [Checksum]
+        let buildPods: Set<String>
         let products: Set<String>
         let swiftVersion: String?
     }
@@ -47,7 +47,7 @@ extension CachePrepareStep {
         metrics.targetsCount.before = project.pbxproj.main.targets.count
         let factory = CacheSubstepFactory(progress: progress, command: command, metrics: metrics)
         let selectedPods = try factory.selectPods(project)
-        let (buildPods, focusChecksums, swiftVersion) = try factory.findBuildPods(selectedPods)
+        let (buildPods, swiftVersion) = try factory.findBuildPods(selectedPods)
         let (selectedTargets, buildTargets) = try factory.buildTargets((project: project,
                                                                         selectedPods: selectedPods,
                                                                         buildPods: buildPods))
@@ -58,7 +58,7 @@ extension CachePrepareStep {
         done()
         return Output(scheme: buildTargets.isEmpty ? nil : buildTarget,
                       targets: Set(selectedTargets.map(\.name)).union(selectedPods),
-                      checksums: focusChecksums,
+                      buildPods: buildPods,
                       products: Set(selectedTargets.compactMap(\.product?.name)),
                       swiftVersion: swiftVersion)
     }
