@@ -10,7 +10,7 @@ import Files
 struct CacheBuildStep: Step {
     struct Input {
         let scheme: String?
-        let checksums: [Checksum]
+        let buildPods: Set<String>
         let swift: String?
     }
 
@@ -21,6 +21,7 @@ struct CacheBuildStep: Step {
     private let command: Cache
     private let xcargs = ["COMPILER_INDEX_STORE_ENABLE=NO",
                           "SWIFT_COMPILATION_MODE=wholemodule"]
+    private let checksumsProvider = ChecksumsProvider()
     private let cacheManager = CacheManager()
 
     init(command: Cache, logFile: File, isLast: Bool = false) {
@@ -53,14 +54,16 @@ struct CacheBuildStep: Step {
             }
         }
 
-        progress.print("Update checksums".yellow, level: .vv)
-        let cachedChecksums = cacheManager.checksumsMap(sdk: command.sdk)
-        let updatedChecksums = input.checksums.reduce(into: cachedChecksums) { checksums, new in
-            checksums[new.name] = new
+        try progress.spinner("Update checksums") {
+            let newChecksums = try checksumsProvider.getChecksums(forPods: input.buildPods)
+            let cachedChecksums = cacheManager.checksumsMap(sdk: command.sdk)
+            let updatedChecksums = newChecksums.reduce(into: cachedChecksums) { checksums, new in
+                checksums[new.name] = new
+            }
+            let checksums = updatedChecksums.map(\.value.string).sorted()
+            let newCache = SDKCache(arch: command.arch, swift: input.swift, xcargs: xcargs, checksums: checksums)
+            try cacheManager.update(sdk: command.sdk, newCache)
         }
-        let checksums = updatedChecksums.map(\.value.string).sorted()
-        let newCache = SDKCache(arch: command.arch, swift: input.swift, xcargs: xcargs, checksums: checksums)
-        try cacheManager.update(sdk: command.sdk, newCache)
         done()
     }
 }

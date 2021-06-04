@@ -28,8 +28,6 @@ struct Checksum {
 }
 
 final class ChecksumsProvider {
-    static let shared = ChecksumsProvider()
-
     private let podsProvider = PodsProvider.shared
     private var cachedChecksums: [String: Checksum]?
 
