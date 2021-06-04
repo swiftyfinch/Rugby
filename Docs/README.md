@@ -37,15 +37,4 @@ rugby log
 
 If you encourage any problems, please call `rugby doctor` and follow suggestions.
 
-```bash
-🚑 If you encourage any problems, please follow this checklist:
-1. Firstly, update Rugby to the last version;
-2. Run rugby --ignore-checksums;
-3. Try to investigate build logs yourself;
-4. Run rugby clean && rugby --ignore-checksums;
-5. Check that Pods project builds successfully without Rugby.
-
-Report an issue in GitHub discussions or any convenience support channel.
-Attach last files from .rugby/history folder.
-But be sure that there are no sensitive data.
-```
+<img src="https://github.com/swiftyfinch/Rugby/blob/main/Assets/Doctor.png" width="700"/>
