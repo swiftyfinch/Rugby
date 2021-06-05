@@ -31,6 +31,7 @@ extension String {
     static let defaultXcodeCLTPath = "/Library/Developer/CommandLineTools"
 
     static let buildTarget = "RugbyPods"
+    static let rawBuildLog = supportFolder + "/rawBuild.log"
     static let buildLog = supportFolder + "/build.log"
     static let buildFolder = supportFolder + "/build"
     static let cacheFile = supportFolder + "/cache.yml"
