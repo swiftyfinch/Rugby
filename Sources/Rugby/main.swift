@@ -14,8 +14,8 @@ struct Rugby: ParsableCommand {
             Focus.self,
             Drop.self,
             Log.self,
-            Clean.self,
-            Doctor.self
+            Doctor.self,
+            Clean.self
         ],
         defaultSubcommand: Plans.self
     )
