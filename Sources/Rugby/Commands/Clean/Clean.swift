@@ -10,8 +10,7 @@ import Files
 
 struct Clean: ParsableCommand {
     static var configuration = CommandConfiguration(
-        abstract: "Remove .rugby cache folder.",
-        shouldDisplay: false
+        abstract: "• Remove cache except \("plans.yml".yellow) and logs."
     )
 
     func run() throws {
@@ -32,17 +31,16 @@ struct CleanStep: Step {
     }
 
     func run(_ input: Void) {
-        try? Folder.current.subfolder(at: .buildFolder).delete()
-        progress.print("Removed \(String.buildFolder)".yellow)
+        if (try? Folder.current.subfolder(at: .buildFolder).delete()) != nil {
+            progress.print("Removed \(String.buildFolder)".yellow)
+        }
 
-        try? Folder.current.file(at: .buildLog).delete()
-        progress.print("Removed \(String.buildLog)".yellow)
-
-        try? Folder.current.file(at: .log).delete()
-        progress.print("Removed \(String.log)".yellow)
-
-        try? Folder.current.file(at: .cacheFile).delete()
-        progress.print("Removed \(String.cacheFile)".yellow)
+        let filesForDelete: [String] = [.cacheFile]
+        filesForDelete.forEach {
+            if (try? Folder.current.file(at: $0).delete()) != nil {
+                progress.print("Removed \($0)".yellow)
+            }
+        }
 
         done()
     }
