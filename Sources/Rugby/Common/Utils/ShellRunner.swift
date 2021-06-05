@@ -21,8 +21,7 @@ func printShell(_ command: String, args: Any ...) throws {
 
 extension ShellRunner {
     func runAndPrint(_ command: String, args: Any ...) throws {
-        let stringArgs = args.flatten().map(String.init(describing:))
-        let commandWithArgs = command + " " + stringArgs.joined(separator: " ")
+        let commandWithArgs = combine(command: command, args: args)
         let currentShell = try getCurrentShell()
         do {
             try SwiftShell.runAndPrint(currentShell, "-c", commandWithArgs)
@@ -32,8 +31,7 @@ extension ShellRunner {
     }
 
     func run(_ command: String, args: Any ...) throws -> String {
-        let stringArgs = args.flatten().map(String.init(describing:))
-        let commandWithArgs = command + " " + stringArgs.joined(separator: " ")
+        let commandWithArgs = combine(command: command, args: args)
         let currentShell = try getCurrentShell()
         let output = SwiftShell.run(currentShell, "-c", commandWithArgs)
         if output.succeeded {
@@ -42,9 +40,15 @@ extension ShellRunner {
             throw wrapError(output)
         }
     }
+
+    func runAsync(_ command: String, args: Any ...) throws -> AsyncCommand {
+        let commandWithArgs = combine(command: command, args: args)
+        let currentShell = try getCurrentShell()
+        return SwiftShell.runAsync(currentShell, "-c", commandWithArgs)
+    }
 }
 
-extension ShellRunner {
+private extension ShellRunner {
     enum ShellError: Swift.Error, LocalizedError {
         case common(String)
 
@@ -57,7 +61,7 @@ extension ShellRunner {
     }
 }
 
-private final class ShellRunner {
+final class ShellRunner {
     static let shared = ShellRunner()
     private var shell: String?
 
@@ -73,6 +77,11 @@ private final class ShellRunner {
         } else {
             throw wrapError(output)
         }
+    }
+
+    private func combine(command: String, args: Any ...) -> String {
+        let stringArgs = args.flatten().map(String.init(describing:))
+        return command + " " + stringArgs.joined(separator: " ")
     }
 
     private func wrapError(_ output: RunOutput) -> Error {
