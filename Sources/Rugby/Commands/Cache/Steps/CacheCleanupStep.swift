@@ -12,7 +12,7 @@ struct CacheCleanupStep: Step {
     struct Input {
         let scheme: String?
         let targets: Set<String>
-        let products: Set<String>
+        let products: [String]
     }
 
     let verbose: Int
@@ -31,7 +31,7 @@ struct CacheCleanupStep: Step {
     }
 
     func run(_ input: Input) throws {
-        let (targets, products) = (input.targets, input.products)
+        let (targets, products) = (input.targets, Set(input.products))
         var hasChanges = false
 
         let project = try progress.spinner("Read project") {

@@ -12,7 +12,7 @@ struct CachePrepareStep: Step {
         let scheme: String?
         let targets: Set<String>
         let buildPods: Set<String>
-        let products: Set<String>
+        let products: [String]
         let swiftVersion: String?
     }
 
@@ -59,7 +59,7 @@ extension CachePrepareStep {
         return Output(scheme: buildTargets.isEmpty ? nil : buildTarget,
                       targets: Set(selectedTargets.map(\.name)).union(selectedPods),
                       buildPods: buildPods,
-                      products: Set(selectedTargets.compactMap(\.product?.name)),
+                      products: selectedTargets.compactMap(\.product?.name),
                       swiftVersion: swiftVersion)
     }
 }

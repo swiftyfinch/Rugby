@@ -11,6 +11,15 @@
         }
       },
       {
+        "package": "Colorizer",
+        "repositoryURL": "https://github.com/getGuaka/Colorizer.git",
+        "state": {
+          "branch": null,
+          "revision": "2ccc99bf1715e73c4139e8d40b6e6b30be975586",
+          "version": "0.2.1"
+        }
+      },
+      {
         "package": "Files",
         "repositoryURL": "https://github.com/JohnSundell/Files",
         "state": {
@@ -62,6 +71,15 @@
           "branch": null,
           "revision": "99680b2efc7c7dbcace1da0b3979d266f02e213c",
           "version": "5.1.0"
+        }
+      },
+      {
+        "package": "xcbeautify",
+        "repositoryURL": "https://github.com/thii/xcbeautify.git",
+        "state": {
+          "branch": null,
+          "revision": "7305183edac003dae3dc56ce35d039df7bccc3b4",
+          "version": null
         }
       },
       {
