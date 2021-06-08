@@ -21,7 +21,7 @@ struct FocusPrepareStep: Step {
         self.metrics = metrics
         self.verbose = command.verbose
         self.isLast = isLast
-        self.progress = RugbyPrinter(title: "Prepare", logFile: logFile, verbose: verbose)
+        self.progress = RugbyPrinter(title: "Focus", logFile: logFile, verbose: verbose)
     }
 
     func run(_ input: Void) throws -> (foundTargets: Set<String>, products: Set<String>) {
