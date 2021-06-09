@@ -7,9 +7,9 @@ end
 private_lane :focus_basic_usage do
     cocoapods(try_repo_update_on_error: true)
     Dir.chdir("..") do
-        sh "rugby"
-        sh "rugby focus \"Pods-TestProject\""
-        sh "rugby focus \"TestProject\" -p TestProject/TestProject.xcodeproj"
+        sh "rugby --no-bell"
+        sh "rugby focus \"Pods-TestProject\" --no-bell"
+        sh "rugby focus \"TestProject\" -p TestProject/TestProject.xcodeproj --no-bell"
     end
     build
 end
