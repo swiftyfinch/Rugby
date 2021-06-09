@@ -24,8 +24,9 @@ struct XcodeBuild {
         if let arch = arch {
             arguments.append("ARCHS=\(arch)")
         }
+        arguments.append(" | tee " + .rawBuildLog)
 
-        try XcodeBuildRunner(rawLogPath: .rawBuildLog, logPath: .buildLog).run(
+        try XcodeBuildRunner(logPath: .buildLog).run(
             "set -o pipefail && NSUnbufferedIO=YES xcodebuild",
             args: arguments
         )

@@ -8,11 +8,9 @@
 import Files
 
 final class XcodeBuildRunner {
-    let rawLogPath: String
     let logPath: String
 
-    init(rawLogPath: String, logPath: String) {
-        self.rawLogPath = rawLogPath
+    init(logPath: String) {
         self.logPath = logPath
     }
 
@@ -22,10 +20,8 @@ final class XcodeBuildRunner {
             try log.append(formattedLine + "\n")
         }
 
-        let rawLog = try Folder.current.createFile(at: rawLogPath)
         let command = try ShellRunner.shared.runAsync(command, args: args)
         for line in command.stdout.lines() {
-            try rawLog.append(line + "\n")
             try logFormatter.format(line: line)
         }
         try logFormatter.finish()
