@@ -81,7 +81,7 @@ Or read more [about Plans](Docs/Plans.md#-generate-example) ✈️
 ### `Maybe Roadmap`
 
 - [ ] Unit tests
-- [ ] [Improve Cache command](https://github.com/apple/swift-argument-parser/pull/317)
+- [ ] [Optional arrays #317](https://github.com/apple/swift-argument-parser/pull/317)
 
 ### `Author`
 
