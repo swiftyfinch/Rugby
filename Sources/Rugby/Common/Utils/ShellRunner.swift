@@ -40,12 +40,6 @@ extension ShellRunner {
             throw wrapError(output)
         }
     }
-
-    func runAsync(_ command: String, args: Any ...) throws -> AsyncCommand {
-        let commandWithArgs = combine(command: command, args: args)
-        let currentShell = try getCurrentShell()
-        return SwiftShell.runAsync(currentShell, "-c", commandWithArgs)
-    }
 }
 
 private extension ShellRunner {

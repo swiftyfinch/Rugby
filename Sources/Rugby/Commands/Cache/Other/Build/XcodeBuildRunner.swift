@@ -20,8 +20,8 @@ final class XcodeBuildRunner {
             try log.append(formattedLine + "\n")
         }
 
-        let command = try ShellRunner.shared.runAsync(command, args: args)
-        for line in command.stdout.lines() {
+        let output = try shell(command, args: args)
+        for line in output.components(separatedBy: .newlines) {
             try logFormatter.format(line: line)
         }
         try logFormatter.finish()
