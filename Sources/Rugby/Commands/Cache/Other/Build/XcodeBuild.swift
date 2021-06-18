@@ -26,7 +26,7 @@ struct XcodeBuild {
         }
         arguments.append(" | tee " + .rawBuildLog)
 
-        try XcodeBuildRunner(logPath: .buildLog).run(
+        try XcodeBuildRunner(rawLogPath: .rawBuildLog, logPath: .buildLog).run(
             "set -o pipefail && NSUnbufferedIO=YES xcodebuild",
             args: arguments
         )
