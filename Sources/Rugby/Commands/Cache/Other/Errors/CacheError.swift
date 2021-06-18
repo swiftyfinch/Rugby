@@ -11,7 +11,7 @@ import Rainbow
 enum CacheError: Error, LocalizedError {
     case cantFindPodsTargets
     case cantFindXcodeCommandLineTools
-    case buildFailed
+    case buildFailed([String])
 
     var errorDescription: String? {
         let output: String
@@ -22,9 +22,10 @@ enum CacheError: Error, LocalizedError {
         case .cantFindXcodeCommandLineTools:
             output = "Couldn't find Xcode CLT.\n".red
                 + "🚑 Check Xcode Preferences → Locations → Command Line Tools.".yellow
-        case .buildFailed:
+        case .buildFailed(let errors):
             let buildCommand = "cat \(String.buildLog)"
             output = "Build failed.\n".red
+                + errors.joined(separator: "\n").white + "\n"
                 + "🚑 Get more info: ".yellow + buildCommand.white
         }
         return output
