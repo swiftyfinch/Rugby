@@ -24,7 +24,8 @@ final class XcodeBuildRunner {
 
     private func beautifyLog() throws {
         let log = try Folder.current.createFile(at: logPath)
-        let logFormatter = LogFormatter { formattedLine in
+        let logFormatter = LogFormatter { formattedLine, type in
+            guard (type == .task && formattedLine.contains("Touching")) || type == .error else { return }
             try log.append(formattedLine + "\n")
         }
 

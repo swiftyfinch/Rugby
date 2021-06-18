@@ -8,12 +8,12 @@
 import XcbeautifyLib
 
 final class LogFormatter {
-    private var output: (String) throws -> Void
+    private var output: (String, OutputType) throws -> Void
     private var buffer: [String] = []
     private let minBufferSize = 3
     private let parser = Parser()
 
-    init(output: @escaping (String) throws -> Void) {
+    init(output: @escaping (String, OutputType) throws -> Void) {
         self.output = output
     }
 
@@ -35,6 +35,6 @@ final class LogFormatter {
             guard let self = self, !self.buffer.isEmpty else { return nil }
             return self.buffer.removeFirst()
         }) else { return }
-        try output(formatted)
+        try output(formatted, parser.outputType)
     }
 }
