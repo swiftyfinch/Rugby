@@ -50,7 +50,7 @@ struct CacheBuildStep: Step {
                 let podsProject = try ProjectProvider.shared.readProject(.podsProject)
                 podsProject.removeTarget(name: scheme)
                 try podsProject.write(pathString: .podsProject, override: true)
-                throw CacheError.buildFailed
+                throw error
             }
         }
 
