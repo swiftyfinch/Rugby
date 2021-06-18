@@ -25,13 +25,12 @@ final class Spinner {
         sharedItem = item
         DispatchQueue.global().async(execute: item)
 
-        // Do job
-        let result = try job()
-
         // Stop progress
-        item.cancel()
-        item.wait()
-        return result
+        defer {
+            item.cancel()
+            item.wait()
+        }
+        return try job()
     }
 
     private func makeProgressItem(text: String? = nil) -> DispatchWorkItem {
