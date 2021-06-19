@@ -19,7 +19,7 @@ final class XcodeBuildRunner {
 
     func run(_ command: String, args: Any ...) throws {
         _ = try? shell(command, args: args)
-        if let errors = try? beautifyLog() {
+        if let errors = try? beautifyLog(), !errors.isEmpty {
             throw CacheError.buildFailed(errors)
         }
     }
