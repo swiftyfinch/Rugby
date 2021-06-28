@@ -13,14 +13,14 @@ struct Cache: ParsableCommand {
     @Option(name: .shortAndLong, help: "Build sdk: sim or ios.") var sdk: SDK = .sim
     @Flag(name: .shortAndLong, help: "Keep Pods group in project.") var keepSources = false
     @Option(name: .shortAndLong, parsing: .upToNextOption, help: "Exclude pods from cache.") var exclude: [String] = []
-    @Flag(help: "Ignore already cached pods checksums.") var ignoreChecksums = false
     @Option(name: .long,
             parsing: .upToNextOption,
             help: ArgumentHelp("Include local pods.", shouldDisplay: false)) var include: [String] = []
     @Option(name: .long,
             parsing: .upToNextOption,
             help: ArgumentHelp("Keep selected pods.", shouldDisplay: false)) var focus: [String] = []
-    @Flag(help: "Add parents of changed pods to build process.\n") var graph = false
+    @Flag(inversion: .prefixedNo, help: "Build changed pods parents.") var graph = true
+    @Flag(help: "Ignore already cached pods checksums.\n") var ignoreChecksums = false
 
     @Flag(name: .long, inversion: .prefixedNo, help: "Play bell sound on finish.") var bell = true
     @Flag(help: "Hide metrics.") var hideMetrics = false

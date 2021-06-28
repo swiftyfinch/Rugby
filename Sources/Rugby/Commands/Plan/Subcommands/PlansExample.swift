@@ -60,7 +60,7 @@ struct PlansExample: ParsableCommand {
           # 🏈 The first Rugby command without arguments like: $ rugby cache
           - command: cache
             # Optional parameters with default values:
-            #graph: false
+            #graph: true
             #arch: null # By default x86_64 if sdk == sim
             #sdk: sim
             #keepSources: false

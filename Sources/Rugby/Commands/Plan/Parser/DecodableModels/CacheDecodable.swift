@@ -28,7 +28,7 @@ extension Cache {
         self.ignoreChecksums = decodable.ignoreChecksums ?? false
         self.include = decodable.include ?? []
         self.focus = decodable.focus ?? []
-        self.graph = decodable.graph ?? false
+        self.graph = decodable.graph ?? true
         self.bell = decodable.bell ?? true
         self.hideMetrics = decodable.hideMetrics ?? false
         self.verbose = decodable.verbose ?? 0
