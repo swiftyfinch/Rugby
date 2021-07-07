@@ -1,8 +1,9 @@
 //
 //  FocusHeader.swift
-//  
+//  Rugby
 //
 //  Created by Vyacheslav Khorkov on 09.05.2021.
+//  Copyright © 2021 Vyacheslav Khorkov. All rights reserved.
 //
 
 import ArgumentParser

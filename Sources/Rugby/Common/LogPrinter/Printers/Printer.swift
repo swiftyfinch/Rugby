@@ -1,8 +1,9 @@
 //
 //  Printer.swift
-//  
+//  Rugby
 //
 //  Created by Vyacheslav Khorkov on 19.04.2021.
+//  Copyright © 2021 Vyacheslav Khorkov. All rights reserved.
 //
 
 import Foundation

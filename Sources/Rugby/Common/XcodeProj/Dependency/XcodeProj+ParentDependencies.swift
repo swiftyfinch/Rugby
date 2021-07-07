@@ -1,8 +1,9 @@
 //
 //  XcodeProj+ParentDependencies.swift
-//  
+//  Rugby
 //
 //  Created by Vyacheslav Khorkov on 13.02.2021.
+//  Copyright © 2021 Vyacheslav Khorkov. All rights reserved.
 //
 
 import XcodeProj

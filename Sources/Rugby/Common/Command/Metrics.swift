@@ -1,8 +1,9 @@
 //
 //  Metrics.swift
-//  
+//  Rugby
 //
 //  Created by Vyacheslav Khorkov on 23.04.2021.
+//  Copyright © 2021 Vyacheslav Khorkov. All rights reserved.
 //
 
 struct MetricValue<T> {

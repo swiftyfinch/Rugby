@@ -1,8 +1,9 @@
 //
 //  DropStepFactory.swift
-//  
+//  Rugby
 //
 //  Created by Vyacheslav Khorkov on 12.04.2021.
+//  Copyright © 2021 Vyacheslav Khorkov. All rights reserved.
 //
 
 import Files

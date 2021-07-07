@@ -1,8 +1,9 @@
 //
 //  XcodeProj+ExcludeXCFrameworksTargets.swift
-//  
+//  Rugby
 //
 //  Created by Vyacheslav Khorkov on 08.04.2021.
+//  Copyright © 2021 Vyacheslav Khorkov. All rights reserved.
 //
 
 import XcodeProj

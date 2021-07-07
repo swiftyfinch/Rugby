@@ -1,8 +1,9 @@
 //
 //  CacheIntegration.swift
-//  
+//  Rugby
 //
-//  Created by v.khorkov on 31.01.2021.
+//  Created by Vyacheslav Khorkov on 31.01.2021.
+//  Copyright © 2021 Vyacheslav Khorkov. All rights reserved.
 //
 
 import Files

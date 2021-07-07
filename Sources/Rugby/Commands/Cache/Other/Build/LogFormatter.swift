@@ -1,8 +1,9 @@
 //
 //  LogFormatter.swift
-//  
+//  Rugby
 //
 //  Created by Vyacheslav Khorkov on 07.06.2021.
+//  Copyright © 2021 Vyacheslav Khorkov. All rights reserved.
 //
 
 import XcbeautifyLib
