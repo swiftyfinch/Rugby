@@ -9,6 +9,8 @@ OPTIONS:
   -s, --sdk <sdk>          Build sdk: sim or ios. (default: sim)
   -k, --keep-sources       Keep Pods group in project.
   -e, --exclude <exclude>  Exclude pods from cache.
+  --include <include>      Include local pods.
+  --focus <focus>          Keep selected local pods and cache others.
   --ignore-checksums       Ignore already cached pods checksums.
   --graph                  Add parents of changed pods to build process.
                             
@@ -68,6 +70,26 @@ rugby --exclude Alamofire SnapKit
 
 ```bash
 rugby --sdk ios
+```
+
+## Build local pods
+
+You can include some local pods to cache:
+
+```bash
+rugby --include MyLocalPods1 MyLocalPods2
+```
+
+If you want to focus on some local pods and cache all others:
+
+```bash
+rugby --focus MyFocusedPod1 MyFocusedPod2
+```
+
+If you want to cache all local pods ([Maybe someday there will be another solution](https://github.com/apple/swift-argument-parser/pull/317)):
+
+```bash
+rugby --focus ""
 ```
 
 ## Ignore checksums
