@@ -16,8 +16,8 @@
 
 ### `Motivation`
 
-Working on a project with a huge amount of remote pods I had some troubles:\
-`-` Slow and unnecessary indexing of remote pods targets, which implementation I rarely try to edit;\
+Working on a project with a huge amount of pods I had some troubles:\
+`-` Slow and unnecessary indexing of pods targets, which implementation I rarely try to edit;\
 `-` Redundant rebuild time, probably as a result of problems `CocoaPods` hooks or Xcode build system;\
 `-` Freezing UI during navigation.
 
@@ -26,8 +26,8 @@ You can read 📖 [full story](https://swiftyfinch.github.io/en/2021-03-09-rugby
 ### `Description`
 
 🏈 `Rugby` is CLI tool that was developed to solve the above problems:\
-`+` Cache all remote pods dependencies and remove their targets from the Pods project;\
-`+` Rebuild only changed remote pods;\
+`+` Cache all pods dependencies and remove their targets from the Pods project;\
+`+` Rebuild only changed pods;\
 `+` Remove unnecessary sources from a project and reduce project size;\
 `+` Drop any unneeded targets with sources and resources by RegEx.
 
@@ -71,7 +71,7 @@ Or read more [about Plans](Docs/Plans.md#-generate-example) ✈️
 | Command | Description |
 | :----- | :------ |
 🚑 [`Help`](Docs/README.md) | General Rugby documentation.
-🏈 [`Cache`](Docs/Cache.md) | Convert remote pods to prebuilt dependencies.
+🏈 [`Cache`](Docs/Cache.md) | Convert pods to prebuilt dependencies.
 ✈️ [`Plans`](Docs/Plans.md) | Run a predefined sequence of commands.
 🔍 [`Focus`](Docs/Focus.md) | Keep only selected targets and all their dependencies.
 🗑 [`Drop`](Docs/Drop.md) | Remove any targets by RegEx.
@@ -80,7 +80,6 @@ Or read more [about Plans](Docs/Plans.md#-generate-example) ✈️
 
 ### `Maybe Roadmap`
 
-- [ ] Unit tests
 - [ ] [Optional arrays #317](https://github.com/apple/swift-argument-parser/pull/317)
 
 ### `Author`

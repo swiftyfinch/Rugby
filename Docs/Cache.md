@@ -2,7 +2,7 @@
 ### 🏈 `Cache`
 
 ```
-OVERVIEW: Convert remote pods to prebuilt dependencies.
+OVERVIEW: Convert pods to prebuilt dependencies.
 
 OPTIONS:
   -a, --arch <arch>        Build architechture. (default: x86_64 for sim)

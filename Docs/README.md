@@ -11,7 +11,7 @@ OPTIONS:
 SUBCOMMANDS:
   plans (default)    • Run selected plan from .rugby/plans.yml
                        or use cache command if file not found.
-  cache              • Convert remote pods to prebuilt dependencies.
+  cache              • Convert pods to prebuilt dependencies.
                        Call it after each pod install.
   focus              • Keep only selected targets and all their dependencies.
   drop               • Remove any targets by RegEx.

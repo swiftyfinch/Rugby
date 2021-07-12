@@ -25,7 +25,7 @@ struct Cache: ParsableCommand {
 
     static var configuration: CommandConfiguration = .init(
         abstract: """
-        • Convert remote pods to prebuilt dependencies.
+        • Convert pods to prebuilt dependencies.
         Call it after each \("pod install".yellow).
         """,
         discussion: """
