@@ -27,7 +27,7 @@ enum CacheError: Error, LocalizedError {
             let buildCommand = "cat \(String.buildLog)"
             output = "Build failed.\n".red
                 + errors.joined(separator: "\n").white + "\n"
-                + "🚑 Get more info: ".yellow + buildCommand.white
+                + "🚑 Get full log: ".yellow + buildCommand.white
         }
         return output
     }
