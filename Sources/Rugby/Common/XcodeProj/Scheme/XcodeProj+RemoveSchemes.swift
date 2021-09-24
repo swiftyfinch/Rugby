@@ -21,7 +21,7 @@ extension XcodeProj {
 
         let customSchemesForRemove = (sharedData?.schemes ?? []).filter { scheme in
             scheme.testAction?.testables.removeAll {
-                !remainingUUIDs.contains($0.buildableReference.blueprintIdentifier)
+                !remainingUUIDs.contains($0.buildableReference.blueprintIdentifier!)
             }
 
             let profileActionReference = scheme.profileAction?.buildableProductRunnable?.buildableReference
@@ -30,7 +30,7 @@ extension XcodeProj {
             }
 
             scheme.buildAction?.buildActionEntries.removeAll {
-                !remainingUUIDs.contains($0.buildableReference.blueprintIdentifier)
+                !remainingUUIDs.contains($0.buildableReference.blueprintIdentifier!)
             }
 
             let launchActionReference = scheme.launchAction?.runnable?.buildableReference
