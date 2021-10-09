@@ -11,7 +11,7 @@ import Rainbow
 
 struct Cache: ParsableCommand {
     @Option(name: .shortAndLong, help: "Build architechture. (default: \(ARCH.x86_64) for sim)") var arch: String?
-    @Option(name: .shortAndLong, help: "Build configuration. (default: \(BuildConfig.debug))") var buildConfig: String?
+    @Option(name: .shortAndLong, help: "Build configuration. (default: \(CONFIG.debug))") var config: String?
     @Option(name: .shortAndLong, help: "Build sdk: sim or ios.") var sdk: SDK = .sim
     @Flag(name: .shortAndLong, help: "Keep Pods group in project.") var keepSources = false
     @Option(name: .shortAndLong, parsing: .upToNextOption, help: "Exclude pods from cache.") var exclude: [String] = []

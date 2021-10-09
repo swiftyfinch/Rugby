@@ -6,7 +6,7 @@ OVERVIEW: Convert pods to prebuilt dependencies.
 
 OPTIONS:
   -a, --arch <arch>                 Build architechture. (default: x86_64 for sim)
-  -b, --build-config <build_config> Build configuration. (default: Debug)
+  -c, --config <config>             Build Configuration. (default: Debug)
   -s, --sdk <sdk>                   Build sdk: sim or ios. (default: sim)
   -k, --keep-sources                Keep Pods group in project.
   -e, --exclude <exclude>           Exclude pods from cache.
@@ -76,7 +76,7 @@ rugby --sdk ios
 ## Build for specific configuration
 
 ```bash
-rugby --build-config Debug
+rugby --config Debug
 ```
 
 ## Build local pods
