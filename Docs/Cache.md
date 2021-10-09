@@ -5,20 +5,21 @@
 OVERVIEW: Convert pods to prebuilt dependencies.
 
 OPTIONS:
-  -a, --arch <arch>        Build architechture. (default: x86_64 for sim)
-  -s, --sdk <sdk>          Build sdk: sim or ios. (default: sim)
-  -k, --keep-sources       Keep Pods group in project.
-  -e, --exclude <exclude>  Exclude pods from cache.
-  --include <include>      Include local pods.
-  --focus <focus>          Keep selected local pods and cache others.
-  --ignore-checksums       Ignore already cached pods checksums.
-  --graph                  Add parents of changed pods to build process.
+  -a, --arch <arch>                 Build architechture. (default: x86_64 for sim)
+  -b, --build-config <build_config> Build configuration. (default: Debug)
+  -s, --sdk <sdk>                   Build sdk: sim or ios. (default: sim)
+  -k, --keep-sources                Keep Pods group in project.
+  -e, --exclude <exclude>           Exclude pods from cache.
+  --include <include>               Include local pods.
+  --focus <focus>                   Keep selected local pods and cache others.
+  --ignore-checksums                Ignore already cached pods checksums.
+  --graph                           Add parents of changed pods to build process.
                             
-  --bell/--no-bell         Play bell sound on finish. (default: true)
-  --hide-metrics           Hide metrics.
-  -v, --verbose            Print more information.
-  --version                Show the version.
-  -h, --help               Show help information.
+  --bell/--no-bell                  Play bell sound on finish. (default: true)
+  --hide-metrics                    Hide metrics.
+  -v, --verbose                     Print more information.
+  --version                         Show the version.
+  -h, --help                        Show help information.
 ```
 
 <br>
@@ -70,6 +71,12 @@ rugby --exclude Alamofire SnapKit
 
 ```bash
 rugby --sdk ios
+```
+
+## Build for specific configuration
+
+```bash
+rugby --build-config Debug
 ```
 
 ## Build local pods
