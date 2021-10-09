@@ -63,6 +63,7 @@ struct PlansExample: ParsableCommand {
             # Optional parameters with default values:
             #graph: true
             #arch: null # By default x86_64 if sdk == sim
+            #config: null # By default Debug
             #sdk: sim
             #keepSources: false
             #exclude: []
