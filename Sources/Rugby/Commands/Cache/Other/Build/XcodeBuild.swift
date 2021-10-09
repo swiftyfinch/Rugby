@@ -11,6 +11,7 @@ struct XcodeBuild {
     let scheme: String
     let sdk: SDK
     let arch: String?
+    let config: String?
     let xcargs: [String]
 
     func build() throws {
@@ -24,6 +25,9 @@ struct XcodeBuild {
 
         if let arch = arch {
             arguments.append("ARCHS=\(arch)")
+        }
+        if let config = config {
+            arguments.append("-config \(config)")
         }
         arguments.append(" | tee " + .rawBuildLog)
 

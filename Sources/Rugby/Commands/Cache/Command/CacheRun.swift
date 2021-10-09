@@ -13,6 +13,9 @@ extension Cache: Command {
         // For simulators use arch x86_64 by default.
         if sdk == .sim && arch == nil { arch = ARCH.x86_64 }
 
+        // For build configuration name use Debug by default.
+        if buildConfig == nil { buildConfig = BuildConfig.debug }
+
         let metrics = CacheMetrics(project: String.podsProject.basename())
         let factory = CacheStepsFactory(command: self, metrics: metrics, logFile: logFile)
         let info = try factory.prepare(.buildTarget)
