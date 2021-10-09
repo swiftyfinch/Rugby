@@ -4,6 +4,8 @@ lane :cache_tests do
     cache_basic_usage
     cache_ios
     cache_exclude
+    cache_staging
+    cache_staging_ios
 end
 
 private_lane :cache_basic_usage do
@@ -22,4 +24,16 @@ private_lane :cache_exclude do
     cocoapods(try_repo_update_on_error: true)
     sh "cd .. && rugby -e Alamofire --no-bell"
     run_unit_tests
+end
+
+private_lane :cache_staging do
+    cocoapods(try_repo_update_on_error: true)
+    sh "cd .. && rugby -b Staging --no-bell"
+    build(configuration: "Staging")
+end
+
+private_lane :cache_staging_ios do
+    cocoapods(try_repo_update_on_error: true)
+    sh "cd .. && rugby -b Staging -s ios --no-bell"
+    build_ios(configuration: "Staging")
 end
