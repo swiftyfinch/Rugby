@@ -28,12 +28,12 @@ end
 
 private_lane :cache_staging do
     cocoapods(try_repo_update_on_error: true)
-    sh "cd .. && rugby -b Staging --no-bell"
+    sh "cd .. && rugby -c Staging --no-bell"
     build(configuration: "Staging")
 end
 
 private_lane :cache_staging_ios do
     cocoapods(try_repo_update_on_error: true)
-    sh "cd .. && rugby -b Staging -s ios --no-bell"
+    sh "cd .. && rugby -c Staging -s ios --no-bell"
     build_ios(configuration: "Staging")
 end
