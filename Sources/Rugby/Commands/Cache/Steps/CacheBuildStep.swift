@@ -45,7 +45,7 @@ struct CacheBuildStep: Step {
                     scheme: scheme,
                     sdk: command.sdk,
                     arch: command.arch,
-                    config: command.buildConfig,
+                    config: command.config,
                     xcargs: xcargs
                 ).build()
             } catch {
