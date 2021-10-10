@@ -36,7 +36,7 @@ extension String {
     static let buildLog = supportFolder + "/build.log"
     static let buildFolder = supportFolder + "/build"
     static let cacheFile = supportFolder + "/cache.yml"
-    static func cacheFolder(sdk: SDK) -> String {
-        "${PODS_ROOT}/../" + supportFolder + "/build/Debug-\(sdk.xcodebuild)"
+    static func cacheFolder(sdk: SDK, config: String?) -> String {
+        "${PODS_ROOT}/../" + supportFolder + "/build/\(config ?? CONFIG.debug)-\(sdk.xcodebuild)"
     }
 }
