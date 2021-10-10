@@ -32,6 +32,7 @@ extension CacheSubstepFactory {
             let invalidCache = (
                 command.arch != cache?.arch
                     || swiftVersion != cache?.swift
+                    || command.config != cache?.config
                     || xcargs != cache?.xcargs
             )
             if let checksums = cache?.checksumsMap(), !command.ignoreChecksums, !invalidCache {
