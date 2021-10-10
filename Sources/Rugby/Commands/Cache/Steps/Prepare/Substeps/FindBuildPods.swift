@@ -26,7 +26,7 @@ extension CacheSubstepFactory {
 
             // Find checksums difference from cache file
             let buildPods: Set<String>
-            let cache = CacheManager().load()?[command.sdk]
+            let cache = CacheManager().load(sdk: command.sdk, config: command.config)
             let swiftVersion = SwiftVersionProvider().swiftVersion()
             let xcargs = XCARGSProvider().xcargs
             let invalidCache = (

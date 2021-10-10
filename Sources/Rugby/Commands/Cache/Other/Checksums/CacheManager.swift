@@ -9,14 +9,22 @@
 import Files
 import Yams
 
-struct SDKCache: Codable {
+struct BuildCache: Codable {
+    let sdk: SDK
     let arch: String?
+    let config: String?
     let swift: String?
     let xcargs: [String]?
     let checksums: [String]?
 }
 
-typealias CacheFile = [SDK: SDKCache]
+private func cacheKey(sdk: SDK, config: String?) -> String {
+    [config, sdk.xcodebuild]
+        .compactMap { $0 }
+        .joined(separator: "-")
+}
+
+typealias CacheFile = [String: BuildCache]
 
 struct CacheManager {
     func load() -> CacheFile? {
@@ -27,10 +35,11 @@ struct CacheManager {
         return cacheFile
     }
 
-    func update(sdk: SDK, _ cache: SDKCache) throws {
+    func update(cache: BuildCache) throws {
         // Update only selected sdk cache
         var cacheFile = load() ?? [:]
-        cacheFile[sdk] = cache
+        let key = cacheKey(sdk: cache.sdk, config: cache.config)
+        cacheFile[key] = cache
 
         // Save
         let file = try Folder.current.createFileIfNeeded(at: .cacheFile)
@@ -40,15 +49,24 @@ struct CacheManager {
     }
 }
 
-// MARK: - Checksums
+// MARK: - Load by key
 
 extension CacheManager {
-    func checksumsMap(sdk: SDK) -> [String: Checksum] {
-        load()?[sdk]?.checksumsMap() ?? [:]
+    func load(sdk: SDK, config: String?) -> BuildCache? {
+        let key = cacheKey(sdk: sdk, config: config)
+        return load()?[key]
     }
 }
 
-extension SDKCache {
+// MARK: - Checksums
+
+extension CacheManager {
+    func checksumsMap(sdk: SDK, config: String?) -> [String: Checksum] {
+        load(sdk: sdk, config: config)?.checksumsMap() ?? [:]
+    }
+}
+
+extension BuildCache {
     func checksumsMap() -> [String: Checksum] {
         (checksums ?? []).reduce(into: [:]) { checksums, element in
             guard let checksum = Checksum(string: element) else { return }
