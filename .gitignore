@@ -4,9 +4,11 @@
 Packages
 .swiftpm
 xcuserdata
+TestProject/build
 
 */Fastlane/report.xml
 */Fastlane/README.md
+*/Fastlane/test_output/*
 
 */Pods/*
 # Keep shared schemes for iOS build
