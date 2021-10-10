@@ -20,8 +20,7 @@ struct CacheBuildStep: Step {
     let progress: Printer
 
     private let command: Cache
-    private let xcargs = ["COMPILER_INDEX_STORE_ENABLE=NO",
-                          "SWIFT_COMPILATION_MODE=wholemodule"]
+    private let xcargs = XCARGSProvider().xcargs
     private let checksumsProvider = ChecksumsProvider()
     private let cacheManager = CacheManager()
 
