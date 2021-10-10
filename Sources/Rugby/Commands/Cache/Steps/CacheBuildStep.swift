@@ -57,13 +57,18 @@ struct CacheBuildStep: Step {
 
         try progress.spinner("Update checksums") {
             let newChecksums = try checksumsProvider.getChecksums(forPods: input.buildPods)
-            let cachedChecksums = cacheManager.checksumsMap(sdk: command.sdk)
+            let cachedChecksums = cacheManager.checksumsMap(sdk: command.sdk, config: command.config)
             let updatedChecksums = newChecksums.reduce(into: cachedChecksums) { checksums, new in
                 checksums[new.name] = new
             }
             let checksums = updatedChecksums.map(\.value.string).sorted()
-            let newCache = SDKCache(arch: command.arch, swift: input.swift, xcargs: xcargs, checksums: checksums)
-            try cacheManager.update(sdk: command.sdk, newCache)
+            let newCache = BuildCache(sdk: command.sdk,
+                                      arch: command.arch,
+                                      config: command.config,
+                                      swift: input.swift,
+                                      xcargs: xcargs,
+                                      checksums: checksums)
+            try cacheManager.update(cache: newCache)
         }
         done()
     }
