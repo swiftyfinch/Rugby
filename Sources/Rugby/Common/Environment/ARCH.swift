@@ -1,11 +1,9 @@
 //
 //  ARCH.swift
-//  
+//  Rugby
 //
-//  Created by ykkd on 2021/10/10.
+//  Created by ykkd on 10.10.2021.
 //
-
-import Foundation
 
 enum ARCH {
     static let x86_64 = "x86_64" // swiftlint:disable:this identifier_name
