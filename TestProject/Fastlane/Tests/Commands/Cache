@@ -10,30 +10,30 @@ end
 
 private_lane :cache_basic_usage do
     cocoapods(try_repo_update_on_error: true)
-    sh "cd .. && rugby --no-bell"
+    sh "cd .. && rugby clean && rugby --no-bell"
     run_unit_tests
 end
 
 private_lane :cache_ios do
     cocoapods(try_repo_update_on_error: true)
-    sh "cd .. && rugby -s ios --no-bell"
+    sh "cd .. && rugby clean && rugby -s ios --no-bell"
     build_ios
 end
 
 private_lane :cache_exclude do
     cocoapods(try_repo_update_on_error: true)
-    sh "cd .. && rugby -e Alamofire --no-bell"
+    sh "cd .. && rugby clean && rugby -e Alamofire --no-bell"
     run_unit_tests
 end
 
 private_lane :cache_staging do
     cocoapods(try_repo_update_on_error: true)
-    sh "cd .. && rugby -c Staging --no-bell"
+    sh "cd .. && rugby clean && rugby -c Staging --no-bell"
     build(configuration: "Staging")
 end
 
 private_lane :cache_staging_ios do
     cocoapods(try_repo_update_on_error: true)
-    sh "cd .. && rugby -c Staging -s ios --no-bell"
+    sh "cd .. && rugby clean && rugby -c Staging -s ios --no-bell"
     build_ios(configuration: "Staging")
 end
