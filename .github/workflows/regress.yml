@@ -13,6 +13,8 @@ jobs:
     runs-on: macos-latest
     steps:
       - uses: actions/checkout@v2
+      - uses: maxim-lobanov/setup-xcode@v1
+        with: { xcode-version: '12.4' }
       - name: Build Rugby
         run: |
           swift build -c release
@@ -34,6 +36,8 @@ jobs:
         with: { name: rugby }
       - run: chmod +x rugby && echo `pwd` >> $GITHUB_PATH
       - run: rugby -h
+      - uses: maxim-lobanov/setup-xcode@v1
+        with: { xcode-version: '12.4' }
 
       # Prepare TestProject
       - uses: ruby/setup-ruby@v1
@@ -61,6 +65,8 @@ jobs:
         with: { name: rugby }
       - run: chmod +x rugby && echo `pwd` >> $GITHUB_PATH
       - run: rugby -h
+      - uses: maxim-lobanov/setup-xcode@v1
+        with: { xcode-version: '12.4' }
 
       # Prepare TestProject
       - uses: ruby/setup-ruby@v1
@@ -88,6 +94,8 @@ jobs:
         with: { name: rugby }
       - run: chmod +x rugby && echo `pwd` >> $GITHUB_PATH
       - run: rugby -h
+      - uses: maxim-lobanov/setup-xcode@v1
+        with: { xcode-version: '12.4' }
 
       # Prepare TestProject
       - uses: ruby/setup-ruby@v1
@@ -115,6 +123,8 @@ jobs:
         with: { name: rugby }
       - run: chmod +x rugby && echo `pwd` >> $GITHUB_PATH
       - run: rugby -h
+      - uses: maxim-lobanov/setup-xcode@v1
+        with: { xcode-version: '12.4' }
 
       # Prepare TestProject
       - uses: ruby/setup-ruby@v1
