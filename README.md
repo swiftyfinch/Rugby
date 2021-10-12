@@ -55,6 +55,7 @@ Feel free to report any issues or suggest some new feature requests.
 ## Quick start with <a href="https://github.com/yonaskolb/Mint">Mint</a> 🌱
 
 ```bash
+brew install mint
 mint install swiftyfinch/rugby
 ```
 
