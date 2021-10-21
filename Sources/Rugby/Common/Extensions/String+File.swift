@@ -16,4 +16,16 @@ extension String {
     func basename() -> String {
         filename().components(separatedBy: ".").first ?? self
     }
+
+    /// Drop file name and return folder path
+    func dropFileName() -> String {
+        components(separatedBy: "/")
+            .dropLast()
+            .joined(separator: "/")
+    }
+
+    /// Check if string contains dot
+    var isFile: Bool {
+        contains(".")
+    }
 }

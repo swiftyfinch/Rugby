@@ -41,7 +41,15 @@ extension LocalPod: CombinedChecksum {
     }
 
     private func folder() throws -> Folder {
-        let subpath = path == "." ? name : path
+        let subpath: String
+        switch path {
+        case ".":
+            subpath = name
+        case let filePath where filePath.isFile:
+            subpath = filePath.dropFileName()
+        default:
+            subpath = path
+        }
         return try Folder.current.subfolder(at: subpath)
     }
 
