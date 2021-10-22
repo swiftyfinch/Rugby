@@ -10,15 +10,13 @@ let package = Package(
         .executable(name: "rugby", targets: ["Rugby"])
     ],
     dependencies: [
-        .package(url: "https://github.com/apple/swift-argument-parser", from: "0.5.0"),
+        .package(url: "https://github.com/apple/swift-argument-parser", from: "1.0.1"),
         .package(url: "https://github.com/onevcat/Rainbow", from: "4.0.1"),
         .package(url: "https://github.com/JohnSundell/Files", from: "4.2.0"),
-        .package(name: "XcodeProj", url: "https://github.com/tuist/xcodeproj", from: "8.3.1"),
+        .package(name: "XcodeProj", url: "https://github.com/tuist/xcodeproj", from: "8.5.0"),
         .package(url: "https://github.com/kareman/SwiftShell", from: "5.1.0"),
         .package(url: "https://github.com/jpsim/Yams.git", from: "4.0.6"),
-
-        // Need await the new version
-        .package(url: "https://github.com/thii/xcbeautify.git", .revision("7305183edac003dae3dc56ce35d039df7bccc3b4"))
+        .package(url: "https://github.com/thii/xcbeautify.git", from: "0.10.1")
     ],
     targets: [
         .target(name: "Rugby", dependencies: [
