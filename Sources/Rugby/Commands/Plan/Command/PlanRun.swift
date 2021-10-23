@@ -14,6 +14,7 @@ extension Plans {
 
         let selectedPlan = try selectPlan(plans)
         let logFile = try Folder.current.createFile(at: .log)
+        printSelectedPlan(plan: selectedPlan.name, logFile: logFile)
         EnvironmentCollector().write(to: logFile)
 
         var allMetrics: [String: [Metrics]] = [:]
@@ -79,5 +80,10 @@ extension Plans {
 
     private func printEmptyLine(logFile: File) {
         RugbyPrinter(logFile: logFile, verbose: .verbose).print(.separator)
+    }
+
+    private func printSelectedPlan(plan: String, logFile: File) {
+        RugbyPrinter(logFile: logFile, verbose: .verbose)
+            .print("Run \(plan.green) plan")
     }
 }
