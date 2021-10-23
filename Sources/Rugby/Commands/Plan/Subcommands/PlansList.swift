@@ -28,6 +28,8 @@ private enum PlansListError: Error, LocalizedError {
 }
 
 struct PlansList: ParsableCommand {
+    @OptionGroup var flags: CommonFlags
+
     static var configuration = CommandConfiguration(
         commandName: "list",
         abstract: "Print all plans and select one if needed"
@@ -55,9 +57,13 @@ struct PlansList: ParsableCommand {
                 throw PlansListError.incorrectPlanIndex
             }
 
-            var plansCommand = Plans()
-            plansCommand.plan = plans[planIndex - 1].name
-            try plansCommand.runPlans(plans)
+            try WrappedError.wrap(playBell: flags.bell) {
+                var plansCommand = Plans()
+                plansCommand.plan = plans[planIndex - 1].name
+                plansCommand.cacheOptions = .init()
+                plansCommand.cacheOptions.flags = flags
+                try plansCommand.runPlans(plans)
+            }
         }
     }
 }
