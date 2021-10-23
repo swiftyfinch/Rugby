@@ -16,6 +16,16 @@ SUBCOMMANDS:
 
 <br>
 
+## 🗒 Print all plans and select one if needed
+
+```bash
+rugby list
+```
+
+<img src="https://github.com/swiftyfinch/Rugby/blob/main/Assets/Plans-list.png" width="800"/>
+
+<br>
+
 ## 🗺 Generate example
 
 Generate example at `.rugby/plans.yml`:
