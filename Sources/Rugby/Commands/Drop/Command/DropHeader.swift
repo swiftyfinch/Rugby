@@ -26,9 +26,7 @@ struct Drop: ParsableCommand {
     @Option(name: .shortAndLong, help: "Project location.") var project: String = .podsProject
     @Flag(name: .shortAndLong, help: "Keep sources & resources in project.\n") var keepSources = false
 
-    @Flag(name: .long, inversion: .prefixedNo, help: "Play bell sound on finish.") var bell = true
-    @Flag(help: "Hide metrics.") var hideMetrics = false
-    @Flag(name: .shortAndLong, help: "Print more information.") var verbose: Int
+    @OptionGroup var flags: CommonFlags
 
     static var configuration = CommandConfiguration(
         abstract: "• Remove any targets by RegEx.",
@@ -39,7 +37,7 @@ struct Drop: ParsableCommand {
     )
 
     mutating func run() throws {
-        try WrappedError.wrap(playBell: bell) {
+        try WrappedError.wrap(playBell: flags.bell) {
             try wrappedRun()
         }
     }
