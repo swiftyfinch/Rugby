@@ -32,8 +32,10 @@ extension Cache {
         self.include = decodable.include ?? []
         self.focus = decodable.focus ?? []
         self.graph = decodable.graph ?? true
-        self.bell = decodable.bell ?? true
-        self.hideMetrics = decodable.hideMetrics ?? false
-        self.verbose = decodable.verbose ?? 0
+
+        self.flags = .init()
+        self.flags.bell = decodable.bell ?? true
+        self.flags.hideMetrics = decodable.hideMetrics ?? false
+        self.flags.verbose = decodable.verbose ?? 0
     }
 }
