@@ -18,6 +18,6 @@ struct DropStepFactory {
     }
 
     var remove: DropRemoveStep.Run {
-        DropRemoveStep(verbose: command.verbose, metrics: metrics, logFile: logFile, isLast: true).run
+        DropRemoveStep(verbose: command.flags.verbose, metrics: metrics, logFile: logFile, isLast: true).run
     }
 }
