@@ -14,6 +14,7 @@ import Yams
 struct PlanParser {
     struct Plan {
         let name: String
+        let description: String?
         let commands: [Command]
     }
 
@@ -25,10 +26,12 @@ struct PlanParser {
             throw PlanError.incorrectYMLFormat
         }
 
+        let lines = yml.components(separatedBy: "\n")
         return try rootArray.reduce(into: []) { plans, planDictionary in
             for (plan, commands) in planDictionary {
+                let description = parseDescription(plan: plan, lines: lines)
                 let commands = try commands.map(parseCommand)
-                plans.append(Plan(name: plan, commands: commands))
+                plans.append(Plan(name: plan, description: description, commands: commands))
             }
         }
     }
@@ -59,5 +62,14 @@ extension PlanParser {
             let yml = try JSONDecoder().decode(ShellDecodable.self, from: dataArguments)
             return Shell(run: yml.run, verbose: yml.verbose ?? 0)
         }
+    }
+
+    private func parseDescription(plan: String, lines: [String]) -> String? {
+        let planName = "- \(plan):"
+        guard let planIndex = lines.firstIndex(of: planName), lines.indices ~= planIndex - 1 else { return nil }
+
+        let lineAbovePlan = lines[planIndex - 1]
+        guard lineAbovePlan.hasPrefix("#") else { return nil }
+        return String(lineAbovePlan.dropFirst().trimmingCharacters(in: [" "]))
     }
 }
