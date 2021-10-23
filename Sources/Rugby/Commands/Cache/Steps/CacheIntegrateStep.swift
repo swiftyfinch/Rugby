@@ -17,7 +17,7 @@ struct CacheIntegrateStep: Step {
 
     init(command: Cache, logFile: File, isLast: Bool = false) {
         self.command = command
-        self.verbose = command.verbose
+        self.verbose = command.flags.verbose
         self.isLast = isLast
         self.progress = RugbyPrinter(title: "Integration", logFile: logFile, verbose: verbose)
     }

@@ -26,7 +26,7 @@ struct Plans: ParsableCommand {
     )
 
     func run() throws {
-        try WrappedError.wrap(playBell: cacheOptions.bell) {
+        try WrappedError.wrap(playBell: cacheOptions.flags.bell) {
             try tryUsePlans()
         }
     }
@@ -44,12 +44,11 @@ struct Plans: ParsableCommand {
         cache.sdk = cacheOptions.sdk
         cache.keepSources = cacheOptions.keepSources
         cache.exclude = cacheOptions.exclude
-        cache.hideMetrics = cacheOptions.hideMetrics
         cache.ignoreChecksums = cacheOptions.ignoreChecksums
         cache.include = cacheOptions.include
         cache.focus = cacheOptions.focus
         cache.graph = cacheOptions.graph
-        cache.verbose = cacheOptions.verbose
+        cache.flags = cacheOptions.flags
         try cache.wrappedRun()
     }
 }

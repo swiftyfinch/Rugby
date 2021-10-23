@@ -20,9 +20,7 @@ struct Cache: ParsableCommand {
     @Flag(inversion: .prefixedNo, help: "Build changed pods parents.") var graph = true
     @Flag(help: "Ignore already cached pods checksums.\n") var ignoreChecksums = false
 
-    @Flag(name: .long, inversion: .prefixedNo, help: "Play bell sound on finish.") var bell = true
-    @Flag(help: "Hide metrics.") var hideMetrics = false
-    @Flag(name: .shortAndLong, help: "Print more information.") var verbose: Int
+    @OptionGroup var flags: CommonFlags
 
     static var configuration: CommandConfiguration = .init(
         abstract: """
@@ -36,7 +34,7 @@ struct Cache: ParsableCommand {
     )
 
     mutating func run() throws {
-        try WrappedError.wrap(playBell: bell) {
+        try WrappedError.wrap(playBell: flags.bell) {
             try wrappedRun()
         }
     }
