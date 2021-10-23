@@ -20,7 +20,7 @@ struct FocusPrepareStep: Step {
     init(command: Focus, metrics: Metrics, logFile: File, isLast: Bool = false) {
         self.command = command
         self.metrics = metrics
-        self.verbose = command.verbose
+        self.verbose = command.flags.verbose
         self.isLast = isLast
         self.progress = RugbyPrinter(title: "Focus", logFile: logFile, verbose: verbose)
     }

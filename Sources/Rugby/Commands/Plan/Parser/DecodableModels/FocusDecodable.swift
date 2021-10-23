@@ -22,8 +22,10 @@ extension Focus {
         self.project = decodable.project ?? .podsProject
         self.testFlight = decodable.testFlight ?? false
         self.keepSources = decodable.keepSources ?? false
-        self.bell = decodable.bell ?? true
-        self.hideMetrics = decodable.hideMetrics ?? false
-        self.verbose = decodable.verbose ?? 0
+
+        self.flags = .init()
+        self.flags.bell = decodable.bell ?? true
+        self.flags.hideMetrics = decodable.hideMetrics ?? false
+        self.flags.verbose = decodable.verbose ?? 0
     }
 }
