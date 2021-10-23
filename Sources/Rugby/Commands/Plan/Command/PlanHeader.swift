@@ -22,7 +22,7 @@ struct Plans: ParsableCommand {
         Checkout documentation for more info:
         📖 \("https://github.com/swiftyfinch/Rugby/blob/main/Docs/Plans.md".cyan)
         """,
-        subcommands: [PlansExample.self]
+        subcommands: [PlansList.self, PlansExample.self]
     )
 
     func run() throws {
