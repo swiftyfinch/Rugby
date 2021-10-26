@@ -84,6 +84,6 @@ extension Plans {
 
     private func printSelectedPlan(plan: String, logFile: File) {
         RugbyPrinter(title: "Plans ✈️ ", logFile: logFile, verbose: .verbose)
-            .print("\(plan.capitalized.yellow)")
+            .print("\(plan.yellow)")
     }
 }
