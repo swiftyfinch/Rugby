@@ -1,7 +1,6 @@
-<h3 align="center">
-  Rugby 🏈<br>
-  <sup>"Like Ruby but with g"</sup>
-</h3>
+<p align="center">
+  <img src="https://user-images.githubusercontent.com/64660122/138951283-9e69195f-6dda-4a5c-a6bf-66be0cb3d2bb.jpeg" width="600"/>
+</p>
 <p align="center">
   <img src="https://github.com/swiftyfinch/Rugby/blob/main/Assets/Demo.gif" width="600"/>
 </p>
@@ -12,7 +11,14 @@
   <a href="https://github.com/yonaskolb/Mint"><img src="https://img.shields.io/badge/Mint-darkgreen?logo=leaflet&logoColor=white" /></a>
   <a href="https://swiftpackageindex.com/swiftyfinch/Rugby"><img src="https://img.shields.io/badge/Swift_Package_Index-red?logo=swift&logoColor=white" /></a>
   <a href="https://twitter.com/swiftyfinch"><img src="https://img.shields.io/badge/@swiftyfinch-blue?logo=twitter&logoColor=white" /></a>
+  <br>
+  <img src="https://img.shields.io/badge/Press_star_for_pay_respect-gray?logo=github" />
 </p>
+
+<p align="center">
+  <img src="https://user-images.githubusercontent.com/64660122/138950621-9432e44e-9413-4f6a-ac11-774199f68e9e.mov" />
+</p>
+
 
 ### `Motivation`
 
@@ -92,4 +98,4 @@ Or read more [about Plans](Docs/Plans.md#-generate-example) ✈️
 Vyacheslav Khorkov\
 Twitter: [@SwiftyFinch](https://twitter.com/swiftyfinch)\
 Blog: [swiftyfinch.github.io](https://swiftyfinch.github.io/en)\
-Feel free to contact me for any questions.
+Feel free to contact me
