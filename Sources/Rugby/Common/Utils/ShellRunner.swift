@@ -39,11 +39,13 @@ extension ShellRunner {
         let asyncCommand = SwiftShell.runAsync(currentShell, "-c", commandWithArgs)
         ProcessMonitor.shared.addProcess(asyncCommand)
         do {
+            // Workaround: https://github.com/kareman/SwiftShell/issues/52
+            let output = asyncCommand.stdout.read()
             try asyncCommand.finish()
+            return output
         } catch {
             throw wrapError(asyncCommand)
         }
-        return asyncCommand.stdout.read()
     }
 }
 
