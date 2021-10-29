@@ -20,4 +20,6 @@ struct Rugby: ParsableCommand {
         defaultSubcommand: Plans.self
     )
 }
+
+ProcessMonitor.sync()
 Rugby.main()
