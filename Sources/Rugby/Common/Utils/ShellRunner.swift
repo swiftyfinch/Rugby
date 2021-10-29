@@ -21,25 +21,29 @@ func printShell(_ command: String, args: Any ...) throws {
 // MARK: - Implementation
 
 extension ShellRunner {
-    func runAndPrint(_ command: String, args: Any ...) throws {
+    fileprivate func runAndPrint(_ command: String, args: Any ...) throws {
         let commandWithArgs = combine(command: command, args: args)
         let currentShell = try getCurrentShell()
+        let asyncCommand = SwiftShell.runAsyncAndPrint(currentShell, "-c", commandWithArgs)
+        ProcessMonitor.shared.addProcess(asyncCommand)
         do {
-            try SwiftShell.runAndPrint(currentShell, "-c", commandWithArgs)
+            try asyncCommand.finish()
         } catch {
             throw ShellError.common("🐚 " + commandWithArgs)
         }
     }
 
-    func run(_ command: String, args: Any ...) throws -> String {
+    fileprivate func run(_ command: String, args: Any ...) throws -> String {
         let commandWithArgs = combine(command: command, args: args)
         let currentShell = try getCurrentShell()
-        let output = SwiftShell.run(currentShell, "-c", commandWithArgs)
-        if output.succeeded {
-            return output.stdout
-        } else {
-            throw wrapError(output)
+        let asyncCommand = SwiftShell.runAsync(currentShell, "-c", commandWithArgs)
+        ProcessMonitor.shared.addProcess(asyncCommand)
+        do {
+            try asyncCommand.finish()
+        } catch {
+            throw wrapError(asyncCommand)
         }
+        return asyncCommand.stdout.read()
     }
 }
 
@@ -79,8 +83,16 @@ final class ShellRunner {
         return command + " " + stringArgs.joined(separator: " ")
     }
 
+    // MARK: - Wrap Errors
+
+    private let trimmingCharacters: CharacterSet = .newlines.union(.whitespaces)
+
     private func wrapError(_ output: RunOutput) -> Error {
-        ShellError.common(output.stdout.trimmingCharacters(in: .newlines))
+        ShellError.common(output.stdout.trimmingCharacters(in: trimmingCharacters))
+    }
+
+    private func wrapError(_ command: AsyncCommand) -> Error {
+        ShellError.common(command.stderror.read().trimmingCharacters(in: trimmingCharacters))
     }
 }
 
