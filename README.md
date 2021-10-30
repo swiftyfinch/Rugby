@@ -68,6 +68,7 @@ mint install swiftyfinch/rugby
 # For example, add this to your ~/.zshrc file and relaunch terminal
 export PATH=$HOME/.mint/bin:$PATH
 ```
+Or you can watch 🎬 [installation demo](https://github.com/swiftyfinch/Rugby/discussions/71).
 
 ## How to use 🏈
 
