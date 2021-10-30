@@ -68,7 +68,7 @@ mint install swiftyfinch/rugby
 # For example, add this to your ~/.zshrc file and relaunch terminal
 export PATH=$HOME/.mint/bin:$PATH
 ```
-Or you can watch 🎬 [installation demo](https://github.com/swiftyfinch/Rugby/discussions/71).
+Watch 🎬 [installation demo](https://github.com/swiftyfinch/Rugby/discussions/71)
 
 ## How to use 🏈
 
@@ -76,7 +76,8 @@ Run in your project directory after each pod install:
 ```bash
 pod install && rugby
 ```
-Or read more [about Plans](Docs/Plans.md#-generate-example) ✈️
+Watch 🎬 [Basic Usage Demo](https://github.com/swiftyfinch/Rugby/discussions/72)<br>
+Read more [about advanced usage](Docs/Plans.md#-generate-example)
 
 ## Documentation 📚
 
