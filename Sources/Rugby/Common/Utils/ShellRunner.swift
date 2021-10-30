@@ -100,14 +100,22 @@ final class ShellRunner {
 
     // MARK: - Wrap Errors
 
-    private let trimmingCharacters: CharacterSet = .newlines.union(.whitespaces)
-
     private func wrapError(_ output: RunOutput) -> Error {
-        ShellError.common(output.stdout.trimmingCharacters(in: trimmingCharacters))
+        ShellError.common(output.stdout.cleanUpOutput())
     }
 
     private func wrapError(_ command: AsyncCommand) -> Error {
-        ShellError.common(command.stderror.read().trimmingCharacters(in: trimmingCharacters))
+        ShellError.common(command.stderror.read().cleanUpOutput())
+    }
+}
+
+private extension String {
+    // This method from SwiftShell
+    func cleanUpOutput() -> String {
+        let afterFirstNewline = firstIndex(of: "\n").map(index(after:))
+        return (afterFirstNewline == nil || afterFirstNewline == endIndex)
+            ? trimmingCharacters(in: .whitespacesAndNewlines)
+            : self
     }
 }
 
