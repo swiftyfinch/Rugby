@@ -43,14 +43,18 @@ extension ShellRunner {
         do {
             // Workaround: https://github.com/kareman/SwiftShell/issues/52
             var stdout: String?
-            let readStreams = DispatchWorkItem {
-                stderror = asyncCommand.stderror.read()
+            let readOutStreams = DispatchWorkItem {
                 stdout = asyncCommand.stdout.read()
             }
-            DispatchQueue.global().async(execute: readStreams)
+            let readErrorStreams = DispatchWorkItem {
+                stderror = asyncCommand.stderror.read()
+            }
+            DispatchQueue.global().async(execute: readOutStreams)
+            DispatchQueue.global().async(execute: readErrorStreams)
 
             try asyncCommand.finish()
-            readStreams.wait()
+            readOutStreams.wait()
+            readErrorStreams.wait()
             return stdout ?? ""
         } catch {
             throw ShellError.common(stderror ?? error.localizedDescription)
