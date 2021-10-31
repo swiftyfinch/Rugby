@@ -17,7 +17,7 @@ final class ProcessMonitor {
     private let processes = NSHashTable<PrintedAsyncCommand>.weakObjects()
     private let signalSource = DispatchSource.makeSignalSource(signal: SIGINT, queue: .main)
 
-    // MARK: - Internal Mehtods
+    // MARK: - Internal Methods
 
     /// Keep links to all process
     func addProcess(_ process: PrintedAsyncCommand) {

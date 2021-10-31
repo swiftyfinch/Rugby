@@ -10,8 +10,8 @@ struct RugbyFormatter: Formatter {
     let title: String?
 
     func format(text: String, time: String?, chop: Int?) -> String {
-        let choppendText = chop.map { text.width($0) } ?? text
-        return [time, title?.green, choppendText]
+        let choppedText = chop.map { text.width($0) } ?? text
+        return [time, title?.green, choppedText]
             .compactMap { $0 }
             .joined(separator: " ")
     }

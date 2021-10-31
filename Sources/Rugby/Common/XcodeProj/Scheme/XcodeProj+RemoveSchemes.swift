@@ -52,7 +52,7 @@ extension XcodeProj {
 
         let schemesForRemove = customSchemesForRemove.map(\.name) + pods
 
-        // Anyway remove schmes from project
+        // Anyway remove schemes from project
         defer { sharedData?.schemes.removeAll { schemesForRemove.contains($0.name) } }
 
         schemesForRemove.forEach {
