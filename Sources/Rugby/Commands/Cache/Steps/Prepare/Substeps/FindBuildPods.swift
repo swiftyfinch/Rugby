@@ -19,7 +19,7 @@ extension CacheSubstepFactory {
             buildPods: Set<String>,
             swiftVersion: String?
         ) {
-            let focusChecksums = try progress.spinner("Caclulate checksums") {
+            let focusChecksums = try progress.spinner("Calculate checksums") {
                 try checksumsProvider.getChecksums(forPods: selectedPods)
             }
             metrics.podsCount.after = focusChecksums.count

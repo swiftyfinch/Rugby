@@ -18,7 +18,7 @@ extension XcodeProj {
         // Skip pod group in Pods if it hasn't included
         if let name = file.displayName, file.parent?.displayName == rootGroup, !pods.contains(name) { return }
 
-        // Remove each file in group recersively
+        // Remove each file in group recursively
         group.children.forEach {
             removeFilesRecursively(fromFile: $0, rootGroup: rootGroup, pods: pods)
         }
