@@ -5,7 +5,7 @@
 OVERVIEW: Convert pods to prebuilt dependencies.
 
 OPTIONS:
-  -a, --arch <arch>                 Build architechture. (default: x86_64 for sim)
+  -a, --arch <arch>                 Build architecture. (default: x86_64 for sim)
   -c, --config <config>             Build configuration. (default: Debug)
   -s, --sdk <sdk>                   Build sdk: sim or ios. (default: sim)
   -k, --keep-sources                Keep Pods group in project.
