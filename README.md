@@ -1,5 +1,6 @@
+<br>
 <p align="center">
-  <img src="https://user-images.githubusercontent.com/64660122/138951283-9e69195f-6dda-4a5c-a6bf-66be0cb3d2bb.jpeg" width="600"/>
+  <img src="https://user-images.githubusercontent.com/64660122/140398205-9328806e-897d-483d-a898-c90f66840196.png" width="600"/>
 </p>
 <p align="center">
   <img src="https://github.com/swiftyfinch/Rugby/blob/main/Assets/Demo.gif" width="600"/>
@@ -12,11 +13,7 @@
   <a href="https://swiftpackageindex.com/swiftyfinch/Rugby"><img src="https://img.shields.io/badge/Swift_Package_Index-red?logo=swift&logoColor=white" /></a>
   <a href="https://twitter.com/swiftyfinch"><img src="https://img.shields.io/badge/@swiftyfinch-blue?logo=twitter&logoColor=white" /></a>
   <br>
-  <img src="https://img.shields.io/badge/Press_star_for_pay_respect-gray?logo=github" />
-</p>
-
-<p align="center">
-  <img src="https://user-images.githubusercontent.com/64660122/138950621-9432e44e-9413-4f6a-ac11-774199f68e9e.mov" />
+  <img src="https://img.shields.io/badge/Press_★_for_pay_respect-white?logo=github&logoColor=black" />
 </p>
 
 
@@ -39,17 +36,17 @@ You can read 📖 [full story](https://swiftyfinch.github.io/en/2021-03-09-rugby
 
 ### `What makes it different?`
 
-🕊 Not a dependency\
-🔒 Doesn't change Podfile\
+🕊 Not a dependency, just an optional step\
+🔒 Doesn't change Podfile and Podfile.lock\
 🛠 [Custom steps](Docs/Plans.md)\
 📈 Metrics after each command\
 ✨ Fancy log output\
 🚀 Swiftish!
 
 Ruby alternatives:\
-`-` [CocoaPods Binary](https://github.com/leavez/cocoapods-binary)\
 `-` [PodBuilder](https://github.com/Subito-it/PodBuilder)\
-`-` [CocoaPods Binary Cache](https://github.com/grab/cocoapods-binary-cache)
+`-` [CocoaPods Binary Cache](https://github.com/grab/cocoapods-binary-cache)\
+`-` [CocoaPods Binary](https://github.com/leavez/cocoapods-binary)
 
 ### `Discussions`
 
@@ -89,15 +86,15 @@ Read more [about advanced usage](Docs/Plans.md#-generate-example)
 🔍 [`Focus`](Docs/Focus.md) | Keep only selected targets and all their dependencies.
 🗑 [`Drop`](Docs/Drop.md) | Remove any targets by RegEx.
 
+| 🔭 How to |
+| :----- |
+[Generating and Installing Completion Scripts](https://github.com/apple/swift-argument-parser/blob/397d704f05751624711caa93064aaa810a9b2032/Sources/ArgumentParser/Documentation.docc/Articles/InstallingCompletionScripts.md)
+
 <br>
-
-### `Maybe Roadmap`
-
-- [ ] [Optional arrays #317](https://github.com/apple/swift-argument-parser/pull/317)
 
 ### `Author`
 
 Vyacheslav Khorkov\
 Twitter: [@SwiftyFinch](https://twitter.com/swiftyfinch)\
 Blog: [swiftyfinch.github.io](https://swiftyfinch.github.io/en)\
-Feel free to contact me
+Feel free to contact me ☎️
