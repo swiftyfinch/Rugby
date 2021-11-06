@@ -60,7 +60,7 @@ extension XcodeProj {
             try? sharedSchemes?.file(at: $0 + ".xcscheme").delete()
         }
 
-        let username = try shell("echo ${USER}").trimmingCharacters(in: .whitespacesAndNewlines)
+        let username = try shell("echo $USER").trimmingCharacters(in: .whitespacesAndNewlines)
         schemesForRemove.forEach {
             let userSchemesFolder = try? Folder(path: projectPath + "/xcuserdata/\(username).xcuserdatad/xcschemes")
             try? userSchemesFolder?.file(at: $0 + ".xcscheme").delete()
