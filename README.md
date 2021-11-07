@@ -97,4 +97,4 @@ Read more [about advanced usage](Docs/Plans.md#-generate-example)
 Vyacheslav Khorkov\
 Twitter: [@SwiftyFinch](https://twitter.com/swiftyfinch)\
 Blog: [swiftyfinch.github.io](https://swiftyfinch.github.io/en)\
-Feel free to contact me ☎️
+Feel free to contact me 📮
