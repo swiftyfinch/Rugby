@@ -59,8 +59,8 @@ extension PlanParser {
             let decodable = try JSONDecoder().decode(DropDecodable.self, from: dataArguments)
             return Drop(from: decodable)
         case .shell:
-            let yml = try JSONDecoder().decode(ShellDecodable.self, from: dataArguments)
-            return Shell(run: yml.run, verbose: yml.verbose ?? 0)
+            let decodable = try JSONDecoder().decode(ShellDecodable.self, from: dataArguments)
+            return Shell(from: decodable)
         }
     }
 
