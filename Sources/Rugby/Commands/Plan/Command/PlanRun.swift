@@ -12,35 +12,42 @@ extension Plans {
     func runPlans(_ plans: [PlanParser.Plan]) throws {
         defer { try? HistoryWriter().save() }
 
-        let selectedPlan = try selectPlan(plans)
+        let selectedPlan = try selectedPlan(plans)
         let logFile = try Folder.current.createFile(at: .log)
         printSelectedPlan(plan: selectedPlan.name, logFile: logFile)
         EnvironmentCollector().write(to: logFile)
 
-        var allMetrics: [String: [Metrics]] = [:]
+        var metrics: [String: [Metrics]] = [:]
         let time = try measure {
-            try selectedPlan.commands.forEach { command in
-                var command = command
-                var metrics: Metrics?
-                let time = try measure {
-                    metrics = try command.run(logFile: logFile)
-                }
-                if let metrics = metrics, !command.hideMetrics {
-                    allMetrics[metrics.project, default: []].append(metrics)
-                }
-                outputCommand(metrics, logFile: logFile, time: time)
-            }
+            try runPlan(selectedPlan, plans: plans, logFile: logFile, metrics: &metrics)
         }
-        outputFinalMetrics(allMetrics, logFile: logFile, time: time)
+        outputFinalMetrics(metrics, logFile: logFile, time: time)
     }
 
-    private func selectPlan(_ plans: [PlanParser.Plan]) throws -> PlanParser.Plan {
+    private func selectedPlan(_ plans: [PlanParser.Plan]) throws -> PlanParser.Plan {
         if plan == nil, let defaultPlan = plans.first {
             return defaultPlan
         } else if let foundPlan = plans.first(where: { $0.name == plan }) {
             return foundPlan
         } else {
             throw PlanError.cantFindPlan
+        }
+    }
+
+    private func runPlan(_ plan: PlanParser.Plan,
+                         plans: [PlanParser.Plan],
+                         logFile: File,
+                         metrics allMetrics: inout [String: [Metrics]]) throws {
+        try plan.commands.forEach { command in
+            var command = command
+            var metrics: Metrics?
+            let time = try measure {
+                metrics = try command.run(logFile: logFile)
+            }
+            if let metrics = metrics, !command.hideMetrics {
+                allMetrics[metrics.project, default: []].append(metrics)
+            }
+            outputCommand(metrics, logFile: logFile, time: time)
         }
     }
 }
