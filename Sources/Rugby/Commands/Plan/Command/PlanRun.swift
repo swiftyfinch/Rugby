@@ -14,7 +14,6 @@ extension Plans {
 
         let selectedPlan = try selectedPlan(plans)
         let logFile = try Folder.current.createFile(at: .log)
-        printSelectedPlan(plan: selectedPlan.name, logFile: logFile)
         EnvironmentCollector().write(to: logFile)
 
         var metrics: [String: [Metrics]] = [:]
@@ -38,7 +37,13 @@ extension Plans {
                          plans: [PlanParser.Plan],
                          logFile: File,
                          metrics allMetrics: inout [String: [Metrics]]) throws {
+        printSelectedPlan(plan: plan.name, logFile: logFile)
         try plan.commands.forEach { command in
+            // Let's try to switch to sub-plan
+            if let reference = command as? PlansReference {
+                return try runSubPlan(reference, plans: plans, logFile: logFile, metrics: &allMetrics)
+            }
+
             var command = command
             var metrics: Metrics?
             let time = try measure {
@@ -49,6 +54,16 @@ extension Plans {
             }
             outputCommand(metrics, logFile: logFile, time: time)
         }
+    }
+
+    private func runSubPlan(_ reference: PlansReference,
+                            plans: [PlanParser.Plan],
+                            logFile: File,
+                            metrics allMetrics: inout [String: [Metrics]]) throws {
+        guard let plan = plans.first(where: { $0.name == reference.name }) else {
+            throw PlanError.cantFindPlan(reference.name)
+        }
+        try runPlan(plan, plans: plans, logFile: logFile, metrics: &allMetrics)
     }
 }
 
