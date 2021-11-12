@@ -12,7 +12,7 @@ enum PlanError: Error, LocalizedError {
     case incorrectYMLFormat
     case incorrectCommandName
     case incorrectArgument
-    case cantFindPlan
+    case cantFindPlan(String)
 
     var errorDescription: String? {
         switch self {
@@ -22,8 +22,8 @@ enum PlanError: Error, LocalizedError {
             return "Incorrect command name in plans.yml."
         case .incorrectArgument:
             return "Incorrect arguments in plans.yml."
-        case .cantFindPlan:
-            return "Couldn't find selected plan."
+        case .cantFindPlan(let plan):
+            return "Couldn't find ✈️ \(plan) plan."
         }
     }
 }
