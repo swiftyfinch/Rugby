@@ -37,15 +37,9 @@ rugby example
 ```yml
 # The first plan in the file always run by default
 - usual:
-  # 🐚 Optionally you can generate project if you use Xcodegen or something like that
-  - command: shell
-    run: xcodegen
-    verbose: false
-
-  # 🐚 Also, you can install pods before each rugby call right here
-  - command: shell
-    run: bundle exec pod install # Or you can use any shell command
-    verbose: true
+  # Reuse another plan from this file
+  - command: plans
+    name: base
 
   # 🏈 The first Rugby command without arguments like: $ rugby cache
   - command: cache
@@ -79,8 +73,23 @@ rugby example
     project: TestProject/TestProject.xcodeproj
 
 
+# Base plan which you can use in other plans
+- base:
+  # 🐚 Optionally you can generate project if you use Xcodegen or something like that
+  #- command: shell
+  #  run: xcodegen
+  #  verbose: false
+  
+  # 🐚 Also, you can install pods before each rugby call right here
+  - command: shell
+    run: pods -q # github.com/swiftyfinch/Pods or you can use any shell command
+    verbose: true
+  
+
 # Also, you can use another custom plan: $ rugby --plan unit
 - unit:
+  - command: plans
+    name: base
   - command: cache
     exclude: [Alamofire]
   - command: drop
