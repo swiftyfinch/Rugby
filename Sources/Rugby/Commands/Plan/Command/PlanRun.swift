@@ -30,7 +30,7 @@ extension Plans {
         } else if let foundPlan = plans.first(where: { $0.name == plan }) {
             return foundPlan
         } else {
-            throw PlanError.cantFindPlan
+            throw PlanError.cantFindPlan(plan ?? .firstPlan)
         }
     }
 
@@ -93,4 +93,8 @@ extension Plans {
         RugbyPrinter(title: "Plans ✈️ ", logFile: logFile, verbose: .verbose)
             .print("\(plan.yellow)")
     }
+}
+
+private extension String {
+    static let firstPlan = "first"
 }
