@@ -22,7 +22,7 @@ SUBCOMMANDS:
 rugby list
 ```
 
-<img src="https://github.com/swiftyfinch/Rugby/blob/main/Assets/Plans-list.png" width="800"/>
+<img src="https://user-images.githubusercontent.com/64660122/141672938-9332dc97-21a1-4242-9124-c3706cbe696d.png" width="800"/>
 
 <br>
 
@@ -115,4 +115,4 @@ rugby plans
 rugby plans --plan usual
 ```
 
-<img src="https://github.com/swiftyfinch/Rugby/blob/main/Assets/Plans.png" width="360"/>
+<img src="https://user-images.githubusercontent.com/64660122/141672640-211a505d-3505-49be-87b0-bf90098128a0.png" width="360"/>

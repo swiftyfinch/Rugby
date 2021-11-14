@@ -37,4 +37,4 @@ rugby log
 
 If you encourage any problems, please call `rugby doctor` and follow suggestions.
 
-<img src="https://github.com/swiftyfinch/Rugby/blob/main/Assets/Doctor.png" width="700"/>
+<img src="https://user-images.githubusercontent.com/64660122/141672978-c6a8b0bf-973e-4f70-9b67-c76daf66e731.png" width="700"/>
