@@ -3,7 +3,7 @@
   <img src="https://user-images.githubusercontent.com/64660122/140398205-9328806e-897d-483d-a898-c90f66840196.png" width="600"/>
 </p>
 <p align="center">
-  <img src="https://user-images.githubusercontent.com/64660122/141673061-3b727ef3-3b62-4432-9c1f-159b735fbd45.gif" width="600"/>
+  <img src="https://user-images.githubusercontent.com/64660122/141674975-22c970d6-943e-49cc-a86a-42276b3520e8.mp4" width="600"/>
 </p>
 <p align="center">
   <a href="https://swiftpackageindex.com/swiftyfinch/Rugby"><img src="https://img.shields.io/endpoint?color=orange&label=Swift&logo=swift&logoColor=white&url=https%3A%2F%2Fswiftpackageindex.com%2Fapi%2Fpackages%2Fswiftyfinch%2FRugby%2Fbadge%3Ftype%3Dswift-versions" /></a>
