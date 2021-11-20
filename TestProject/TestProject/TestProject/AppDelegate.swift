@@ -14,12 +14,12 @@ import Alamofire
 @main
 final class AppDelegate: UIResponder, UIApplicationDelegate {
 
-    func applicationDidBecomeActive(_ application: UIApplication) {
-        //
-    }
-
     func application(_ application: UIApplication,
                      didFinishLaunchingWithOptions launchOptions: [UIApplication.LaunchOptionsKey: Any]?) -> Bool {
+        // Just for testing
+        AF.request("https://httpbin.org/get").response { response in
+            debugPrint(response)
+        }
         return true
     }
 
