@@ -10,11 +10,11 @@ import ArgumentParser
 import Rainbow
 
 struct Cache: ParsableCommand {
+    @Option(name: .shortAndLong, parsing: .upToNextOption, help: "Build sdks: sim/ios or both.") var sdk: [SDK] = [.sim]
     @Option(name: .shortAndLong,
             parsing: .upToNextOption,
             help: "Build architectures. (default: sim \(ARCH.x86_64), ios \(ARCH.arm64))") var arch: [String] = []
     @Option(name: .shortAndLong, help: "Build configuration. (default: \(CONFIG.debug))") var config: String?
-    @Option(name: .shortAndLong, parsing: .upToNextOption, help: "Build sdks: sim/ios or both.") var sdk: [SDK] = [.sim]
     @Flag(name: .shortAndLong, help: "Keep Pods group in project.") var keepSources = false
     @Option(name: .shortAndLong, parsing: .upToNextOption, help: "Exclude pods from cache.") var exclude: [String] = []
     @Option(parsing: .upToNextOption, help: "Include local pods.") var include: [String] = []

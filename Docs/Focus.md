@@ -13,7 +13,7 @@ OPTIONS:
   -t, --test-flight           Show output without any changes. 
   -p, --project <project>     Project location. (default: Pods/Pods.xcodeproj)
   -k, --keep-sources          Keep sources & resources in project.
-                               
+
   --bell/--no-bell            Play bell sound on finish. (default: true)
   --hide-metrics              Hide metrics. 
   -v, --verbose               Print more information. 
