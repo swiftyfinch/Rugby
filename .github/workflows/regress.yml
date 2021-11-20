@@ -9,6 +9,16 @@ jobs:
       - uses: actions/checkout@v2
       - uses: norio-nomura/action-swiftlint@3.2.1
         with: { args: --strict }
+
+  spelling:
+    runs-on: macos-11.0
+    steps:
+      - uses: actions/checkout@v2
+      - uses: fjcaetano/mint-action@v1.0.2
+        with: { package: fromkk/SpellChecker }
+      - name: Check spelling
+        run: sh .github/scripts/checkSpell.sh
+
   rugby:
     runs-on: macos-11.0
     steps:
