@@ -1,25 +1,19 @@
 #!/bin/ruby
 
-lane :cache_tests do
-    cache_basic_usage
-    cache_exclude
-    cache_different_config
-end
-
-private_lane :cache_basic_usage do
+lane :cache_both do
     cocoapods(try_repo_update_on_error: true)
     sh "cd .. && rugby -s ios sim --no-bell"
     run_unit_tests
     build_ios
 end
 
-private_lane :cache_exclude do
+lane :cache_exclude do
     cocoapods(try_repo_update_on_error: true)
     sh "cd .. && rugby -e Alamofire --no-bell"
     run_unit_tests
 end
 
-private_lane :cache_different_config do
+lane :cache_different_config do
     cocoapods(try_repo_update_on_error: true)
     sh "cd .. && rugby -c Staging --no-bell"
     build(configuration: "Staging")
