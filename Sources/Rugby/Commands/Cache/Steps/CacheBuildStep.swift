@@ -38,7 +38,7 @@ struct CacheBuildStep: Step {
         }
 
         for (sdk, arch) in zip(command.sdk, command.arch) {
-            try progress.spinner("Building") {
+            try progress.spinner("Building \("\(sdk)-\(arch)".yellow)") {
                 do {
                     try XcodeBuild(
                         project: .podsProject,
