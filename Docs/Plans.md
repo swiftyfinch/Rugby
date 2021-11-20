@@ -6,7 +6,7 @@ OVERVIEW: Run selected plan from .rugby/plans.yml or use cache command if file n
 
 OPTIONS:
   --plan <plan>     Plan name. (default: the first plan)
-                     
+
   --version         Show the version.
   -h, --help        Show help information.
 
@@ -45,9 +45,9 @@ rugby example
   - command: cache
     # Optional parameters with default values:
     graph: true
-    arch: null # By default x86_64 if sdk == sim
+    arch: [] # By default: sim x86_64, ios arm64
     config: null # By default Debug
-    sdk: sim
+    sdk: [sim]
     keepSources: false
     exclude: []
     include: []
@@ -79,12 +79,12 @@ rugby example
   #- command: shell
   #  run: xcodegen
   #  verbose: false
-  
+
   # 🐚 Also, you can install pods before each rugby call right here
   - command: shell
     run: pods -q # github.com/swiftyfinch/Pods or you can use any shell command
     verbose: true
-  
+
 
 # Also, you can use another custom plan: $ rugby --plan unit
 - unit:

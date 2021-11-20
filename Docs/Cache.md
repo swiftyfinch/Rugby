@@ -5,16 +5,16 @@
 OVERVIEW: Convert pods to prebuilt dependencies.
 
 OPTIONS:
-  -a, --arch <arch>                 Build architecture. (default: x86_64 for sim)
+  -a, --arch <arch>                 Build architectures. (default: sim x86_64, ios arm64)
   -c, --config <config>             Build configuration. (default: Debug)
-  -s, --sdk <sdk>                   Build sdk: sim or ios. (default: sim)
+  -s, --sdk <sdk>                   Build sdks: sim/ios or both. (default: sim)
   -k, --keep-sources                Keep Pods group in project.
   -e, --exclude <exclude>           Exclude pods from cache.
   --include <include>               Include local pods.
   --focus <focus>                   Keep selected local pods and cache others.
   --ignore-checksums                Ignore already cached pods checksums.
   --graph                           Add parents of changed pods to build process.
-                            
+
   --bell/--no-bell                  Play bell sound on finish. (default: true)
   --hide-metrics                    Hide metrics.
   -v, --verbose                     Print more information.
@@ -71,6 +71,18 @@ rugby --exclude Alamofire SnapKit
 
 ```bash
 rugby --sdk ios
+```
+
+## Build both sdks (sim x86_64, ios arm64)
+
+It's all the same:
+
+```bash
+rugby -s sim ios
+```
+
+```bash
+rugby --sdk sim ios --arch x86_64 arm64
 ```
 
 ## Build for specific configuration
