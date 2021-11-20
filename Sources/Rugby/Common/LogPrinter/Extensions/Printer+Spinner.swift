@@ -9,7 +9,7 @@
 extension Printer {
     @discardableResult
     func spinner<Result>(_ text: String, job: @escaping () throws -> Result) rethrows -> Result {
-        defer { print("\(text) ⏱".yellow, level: .vv) }
+        defer { print("\(text) \("✓".white)".yellow, level: .vv) }
         let result = try Spinner().show(text: text, job)
         return result
     }

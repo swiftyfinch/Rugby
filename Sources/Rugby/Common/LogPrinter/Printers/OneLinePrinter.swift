@@ -13,7 +13,7 @@ final class OneLinePrinter {
 }
 
 extension OneLinePrinter: Printer {
-    var chop: Int? { 50 }
+    var chop: Int? { 60 }
 
     func print(_ value: String, level: Int) {
         if firstPrint { Swift.print(); firstPrint = false }
