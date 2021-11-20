@@ -37,21 +37,23 @@ struct CacheBuildStep: Step {
             return done()
         }
 
-        try progress.spinner("Building") {
-            do {
-                try XcodeBuild(
-                    project: .podsProject,
-                    scheme: scheme,
-                    sdk: command.sdk,
-                    arch: command.arch,
-                    config: command.config,
-                    xcargs: xcargs
-                ).build()
-            } catch {
-                let podsProject = try ProjectProvider.shared.readProject(.podsProject)
-                podsProject.removeTarget(name: scheme)
-                try podsProject.write(pathString: .podsProject, override: true)
-                throw error
+        for (sdk, arch) in zip(command.sdk, command.arch) {
+            try progress.spinner("Building") {
+                do {
+                    try XcodeBuild(
+                        project: .podsProject,
+                        scheme: scheme,
+                        sdk: sdk,
+                        arch: arch,
+                        config: command.config,
+                        xcargs: xcargs
+                    ).build()
+                } catch {
+                    let podsProject = try ProjectProvider.shared.readProject(.podsProject)
+                    podsProject.removeTarget(name: scheme)
+                    try podsProject.write(pathString: .podsProject, override: true)
+                    throw error
+                }
             }
         }
 
