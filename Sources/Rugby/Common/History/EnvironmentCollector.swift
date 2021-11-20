@@ -40,7 +40,7 @@ struct EnvironmentCollector {
 
     private func getCPU() -> String {
         let cpu = (try? shell("sysctl -n machdep.cpu.brand_string")) ?? .unknown
-        return "CPU: " + cpu
+        return "CPU: " + cpu.trimmingCharacters(in: .newlines)
     }
 
     private func getProject() -> String {
@@ -51,7 +51,7 @@ struct EnvironmentCollector {
     }
 
     private func getGitBranch() -> String {
-        let branch = try? shell("git branch --show-current")
+        let branch = try? shell("git branch --show-current").trimmingCharacters(in: .newlines)
         return "Git branch: " + (branch ?? .unknown)
     }
 }
