@@ -9,6 +9,7 @@
 import UIKit
 import SnapKit
 import KeyboardLayoutGuide
+import Alamofire
 
 @main
 final class AppDelegate: UIResponder, UIApplicationDelegate {
