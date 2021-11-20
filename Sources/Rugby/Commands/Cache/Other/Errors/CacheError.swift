@@ -13,6 +13,7 @@ enum CacheError: Error, LocalizedError {
     case cantFindPodsTargets
     case cantFindXcodeCommandLineTools
     case buildFailed([String])
+    case incorrectArchCount
 
     var errorDescription: String? {
         let output: String
@@ -28,6 +29,9 @@ enum CacheError: Error, LocalizedError {
             output = "Build failed.\n".red
                 + errors.joined(separator: "\n").white + "\n"
                 + "🚑 Get full log: ".yellow + buildCommand.white
+        case .incorrectArchCount:
+            output = "Incorrect arch count.\n".red
+                + "🚑 The count of sdks should be equal to arch count".yellow
         }
         return output
     }

@@ -10,8 +10,8 @@ import Files
 
 extension Cache: Command {
     mutating func run(logFile: File) throws -> Metrics? {
-        // For simulators use arch x86_64 by default.
-        if sdk == .sim && arch == nil { arch = ARCH.x86_64 }
+        if !arch.isEmpty, sdk.count != arch.count { throw CacheError.incorrectArchCount }
+        if arch.isEmpty { arch = sdk.map(\.defaultARCH) /* Set default arch for each sdk */ }
 
         // For build configuration name use Debug by default.
         if config == nil { config = CONFIG.debug }
