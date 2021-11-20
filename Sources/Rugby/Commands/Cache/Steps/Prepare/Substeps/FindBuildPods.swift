@@ -16,7 +16,7 @@ extension CacheSubstepFactory {
         let checksumsProvider = ChecksumsProvider()
 
         func run(_ selectedPods: Set<String>) throws -> (
-            buildPods: Set<String>,
+            buildInfo: BuildInfo,
             swiftVersion: String?
         ) {
             let focusChecksums = try progress.spinner("Calculate checksums") {
@@ -25,24 +25,32 @@ extension CacheSubstepFactory {
             metrics.podsCount.after = focusChecksums.count
 
             // Find checksums difference from cache file
-            let buildPods: Set<String>
-            let cache = CacheManager().load(sdk: command.sdk, config: command.config)
-            let swiftVersion = SwiftVersionProvider().swiftVersion()
+            var buildPods: Set<String> = []
             let xcargs = XCARGSProvider().xcargs
-            let invalidCache = (
-                command.arch != cache?.arch
-                    || swiftVersion != cache?.swift
-                    || command.config != cache?.config
-                    || xcargs != cache?.xcargs
-            )
-            if let checksums = cache?.checksumsMap(), !command.ignoreChecksums, !invalidCache {
-                let changes = focusChecksums.filter { checksums[$0.name]?.value != $0.value }
-                let changedPods = changes.map(\.name)
-                buildPods = Set(changedPods)
-            } else {
-                buildPods = selectedPods
+            let swiftVersion = SwiftVersionProvider().swiftVersion()
+            var buildSDKs: [SDK] = []
+            var buildARCHs: [String] = []
+            for (sdk, arch) in zip(command.sdk, command.arch) {
+                let cache = CacheManager().load(sdk: sdk, config: command.config)
+                let invalidCache = (
+                    arch != cache?.arch
+                        || swiftVersion != cache?.swift
+                        || command.config != cache?.config
+                        || xcargs != cache?.xcargs
+                )
+                if let checksums = cache?.checksumsMap(), !command.ignoreChecksums, !invalidCache {
+                    let changes = focusChecksums.filter { checksums[$0.name]?.value != $0.value }
+                    let changedPods = changes.map(\.name)
+                    buildPods.formUnion(changedPods)
+                } else {
+                    buildPods.formUnion(selectedPods)
+                }
+                if !buildPods.isEmpty {
+                    buildSDKs.append(sdk)
+                    buildARCHs.append(arch)
+                }
             }
-            return (buildPods, swiftVersion)
+            return (BuildInfo(pods: buildPods, sdk: buildSDKs, arch: buildARCHs), swiftVersion)
         }
     }
 }

@@ -8,10 +8,16 @@
 
 import Files
 
+struct BuildInfo {
+    let pods: Set<String>
+    let sdk: [SDK]
+    let arch: [String]
+}
+
 struct CacheBuildStep: Step {
     struct Input {
         let scheme: String?
-        let buildPods: Set<String>
+        let buildInfo: BuildInfo
         let swift: String?
     }
 
@@ -37,7 +43,7 @@ struct CacheBuildStep: Step {
             return done()
         }
 
-        for (sdk, arch) in zip(command.sdk, command.arch) {
+        for (sdk, arch) in zip(input.buildInfo.sdk, input.buildInfo.arch) {
             try progress.spinner("Building \("\(sdk)-\(arch)".yellow)") {
                 do {
                     try XcodeBuild(
@@ -58,19 +64,21 @@ struct CacheBuildStep: Step {
         }
 
         try progress.spinner("Update checksums") {
-            let newChecksums = try checksumsProvider.getChecksums(forPods: input.buildPods)
-            let cachedChecksums = cacheManager.checksumsMap(sdk: command.sdk, config: command.config)
-            let updatedChecksums = newChecksums.reduce(into: cachedChecksums) { checksums, new in
-                checksums[new.name] = new
+            for (sdk, arch) in zip(input.buildInfo.sdk, input.buildInfo.arch) {
+                let newChecksums = try checksumsProvider.getChecksums(forPods: input.buildInfo.pods)
+                let cachedChecksums = cacheManager.checksumsMap(sdk: sdk, config: command.config)
+                let updatedChecksums = newChecksums.reduce(into: cachedChecksums) { checksums, new in
+                    checksums[new.name] = new
+                }
+                let checksums = updatedChecksums.map(\.value.string).sorted()
+                let newCache = BuildCache(sdk: sdk,
+                                          arch: arch,
+                                          config: command.config,
+                                          swift: input.swift,
+                                          xcargs: xcargs,
+                                          checksums: checksums)
+                try cacheManager.update(cache: newCache)
             }
-            let checksums = updatedChecksums.map(\.value.string).sorted()
-            let newCache = BuildCache(sdk: command.sdk,
-                                      arch: command.arch,
-                                      config: command.config,
-                                      swift: input.swift,
-                                      xcargs: xcargs,
-                                      checksums: checksums)
-            try cacheManager.update(cache: newCache)
         }
         done()
     }
