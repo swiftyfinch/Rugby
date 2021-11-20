@@ -17,4 +17,13 @@ enum SDK: String, Codable, ExpressibleByArgument {
         case .ios: return "iphoneos"
         }
     }
+
+    var defaultARCH: String {
+        switch self {
+        case .ios:
+            return ARCH.arm64
+        case .sim:
+            return ARCH.x86_64
+        }
+    }
 }

@@ -7,9 +7,9 @@
 //
 
 struct CacheDecodable: Decodable {
-    let arch: String?
+    let arch: [String]?
     let config: String?
-    let sdk: SDK?
+    let sdk: [SDK]?
     let keepSources: Bool?
     let exclude: [String]?
     let ignoreChecksums: Bool?
@@ -23,9 +23,9 @@ struct CacheDecodable: Decodable {
 
 extension Cache {
     init(from decodable: CacheDecodable) {
-        self.arch = decodable.arch
+        self.arch = decodable.arch ?? []
         self.config = decodable.config
-        self.sdk = decodable.sdk ?? .sim
+        self.sdk = decodable.sdk ?? [.sim]
         self.keepSources = decodable.keepSources ?? false
         self.exclude = decodable.exclude ?? []
         self.ignoreChecksums = decodable.ignoreChecksums ?? false
