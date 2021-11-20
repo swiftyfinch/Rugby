@@ -51,3 +51,6 @@ whiteList:
   - serialization
   - isystem
   - githubusercontent
+  - img
+  - khorkov
+  - proj
