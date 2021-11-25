@@ -21,4 +21,8 @@ final class ProjectProvider {
         cache[path] = project
         return project
     }
+
+    func reset() {
+        cache = [:]
+    }
 }
