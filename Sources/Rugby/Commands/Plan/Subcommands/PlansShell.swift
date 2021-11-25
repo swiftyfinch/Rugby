@@ -23,6 +23,12 @@ struct Shell: Command {
             }
         }
         progress.done()
+        resetProjectsCache()
         return nil
+    }
+
+    // Shell command can modify projects
+    func resetProjectsCache() {
+        ProjectProvider.shared.reset()
     }
 }
