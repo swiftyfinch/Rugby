@@ -7,29 +7,29 @@ assignees: ''
 
 ---
 
-**Did you already try Rugby doctor?**
+## Did you already try Rugby doctor?
 Use `rugby doctor` as a self-diagnostic tool.
 
-**Describe the bug**
+## Describe the bug
 A clear and concise description of what the bug is.
 
-**To Reproduce**
+## To Reproduce
 Steps to reproduce the behavior:
 1. Go to '...'
 2. Click on '....'
 3. Scroll down to '....'
 4. See an error
 
-**Expected behavior**
+## Expected behavior
 A clear and concise description of what you expected to happen.
 
-**Screenshots**
+## Screenshots
 If applicable, add screenshots to help explain your problem.
 
-**Environment (please complete the following information):**
+## Environment (please complete the following information):
  - Version [e.g. 1.13.0]
  - Logs (use `rugby doctor`)
  - Podfile or Example project (if you can share these)
 
-**Additional context**
+## Additional context
 Add any other context about the problem here.
