@@ -19,7 +19,7 @@ struct XcodeBuild {
             "-project \(project)",
             "-scheme \(scheme)",
             "-sdk \(sdk.xcodebuild)",
-            "SYMROOT=$(PWD)/" + .buildFolder
+            "SYMROOT=\"$(PWD)/\(String.buildFolder)\""
         ]
         arguments.append(contentsOf: xcargs)
 
