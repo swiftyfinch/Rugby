@@ -23,4 +23,4 @@ Provide links to an existing issue or external references/discussions, if approp
 - [ ] I've read the [Contribution Guidelines](CONTRIBUTING.md)
 - [ ] I've updated the documentation if necessary
 
-❤️ Thanks for contributing to the Rugby!
+❤️ Thanks for contributing to the 🏈 Rugby!
