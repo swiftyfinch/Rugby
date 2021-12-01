@@ -10,8 +10,9 @@ TestProject/build
 */Fastlane/README.md
 */Fastlane/test_output/*
 
-*/Pods/*
+TestProject/Pods/*
+TestProject/Pods
 # Keep shared schemes for iOS build
-!*/Pods/Pods.xcodeproj
-*/Pods/Pods.xcodeproj/*
-!*/Pods/Pods.xcodeproj/xcshareddata
+!TestProject/Pods/Pods.xcodeproj
+TestProject/Pods/Pods.xcodeproj/*
+!TestProject/Pods/Pods.xcodeproj/xcshareddata
