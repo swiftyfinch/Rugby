@@ -2,7 +2,7 @@
 ### 🚑 `Help`
 
 ```
-OVERVIEW: Shake up pods project, build and throw away part of it.
+OVERVIEW: 🏈 Shake up pods project, build and throw away part of it.
 
 OPTIONS:
   --version          Show the version.
@@ -16,18 +16,20 @@ SUBCOMMANDS:
   focus              • Keep only selected targets and all their dependencies.
   drop               • Remove any targets by RegEx.
   log                • Print last command log verbosely.
+  doctor             • Show troubleshooting suggestions.
+  clean              • Remove cache except plans.yml and logs.
 ```
 
 <br>
 
 ## Default command
 
-By default **Rugby** runs the `plans` command if you have `.rugby/plans.yml` file.\
+By default 🏈 **Rugby** runs the `plans` command if you have `.rugby/plans.yml` file.\
 Otherwise `cache` command will be run.
 
 ## Log
 
-If you run any command without `--verbose` flag you still can get verbosity output of the last **Rugby** run:
+If you run any command without `--verbose` flag you still can get verbosity output of the last 🏈 **Rugby** run:
 
 ```bash
 rugby log
@@ -37,4 +39,4 @@ rugby log
 
 If you encourage any problems, please call `rugby doctor` and follow suggestions.
 
-<img src="https://user-images.githubusercontent.com/64660122/141672978-c6a8b0bf-973e-4f70-9b67-c76daf66e731.png" width="700"/>
+<img width="729" alt="Screenshot 2021-11-30 at 21 08 47" src="https://user-images.githubusercontent.com/64660122/144104545-84c7ac6f-2c39-4812-bdba-511b10b8194d.png">
