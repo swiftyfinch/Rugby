@@ -42,6 +42,7 @@ struct Plans: ParsableCommand {
         cache.arch = cacheOptions.arch
         cache.config = cacheOptions.config
         cache.sdk = cacheOptions.sdk
+        cache.bitcode = cacheOptions.bitcode
         cache.keepSources = cacheOptions.keepSources
         cache.exclude = cacheOptions.exclude
         cache.ignoreChecksums = cacheOptions.ignoreChecksums

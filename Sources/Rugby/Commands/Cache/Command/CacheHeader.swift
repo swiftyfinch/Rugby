@@ -15,6 +15,7 @@ struct Cache: ParsableCommand {
             parsing: .upToNextOption,
             help: "Build architectures. (default: sim \(ARCH.x86_64), ios \(ARCH.arm64))") var arch: [String] = []
     @Option(name: .shortAndLong, help: "Build configuration. (default: \(CONFIG.debug))") var config: String?
+    @Flag(name: .long, help: "Add bitcode for archive builds.") var bitcode = false
     @Flag(name: .shortAndLong, help: "Keep Pods group in project.") var keepSources = false
     @Option(name: .shortAndLong, parsing: .upToNextOption, help: "Exclude pods from cache.") var exclude: [String] = []
     @Option(parsing: .upToNextOption, help: "Include local pods.") var include: [String] = []
