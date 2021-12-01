@@ -15,12 +15,11 @@ target 'TestProject' do
 
   target 'TestProjectTests' do
     inherit! :search_paths
-    pod 'Moya/ReactiveSwift'
     pod 'AutoMate'
   end
 
   target 'TestProjectUITests' do
-    pod 'Moya/RxSwift'
+    # None
   end
 end
 
