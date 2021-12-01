@@ -5,21 +5,22 @@
 OVERVIEW: Convert pods to prebuilt dependencies.
 
 OPTIONS:
-  -a, --arch <arch>                 Build architectures. (default: sim x86_64, ios arm64)
-  -c, --config <config>             Build configuration. (default: Debug)
-  -s, --sdk <sdk>                   Build sdks: sim/ios or both. (default: sim)
-  -k, --keep-sources                Keep Pods group in project.
-  -e, --exclude <exclude>           Exclude pods from cache.
-  --include <include>               Include local pods.
-  --focus <focus>                   Keep selected local pods and cache others.
-  --ignore-checksums                Ignore already cached pods checksums.
-  --graph                           Add parents of changed pods to build process.
+  -a, --arch <arch>         Build architectures. (default: sim x86_64, ios arm64)
+  -c, --config <config>     Build configuration. (default: Debug)
+  -s, --sdk <sdk>           Build sdks: sim/ios or both. (default: sim)
+  --bitcode                 Add bitcode for archive builds.
+  -k, --keep-sources        Keep Pods group in project.
+  -e, --exclude <exclude>   Exclude pods from cache.
+  --include <include>       Include local pods.
+  --focus <focus>           Keep selected local pods and cache others.
+  --ignore-checksums        Ignore already cached pods checksums.
+  --graph                   Add parents of changed pods to build process.
 
-  --bell/--no-bell                  Play bell sound on finish. (default: true)
-  --hide-metrics                    Hide metrics.
-  -v, --verbose                     Print more information.
-  --version                         Show the version.
-  -h, --help                        Show help information.
+  --bell/--no-bell          Play bell sound on finish. (default: true)
+  --hide-metrics            Hide metrics.
+  -v, --verbose             Print more information.
+  --version                 Show the version.
+  -h, --help                Show help information.
 ```
 
 <br>
@@ -89,6 +90,12 @@ rugby --sdk sim ios --arch x86_64 arm64
 
 ```bash
 rugby --config Debug
+```
+
+## Build for AppStore (for example)
+
+```bash
+rugby --config Release --sdk ios --bitcode
 ```
 
 ## Build local pods

@@ -48,6 +48,7 @@ rugby example
     arch: [] # By default: sim x86_64, ios arm64
     config: null # By default Debug
     sdk: [sim]
+    bitcode: false
     keepSources: false
     exclude: []
     include: []
