@@ -13,7 +13,9 @@ extension CacheSubstepFactory {
         let progress: Printer
         let command: Cache
         let metrics: Metrics
-        let checksumsProvider = ChecksumsProvider()
+
+        private let checksumsProvider = ChecksumsProvider()
+        private let xcargsProvider = XCARGSProvider()
 
         func run(_ selectedPods: Set<String>) throws -> (
             buildInfo: BuildInfo,
@@ -26,7 +28,7 @@ extension CacheSubstepFactory {
 
             // Find checksums difference from cache file
             var buildPods: Set<String> = []
-            let xcargs = XCARGSProvider.xcargs(bitcode: command.bitcode)
+            let xcargs = xcargsProvider.xcargs(bitcode: command.bitcode)
             let swiftVersion = SwiftVersionProvider().swiftVersion()
             var buildSDKs: [SDK] = []
             var buildARCHs: [String] = []

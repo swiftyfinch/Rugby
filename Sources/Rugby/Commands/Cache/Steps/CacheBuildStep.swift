@@ -28,6 +28,7 @@ struct CacheBuildStep: Step {
     private let command: Cache
     private let checksumsProvider = ChecksumsProvider()
     private let cacheManager = CacheManager()
+    private let xcargsProvider = XCARGSProvider()
 
     init(command: Cache, logFile: File, isLast: Bool = false) {
         self.command = command
@@ -42,7 +43,7 @@ struct CacheBuildStep: Step {
             return done()
         }
 
-        let xcargs = XCARGSProvider.xcargs(bitcode: command.bitcode)
+        let xcargs = xcargsProvider.xcargs(bitcode: command.bitcode)
         for (sdk, arch) in zip(input.buildInfo.sdk, input.buildInfo.arch) {
             try progress.spinner("Building \("\(sdk)-\(arch)".yellow)") {
                 do {
