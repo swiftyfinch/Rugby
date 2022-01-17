@@ -12,7 +12,7 @@ extension Plans {
     func runPlans(_ plans: [PlanParser.Plan]) throws {
         defer { try? HistoryWriter().save() }
 
-        let selectedPlan = try selectedPlan(plans)
+        let selectedPlan = try selectPlan(plans)
         let logFile = try Folder.current.createFile(at: .log)
         EnvironmentCollector().write(to: logFile)
 
@@ -23,7 +23,7 @@ extension Plans {
         outputFinalMetrics(metrics, logFile: logFile, time: time)
     }
 
-    private func selectedPlan(_ plans: [PlanParser.Plan]) throws -> PlanParser.Plan {
+    private func selectPlan(_ plans: [PlanParser.Plan]) throws -> PlanParser.Plan {
         if plan == nil, let defaultPlan = plans.first {
             return defaultPlan
         } else if let foundPlan = plans.first(where: { $0.name == plan }) {
