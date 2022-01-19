@@ -19,7 +19,7 @@ jobs:
       - name: Check spelling
         run: sh .github/scripts/checkSpell.sh
 
-  rugby-12.5.1:
+  rugby-12_5_1:
     runs-on: macos-11.0
     steps:
       - uses: actions/checkout@v2
@@ -36,7 +36,7 @@ jobs:
           name: rugby
           path: ${{ env.rugby_path }}
 
-  rugby-12.4:
+  rugby-12_4:
     runs-on: macos-10.0
     steps:
       - uses: actions/checkout@v2
@@ -46,7 +46,7 @@ jobs:
         run: swift build -c release
 #==========================================================================
   cache-both:
-    needs: rugby-12.5.1
+    needs: rugby-12_5_1
     runs-on: macos-11.0
     env: { project-directory: ./TestProject }
     steps:
@@ -75,7 +75,7 @@ jobs:
         working-directory: ${{ env.project-directory }}
 #==========================================================================
   cache-exclude:
-    needs: rugby-12.5.1
+    needs: rugby-12_5_1
     runs-on: macos-11.0
     env: { project-directory: ./TestProject }
     steps:
@@ -104,7 +104,7 @@ jobs:
         working-directory: ${{ env.project-directory }}
 #==========================================================================
   cache-config:
-    needs: rugby-12.5.1
+    needs: rugby-12_5_1
     runs-on: macos-11.0
     env: { project-directory: ./TestProject }
     steps:
@@ -133,7 +133,7 @@ jobs:
         working-directory: ${{ env.project-directory }}
 #==========================================================================
   drop:
-    needs: rugby-12.5.1
+    needs: rugby-12_5_1
     runs-on: macos-11.0
     env: { project-directory: ./TestProject }
     steps:
@@ -162,7 +162,7 @@ jobs:
         working-directory: ${{ env.project-directory }}
 #==========================================================================
   focus:
-    needs: rugby-12.5.1
+    needs: rugby-12_5_1
     runs-on: macos-11.0
     env: { project-directory: ./TestProject }
     steps:
@@ -191,7 +191,7 @@ jobs:
         working-directory: ${{ env.project-directory }}
 #==========================================================================
   plans:
-    needs: rugby-12.5.1
+    needs: rugby-12_5_1
     runs-on: macos-11.0
     env: { project-directory: ./TestProject }
     steps:
