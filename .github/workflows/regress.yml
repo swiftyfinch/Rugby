@@ -37,7 +37,7 @@ jobs:
           path: ${{ env.rugby_path }}
 
   rugby-12_4:
-    runs-on: macos-10.0
+    runs-on: macos-10.15
     steps:
       - uses: actions/checkout@v2
       - uses: maxim-lobanov/setup-xcode@v1
