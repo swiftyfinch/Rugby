@@ -19,25 +19,34 @@ jobs:
       - name: Check spelling
         run: sh .github/scripts/checkSpell.sh
 
-  rugby:
-    runs-on: macos-11.0
+  rugby-12.5.1:
+  runs-on: macos-11.0
+  steps:
+    - uses: actions/checkout@v2
+    - uses: maxim-lobanov/setup-xcode@v1
+      with: { xcode-version: '12.5.1' }
+    - name: Build Rugby
+      run: |
+        swift build -c release
+        path=`swift build -c release --show-bin-path`
+        echo "rugby_path=$path/rugby" >> $GITHUB_ENV
+        swift run rugby --version
+    - uses: actions/upload-artifact@v2
+      with:
+        name: rugby
+        path: ${{ env.rugby_path }}
+
+  rugby-12.4:
+    runs-on: macos-10.0
     steps:
       - uses: actions/checkout@v2
       - uses: maxim-lobanov/setup-xcode@v1
-        with: { xcode-version: '12.5.1' }
+        with: { xcode-version: '12.4' }
       - name: Build Rugby
-        run: |
-          swift build -c release
-          path=`swift build -c release --show-bin-path`
-          echo "rugby_path=$path/rugby" >> $GITHUB_ENV
-          swift run rugby --version
-      - uses: actions/upload-artifact@v2
-        with:
-          name: rugby
-          path: ${{ env.rugby_path }}
+        run: swift build -c release
 #==========================================================================
   cache-both:
-    needs: rugby
+    needs: rugby-12.5.1
     runs-on: macos-11.0
     env: { project-directory: ./TestProject }
     steps:
@@ -66,7 +75,7 @@ jobs:
         working-directory: ${{ env.project-directory }}
 #==========================================================================
   cache-exclude:
-    needs: rugby
+    needs: rugby-12.5.1
     runs-on: macos-11.0
     env: { project-directory: ./TestProject }
     steps:
@@ -95,7 +104,7 @@ jobs:
         working-directory: ${{ env.project-directory }}
 #==========================================================================
   cache-config:
-    needs: rugby
+    needs: rugby-12.5.1
     runs-on: macos-11.0
     env: { project-directory: ./TestProject }
     steps:
@@ -124,7 +133,7 @@ jobs:
         working-directory: ${{ env.project-directory }}
 #==========================================================================
   drop:
-    needs: rugby
+    needs: rugby-12.5.1
     runs-on: macos-11.0
     env: { project-directory: ./TestProject }
     steps:
@@ -153,7 +162,7 @@ jobs:
         working-directory: ${{ env.project-directory }}
 #==========================================================================
   focus:
-    needs: rugby
+    needs: rugby-12.5.1
     runs-on: macos-11.0
     env: { project-directory: ./TestProject }
     steps:
@@ -182,7 +191,7 @@ jobs:
         working-directory: ${{ env.project-directory }}
 #==========================================================================
   plans:
-    needs: rugby
+    needs: rugby-12.5.1
     runs-on: macos-11.0
     env: { project-directory: ./TestProject }
     steps:
