@@ -36,8 +36,11 @@ struct Lockfile {
     }
 
     private static func parseExternalSources(_ object: [String: Any]) throws -> [String: [String: String]] {
-        try ((object[.externalSources] ?? [:]) as? [String: [String: String]])
+        try ((object[.externalSources] ?? [:]) as? [String: [String: Any]])
             .unwrap(orThrow: LockFileError.incorrectObject(.externalSources))
+            .mapDictionary { key, value in
+                (key, value.mapDictionary { ($0.key, String(describing: $0.value)) })
+            }
     }
 
     private static func parseSpecRepos(_ object: [String: Any]) throws -> [String: [String]] {
