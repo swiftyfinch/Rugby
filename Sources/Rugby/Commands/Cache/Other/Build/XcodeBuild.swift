@@ -6,6 +6,8 @@
 //  Copyright © 2021 Vyacheslav Khorkov. All rights reserved.
 //
 
+import Files
+
 struct XcodeBuild {
     let project: String
     let scheme: String
@@ -15,11 +17,13 @@ struct XcodeBuild {
     let xcargs: [String]
 
     func build() throws {
+        let currentFolder = Folder.current.path
+            .replacingOccurrences(of: " ", with: "\\ ")
         var arguments = [
             "-project \(project)",
             "-scheme \(scheme)",
             "-sdk \(sdk.xcodebuild)",
-            "SYMROOT=\"$(PWD)/\(String.buildFolder)\""
+            "SYMROOT=\(currentFolder)\(String.buildFolder)"
         ]
         arguments.append(contentsOf: xcargs)
 
