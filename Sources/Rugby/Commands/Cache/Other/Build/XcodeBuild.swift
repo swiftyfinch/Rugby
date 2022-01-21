@@ -33,7 +33,7 @@ struct XcodeBuild {
         if let config = config {
             arguments.append("-config \(config)")
         }
-        arguments.append(" | tee " + .rawBuildLog)
+        arguments.append("| tee " + .rawBuildLog)
 
         try XcodeBuildRunner(rawLogPath: .rawBuildLog, logPath: .buildLog).run(
             "NSUnbufferedIO=YES xcodebuild",
