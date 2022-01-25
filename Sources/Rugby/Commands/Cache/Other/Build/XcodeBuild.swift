@@ -17,8 +17,7 @@ struct XcodeBuild {
     let xcargs: [String]
 
     func build() throws {
-        let currentFolder = Folder.current.path
-            .replacingOccurrences(of: " ", with: "\\ ")
+        let currentFolder = Folder.current.path.shellFriendly
         var arguments = [
             "-project \(project)",
             "-scheme \(scheme)",
@@ -31,7 +30,7 @@ struct XcodeBuild {
             arguments.append("ARCHS=\(arch)")
         }
         if let config = config {
-            arguments.append("-config \(config)")
+            arguments.append("-config \(config.shellFriendly)")
         }
         arguments.append("| tee " + .rawBuildLog)
 

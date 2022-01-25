@@ -28,4 +28,6 @@ extension String {
     var isFile: Bool {
         contains(".")
     }
+
+    var shellFriendly: String { replacingOccurrences(of: " ", with: "\\ ") }
 }
