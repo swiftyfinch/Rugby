@@ -45,9 +45,14 @@
 /* End PBXContainerItemProxy section */
 
 /* Begin PBXFileReference section */
+		0162DD04A4454770F5EA75CD /* Pods-TestProjectTests.staging test.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-TestProjectTests.staging test.xcconfig"; path = "../../Pods/Target Support Files/Pods-TestProjectTests/Pods-TestProjectTests.staging test.xcconfig"; sourceTree = "<group>"; };
 		0A2FAB267C8CDB3CAE284629 /* Pods-TestProject-TestProjectUITests.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-TestProject-TestProjectUITests.release.xcconfig"; path = "../../Pods/Target Support Files/Pods-TestProject-TestProjectUITests/Pods-TestProject-TestProjectUITests.release.xcconfig"; sourceTree = "<group>"; };
 		0CB45CA5332BECA822C99B3F /* Pods-TestProject.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-TestProject.debug.xcconfig"; path = "../../Pods/Target Support Files/Pods-TestProject/Pods-TestProject.debug.xcconfig"; sourceTree = "<group>"; };
 		0F266C3A158B4525AF7D2E8D /* Pods-TestProject.staging.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-TestProject.staging.xcconfig"; path = "../../Pods/Target Support Files/Pods-TestProject/Pods-TestProject.staging.xcconfig"; sourceTree = "<group>"; };
+		0F7CAE2DB74929BDDB77D087 /* Pods-TestProject.staging tests.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-TestProject.staging tests.xcconfig"; path = "../../Pods/Target Support Files/Pods-TestProject/Pods-TestProject.staging tests.xcconfig"; sourceTree = "<group>"; };
+		1708F6F52543CBD43477C925 /* Pods-TestProject-TestProjectUITests.staging test.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-TestProject-TestProjectUITests.staging test.xcconfig"; path = "../../Pods/Target Support Files/Pods-TestProject-TestProjectUITests/Pods-TestProject-TestProjectUITests.staging test.xcconfig"; sourceTree = "<group>"; };
+		193FF2D8C94D11037185F80A /* Pods-TestProject.staging test.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-TestProject.staging test.xcconfig"; path = "../../Pods/Target Support Files/Pods-TestProject/Pods-TestProject.staging test.xcconfig"; sourceTree = "<group>"; };
+		1CA92A3395365A0F83AA056B /* Pods-TestProjectTests.staging tests.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-TestProjectTests.staging tests.xcconfig"; path = "../../Pods/Target Support Files/Pods-TestProjectTests/Pods-TestProjectTests.staging tests.xcconfig"; sourceTree = "<group>"; };
 		232168D12609FAA00014A8F3 /* R.generated.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = R.generated.swift; sourceTree = "<group>"; };
 		233BEB1D2606F350007ABBED /* TestProject.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = TestProject.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		233BEB202606F350007ABBED /* AppDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppDelegate.swift; sourceTree = "<group>"; };
@@ -73,6 +78,7 @@
 		23CA5CBB26091D6C00E0DD3C /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
 		312BCF1490884CDDA7342FAD /* Pods-TestProjectUITests.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-TestProjectUITests.debug.xcconfig"; path = "Target Support Files/Pods-TestProjectUITests/Pods-TestProjectUITests.debug.xcconfig"; sourceTree = "<group>"; };
 		39FC3268DC54E8238C469DFB /* Pods-TestProjectUITests.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-TestProjectUITests.release.xcconfig"; path = "Target Support Files/Pods-TestProjectUITests/Pods-TestProjectUITests.release.xcconfig"; sourceTree = "<group>"; };
+		4F66484DA8BBBC489F3F18A9 /* Pods-TestProject-TestProjectUITests.staging tests.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-TestProject-TestProjectUITests.staging tests.xcconfig"; path = "../../Pods/Target Support Files/Pods-TestProject-TestProjectUITests/Pods-TestProject-TestProjectUITests.staging tests.xcconfig"; sourceTree = "<group>"; };
 		6B203081108CE0A426B9F9F7 /* Pods_TestProject.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = Pods_TestProject.framework; sourceTree = BUILT_PRODUCTS_DIR; };
 		79366849AAEB8CF63132EC3E /* Pods-TestProject.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-TestProject.release.xcconfig"; path = "../../Pods/Target Support Files/Pods-TestProject/Pods-TestProject.release.xcconfig"; sourceTree = "<group>"; };
 		914659325AE2AA4570AE1E46 /* Pods-TestProjectTests.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-TestProjectTests.release.xcconfig"; path = "../../Pods/Target Support Files/Pods-TestProjectTests/Pods-TestProjectTests.release.xcconfig"; sourceTree = "<group>"; };
@@ -214,6 +220,12 @@
 				0F266C3A158B4525AF7D2E8D /* Pods-TestProject.staging.xcconfig */,
 				9C28EAA1A247644F3649D48D /* Pods-TestProject-TestProjectUITests.staging.xcconfig */,
 				96549C9E47719FAFA2A2FC49 /* Pods-TestProjectTests.staging.xcconfig */,
+				193FF2D8C94D11037185F80A /* Pods-TestProject.staging test.xcconfig */,
+				1708F6F52543CBD43477C925 /* Pods-TestProject-TestProjectUITests.staging test.xcconfig */,
+				0162DD04A4454770F5EA75CD /* Pods-TestProjectTests.staging test.xcconfig */,
+				0F7CAE2DB74929BDDB77D087 /* Pods-TestProject.staging tests.xcconfig */,
+				4F66484DA8BBBC489F3F18A9 /* Pods-TestProject-TestProjectUITests.staging tests.xcconfig */,
+				1CA92A3395365A0F83AA056B /* Pods-TestProjectTests.staging tests.xcconfig */,
 			);
 			path = Pods;
 			sourceTree = "<group>";
@@ -420,7 +432,7 @@
 			outputFileListPaths = (
 			);
 			outputPaths = (
-				"$SRCROOT/TestProject/R.generated.swift",
+				$SRCROOT/TestProject/R.generated.swift,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 			shellPath = /bin/sh;
@@ -936,7 +948,7 @@
 			};
 			name = Release;
 		};
-		2CCFF7DF2711EB1C008B313B /* Staging */ = {
+		2CCFF7DF2711EB1C008B313B /* Staging With Spaces */ = {
 			isa = XCBuildConfiguration;
 			buildSettings = {
 				ALWAYS_SEARCH_USER_PATHS = NO;
@@ -997,11 +1009,11 @@
 				SWIFT_ACTIVE_COMPILATION_CONDITIONS = STAGING;
 				SWIFT_OPTIMIZATION_LEVEL = "-Onone";
 			};
-			name = Staging;
+			name = "Staging With Spaces";
 		};
-		2CCFF7E02711EB1C008B313B /* Staging */ = {
+		2CCFF7E02711EB1C008B313B /* Staging With Spaces */ = {
 			isa = XCBuildConfiguration;
-			baseConfigurationReference = 0F266C3A158B4525AF7D2E8D /* Pods-TestProject.staging.xcconfig */;
+			baseConfigurationReference = 0F7CAE2DB74929BDDB77D087 /* Pods-TestProject.staging tests.xcconfig */;
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				ASSETCATALOG_COMPILER_GLOBAL_ACCENT_COLOR_NAME = AccentColor;
@@ -1022,11 +1034,11 @@
 				SWIFT_VERSION = 5.0;
 				TARGETED_DEVICE_FAMILY = "1,2";
 			};
-			name = Staging;
+			name = "Staging With Spaces";
 		};
-		2CCFF7E12711EB1C008B313B /* Staging */ = {
+		2CCFF7E12711EB1C008B313B /* Staging With Spaces */ = {
 			isa = XCBuildConfiguration;
-			baseConfigurationReference = 9C28EAA1A247644F3649D48D /* Pods-TestProject-TestProjectUITests.staging.xcconfig */;
+			baseConfigurationReference = 4F66484DA8BBBC489F3F18A9 /* Pods-TestProject-TestProjectUITests.staging tests.xcconfig */;
 			buildSettings = {
 				CODE_SIGN_STYLE = Automatic;
 				INFOPLIST_FILE = TestProjectUITests/Info.plist;
@@ -1042,11 +1054,11 @@
 				TARGETED_DEVICE_FAMILY = "1,2";
 				TEST_TARGET_NAME = TestProject;
 			};
-			name = Staging;
+			name = "Staging With Spaces";
 		};
-		2CCFF7E22711EB1C008B313B /* Staging */ = {
+		2CCFF7E22711EB1C008B313B /* Staging With Spaces */ = {
 			isa = XCBuildConfiguration;
-			baseConfigurationReference = 96549C9E47719FAFA2A2FC49 /* Pods-TestProjectTests.staging.xcconfig */;
+			baseConfigurationReference = 1CA92A3395365A0F83AA056B /* Pods-TestProjectTests.staging tests.xcconfig */;
 			buildSettings = {
 				BUNDLE_LOADER = "$(TEST_HOST)";
 				CODE_SIGN_STYLE = Automatic;
@@ -1063,9 +1075,9 @@
 				TARGETED_DEVICE_FAMILY = "1,2";
 				TEST_HOST = "$(BUILT_PRODUCTS_DIR)/TestProject.app/TestProject";
 			};
-			name = Staging;
+			name = "Staging With Spaces";
 		};
-		2CCFF7E32711EB1C008B313B /* Staging */ = {
+		2CCFF7E32711EB1C008B313B /* Staging With Spaces */ = {
 			isa = XCBuildConfiguration;
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
@@ -1082,7 +1094,7 @@
 				SWIFT_VERSION = 5.0;
 				TARGETED_DEVICE_FAMILY = "1,2";
 			};
-			name = Staging;
+			name = "Staging With Spaces";
 		};
 /* End XCBuildConfiguration section */
 
@@ -1091,7 +1103,7 @@
 			isa = XCConfigurationList;
 			buildConfigurations = (
 				233BEB2F2606F351007ABBED /* Debug */,
-				2CCFF7DF2711EB1C008B313B /* Staging */,
+				2CCFF7DF2711EB1C008B313B /* Staging With Spaces */,
 				233BEB302606F351007ABBED /* Release */,
 			);
 			defaultConfigurationIsVisible = 0;
@@ -1101,7 +1113,7 @@
 			isa = XCConfigurationList;
 			buildConfigurations = (
 				233BEB322606F351007ABBED /* Debug */,
-				2CCFF7E02711EB1C008B313B /* Staging */,
+				2CCFF7E02711EB1C008B313B /* Staging With Spaces */,
 				233BEB332606F351007ABBED /* Release */,
 			);
 			defaultConfigurationIsVisible = 0;
@@ -1111,7 +1123,7 @@
 			isa = XCConfigurationList;
 			buildConfigurations = (
 				233BED3E2607898E007ABBED /* Debug */,
-				2CCFF7E12711EB1C008B313B /* Staging */,
+				2CCFF7E12711EB1C008B313B /* Staging With Spaces */,
 				233BED3F2607898E007ABBED /* Release */,
 			);
 			defaultConfigurationIsVisible = 0;
@@ -1121,7 +1133,7 @@
 			isa = XCConfigurationList;
 			buildConfigurations = (
 				233BEDBB2607AD51007ABBED /* Debug */,
-				2CCFF7E22711EB1C008B313B /* Staging */,
+				2CCFF7E22711EB1C008B313B /* Staging With Spaces */,
 				233BEDBC2607AD51007ABBED /* Release */,
 			);
 			defaultConfigurationIsVisible = 0;
@@ -1131,7 +1143,7 @@
 			isa = XCConfigurationList;
 			buildConfigurations = (
 				23CA5CBC26091D6C00E0DD3C /* Debug */,
-				2CCFF7E32711EB1C008B313B /* Staging */,
+				2CCFF7E32711EB1C008B313B /* Staging With Spaces */,
 				23CA5CBD26091D6C00E0DD3C /* Release */,
 			);
 			defaultConfigurationIsVisible = 0;
