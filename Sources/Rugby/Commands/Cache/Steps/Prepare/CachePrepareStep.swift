@@ -14,7 +14,7 @@ struct CachePrepareStep: Step {
         let targets: Set<String>
         let buildInfo: BuildInfo
         let products: [String]
-        let swiftVersion: String?
+        let swiftVersion: String
     }
 
     let verbose: Int

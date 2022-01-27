@@ -37,5 +37,5 @@ extension String {
     static let buildFolder = supportFolder + "/build"
     static let cacheFile = supportFolder + "/cache.yml"
     static let cacheFolder: String =
-        "${PODS_ROOT}/../" + supportFolder + "/build/${CONFIGURATION}${EFFECTIVE_PLATFORM_NAME}"
+        "${PODS_ROOT}/../" + supportFolder + "/build/${CONFIGURATION}${EFFECTIVE_PLATFORM_NAME}-${ARCHS}"
 }

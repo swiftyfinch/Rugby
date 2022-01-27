@@ -12,6 +12,7 @@ import Rainbow
 enum CacheError: Error, LocalizedError {
     case cantFindPodsTargets
     case cantFindXcodeCommandLineTools
+    case cantGetSwiftVersion
     case buildFailed([String])
     case incorrectArchCount
 
@@ -23,6 +24,9 @@ enum CacheError: Error, LocalizedError {
                 + "🚑 Try to call pod install.".yellow
         case .cantFindXcodeCommandLineTools:
             output = "Couldn't find Xcode CLT.\n".red
+                + "🚑 Check Xcode Preferences → Locations → Command Line Tools.".yellow
+        case .cantGetSwiftVersion:
+            output = "Couldn't get Swift version".red
                 + "🚑 Check Xcode Preferences → Locations → Command Line Tools.".yellow
         case .buildFailed(let errors):
             let buildCommand = "cat \(String.buildLog)"

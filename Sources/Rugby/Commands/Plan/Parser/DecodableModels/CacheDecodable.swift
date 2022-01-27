@@ -26,7 +26,7 @@ struct CacheDecodable: Decodable {
 extension Cache {
     init(from decodable: CacheDecodable) {
         self.arch = decodable.arch ?? []
-        self.config = decodable.config
+        self.config = decodable.config ?? CONFIG.debug
         self.sdk = decodable.sdk ?? [.sim]
         self.bitcode = decodable.bitcode ?? false
         self.keepSources = decodable.keepSources ?? false

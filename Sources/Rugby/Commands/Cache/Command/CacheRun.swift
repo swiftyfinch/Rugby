@@ -15,9 +15,6 @@ extension Cache: Command {
         if !arch.isEmpty, sdk.count != arch.count { throw CacheError.incorrectArchCount }
         if arch.isEmpty { arch = sdk.map(\.defaultARCH) /* Set default arch for each sdk */ }
 
-        // For build configuration name use Debug by default.
-        if config == nil { config = CONFIG.debug }
-
         let metrics = CacheMetrics(project: String.podsProject.basename())
         let factory = CacheStepsFactory(command: self, metrics: metrics, logFile: logFile)
         let info = try factory.prepare(.buildTarget)

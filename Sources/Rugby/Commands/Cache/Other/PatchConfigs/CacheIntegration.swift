@@ -17,7 +17,7 @@ struct CacheIntegration {
         let originalDirs = ["PODS_CONFIGURATION_BUILD_DIR", "BUILT_PRODUCTS_DIR"].joined(separator: "|")
         let suffixPods = builtTargets.map { $0.escapeForRegex() }.joined(separator: "|")
         let fileRegex = [#".*-resources\.sh"#, #".*\.xcconfig"#, #".*-frameworks\.sh"#].joined(separator: "|")
-        try FilePatcher().replace(#"\$\{(\#(originalDirs))\}(?=\/(\#(suffixPods))("|\s|\/))"#,
+        try FilePatcher().replace(#"\$\{(\#(originalDirs))\}\/(\#(suffixPods)).*?(?=\/|"|\s)"#,
                                   with: cacheFolder,
                                   inFilesByRegEx: "(\(fileRegex))",
                                   folder: supportFilesFolder)

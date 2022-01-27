@@ -6,6 +6,7 @@
 //  Copyright © 2021 Vyacheslav Khorkov. All rights reserved.
 //
 
+import Files
 import XcodeProj
 
 extension CacheSubstepFactory {
@@ -19,8 +20,12 @@ extension CacheSubstepFactory {
 
         func run(_ selectedPods: Set<String>) throws -> (
             buildInfo: BuildInfo,
-            swiftVersion: String?
+            swiftVersion: String
         ) {
+            guard let swiftVersion = SwiftVersionProvider().swiftVersion() else {
+                throw CacheError.cantGetSwiftVersion
+            }
+
             let focusChecksums = try progress.spinner("Calculate checksums") {
                 try checksumsProvider.getChecksums(forPods: selectedPods)
             }
@@ -29,11 +34,10 @@ extension CacheSubstepFactory {
             // Find checksums difference from cache file
             var buildPods: Set<String> = []
             let xcargs = xcargsProvider.xcargs(bitcode: command.bitcode)
-            let swiftVersion = SwiftVersionProvider().swiftVersion()
             var buildSDKs: [SDK] = []
             var buildARCHs: [String] = []
             for (sdk, arch) in zip(command.sdk, command.arch) {
-                let cache = CacheManager().load(sdk: sdk, config: command.config)
+                let cache = CacheManager().load(sdk: sdk.xcodebuild, config: command.config, arch: arch)
                 let invalidCache = (
                     arch != cache?.arch
                         || swiftVersion != cache?.swift

@@ -18,7 +18,7 @@ struct CacheBuildStep: Step {
     struct Input {
         let scheme: String?
         let buildInfo: BuildInfo
-        let swift: String?
+        let swift: String
     }
 
     let verbose: Int
@@ -45,7 +45,7 @@ struct CacheBuildStep: Step {
 
         let xcargs = xcargsProvider.xcargs(bitcode: command.bitcode)
         for (sdk, arch) in zip(input.buildInfo.sdk, input.buildInfo.arch) {
-            try progress.spinner("Building \("\(sdk)-\(arch)".yellow)") {
+            try progress.spinner("Building \("\(command.config)-\(sdk)-\(arch)".yellow)") {
                 do {
                     try XcodeBuild(
                         project: .podsProject,
@@ -67,12 +67,12 @@ struct CacheBuildStep: Step {
         try progress.spinner("Update checksums") {
             for (sdk, arch) in zip(input.buildInfo.sdk, input.buildInfo.arch) {
                 let newChecksums = try checksumsProvider.getChecksums(forPods: input.buildInfo.pods)
-                let cachedChecksums = cacheManager.checksumsMap(sdk: sdk, config: command.config)
+                let cachedChecksums = cacheManager.checksumsMap(sdk: sdk.xcodebuild, config: command.config, arch: arch)
                 let updatedChecksums = newChecksums.reduce(into: cachedChecksums) { checksums, new in
                     checksums[new.name] = new
                 }
                 let checksums = updatedChecksums.map(\.value.string).sorted()
-                let newCache = BuildCache(sdk: sdk,
+                let newCache = BuildCache(sdk: sdk.xcodebuild,
                                           arch: arch,
                                           config: command.config,
                                           swift: input.swift,
