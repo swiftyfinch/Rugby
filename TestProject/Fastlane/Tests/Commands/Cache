@@ -15,6 +15,6 @@ end
 
 lane :cache_different_config do
     cocoapods(try_repo_update_on_error: true)
-    sh "cd .. && rugby -c Staging --no-bell"
-    build(configuration: "Staging")
+    sh "cd .. && rugby -c \"Staging With Spaces\" --no-bell"
+    build(configuration: "Staging With Spaces")
 end
