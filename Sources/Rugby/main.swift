@@ -7,7 +7,7 @@ struct Rugby: ParsableCommand {
         🏈 Shake up pods project, build and throw away part of it.
         📖 \("https://github.com/swiftyfinch/Rugby".cyan) (⌘ + double click on link)
         """,
-        version: "1.16.0",
+        version: "2.0.0-beta0",
         subcommands: [
             Plans.self,
             Cache.self,
