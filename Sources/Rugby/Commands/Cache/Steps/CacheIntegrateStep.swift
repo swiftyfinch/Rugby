@@ -27,7 +27,8 @@ struct CacheIntegrateStep: Step {
 
     func run(_ targets: Set<String>) throws {
         try progress.spinner("Update paths to built pods") {
-            try CacheIntegration(cacheFolder: .cacheFolder,
+            try CacheIntegration(cacheXCFolder: .cacheXCFolder,
+                                 cacheFolder: .cacheFolder,
                                  builtTargets: targets).replacePathsToCache()
         }
         done()

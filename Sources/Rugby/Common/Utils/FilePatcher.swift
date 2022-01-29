@@ -10,6 +10,21 @@ import Files
 import Foundation
 
 struct FilePatcher {
+    func append(cacheXCConfig: String,
+                inFilesByRegEx fileRegEx: String,
+                folder: Folder) throws {
+       let regex = try fileRegEx.regex()
+       for file in folder.files.recursive where file.path.match(regex) {
+           try autoreleasepool {
+               var content = try file.readAsString()
+               if !content.contains(cacheXCConfig) {
+                   content.append(cacheXCConfig)
+               }
+               try file.write(content)
+           }
+       }
+   }
+    
     /// Replacing content of each file by regex criteria in selected folder.
     func replace(_ lookup: String,
                  with replace: String,

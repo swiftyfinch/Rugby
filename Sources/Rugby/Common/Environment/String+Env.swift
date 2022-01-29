@@ -41,6 +41,7 @@ extension String {
     static let buildLog = supportFolder + "/build.log"
     static let buildFolder = supportFolder + "/build"
     static let cacheFile = supportFolder + "/cache.yml"
-    static let cacheFolder: String =
-        "${PODS_ROOT}/../" + supportFolder + "/build/${CONFIGURATION}${EFFECTIVE_PLATFORM_NAME}"
+    static let cacheXCKey = "RUGBY_CACHE_DIR"
+    static let cacheXCFolder = "\(cacheXCKey)=${PODS_ROOT}/../\(supportFolder)"
+    static let cacheFolder: String = "${\(cacheXCKey)}/build/${CONFIGURATION}${EFFECTIVE_PLATFORM_NAME}"
 }
