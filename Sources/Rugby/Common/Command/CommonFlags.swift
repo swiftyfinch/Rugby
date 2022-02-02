@@ -12,4 +12,5 @@ struct CommonFlags: ParsableCommand {
     @Flag(name: .long, inversion: .prefixedNo, help: "Play bell sound on finish.") var bell = true
     @Flag(help: "Hide metrics.") var hideMetrics = false
     @Flag(name: .shortAndLong, help: "Print more information.") var verbose: Int
+    @Flag(name: .shortAndLong, help: "Print nothing.") var quiet = false
 }

@@ -20,6 +20,7 @@ struct CacheDecodable: Decodable {
     let bell: Bool?
     let hideMetrics: Bool?
     @BoolableIntDecodable var verbose: Int?
+    let quiet: Bool?
 }
 
 extension Cache {
@@ -39,5 +40,6 @@ extension Cache {
         self.flags.bell = decodable.bell ?? true
         self.flags.hideMetrics = decodable.hideMetrics ?? false
         self.flags.verbose = decodable.verbose ?? 0
+        self.flags.quiet = decodable.quiet ?? false
     }
 }

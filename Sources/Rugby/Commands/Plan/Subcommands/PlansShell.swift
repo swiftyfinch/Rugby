@@ -11,6 +11,7 @@ import Files
 struct Shell: Command {
     let run: String
     let verbose: Int
+    let quiet: Bool
 
     func run(logFile: File) throws -> Metrics? {
         let progress = RugbyPrinter(title: "Shell 🐚", logFile: logFile, verbose: .verbose)
