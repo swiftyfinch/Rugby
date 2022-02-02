@@ -17,17 +17,22 @@ struct DropRemoveStep: Step {
         let keepSources: Bool
     }
 
+    let command: Command
     let verbose: Int
     let isLast: Bool
     let progress: Printer
 
     private let metrics: Metrics
 
-    init(verbose: Int, metrics: Metrics, logFile: File, isLast: Bool = false) {
-        self.metrics = metrics
+    init(command: Command, verbose: Int, metrics: Metrics, logFile: File, isLast: Bool = false) {
+        self.command = command
         self.verbose = verbose
+        self.metrics = metrics
         self.isLast = isLast
-        self.progress = RugbyPrinter(title: "Drop", logFile: logFile, verbose: verbose)
+        self.progress = RugbyPrinter(title: "Drop",
+                                     logFile: logFile,
+                                     verbose: verbose,
+                                     quiet: command.quiet)
     }
 
     func run(_ input: Input) throws {

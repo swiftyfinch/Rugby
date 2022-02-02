@@ -10,8 +10,8 @@ import ArgumentParser
 import Files
 
 extension ParsableCommand {
-    func done(logFile: File, time: Double) {
-        let logger = RugbyPrinter(logFile: logFile, verbose: .verbose)
+    func done(logFile: File, time: Double, quiet: Bool) {
+        let logger = RugbyPrinter(logFile: logFile, verbose: .verbose, quiet: quiet)
         logger.print(time.output() + " " + .finalMessage)
     }
 }
