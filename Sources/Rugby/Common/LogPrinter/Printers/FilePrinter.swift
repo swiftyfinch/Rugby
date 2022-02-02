@@ -17,4 +17,9 @@ struct FilePrinter: Printer {
         try? logFile.append(value + "\n")
     }
     func done() {}
+
+    @discardableResult
+    func spinner<Result>(_ text: String, job: @escaping () throws -> Result) rethrows -> Result {
+        fatalError("Not implemented")
+    }
 }

@@ -71,7 +71,7 @@ extension Plans {
 
 extension Plans {
     private func outputCommand(_ metrics: Metrics?, logFile: File, time: Double) {
-        if let metrics = metrics { outputShort(metrics, time: time, logFile: logFile) }
+        if let metrics = metrics { outputShort(metrics, time: time, logFile: logFile, quiet: cacheOptions.flags.quiet) }
         printEmptyLine(logFile: logFile)
     }
 
@@ -89,23 +89,23 @@ extension Plans {
             guard let metrics = metrics[project] else { continue }
             outputProjectMetrics(metrics, logFile: logFile)
         }
-        done(logFile: logFile, time: time)
+        done(logFile: logFile, time: time, quiet: cacheOptions.flags.quiet)
     }
 
     private func outputProjectMetrics(_ metrics: [Metrics], logFile: File) {
         guard let combinedMetrics = metrics.combine() else { return }
         let projectHeader = "[!] " + combinedMetrics.project + ":"
-        RugbyPrinter(logFile: logFile, verbose: .verbose).print(projectHeader.green)
-        outputMore(combinedMetrics, logFile: logFile)
+        RugbyPrinter(logFile: logFile, verbose: .verbose, quiet: cacheOptions.flags.quiet).print(projectHeader.green)
+        outputMore(combinedMetrics, logFile: logFile, quiet: cacheOptions.flags.quiet)
         printEmptyLine(logFile: logFile)
     }
 
     private func printEmptyLine(logFile: File) {
-        RugbyPrinter(logFile: logFile, verbose: .verbose).print(.separator)
+        RugbyPrinter(logFile: logFile, verbose: .verbose, quiet: cacheOptions.flags.quiet).print(.separator)
     }
 
     private func printSelectedPlan(plan: String, logFile: File) {
-        RugbyPrinter(title: "Plans ✈️ ", logFile: logFile, verbose: .verbose)
+        RugbyPrinter(title: "Plans ✈️ ", logFile: logFile, verbose: .verbose, quiet: cacheOptions.flags.quiet)
             .print("\(plan.yellow)")
     }
 }

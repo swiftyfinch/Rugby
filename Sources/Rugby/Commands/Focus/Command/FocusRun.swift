@@ -16,7 +16,11 @@ extension Focus: Command {
         let metrics = DropMetrics(project: project.basename())
         let focusFactory = FocusStepFactory(command: self, metrics: metrics, logFile: logFile)
         let (targets, products) = try focusFactory.prepare(none)
-        let drop = DropRemoveStep(verbose: flags.verbose, metrics: metrics, logFile: logFile, isLast: true).run
+        let drop = DropRemoveStep(command: self,
+                                  verbose: flags.verbose,
+                                  metrics: metrics,
+                                  logFile: logFile,
+                                  isLast: true).run
         try drop(.init(targets: targets,
                        products: products,
                        testFlight: testFlight,

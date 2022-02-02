@@ -13,10 +13,12 @@ struct RugbyPrinter: Printer {
     private let begin = ProcessInfo.processInfo.systemUptime
     private let formatter: Formatter
     private let printers: [Printer]
+    private let skipSpinner: Bool
 
-    init(formatter: Formatter, printers: [Printer]) {
+    init(formatter: Formatter, printers: [Printer], skipSpinner: Bool) {
         self.formatter = formatter
         self.printers = printers
+        self.skipSpinner = skipSpinner
     }
 
     func print(_ value: String, level: Int) {
@@ -33,12 +35,23 @@ struct RugbyPrinter: Printer {
             $0.done()
         }
     }
+
+    @discardableResult
+    func spinner<Result>(_ text: String, job: @escaping () throws -> Result) rethrows -> Result {
+        defer { print("\(text) \("✓".white)".yellow, level: .vv) }
+        if skipSpinner { return try job() }
+        let result = try Spinner().show(text: text, job)
+        return result
+    }
 }
 
 extension RugbyPrinter {
-    init(title: String? = nil, logFile: File? = nil, verbose: Int = 0) {
-        var printers: [Printer] = [verbose.bool ? DefaultPrinter(verbose: verbose) : OneLinePrinter()]
+    init(title: String? = nil, logFile: File? = nil, verbose: Int = 0, quiet: Bool) {
+        var printers: [Printer] = []
+        if !quiet {
+            printers.append(verbose.bool ? DefaultPrinter(verbose: verbose) : OneLinePrinter())
+        }
         logFile.map { printers.append(FilePrinter(file: $0)) }
-        self.init(formatter: RugbyFormatter(title: title), printers: printers)
+        self.init(formatter: RugbyFormatter(title: title), printers: printers, skipSpinner: quiet)
     }
 }

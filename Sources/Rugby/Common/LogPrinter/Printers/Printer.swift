@@ -12,6 +12,9 @@ protocol Printer {
     var chop: Int? { get }
     func print(_ value: String, level: Int)
     func done()
+
+    @discardableResult
+    func spinner<Result>(_ text: String, job: @escaping () throws -> Result) rethrows -> Result
 }
 
 extension Printer {

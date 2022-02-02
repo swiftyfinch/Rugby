@@ -34,7 +34,7 @@ struct CacheBuildStep: Step {
         self.command = command
         self.verbose = command.flags.verbose
         self.isLast = isLast
-        self.progress = RugbyPrinter(title: "Build", logFile: logFile, verbose: verbose)
+        self.progress = RugbyPrinter(title: "Build", logFile: logFile, verbose: verbose, quiet: command.quiet)
     }
 
     func run(_ input: Input) throws {

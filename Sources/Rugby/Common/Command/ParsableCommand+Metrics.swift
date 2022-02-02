@@ -10,22 +10,22 @@ import ArgumentParser
 import Files
 
 extension ParsableCommand {
-    func output(_ metrics: Metrics?, time: Double, logFile: File, extended: Bool) {
+    func output(_ metrics: Metrics?, time: Double, logFile: File, extended: Bool, quiet: Bool) {
         guard let metrics = metrics else { return }
-        outputShort(metrics, time: time, logFile: logFile)
-        if extended { outputMore(metrics, logFile: logFile) }
+        outputShort(metrics, time: time, logFile: logFile, quiet: quiet)
+        if extended { outputMore(metrics, logFile: logFile, quiet: quiet) }
     }
 
-    func outputShort(_ metrics: Metrics?, time: Double, logFile: File) {
+    func outputShort(_ metrics: Metrics?, time: Double, logFile: File, quiet: Bool) {
         guard let metrics = metrics else { return }
-        let logger = RugbyPrinter(logFile: logFile, verbose: .verbose)
+        let logger = RugbyPrinter(logFile: logFile, verbose: .verbose, quiet: quiet)
         if let short = metrics.short() {
             logger.print(time.output() + " " + short)
         }
     }
 
-    func outputMore(_ metrics: Metrics, logFile: File) {
-        let logger = RugbyPrinter(logFile: logFile, verbose: .verbose)
+    func outputMore(_ metrics: Metrics, logFile: File, quiet: Bool) {
+        let logger = RugbyPrinter(logFile: logFile, verbose: .verbose, quiet: quiet)
         metrics.more().forEach {
             logger.print("[!] ".yellow + $0)
         }
