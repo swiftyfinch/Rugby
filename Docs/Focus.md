@@ -16,7 +16,8 @@ OPTIONS:
 
   --bell/--no-bell            Play bell sound on finish. (default: true)
   --hide-metrics              Hide metrics. 
-  -v, --verbose               Print more information. 
+  -v, --verbose               Print more information.
+  -q, --quiet                 Print nothing. 
   --version                   Show the version.
   -h, --help                  Show help information.
 ```
