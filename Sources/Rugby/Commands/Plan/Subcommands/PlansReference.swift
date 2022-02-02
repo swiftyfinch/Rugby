@@ -10,6 +10,7 @@ import Files
 
 struct PlansReference {
     let name: String
+    let quiet = false
 }
 
 extension PlansReference: Command {
