@@ -12,6 +12,7 @@ import Files
 protocol Command {
     var project: String { get }
     var hideMetrics: Bool { get }
+    var quiet: Bool { get }
 
     mutating func run(logFile: File) throws -> Metrics?
 }

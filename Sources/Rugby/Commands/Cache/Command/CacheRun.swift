@@ -9,6 +9,8 @@
 import Files
 
 extension Cache: Command {
+    var quiet: Bool { flags.quiet }
+
     mutating func run(logFile: File) throws -> Metrics? {
         if !arch.isEmpty, sdk.count != arch.count { throw CacheError.incorrectArchCount }
         if arch.isEmpty { arch = sdk.map(\.defaultARCH) /* Set default arch for each sdk */ }

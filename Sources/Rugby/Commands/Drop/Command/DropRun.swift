@@ -9,6 +9,8 @@
 import Files
 
 extension Drop: Command {
+    var quiet: Bool { flags.quiet }
+
     mutating func run(logFile: File) throws -> Metrics? {
         if testFlight, flags.verbose == 0 { flags.verbose = 1 }
         let metrics = DropMetrics(project: project.basename())
