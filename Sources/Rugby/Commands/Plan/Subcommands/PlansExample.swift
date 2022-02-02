@@ -68,6 +68,7 @@ struct PlansExample: ParsableCommand {
             #hideMetrics: false
             #ignoreChecksums: false
             #verbose: false
+            quiet: true
 
           # 🔍 The second command: $ rugby focus "Pods-Main"
           - command: focus
@@ -78,12 +79,14 @@ struct PlansExample: ParsableCommand {
             keepSources: false
             hideMetrics: false
             verbose: false
+            quiet: true
 
           # 🗑 And so on: $ rugby drop -i "TestProject" -p TestProject/TestProject.xcodeproj
           - command: drop
             targets: [^TestProject$] # Alternative array syntax
             invert: true
             project: TestProject/TestProject.xcodeproj
+            quiet: true
 
 
         # Base plan which you can use in other plans
@@ -97,6 +100,7 @@ struct PlansExample: ParsableCommand {
           - command: shell
             run: bundle exec pod install # Or you can use any shell command
             verbose: false
+            quiet: true
 
 
         # Also, you can use another custom plan: $ rugby --plan unit
@@ -105,8 +109,10 @@ struct PlansExample: ParsableCommand {
             name: base
           - command: cache
             exclude: [Alamofire]
+            quiet: true
           - command: drop
             targets: [Test]
             exclude: [MyFeatureTests]
+            quiet: true
         """
 }

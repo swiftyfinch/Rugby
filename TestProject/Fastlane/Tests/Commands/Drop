@@ -6,20 +6,20 @@ end
 
 private_lane :drop_basic_usage do
     cocoapods(try_repo_update_on_error: true)
-    sh "cd .. && rugby --no-bell"
+    sh "cd .. && rugby --no-bell -q"
     
-    sh "cd .. && rugby drop \"Unit-Tests\" --no-bell"
+    sh "cd .. && rugby drop \"Unit-Tests\" --no-bell -q"
     run_unit_tests
     
-    sh "cd .. && rugby drop \"TestProjectTests\" -p TestProject/TestProject.xcodeproj --no-bell"
+    sh "cd .. && rugby drop \"TestProjectTests\" -p TestProject/TestProject.xcodeproj --no-bell -q"
     run_unit_tests
     
-    sh "cd .. && rugby drop \"UI\" -p TestProject/TestProject.xcodeproj --no-bell"
+    sh "cd .. && rugby drop \"UI\" -p TestProject/TestProject.xcodeproj --no-bell -q"
     build
     
-    sh "cd .. && rugby drop \"TestLocalizable\" -p TestProject/TestProject.xcodeproj --no-bell"
+    sh "cd .. && rugby drop \"TestLocalizable\" -p TestProject/TestProject.xcodeproj --no-bell -q"
     build
     
-    sh "cd .. && rugby drop \"TestProject\" -p TestProject/TestProject.xcodeproj --no-bell"
+    sh "cd .. && rugby drop \"TestProject\" -p TestProject/TestProject.xcodeproj --no-bell -q"
     check_that_scemes_empty
 end

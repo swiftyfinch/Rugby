@@ -2,19 +2,19 @@
 
 lane :cache_both do
     cocoapods(try_repo_update_on_error: true)
-    sh "cd .. && rugby -s ios sim --no-bell"
+    sh "cd .. && rugby -s ios sim --no-bell -q"
     run_unit_tests
     build_ios
 end
 
 lane :cache_exclude do
     cocoapods(try_repo_update_on_error: true)
-    sh "cd .. && rugby -e Alamofire --no-bell"
+    sh "cd .. && rugby -e Alamofire --no-bell -q"
     run_unit_tests
 end
 
 lane :cache_different_config do
     cocoapods(try_repo_update_on_error: true)
-    sh "cd .. && rugby -c \"Staging With Spaces\" --no-bell"
+    sh "cd .. && rugby -c \"Staging With Spaces\" --no-bell -q"
     build(configuration: "Staging With Spaces")
 end

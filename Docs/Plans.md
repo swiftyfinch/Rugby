@@ -56,6 +56,7 @@ rugby example
     hideMetrics: false
     ignoreChecksums: false
     verbose: false
+    quiet: false
 
   # 🔍 The second command: $ rugby focus "Pods-Main"
   - command: focus
@@ -66,12 +67,14 @@ rugby example
     keepSources: false
     hideMetrics: false
     verbose: false
+    quiet: false
 
   # 🗑 And so on: $ rugby drop -i "TestProject" -p TestProject/TestProject.xcodeproj
   - command: drop
     targets: [^TestProject$] # Alternative array syntax
     invert: true
     project: TestProject/TestProject.xcodeproj
+    quiet: false
 
 
 # Base plan which you can use in other plans
