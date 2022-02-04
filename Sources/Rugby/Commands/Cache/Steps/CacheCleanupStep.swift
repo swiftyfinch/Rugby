@@ -71,6 +71,7 @@ struct CacheCleanupStep: Step {
             try project.removeSchemes(pods: targets, projectPath: .podsProject)
 
             try progress.spinner("Save project") {
+                project.pbxproj.main.set(buildSettingsKey: .rugbyPatched, value: String.yes)
                 try project.write(pathString: .podsProject, override: true)
             }
 

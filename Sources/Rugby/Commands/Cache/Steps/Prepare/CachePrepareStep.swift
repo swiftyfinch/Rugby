@@ -46,6 +46,10 @@ extension CachePrepareStep {
         }
         metrics.compileFilesCount.before = project.pbxproj.buildFiles.count
         metrics.targetsCount.before = project.pbxproj.main.targets.count
+
+        let projectPatched = project.pbxproj.main.contains(buildSettingsKey: .rugbyPatched)
+        if projectPatched { throw CacheError.projectAlreadyPatched }
+
         let factory = CacheSubstepFactory(progress: progress, command: command, metrics: metrics)
         let selectedPods = try factory.selectPods(project)
         let (buildInfo, swiftVersion) = try factory.findBuildPods(selectedPods)

@@ -10,7 +10,7 @@ import Foundation
 import Rainbow
 
 enum CacheError: Error, LocalizedError {
-    case cantFindPodsTargets
+    case projectAlreadyPatched
     case cantFindXcodeCommandLineTools
     case buildFailed([String])
     case incorrectArchCount
@@ -18,8 +18,8 @@ enum CacheError: Error, LocalizedError {
     var errorDescription: String? {
         let output: String
         switch self {
-        case .cantFindPodsTargets:
-            output = "Couldn't find pods targets.\n".red
+        case .projectAlreadyPatched:
+            output = "Project already patched.\n".red
                 + "🚑 Try to call pod install.".yellow
         case .cantFindXcodeCommandLineTools:
             output = "Couldn't find Xcode CLT.\n".red

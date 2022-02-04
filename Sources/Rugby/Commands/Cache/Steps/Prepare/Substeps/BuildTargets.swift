@@ -17,8 +17,6 @@ extension CacheSubstepFactory {
                            selectedPods: Set<String>,
                            buildPods: Set<String>)) throws -> (Set<PBXTarget>, Set<String>) {
             let selectedPodsChain = input.project.buildPodsChain(pods: input.selectedPods)
-            guard selectedPodsChain.count >= input.selectedPods.count else { throw CacheError.cantFindPodsTargets }
-
             let additionalBuildTargets = Set(selectedPodsChain.map(\.name)).subtracting(input.selectedPods)
             if !additionalBuildTargets.isEmpty {
                 progress.print(additionalBuildTargets, text: "Additional build targets", level: .vv)

@@ -27,6 +27,11 @@ extension String {
 
     static let history = supportFolder + "/history"
 
+    // MARK: - Xcode Project Variables
+
+    static let rugbyPatched = "RUGBY_PATCHED"
+    static let yes: Any = "YES"
+
     // MARK: - Cache command
 
     static let defaultXcodeCLTPath = "/Library/Developer/CommandLineTools"
