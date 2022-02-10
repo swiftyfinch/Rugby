@@ -59,10 +59,13 @@ extension CachePrepareStep {
         if !buildTargets.isEmpty {
             try factory.addBuildTarget(.init(target: buildTarget, project: project, dependencies: buildTargets))
         }
+        let targets = selectedPods
+            .union(selectedTargets.map(\.name))
+            .union(selectedTargets.compactMap(\.productName))
 
         done()
         return Output(scheme: buildTargets.isEmpty ? nil : buildTarget,
-                      targets: Set(selectedTargets.map(\.name)).union(selectedPods),
+                      targets: targets,
                       buildInfo: buildInfo,
                       products: selectedTargets.compactMap(\.product?.name),
                       swiftVersion: swiftVersion)
