@@ -60,7 +60,11 @@ struct CacheCleanupStep: Step {
         }
 
         progress.print("Remove built pods".yellow, level: .vv)
-        var removeBuiltPods = project.removeDependencies(names: targets, exclude: command.exclude)
+        // Adding all remaining targets to exclude. It needs for adding transitive dependencies explicitly.
+        let exclude = Set(project.pbxproj.main.targets.map(\.name))
+            .subtracting(targets)
+            .union(command.exclude)
+        var removeBuiltPods = project.removeDependencies(names: targets, exclude: Array(exclude))
         targets.forEach {
             removeBuiltPods = project.removeTarget(name: $0) || removeBuiltPods
         }
