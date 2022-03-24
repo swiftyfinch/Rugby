@@ -51,11 +51,12 @@ extension CachePrepareStep {
         if projectPatched { throw CacheError.projectAlreadyPatched }
 
         let factory = CacheSubstepFactory(progress: progress, command: command, metrics: metrics)
-        let selectedPods = try factory.selectPods(project)
+        let (selectedPods, excludedPods) = try factory.selectPods(project)
         let (buildInfo, swiftVersion) = try factory.findBuildPods(selectedPods)
-        let (selectedTargets, buildTargets) = try factory.buildTargets((project: project,
+        var (selectedTargets, buildTargets) = try factory.buildTargets((project: project,
                                                                         selectedPods: selectedPods,
                                                                         buildPods: buildInfo.pods))
+        selectedTargets = selectedTargets.filter { !excludedPods.contains($0.name) }
         if !buildTargets.isEmpty {
             try factory.addBuildTarget(.init(target: buildTarget, project: project, dependencies: buildTargets))
         }
