@@ -16,7 +16,7 @@ extension CacheSubstepFactory {
         let metrics: Metrics
         let podsProvider = PodsProvider.shared
 
-        func run(_ project: XcodeProj) throws -> Set<String> {
+        func run(_ project: XcodeProj) throws -> (selected: Set<String>, excluded: Set<String>) {
             let pods: Set<String>
             if !command.focus.isEmpty {
                 let allPods = try podsProvider.podsNames()
@@ -44,7 +44,7 @@ extension CacheSubstepFactory {
             }
 
             metrics.podsCount.before = pods.count
-            return filteredPods
+            return (filteredPods, excluded)
         }
     }
 }
