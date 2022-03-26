@@ -54,6 +54,10 @@ Ruby alternatives:\
 You can read more about 🏈 Rugby in [`discussions`](https://github.com/swiftyfinch/Rugby/discussions) section.\
 Feel free to report any issues or suggest some new feature requests.
 
+### `Known limitations`
+
+`-` Not supported `WatchOS` SDK
+
 <br>
 
 ## Quick start with <a href="https://github.com/yonaskolb/Mint">Mint</a> 🌱
