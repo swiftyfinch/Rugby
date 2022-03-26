@@ -91,10 +91,11 @@ Read more [about advanced usage](Docs/Plans.md#-generate-example)
 🔍 [`Focus`](Docs/Focus.md) | Keep only selected targets and all their dependencies.
 🗑 [`Drop`](Docs/Drop.md) | Remove any targets by RegEx.
 
-| 🔭 How to |
+| 🎓 How To |
 | :----- |
-[Generating and Installing Completion Scripts](https://github.com/apple/swift-argument-parser/blob/397d704f05751624711caa93064aaa810a9b2032/Sources/ArgumentParser/Documentation.docc/Articles/InstallingCompletionScripts.md)
-
+🎬 [Installation Demo](https://github.com/swiftyfinch/Rugby/discussions/71)
+🎬 [Basic Usage Demo](https://github.com/swiftyfinch/Rugby/discussions/72)
+🎬 [Debug Demo](https://github.com/swiftyfinch/Rugby/discussions/142)
 <br>
 
 ### `Author`
