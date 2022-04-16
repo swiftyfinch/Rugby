@@ -96,6 +96,7 @@ Read more [about advanced usage](Docs/Plans.md#-generate-example)
 🎬 [Installation Demo](https://github.com/swiftyfinch/Rugby/discussions/71)
 🎬 [Basic Usage Demo](https://github.com/swiftyfinch/Rugby/discussions/72)
 🎬 [Debug Demo](https://github.com/swiftyfinch/Rugby/discussions/142)
+🎬 [Rugby Review (ru)](https://github.com/swiftyfinch/Rugby/discussions/146)
 <br>
 
 ### `Author`
