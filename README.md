@@ -14,7 +14,6 @@
   <a href="https://twitter.com/swiftyfinch"><img src="https://img.shields.io/badge/SwiftyFinch-blue?logo=twitter&logoColor=white" /></a>
   <br>
   <img src="https://img.shields.io/badge/Press_★_for_pay_respect-white?logo=github&logoColor=black" />
-  <a href="https://ko-fi.com/swiftyfinch"><img src="https://img.shields.io/badge/Support_me_on_Ko--fi-F16061?logo=ko-fi&logoColor=white" /></a>
 </p>
 
 
