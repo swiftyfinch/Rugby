@@ -1,150 +1,45 @@
 PODS:
-  - camera (0.0.1):
-    - Flutter
-  - Firebase/CoreOnly (8.11.0):
-    - FirebaseCore (= 8.11.0)
-  - Firebase/Crashlytics (8.11.0):
-    - Firebase/CoreOnly
-    - FirebaseCrashlytics (~> 8.11.0)
-  - firebase_core (1.12.0):
-    - Firebase/CoreOnly (= 8.11.0)
-    - Flutter
-  - firebase_crashlytics (2.5.1):
-    - Firebase/Crashlytics (= 8.11.0)
-    - firebase_core
-    - Flutter
-  - FirebaseCore (8.11.0):
-    - FirebaseCoreDiagnostics (~> 8.0)
-    - GoogleUtilities/Environment (~> 7.7)
-    - GoogleUtilities/Logger (~> 7.7)
-  - FirebaseCoreDiagnostics (8.14.0):
-    - GoogleDataTransport (~> 9.1)
-    - GoogleUtilities/Environment (~> 7.7)
-    - GoogleUtilities/Logger (~> 7.7)
-    - nanopb (~> 2.30908.0)
-  - FirebaseCrashlytics (8.11.0):
-    - FirebaseCore (~> 8.0)
-    - FirebaseInstallations (~> 8.0)
-    - GoogleDataTransport (~> 9.1)
-    - GoogleUtilities/Environment (~> 7.7)
-    - nanopb (~> 2.30908.0)
-    - PromisesObjC (< 3.0, >= 1.2)
-  - FirebaseInstallations (8.14.0):
-    - FirebaseCore (~> 8.0)
-    - GoogleUtilities/Environment (~> 7.7)
-    - GoogleUtilities/UserDefaults (~> 7.7)
-    - PromisesObjC (< 3.0, >= 1.2)
   - Flutter (1.0.0)
   - FlutterPluginRegistrant (0.0.1):
-    - camera
-    - firebase_core
-    - firebase_crashlytics
     - Flutter
-    - share_plus
-    - url_launcher_ios
-    - video_player
-  - GoogleDataTransport (9.1.2):
-    - GoogleUtilities/Environment (~> 7.2)
-    - nanopb (~> 2.30908.0)
-    - PromisesObjC (< 3.0, >= 1.2)
-  - GoogleUtilities/Environment (7.7.0):
-    - PromisesObjC (< 3.0, >= 1.2)
-  - GoogleUtilities/Logger (7.7.0):
-    - GoogleUtilities/Environment
-  - GoogleUtilities/UserDefaults (7.7.0):
-    - GoogleUtilities/Logger
   - my_flutter (0.0.1):
     - Flutter
-  - nanopb (2.30908.0):
-    - nanopb/decode (= 2.30908.0)
-    - nanopb/encode (= 2.30908.0)
-  - nanopb/decode (2.30908.0)
-  - nanopb/encode (2.30908.0)
-  - PromisesObjC (2.0.0)
   - RxCocoa (6.2.0):
     - RxRelay (= 6.2.0)
     - RxSwift (= 6.2.0)
   - RxRelay (6.2.0):
     - RxSwift (= 6.2.0)
   - RxSwift (6.2.0)
-  - share_plus (0.0.1):
-    - Flutter
-  - url_launcher_ios (0.0.1):
-    - Flutter
-  - video_player (0.0.1):
-    - Flutter
 
 DEPENDENCIES:
-  - camera (from `my_flutter/.ios/.symlinks/plugins/camera/ios`)
-  - firebase_core (from `my_flutter/.ios/.symlinks/plugins/firebase_core/ios`)
-  - firebase_crashlytics (from `my_flutter/.ios/.symlinks/plugins/firebase_crashlytics/ios`)
   - Flutter (from `my_flutter/.ios/Flutter/engine`)
   - FlutterPluginRegistrant (from `my_flutter/.ios/Flutter/FlutterPluginRegistrant`)
   - my_flutter (from `my_flutter/.ios/Flutter`)
   - RxCocoa (= 6.2.0)
   - RxSwift (= 6.2.0)
-  - share_plus (from `my_flutter/.ios/.symlinks/plugins/share_plus/ios`)
-  - url_launcher_ios (from `my_flutter/.ios/.symlinks/plugins/url_launcher_ios/ios`)
-  - video_player (from `my_flutter/.ios/.symlinks/plugins/video_player/ios`)
 
 SPEC REPOS:
   trunk:
-    - Firebase
-    - FirebaseCore
-    - FirebaseCoreDiagnostics
-    - FirebaseCrashlytics
-    - FirebaseInstallations
-    - GoogleDataTransport
-    - GoogleUtilities
-    - nanopb
-    - PromisesObjC
     - RxCocoa
     - RxRelay
     - RxSwift
 
 EXTERNAL SOURCES:
-  camera:
-    :path: my_flutter/.ios/.symlinks/plugins/camera/ios
-  firebase_core:
-    :path: my_flutter/.ios/.symlinks/plugins/firebase_core/ios
-  firebase_crashlytics:
-    :path: my_flutter/.ios/.symlinks/plugins/firebase_crashlytics/ios
   Flutter:
     :path: my_flutter/.ios/Flutter/engine
   FlutterPluginRegistrant:
     :path: my_flutter/.ios/Flutter/FlutterPluginRegistrant
   my_flutter:
     :path: my_flutter/.ios/Flutter
-  share_plus:
-    :path: my_flutter/.ios/.symlinks/plugins/share_plus/ios
-  url_launcher_ios:
-    :path: my_flutter/.ios/.symlinks/plugins/url_launcher_ios/ios
-  video_player:
-    :path: my_flutter/.ios/.symlinks/plugins/video_player/ios
 
 SPEC CHECKSUMS:
-  camera: 9993f92f2c793e87b65e35f3a23c70582afb05b1
-  Firebase: 44dd9724c84df18b486639e874f31436eaa9a20c
-  firebase_core: 443bccfd6aa6b42f07be365b500773dc69db2d87
-  firebase_crashlytics: 0df152ee2d96f5a4aeddf2288fb277bbd0833b18
-  FirebaseCore: 2f4f85b453cc8fea4bb2b37e370007d2bcafe3f0
-  FirebaseCoreDiagnostics: fd0c8490f34287229c1d6c103d3a55f81ec85712
-  FirebaseCrashlytics: 62268addefae79601057818156e8bc69d71fee41
-  FirebaseInstallations: 7d1d967a307c12f1aadd76844fc321cef699b1ce
   Flutter: bdfa2e8fe0e2880a2c6a58a0b1a8675c262a07af
-  FlutterPluginRegistrant: 583fb5d04866b34bbce0a6974a093366a180c982
-  GoogleDataTransport: 629c20a4d363167143f30ea78320d5a7eb8bd940
-  GoogleUtilities: e0913149f6b0625b553d70dae12b49fc62914fd1
+  FlutterPluginRegistrant: d3a0fbc12bc47787a12fcc919193f3959aa7d5ad
   my_flutter: 5f71a42a61a499a9f322f2c0f62fc185a5807c9b
-  nanopb: a0ba3315591a9ae0a16a309ee504766e90db0c96
-  PromisesObjC: 68159ce6952d93e17b2dfe273b8c40907db5ba58
   RxCocoa: 4baf94bb35f2c0ab31bc0cb9f1900155f646ba42
   RxRelay: e72dbfd157807478401ef1982e1c61c945c94b2f
   RxSwift: d356ab7bee873611322f134c5f9ef379fa183d8f
-  share_plus: 056a1e8ac890df3e33cb503afffaf1e9b4fbae68
-  url_launcher_ios: 839c58cdb4279282219f5e248c3321761ff3c4de
-  video_player: 7e9dad9437c238a97648819f6dd443c8854cf0c7
 
-PODFILE CHECKSUM: 01b27d0db454cddea57d1645bce08d5abc6085e9
+PODFILE CHECKSUM: 932d540b983bcea4b32a401d8f5c0c31d9605428
 
 COCOAPODS: 1.11.3

@@ -23,21 +23,21 @@ target 'FlutterRugbyIntegration' do
   end
 
 end
-
-post_install do |installer|
-  flutter_post_install(installer) if defined?(flutter_post_install)
-end
-
-post_integrate do |installer|
-  project = Xcodeproj::Project.open("FlutterRugbyIntegration.xcodeproj")
-  project.targets.each do |target|
-    script_need_to_be_removed = '[CP-User] Run Flutter Build my_flutter Script'
-
-    phase = target.shell_script_build_phases.select { |phase| phase.name.include?(script_need_to_be_removed) }.first
-    unless phase.nil?
-      target.build_phases.delete(phase)
-      puts "script #{script_need_to_be_removed} removed"
-    end
-  end
-  project.save()
-end
+#
+#post_install do |installer|
+#  flutter_post_install(installer) if defined?(flutter_post_install)
+#end
+#
+#post_integrate do |installer|
+#  project = Xcodeproj::Project.open("FlutterRugbyIntegration.xcodeproj")
+#  project.targets.each do |target|
+#    script_need_to_be_removed = '[CP-User] Run Flutter Build my_flutter Script'
+#
+#    phase = target.shell_script_build_phases.select { |phase| phase.name.include?(script_need_to_be_removed) }.first
+#    unless phase.nil?
+#      target.build_phases.delete(phase)
+#      puts "script #{script_need_to_be_removed} removed"
+#    end
+#  end
+#  project.save()
+#end

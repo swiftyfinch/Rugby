@@ -16,9 +16,9 @@
 		113B3E5728315666004D67D3 /* FlutterRugbyIntegrationTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 113B3E5628315666004D67D3 /* FlutterRugbyIntegrationTests.swift */; };
 		113B3E6128315666004D67D3 /* FlutterRugbyIntegrationUITests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 113B3E6028315666004D67D3 /* FlutterRugbyIntegrationUITests.swift */; };
 		113B3E6328315666004D67D3 /* FlutterRugbyIntegrationUITestsLaunchTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 113B3E6228315666004D67D3 /* FlutterRugbyIntegrationUITestsLaunchTests.swift */; };
-		3E08A32B82E5B2668023C90C /* Pods_FlutterRugbyIntegrationTests.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = F0C3CCE2164EBF2A8998045F /* Pods_FlutterRugbyIntegrationTests.framework */; };
-		8F033BE277FEAD7797A8F832 /* Pods_FlutterRugbyIntegration.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = FAFD27D1E432965CABB82DD6 /* Pods_FlutterRugbyIntegration.framework */; };
-		E5BBA348F11DFB7D66C0401A /* Pods_FlutterRugbyIntegration_FlutterRugbyIntegrationUITests.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = A891889E8799C0721B00BE4C /* Pods_FlutterRugbyIntegration_FlutterRugbyIntegrationUITests.framework */; };
+		28ADEC89A46538DA5C608DF6 /* Pods_FlutterRugbyIntegration_FlutterRugbyIntegrationUITests.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 0D46FBFED3A4B180FC5E5B13 /* Pods_FlutterRugbyIntegration_FlutterRugbyIntegrationUITests.framework */; };
+		3FD9B103C39ABD1AF0A9FE59 /* Pods_FlutterRugbyIntegrationTests.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = B2A661A6B835D08B19E7E951 /* Pods_FlutterRugbyIntegrationTests.framework */; };
+		D02DE2B0D3C260409B0BB44A /* Pods_FlutterRugbyIntegration.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 18BE9BF1AC66311983ABB836 /* Pods_FlutterRugbyIntegration.framework */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -39,8 +39,8 @@
 /* End PBXContainerItemProxy section */
 
 /* Begin PBXFileReference section */
-		0586BF52DBE0E80139F50201 /* Pods-FlutterRugbyIntegrationTests.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-FlutterRugbyIntegrationTests.debug.xcconfig"; path = "Target Support Files/Pods-FlutterRugbyIntegrationTests/Pods-FlutterRugbyIntegrationTests.debug.xcconfig"; sourceTree = "<group>"; };
-		0DE48E6E3D2959123F29CE0C /* Pods-FlutterRugbyIntegration-FlutterRugbyIntegrationUITests.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-FlutterRugbyIntegration-FlutterRugbyIntegrationUITests.release.xcconfig"; path = "Target Support Files/Pods-FlutterRugbyIntegration-FlutterRugbyIntegrationUITests/Pods-FlutterRugbyIntegration-FlutterRugbyIntegrationUITests.release.xcconfig"; sourceTree = "<group>"; };
+		07690212F6533365CA7F161D /* Pods-FlutterRugbyIntegrationTests.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-FlutterRugbyIntegrationTests.release.xcconfig"; path = "Target Support Files/Pods-FlutterRugbyIntegrationTests/Pods-FlutterRugbyIntegrationTests.release.xcconfig"; sourceTree = "<group>"; };
+		0D46FBFED3A4B180FC5E5B13 /* Pods_FlutterRugbyIntegration_FlutterRugbyIntegrationUITests.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = Pods_FlutterRugbyIntegration_FlutterRugbyIntegrationUITests.framework; sourceTree = BUILT_PRODUCTS_DIR; };
 		113B3E3C28315664004D67D3 /* FlutterRugbyIntegration.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = FlutterRugbyIntegration.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		113B3E3F28315665004D67D3 /* AppDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppDelegate.swift; sourceTree = "<group>"; };
 		113B3E4128315665004D67D3 /* SceneDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SceneDelegate.swift; sourceTree = "<group>"; };
@@ -54,13 +54,13 @@
 		113B3E5C28315666004D67D3 /* FlutterRugbyIntegrationUITests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = FlutterRugbyIntegrationUITests.xctest; sourceTree = BUILT_PRODUCTS_DIR; };
 		113B3E6028315666004D67D3 /* FlutterRugbyIntegrationUITests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FlutterRugbyIntegrationUITests.swift; sourceTree = "<group>"; };
 		113B3E6228315666004D67D3 /* FlutterRugbyIntegrationUITestsLaunchTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FlutterRugbyIntegrationUITestsLaunchTests.swift; sourceTree = "<group>"; };
-		15F7A3B6A3198543206788A2 /* Pods-FlutterRugbyIntegration.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-FlutterRugbyIntegration.debug.xcconfig"; path = "Target Support Files/Pods-FlutterRugbyIntegration/Pods-FlutterRugbyIntegration.debug.xcconfig"; sourceTree = "<group>"; };
-		55E1F66CA42B8B87D1E20B56 /* Pods-FlutterRugbyIntegration.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-FlutterRugbyIntegration.release.xcconfig"; path = "Target Support Files/Pods-FlutterRugbyIntegration/Pods-FlutterRugbyIntegration.release.xcconfig"; sourceTree = "<group>"; };
-		6B4C25D5FD36E75DC2FE3AE9 /* Pods-FlutterRugbyIntegration-FlutterRugbyIntegrationUITests.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-FlutterRugbyIntegration-FlutterRugbyIntegrationUITests.debug.xcconfig"; path = "Target Support Files/Pods-FlutterRugbyIntegration-FlutterRugbyIntegrationUITests/Pods-FlutterRugbyIntegration-FlutterRugbyIntegrationUITests.debug.xcconfig"; sourceTree = "<group>"; };
-		A891889E8799C0721B00BE4C /* Pods_FlutterRugbyIntegration_FlutterRugbyIntegrationUITests.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = Pods_FlutterRugbyIntegration_FlutterRugbyIntegrationUITests.framework; sourceTree = BUILT_PRODUCTS_DIR; };
-		EC6A47B19B17B8284D4C58EE /* Pods-FlutterRugbyIntegrationTests.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-FlutterRugbyIntegrationTests.release.xcconfig"; path = "Target Support Files/Pods-FlutterRugbyIntegrationTests/Pods-FlutterRugbyIntegrationTests.release.xcconfig"; sourceTree = "<group>"; };
-		F0C3CCE2164EBF2A8998045F /* Pods_FlutterRugbyIntegrationTests.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = Pods_FlutterRugbyIntegrationTests.framework; sourceTree = BUILT_PRODUCTS_DIR; };
-		FAFD27D1E432965CABB82DD6 /* Pods_FlutterRugbyIntegration.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = Pods_FlutterRugbyIntegration.framework; sourceTree = BUILT_PRODUCTS_DIR; };
+		18BE9BF1AC66311983ABB836 /* Pods_FlutterRugbyIntegration.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = Pods_FlutterRugbyIntegration.framework; sourceTree = BUILT_PRODUCTS_DIR; };
+		315A4948EA839FB82C4E731A /* Pods-FlutterRugbyIntegration.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-FlutterRugbyIntegration.release.xcconfig"; path = "Target Support Files/Pods-FlutterRugbyIntegration/Pods-FlutterRugbyIntegration.release.xcconfig"; sourceTree = "<group>"; };
+		6AFED8093F8465DB0BE701BB /* Pods-FlutterRugbyIntegrationTests.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-FlutterRugbyIntegrationTests.debug.xcconfig"; path = "Target Support Files/Pods-FlutterRugbyIntegrationTests/Pods-FlutterRugbyIntegrationTests.debug.xcconfig"; sourceTree = "<group>"; };
+		8A7997AC8C4DE67225318354 /* Pods-FlutterRugbyIntegration-FlutterRugbyIntegrationUITests.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-FlutterRugbyIntegration-FlutterRugbyIntegrationUITests.release.xcconfig"; path = "Target Support Files/Pods-FlutterRugbyIntegration-FlutterRugbyIntegrationUITests/Pods-FlutterRugbyIntegration-FlutterRugbyIntegrationUITests.release.xcconfig"; sourceTree = "<group>"; };
+		B2A661A6B835D08B19E7E951 /* Pods_FlutterRugbyIntegrationTests.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = Pods_FlutterRugbyIntegrationTests.framework; sourceTree = BUILT_PRODUCTS_DIR; };
+		B2AA336674DC56F8E8EB9FAA /* Pods-FlutterRugbyIntegration.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-FlutterRugbyIntegration.debug.xcconfig"; path = "Target Support Files/Pods-FlutterRugbyIntegration/Pods-FlutterRugbyIntegration.debug.xcconfig"; sourceTree = "<group>"; };
+		BD03EF9A0EF1883BBDE7A725 /* Pods-FlutterRugbyIntegration-FlutterRugbyIntegrationUITests.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-FlutterRugbyIntegration-FlutterRugbyIntegrationUITests.debug.xcconfig"; path = "Target Support Files/Pods-FlutterRugbyIntegration-FlutterRugbyIntegrationUITests/Pods-FlutterRugbyIntegration-FlutterRugbyIntegrationUITests.debug.xcconfig"; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -68,7 +68,7 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				8F033BE277FEAD7797A8F832 /* Pods_FlutterRugbyIntegration.framework in Frameworks */,
+				D02DE2B0D3C260409B0BB44A /* Pods_FlutterRugbyIntegration.framework in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -76,7 +76,7 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				3E08A32B82E5B2668023C90C /* Pods_FlutterRugbyIntegrationTests.framework in Frameworks */,
+				3FD9B103C39ABD1AF0A9FE59 /* Pods_FlutterRugbyIntegrationTests.framework in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -84,7 +84,7 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				E5BBA348F11DFB7D66C0401A /* Pods_FlutterRugbyIntegration_FlutterRugbyIntegrationUITests.framework in Frameworks */,
+				28ADEC89A46538DA5C608DF6 /* Pods_FlutterRugbyIntegration_FlutterRugbyIntegrationUITests.framework in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -99,7 +99,7 @@
 				113B3E5F28315666004D67D3 /* FlutterRugbyIntegrationUITests */,
 				113B3E3D28315664004D67D3 /* Products */,
 				ACFABA27D1420F87EF6646DF /* Pods */,
-				D34649655F446E94B17106B0 /* Frameworks */,
+				FE9B4796D9C321C9A96F70F0 /* Frameworks */,
 			);
 			sourceTree = "<group>";
 		};
@@ -147,22 +147,22 @@
 		ACFABA27D1420F87EF6646DF /* Pods */ = {
 			isa = PBXGroup;
 			children = (
-				15F7A3B6A3198543206788A2 /* Pods-FlutterRugbyIntegration.debug.xcconfig */,
-				55E1F66CA42B8B87D1E20B56 /* Pods-FlutterRugbyIntegration.release.xcconfig */,
-				6B4C25D5FD36E75DC2FE3AE9 /* Pods-FlutterRugbyIntegration-FlutterRugbyIntegrationUITests.debug.xcconfig */,
-				0DE48E6E3D2959123F29CE0C /* Pods-FlutterRugbyIntegration-FlutterRugbyIntegrationUITests.release.xcconfig */,
-				0586BF52DBE0E80139F50201 /* Pods-FlutterRugbyIntegrationTests.debug.xcconfig */,
-				EC6A47B19B17B8284D4C58EE /* Pods-FlutterRugbyIntegrationTests.release.xcconfig */,
+				B2AA336674DC56F8E8EB9FAA /* Pods-FlutterRugbyIntegration.debug.xcconfig */,
+				315A4948EA839FB82C4E731A /* Pods-FlutterRugbyIntegration.release.xcconfig */,
+				BD03EF9A0EF1883BBDE7A725 /* Pods-FlutterRugbyIntegration-FlutterRugbyIntegrationUITests.debug.xcconfig */,
+				8A7997AC8C4DE67225318354 /* Pods-FlutterRugbyIntegration-FlutterRugbyIntegrationUITests.release.xcconfig */,
+				6AFED8093F8465DB0BE701BB /* Pods-FlutterRugbyIntegrationTests.debug.xcconfig */,
+				07690212F6533365CA7F161D /* Pods-FlutterRugbyIntegrationTests.release.xcconfig */,
 			);
 			path = Pods;
 			sourceTree = "<group>";
 		};
-		D34649655F446E94B17106B0 /* Frameworks */ = {
+		FE9B4796D9C321C9A96F70F0 /* Frameworks */ = {
 			isa = PBXGroup;
 			children = (
-				FAFD27D1E432965CABB82DD6 /* Pods_FlutterRugbyIntegration.framework */,
-				A891889E8799C0721B00BE4C /* Pods_FlutterRugbyIntegration_FlutterRugbyIntegrationUITests.framework */,
-				F0C3CCE2164EBF2A8998045F /* Pods_FlutterRugbyIntegrationTests.framework */,
+				18BE9BF1AC66311983ABB836 /* Pods_FlutterRugbyIntegration.framework */,
+				0D46FBFED3A4B180FC5E5B13 /* Pods_FlutterRugbyIntegration_FlutterRugbyIntegrationUITests.framework */,
+				B2A661A6B835D08B19E7E951 /* Pods_FlutterRugbyIntegrationTests.framework */,
 			);
 			name = Frameworks;
 			sourceTree = "<group>";
@@ -174,12 +174,12 @@
 			isa = PBXNativeTarget;
 			buildConfigurationList = 113B3E6628315666004D67D3 /* Build configuration list for PBXNativeTarget "FlutterRugbyIntegration" */;
 			buildPhases = (
-				D0E594671E3B5F30355CD90B /* [CP] Check Pods Manifest.lock */,
-				11757BDF2832328400E2F34C /* Flutter build phase */,
+				4A92066981C96A74556FF6B6 /* [CP] Check Pods Manifest.lock */,
+				7CA4FDBD050D483135B21E50 /* [CP-User] Run Flutter Build my_flutter Script */,
 				113B3E3828315664004D67D3 /* Sources */,
 				113B3E3928315664004D67D3 /* Frameworks */,
 				113B3E3A28315664004D67D3 /* Resources */,
-				8749C9EC6BBFE8E8535E8B0C /* [CP] Embed Pods Frameworks */,
+				9B1F1478E463F9BA73002B38 /* [CP] Embed Pods Frameworks */,
 			);
 			buildRules = (
 			);
@@ -194,7 +194,7 @@
 			isa = PBXNativeTarget;
 			buildConfigurationList = 113B3E6928315666004D67D3 /* Build configuration list for PBXNativeTarget "FlutterRugbyIntegrationTests" */;
 			buildPhases = (
-				A2F49E1326D979ABF5B20398 /* [CP] Check Pods Manifest.lock */,
+				F86C5C484BD6D01EB41A1340 /* [CP] Check Pods Manifest.lock */,
 				113B3E4E28315666004D67D3 /* Sources */,
 				113B3E4F28315666004D67D3 /* Frameworks */,
 				113B3E5028315666004D67D3 /* Resources */,
@@ -213,11 +213,11 @@
 			isa = PBXNativeTarget;
 			buildConfigurationList = 113B3E6C28315666004D67D3 /* Build configuration list for PBXNativeTarget "FlutterRugbyIntegrationUITests" */;
 			buildPhases = (
-				43E747F00D9B3542D75D67A2 /* [CP] Check Pods Manifest.lock */,
+				F1AD7FD07563AD3BE3351AB1 /* [CP] Check Pods Manifest.lock */,
 				113B3E5828315666004D67D3 /* Sources */,
 				113B3E5928315666004D67D3 /* Frameworks */,
 				113B3E5A28315666004D67D3 /* Resources */,
-				E0C1CF0052757E0F1C635F77 /* [CP] Embed Pods Frameworks */,
+				8C444D9EA75D0EA41EC32519 /* [CP] Embed Pods Frameworks */,
 			);
 			buildRules = (
 			);
@@ -300,86 +300,7 @@
 /* End PBXResourcesBuildPhase section */
 
 /* Begin PBXShellScriptBuildPhase section */
-		11757BDF2832328400E2F34C /* Flutter build phase */ = {
-			isa = PBXShellScriptBuildPhase;
-			buildActionMask = 2147483647;
-			files = (
-			);
-			inputFileListPaths = (
-			);
-			inputPaths = (
-			);
-			name = "Flutter build phase";
-			outputFileListPaths = (
-			);
-			outputPaths = (
-			);
-			runOnlyForDeploymentPostprocessing = 0;
-			shellPath = /bin/sh;
-			shellScript = "# Type a script or drag a script file from your workspace to insert its path.\n\nset -e\nset -u\nsource \"${SRCROOT}/Flutter/.ios/Flutter/flutter_export_environment.sh\"\n\necho \"Building Flutter for architecture: $ARCHS\"\n\nif [[ $ARCHS == *\"arm\"* ]]; then\n  echo \"Building Flutter Release\"\n  export \"FLUTTER_BUILD_MODE=RELEASE\"\n\nelse\n  echo \"Building Flutter Debug\"\n  export \"FLUTTER_BUILD_MODE=DEBUG\"\nfi\n\nexport VERBOSE_SCRIPT_LOGGING=1 && \"$FLUTTER_ROOT\"/packages/flutter_tools/bin/xcode_backend.sh build\n\n";
-		};
-		43E747F00D9B3542D75D67A2 /* [CP] Check Pods Manifest.lock */ = {
-			isa = PBXShellScriptBuildPhase;
-			buildActionMask = 2147483647;
-			files = (
-			);
-			inputFileListPaths = (
-			);
-			inputPaths = (
-				"${PODS_PODFILE_DIR_PATH}/Podfile.lock",
-				"${PODS_ROOT}/Manifest.lock",
-			);
-			name = "[CP] Check Pods Manifest.lock";
-			outputFileListPaths = (
-			);
-			outputPaths = (
-				"$(DERIVED_FILE_DIR)/Pods-FlutterRugbyIntegration-FlutterRugbyIntegrationUITests-checkManifestLockResult.txt",
-			);
-			runOnlyForDeploymentPostprocessing = 0;
-			shellPath = /bin/sh;
-			shellScript = "diff \"${PODS_PODFILE_DIR_PATH}/Podfile.lock\" \"${PODS_ROOT}/Manifest.lock\" > /dev/null\nif [ $? != 0 ] ; then\n    # print error to STDERR\n    echo \"error: The sandbox is not in sync with the Podfile.lock. Run 'pod install' or update your CocoaPods installation.\" >&2\n    exit 1\nfi\n# This output is used by Xcode 'outputs' to avoid re-running this script phase.\necho \"SUCCESS\" > \"${SCRIPT_OUTPUT_FILE_0}\"\n";
-			showEnvVarsInLog = 0;
-		};
-		8749C9EC6BBFE8E8535E8B0C /* [CP] Embed Pods Frameworks */ = {
-			isa = PBXShellScriptBuildPhase;
-			buildActionMask = 2147483647;
-			files = (
-			);
-			inputFileListPaths = (
-				"${PODS_ROOT}/Target Support Files/Pods-FlutterRugbyIntegration/Pods-FlutterRugbyIntegration-frameworks-${CONFIGURATION}-input-files.xcfilelist",
-			);
-			name = "[CP] Embed Pods Frameworks";
-			outputFileListPaths = (
-				"${PODS_ROOT}/Target Support Files/Pods-FlutterRugbyIntegration/Pods-FlutterRugbyIntegration-frameworks-${CONFIGURATION}-output-files.xcfilelist",
-			);
-			runOnlyForDeploymentPostprocessing = 0;
-			shellPath = /bin/sh;
-			shellScript = "\"${PODS_ROOT}/Target Support Files/Pods-FlutterRugbyIntegration/Pods-FlutterRugbyIntegration-frameworks.sh\"\n";
-			showEnvVarsInLog = 0;
-		};
-		A2F49E1326D979ABF5B20398 /* [CP] Check Pods Manifest.lock */ = {
-			isa = PBXShellScriptBuildPhase;
-			buildActionMask = 2147483647;
-			files = (
-			);
-			inputFileListPaths = (
-			);
-			inputPaths = (
-				"${PODS_PODFILE_DIR_PATH}/Podfile.lock",
-				"${PODS_ROOT}/Manifest.lock",
-			);
-			name = "[CP] Check Pods Manifest.lock";
-			outputFileListPaths = (
-			);
-			outputPaths = (
-				"$(DERIVED_FILE_DIR)/Pods-FlutterRugbyIntegrationTests-checkManifestLockResult.txt",
-			);
-			runOnlyForDeploymentPostprocessing = 0;
-			shellPath = /bin/sh;
-			shellScript = "diff \"${PODS_PODFILE_DIR_PATH}/Podfile.lock\" \"${PODS_ROOT}/Manifest.lock\" > /dev/null\nif [ $? != 0 ] ; then\n    # print error to STDERR\n    echo \"error: The sandbox is not in sync with the Podfile.lock. Run 'pod install' or update your CocoaPods installation.\" >&2\n    exit 1\nfi\n# This output is used by Xcode 'outputs' to avoid re-running this script phase.\necho \"SUCCESS\" > \"${SCRIPT_OUTPUT_FILE_0}\"\n";
-			showEnvVarsInLog = 0;
-		};
-		D0E594671E3B5F30355CD90B /* [CP] Check Pods Manifest.lock */ = {
+		4A92066981C96A74556FF6B6 /* [CP] Check Pods Manifest.lock */ = {
 			isa = PBXShellScriptBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
@@ -401,7 +322,17 @@
 			shellScript = "diff \"${PODS_PODFILE_DIR_PATH}/Podfile.lock\" \"${PODS_ROOT}/Manifest.lock\" > /dev/null\nif [ $? != 0 ] ; then\n    # print error to STDERR\n    echo \"error: The sandbox is not in sync with the Podfile.lock. Run 'pod install' or update your CocoaPods installation.\" >&2\n    exit 1\nfi\n# This output is used by Xcode 'outputs' to avoid re-running this script phase.\necho \"SUCCESS\" > \"${SCRIPT_OUTPUT_FILE_0}\"\n";
 			showEnvVarsInLog = 0;
 		};
-		E0C1CF0052757E0F1C635F77 /* [CP] Embed Pods Frameworks */ = {
+		7CA4FDBD050D483135B21E50 /* [CP-User] Run Flutter Build my_flutter Script */ = {
+			isa = PBXShellScriptBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			name = "[CP-User] Run Flutter Build my_flutter Script";
+			runOnlyForDeploymentPostprocessing = 0;
+			shellPath = /bin/sh;
+			shellScript = "set -e\nset -u\nsource \"${SRCROOT}/my_flutter/.ios/Flutter/flutter_export_environment.sh\"\nexport VERBOSE_SCRIPT_LOGGING=1 && \"$FLUTTER_ROOT\"/packages/flutter_tools/bin/xcode_backend.sh build";
+		};
+		8C444D9EA75D0EA41EC32519 /* [CP] Embed Pods Frameworks */ = {
 			isa = PBXShellScriptBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
@@ -416,6 +347,67 @@
 			runOnlyForDeploymentPostprocessing = 0;
 			shellPath = /bin/sh;
 			shellScript = "\"${PODS_ROOT}/Target Support Files/Pods-FlutterRugbyIntegration-FlutterRugbyIntegrationUITests/Pods-FlutterRugbyIntegration-FlutterRugbyIntegrationUITests-frameworks.sh\"\n";
+			showEnvVarsInLog = 0;
+		};
+		9B1F1478E463F9BA73002B38 /* [CP] Embed Pods Frameworks */ = {
+			isa = PBXShellScriptBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			inputFileListPaths = (
+				"${PODS_ROOT}/Target Support Files/Pods-FlutterRugbyIntegration/Pods-FlutterRugbyIntegration-frameworks-${CONFIGURATION}-input-files.xcfilelist",
+			);
+			name = "[CP] Embed Pods Frameworks";
+			outputFileListPaths = (
+				"${PODS_ROOT}/Target Support Files/Pods-FlutterRugbyIntegration/Pods-FlutterRugbyIntegration-frameworks-${CONFIGURATION}-output-files.xcfilelist",
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+			shellPath = /bin/sh;
+			shellScript = "\"${PODS_ROOT}/Target Support Files/Pods-FlutterRugbyIntegration/Pods-FlutterRugbyIntegration-frameworks.sh\"\n";
+			showEnvVarsInLog = 0;
+		};
+		F1AD7FD07563AD3BE3351AB1 /* [CP] Check Pods Manifest.lock */ = {
+			isa = PBXShellScriptBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			inputFileListPaths = (
+			);
+			inputPaths = (
+				"${PODS_PODFILE_DIR_PATH}/Podfile.lock",
+				"${PODS_ROOT}/Manifest.lock",
+			);
+			name = "[CP] Check Pods Manifest.lock";
+			outputFileListPaths = (
+			);
+			outputPaths = (
+				"$(DERIVED_FILE_DIR)/Pods-FlutterRugbyIntegration-FlutterRugbyIntegrationUITests-checkManifestLockResult.txt",
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+			shellPath = /bin/sh;
+			shellScript = "diff \"${PODS_PODFILE_DIR_PATH}/Podfile.lock\" \"${PODS_ROOT}/Manifest.lock\" > /dev/null\nif [ $? != 0 ] ; then\n    # print error to STDERR\n    echo \"error: The sandbox is not in sync with the Podfile.lock. Run 'pod install' or update your CocoaPods installation.\" >&2\n    exit 1\nfi\n# This output is used by Xcode 'outputs' to avoid re-running this script phase.\necho \"SUCCESS\" > \"${SCRIPT_OUTPUT_FILE_0}\"\n";
+			showEnvVarsInLog = 0;
+		};
+		F86C5C484BD6D01EB41A1340 /* [CP] Check Pods Manifest.lock */ = {
+			isa = PBXShellScriptBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			inputFileListPaths = (
+			);
+			inputPaths = (
+				"${PODS_PODFILE_DIR_PATH}/Podfile.lock",
+				"${PODS_ROOT}/Manifest.lock",
+			);
+			name = "[CP] Check Pods Manifest.lock";
+			outputFileListPaths = (
+			);
+			outputPaths = (
+				"$(DERIVED_FILE_DIR)/Pods-FlutterRugbyIntegrationTests-checkManifestLockResult.txt",
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+			shellPath = /bin/sh;
+			shellScript = "diff \"${PODS_PODFILE_DIR_PATH}/Podfile.lock\" \"${PODS_ROOT}/Manifest.lock\" > /dev/null\nif [ $? != 0 ] ; then\n    # print error to STDERR\n    echo \"error: The sandbox is not in sync with the Podfile.lock. Run 'pod install' or update your CocoaPods installation.\" >&2\n    exit 1\nfi\n# This output is used by Xcode 'outputs' to avoid re-running this script phase.\necho \"SUCCESS\" > \"${SCRIPT_OUTPUT_FILE_0}\"\n";
 			showEnvVarsInLog = 0;
 		};
 /* End PBXShellScriptBuildPhase section */
@@ -603,7 +595,7 @@
 		};
 		113B3E6728315666004D67D3 /* Debug */ = {
 			isa = XCBuildConfiguration;
-			baseConfigurationReference = 15F7A3B6A3198543206788A2 /* Pods-FlutterRugbyIntegration.debug.xcconfig */;
+			baseConfigurationReference = B2AA336674DC56F8E8EB9FAA /* Pods-FlutterRugbyIntegration.debug.xcconfig */;
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				ASSETCATALOG_COMPILER_GLOBAL_ACCENT_COLOR_NAME = AccentColor;
@@ -632,7 +624,7 @@
 		};
 		113B3E6828315666004D67D3 /* Release */ = {
 			isa = XCBuildConfiguration;
-			baseConfigurationReference = 55E1F66CA42B8B87D1E20B56 /* Pods-FlutterRugbyIntegration.release.xcconfig */;
+			baseConfigurationReference = 315A4948EA839FB82C4E731A /* Pods-FlutterRugbyIntegration.release.xcconfig */;
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				ASSETCATALOG_COMPILER_GLOBAL_ACCENT_COLOR_NAME = AccentColor;
@@ -661,7 +653,7 @@
 		};
 		113B3E6A28315666004D67D3 /* Debug */ = {
 			isa = XCBuildConfiguration;
-			baseConfigurationReference = 0586BF52DBE0E80139F50201 /* Pods-FlutterRugbyIntegrationTests.debug.xcconfig */;
+			baseConfigurationReference = 6AFED8093F8465DB0BE701BB /* Pods-FlutterRugbyIntegrationTests.debug.xcconfig */;
 			buildSettings = {
 				ALWAYS_EMBED_SWIFT_STANDARD_LIBRARIES = YES;
 				BUNDLE_LOADER = "$(TEST_HOST)";
@@ -681,7 +673,7 @@
 		};
 		113B3E6B28315666004D67D3 /* Release */ = {
 			isa = XCBuildConfiguration;
-			baseConfigurationReference = EC6A47B19B17B8284D4C58EE /* Pods-FlutterRugbyIntegrationTests.release.xcconfig */;
+			baseConfigurationReference = 07690212F6533365CA7F161D /* Pods-FlutterRugbyIntegrationTests.release.xcconfig */;
 			buildSettings = {
 				ALWAYS_EMBED_SWIFT_STANDARD_LIBRARIES = YES;
 				BUNDLE_LOADER = "$(TEST_HOST)";
@@ -701,7 +693,7 @@
 		};
 		113B3E6D28315666004D67D3 /* Debug */ = {
 			isa = XCBuildConfiguration;
-			baseConfigurationReference = 6B4C25D5FD36E75DC2FE3AE9 /* Pods-FlutterRugbyIntegration-FlutterRugbyIntegrationUITests.debug.xcconfig */;
+			baseConfigurationReference = BD03EF9A0EF1883BBDE7A725 /* Pods-FlutterRugbyIntegration-FlutterRugbyIntegrationUITests.debug.xcconfig */;
 			buildSettings = {
 				ALWAYS_EMBED_SWIFT_STANDARD_LIBRARIES = YES;
 				CODE_SIGN_STYLE = Automatic;
@@ -719,7 +711,7 @@
 		};
 		113B3E6E28315666004D67D3 /* Release */ = {
 			isa = XCBuildConfiguration;
-			baseConfigurationReference = 0DE48E6E3D2959123F29CE0C /* Pods-FlutterRugbyIntegration-FlutterRugbyIntegrationUITests.release.xcconfig */;
+			baseConfigurationReference = 8A7997AC8C4DE67225318354 /* Pods-FlutterRugbyIntegration-FlutterRugbyIntegrationUITests.release.xcconfig */;
 			buildSettings = {
 				ALWAYS_EMBED_SWIFT_STANDARD_LIBRARIES = YES;
 				CODE_SIGN_STYLE = Automatic;
