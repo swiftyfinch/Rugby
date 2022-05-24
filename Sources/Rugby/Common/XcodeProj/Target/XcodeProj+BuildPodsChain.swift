@@ -31,7 +31,7 @@ private extension XcodeProj {
     /// Include subspecs
     func findAllPodTargets(_ name: String) -> Set<PBXTarget> {
         let targets = pbxproj.main.targets
-        let filtered = targets.filter  {
+        let filtered = targets.filter {
             if $0.name == name { return true }
 
             // Get all subspecs

@@ -51,7 +51,7 @@ extension CachePrepareStep {
         if projectPatched { throw CacheError.projectAlreadyPatched }
 
         let factory = CacheSubstepFactory(progress: progress, command: command, metrics: metrics)
-        done()
+        
         let (selectedPods, excludedPods) = try factory.selectPods(project)
         let (buildInfo, swiftVersion) = try factory.findBuildPods(selectedPods)
         var (selectedTargets, buildTargets) = try factory.buildTargets((project: project,
@@ -65,6 +65,7 @@ extension CachePrepareStep {
             .union(selectedTargets.map(\.name))
             .union(selectedTargets.compactMap(\.productName))
         
+        done()
         return Output(scheme: buildTargets.isEmpty ? nil : buildTarget,
                       targets: targets,
                       buildInfo: buildInfo,
