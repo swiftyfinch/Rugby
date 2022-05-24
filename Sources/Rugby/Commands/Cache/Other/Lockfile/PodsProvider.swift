@@ -58,9 +58,6 @@ extension PodsProvider {
         self.cachedLocalPods = cachedLocalPods
         let cachedRemotePods = Array(remotePods.values)
         self.cachedRemotePods = cachedRemotePods
-        
-        print("Shreesha: local -------------- pods ssssss \(cachedLocalPods.map { $0.name })")
-        print("Shreesha: remote -------------- pods ssssss \(cachedRemotePods.map { $0.name })")
 
         return (cachedLocalPods, cachedRemotePods)
     }
