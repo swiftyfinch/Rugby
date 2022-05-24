@@ -1,6 +1,0 @@
-framework module share_plus {
-  umbrella header "share_plus-umbrella.h"
-
-  export *
-  module * { export * }
-}

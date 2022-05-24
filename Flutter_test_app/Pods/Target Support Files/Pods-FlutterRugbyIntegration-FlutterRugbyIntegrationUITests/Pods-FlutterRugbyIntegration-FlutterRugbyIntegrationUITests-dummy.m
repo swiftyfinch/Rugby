@@ -1,5 +1,0 @@
-#import <Foundation/Foundation.h>
-@interface PodsDummy_Pods_FlutterRugbyIntegration_FlutterRugbyIntegrationUITests : NSObject
-@end
-@implementation PodsDummy_Pods_FlutterRugbyIntegration_FlutterRugbyIntegrationUITests
-@end
