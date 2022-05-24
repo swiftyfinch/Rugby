@@ -1,0 +1,71 @@
+* Rugby version: 1.17.1
+* Command: rugby 
+* Xcode 13.2.1 / Build version 13C100
+* Apple Swift version 5.5.2 (swiftlang-1300.0.47.5 clang-1300.0.29.30)
+* CPU: Apple M1 Pro
+* Project: FlutterRugbyIntegration
+* Git branch: main
+[33m---------------------------------[0m
+[32mPlans ✈️ [0m [33mdebug[0m
+[32mPlans ✈️ [0m [33mbase[0m
+[32mShell 🐚[0m [33mpod install[0m
+[32mShell 🐚[0m [33mRunning [0m[37m✓[0m
+[33m[1s][0m [32mShell 🐚[0m ✓
+[33m---------------------------------[0m
+[32mPrepare[0m [33mRead project [0m[37m✓[0m
+[32mPrepare[0m [33mPods [0m(12)[33m:[0m
+[32mPrepare[0m [33m* [0mFirebase
+[32mPrepare[0m [33m* [0mFirebaseCore
+[32mPrepare[0m [33m* [0mFirebaseCoreDiagnostics
+[32mPrepare[0m [33m* [0mFirebaseCrashlytics
+[32mPrepare[0m [33m* [0mFirebaseInstallations
+[32mPrepare[0m [33m* [0mGoogleDataTransport
+[32mPrepare[0m [33m* [0mGoogleUtilities
+[32mPrepare[0m [33m* [0mnanopb
+[32mPrepare[0m [33m* [0mPromisesObjC
+[32mPrepare[0m [33m* [0mRxCocoa
+[32mPrepare[0m [33m* [0mRxRelay
+[32mPrepare[0m [33m* [0mRxSwift
+[32mPrepare[0m [33mExclude pods [0m(1)[33m:[0m
+[32mPrepare[0m [33m* [0mFirebaseCrashlytics
+[32mPrepare[0m [33mExclude XCFrameworks [0m(1)[33m:[0m
+[32mPrepare[0m [33m* [0mFlutter
+[32mPrepare[0m [33mCalculate checksums [0m[37m✓[0m
+[32mPrepare[0m [33mResolving dependencies graph[0m
+[32mPrepare[0m [33mBuild targets [0m(11)[33m:[0m
+[32mPrepare[0m [33m* [0mFirebase
+[32mPrepare[0m [33m* [0mFirebaseCore
+[32mPrepare[0m [33m* [0mFirebaseCoreDiagnostics
+[32mPrepare[0m [33m* [0mFirebaseInstallations
+[32mPrepare[0m [33m* [0mGoogleDataTransport
+[32mPrepare[0m [33m* [0mGoogleUtilities
+[32mPrepare[0m [33m* [0mnanopb
+[32mPrepare[0m [33m* [0mPromisesObjC
+[32mPrepare[0m [33m* [0mRxCocoa
+[32mPrepare[0m [33m* [0mRxRelay
+[32mPrepare[0m [33m* [0mRxSwift
+[32mPrepare[0m [33mAdd build target: [0mRugbyPods
+[32mPrepare[0m [33mSave project [0m[37m✓[0m
+[33m[1s][0m [32mPrepare[0m ✓
+[32mBuild[0m [33mBuilding [0m[33msim-x86_64[0m[33m [0m[37m✓[0m
+[32mBuild[0m [33mUpdate checksums [0m[37m✓[0m
+[33m[7s][0m [32mBuild[0m ✓
+[32mIntegration[0m [33mUpdate paths to built pods [0m[37m✓[0m
+[33m[1s][0m [32mIntegration[0m ✓
+[32mClean up[0m [33mRead project [0m[37m✓[0m
+[32mClean up[0m [33mRemove sources from project[0m
+[32mClean up[0m [33mRemove frameworks[0m
+[32mClean up[0m [33mRemove products[0m
+[32mClean up[0m [33mRemove build target[0m
+[32mClean up[0m [33mRemove built pods[0m
+[32mClean up[0m [33mRemove schemes[0m
+[32mClean up[0m [33mSave project [0m[37m✓[0m
+[33m[1s][0m [32mClean up[0m ✓
+[33m[8s][0m [32mCached 11/12 pods.[0m
+[33m---------------------------------[0m
+[32m[!] Pods:[0m
+[33m[!] [0m[33mProject size [0m[32m↓54%[0m
+[33m[!] [0m[33mIndexing files count [0m[32m↓67%[0m
+[33m[!] [0m[33mTargets count [0m[32m↓45%[0m
+[33m---------------------------------[0m
+[33m[10s][0m [32mLet's roll 🏈[0m

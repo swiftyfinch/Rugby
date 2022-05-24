@@ -1,0 +1,6 @@
+framework module Pods_FlutterRugbyIntegrationTests {
+  umbrella header "Pods-FlutterRugbyIntegrationTests-umbrella.h"
+
+  export *
+  module * { export * }
+}

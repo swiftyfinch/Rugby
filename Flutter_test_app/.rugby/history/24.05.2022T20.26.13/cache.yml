@@ -1,0 +1,29 @@
+Debug-iphonesimulator:
+  sdk: sim
+  arch: x86_64
+  config: Debug
+  swift: '5.5'
+  xcargs:
+  - COMPILER_INDEX_STORE_ENABLE=NO
+  - SWIFT_COMPILATION_MODE=wholemodule
+  checksums:
+  - 'Firebase: 44dd9724c84df18b486639e874f31436eaa9a20c'
+  - 'FirebaseCore: 2f4f85b453cc8fea4bb2b37e370007d2bcafe3f0'
+  - 'FirebaseCoreDiagnostics: fd0c8490f34287229c1d6c103d3a55f81ec85712'
+  - 'FirebaseCrashlytics: 62268addefae79601057818156e8bc69d71fee41'
+  - 'FirebaseInstallations: 7d1d967a307c12f1aadd76844fc321cef699b1ce'
+  - 'FlutterPluginRegistrant: 8b22c167be06853b3bea2810a6f87aa6a78e9a6e'
+  - 'GoogleDataTransport: 629c20a4d363167143f30ea78320d5a7eb8bd940'
+  - 'GoogleUtilities: e0913149f6b0625b553d70dae12b49fc62914fd1'
+  - 'PromisesObjC: 68159ce6952d93e17b2dfe273b8c40907db5ba58'
+  - 'RxCocoa: 4baf94bb35f2c0ab31bc0cb9f1900155f646ba42'
+  - 'RxRelay: e72dbfd157807478401ef1982e1c61c945c94b2f'
+  - 'RxSwift: d356ab7bee873611322f134c5f9ef379fa183d8f'
+  - 'camera: 294e1b47da747bdbecc45c40b10bdafdc4bd3b14'
+  - 'firebase_core: c17805519b61377eb4cbce49d1285ab4db732e71'
+  - 'firebase_crashlytics: 2d568bf65e94be5600d1af591e961157fcac69ba'
+  - 'my_flutter: 221bcf5fb45d281161a95cdadb4c35b97b56bd5e'
+  - 'nanopb: a0ba3315591a9ae0a16a309ee504766e90db0c96'
+  - 'share_plus: 04de6ca031909db794c047e20d404cd911e67d25'
+  - 'url_launcher_ios: d8922af52600ac82de2af5c496f1db6e488d2bfe'
+  - 'video_player: a2f3ce062419c0ce286881aa03abafbb40db82ff'

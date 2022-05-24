@@ -12,6 +12,7 @@ extension XcodeProj {
     func buildPodsChain(pods: Set<String>) -> Set<PBXTarget> {
         pods.reduce(into: Set<PBXTarget>()) { chain, name in
             let targets = findAllPodTargets(name)
+            print("Shreesha: targets \(targets.map { $0.name })")
             chain.formUnion(targets)
 
             let dependencies = targets.reduce(Set<PBXTarget>()) { set, target in
@@ -31,7 +32,8 @@ private extension XcodeProj {
     /// Include subspecs
     func findAllPodTargets(_ name: String) -> Set<PBXTarget> {
         let targets = pbxproj.main.targets
-        let filtered = targets.filter {
+        print("Shreesha: all targets s ssss \(targets.map{ $0.name })")
+        let filtered = targets.filter  {
             if $0.name == name { return true }
 
             // Get all subspecs

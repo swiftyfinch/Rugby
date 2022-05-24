@@ -51,7 +51,12 @@ extension CacheSubstepFactory {
 
 private extension PodsProvider {
     func remotePodsNames() throws -> Set<String> {
-        Set(try remotePods().map(\.name))
+        let remote = Set(try remotePods().map(\.name))
+        let local = Set(try localPods().map(\.name))
+        
+        let union = remote.union(local)
+        
+        return union
     }
 
     func podsNames() throws -> Set<String> {

@@ -1,0 +1,11 @@
+framework module RxRelay {
+  umbrella header "RxRelay-umbrella.h"
+
+  export *
+  module * { export * }
+}
+
+module RxRelay.Swift {
+    header "RxRelay-Swift.h"
+    requires objc
+}

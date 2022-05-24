@@ -1,10 +1,10 @@
 # my_flutter
 
-A new flutter module project.
+A new Flutter module project.
 
 ## Getting Started
 
-For help getting started with Flutter, view our online
+For help getting started with Flutter development, view the online
 [documentation](https://flutter.dev/).
 
 For instructions integrating Flutter modules to your existing applications,

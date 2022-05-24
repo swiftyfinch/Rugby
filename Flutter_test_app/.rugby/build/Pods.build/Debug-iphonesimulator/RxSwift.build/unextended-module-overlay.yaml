@@ -1,0 +1,14 @@
+{
+  'version': 0,
+  'use-external-names': 'false',
+  'case-sensitive': 'false',
+  'roots': [{
+    'type': 'directory',
+    'name': "/Users/shreesha/Documents/FlutterTest/Rugby/Rugby/Flutter_test_app/.rugby/build/Debug-iphonesimulator/RxSwift/RxSwift.framework/Modules"
+    'contents': [{
+      'type': 'file',
+      'name': "module.modulemap",
+      'external-contents': "/Users/shreesha/Documents/FlutterTest/Rugby/Rugby/Flutter_test_app/.rugby/build/Pods.build/Debug-iphonesimulator/RxSwift.build/unextended-module.modulemap",
+    }]
+  }]
+}

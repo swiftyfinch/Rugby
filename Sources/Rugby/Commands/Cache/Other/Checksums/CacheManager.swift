@@ -40,7 +40,7 @@ struct CacheManager {
         var cacheFile = load() ?? [:]
         let key = cacheKey(sdk: cache.sdk, config: cache.config)
         cacheFile[key] = cache
-
+        
         // Save
         let file = try Folder.current.createFileIfNeeded(at: .cacheFile)
         let encoder = YAMLEncoder()

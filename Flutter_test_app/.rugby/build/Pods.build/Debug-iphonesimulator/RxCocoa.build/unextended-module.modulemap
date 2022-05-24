@@ -1,0 +1,10 @@
+framework module RxCocoa {
+  umbrella header "RxCocoa-umbrella.h"
+
+  export *
+  module * { export * }
+}
+
+module RxCocoa.__Swift {
+    exclude header "RxCocoa-Swift.h"
+}

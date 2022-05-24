@@ -1,0 +1,10 @@
+framework module RxRelay {
+  umbrella header "RxRelay-umbrella.h"
+
+  export *
+  module * { export * }
+}
+
+module RxRelay.__Swift {
+    exclude header "RxRelay-Swift.h"
+}

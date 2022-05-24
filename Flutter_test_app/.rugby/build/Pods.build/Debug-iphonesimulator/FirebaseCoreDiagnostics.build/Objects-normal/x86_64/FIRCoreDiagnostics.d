@@ -1,0 +1,52 @@
+dependencies: \
+  /Users/shreesha/Documents/FlutterTest/Rugby/Rugby/Flutter_test_app/Pods/FirebaseCoreDiagnostics/Firebase/CoreDiagnostics/FIRCDLibrary/FIRCoreDiagnostics.m \
+  /Users/shreesha/Documents/FlutterTest/Rugby/Rugby/Flutter_test_app/.rugby/build/Pods.build/Debug-iphonesimulator/FirebaseCoreDiagnostics.build/module.modulemap \
+  /Applications/Xcode.app/Contents/Developer/Platforms/iPhoneSimulator.platform/Developer/SDKs/iPhoneSimulator15.2.sdk/usr/include/kcdata.modulemap \
+  /Applications/Xcode.app/Contents/Developer/Platforms/iPhoneSimulator.platform/Developer/SDKs/iPhoneSimulator15.2.sdk/usr/include/uuid.modulemap \
+  /Applications/Xcode.app/Contents/Developer/Platforms/iPhoneSimulator.platform/Developer/SDKs/iPhoneSimulator15.2.sdk/usr/include/netinet6.modulemap \
+  /Applications/Xcode.app/Contents/Developer/Platforms/iPhoneSimulator.platform/Developer/SDKs/iPhoneSimulator15.2.sdk/usr/include/machine.modulemap \
+  /Applications/Xcode.app/Contents/Developer/Platforms/iPhoneSimulator.platform/Developer/SDKs/iPhoneSimulator15.2.sdk/usr/include/device.modulemap \
+  /Applications/Xcode.app/Contents/Developer/Platforms/iPhoneSimulator.platform/Developer/SDKs/iPhoneSimulator15.2.sdk/usr/include/mach_debug.modulemap \
+  /Applications/Xcode.app/Contents/Developer/Platforms/iPhoneSimulator.platform/Developer/SDKs/iPhoneSimulator15.2.sdk/usr/include/mach_machine.modulemap \
+  /Applications/Xcode.app/Contents/Developer/Platforms/iPhoneSimulator.platform/Developer/SDKs/iPhoneSimulator15.2.sdk/usr/include/mach.modulemap \
+  /Applications/Xcode.app/Contents/Developer/Platforms/iPhoneSimulator.platform/Developer/SDKs/iPhoneSimulator15.2.sdk/usr/include/bank.modulemap \
+  /Applications/Xcode.app/Contents/Developer/Platforms/iPhoneSimulator.platform/Developer/SDKs/iPhoneSimulator15.2.sdk/usr/include/darwin_posix_sys_types.modulemap \
+  /Applications/Xcode.app/Contents/Developer/Platforms/iPhoneSimulator.platform/Developer/SDKs/iPhoneSimulator15.2.sdk/usr/include/netinet.modulemap \
+  /Applications/Xcode.app/Contents/Developer/Platforms/iPhoneSimulator.platform/Developer/SDKs/iPhoneSimulator15.2.sdk/usr/include/net.modulemap \
+  /Applications/Xcode.app/Contents/Developer/Platforms/iPhoneSimulator.platform/Developer/SDKs/iPhoneSimulator15.2.sdk/usr/include/darwin_cdefs.modulemap \
+  /Users/shreesha/Documents/FlutterTest/Rugby/Rugby/Flutter_test_app/.rugby/build/Pods.build/Debug-iphonesimulator/GoogleDataTransport.build/module.modulemap \
+  /Applications/Xcode.app/Contents/Developer/Platforms/iPhoneSimulator.platform/Developer/SDKs/iPhoneSimulator15.2.sdk/usr/include/mach-o/compact_unwind_encoding.modulemap \
+  /Applications/Xcode.app/Contents/Developer/Platforms/iPhoneSimulator.platform/Developer/SDKs/iPhoneSimulator15.2.sdk/usr/include/mach-o/dyld.modulemap \
+  /Users/shreesha/Documents/FlutterTest/Rugby/Rugby/Flutter_test_app/Pods/GoogleDataTransport/GoogleDataTransport/GDTCORLibrary/Public/GoogleDataTransport/GoogleDataTransport.h \
+  /Users/shreesha/Documents/FlutterTest/Rugby/Rugby/Flutter_test_app/Pods/GoogleDataTransport/GoogleDataTransport/GDTCORLibrary/Public/GoogleDataTransport/GDTCORTransport.h \
+  /Users/shreesha/Documents/FlutterTest/Rugby/Rugby/Flutter_test_app/Pods/GoogleDataTransport/GoogleDataTransport/GDTCORLibrary/Public/GoogleDataTransport/GDTCOREventTransformer.h \
+  /Users/shreesha/Documents/FlutterTest/Rugby/Rugby/Flutter_test_app/Pods/GoogleDataTransport/GoogleDataTransport/GDTCORLibrary/Public/GoogleDataTransport/GDTCOREventDataObject.h \
+  /Users/shreesha/Documents/FlutterTest/Rugby/Rugby/Flutter_test_app/Pods/GoogleDataTransport/GoogleDataTransport/GDTCORLibrary/Public/GoogleDataTransport/GDTCOREvent.h \
+  /Users/shreesha/Documents/FlutterTest/Rugby/Rugby/Flutter_test_app/Pods/GoogleDataTransport/GoogleDataTransport/GDTCORLibrary/Public/GoogleDataTransport/GDTCORTargets.h \
+  /Users/shreesha/Documents/FlutterTest/Rugby/Rugby/Flutter_test_app/Pods/GoogleDataTransport/GoogleDataTransport/GDTCORLibrary/Public/GoogleDataTransport/GDTCOREndpoints.h \
+  /Users/shreesha/Documents/FlutterTest/Rugby/Rugby/Flutter_test_app/Pods/GoogleDataTransport/GoogleDataTransport/GDTCORLibrary/Public/GoogleDataTransport/GDTCORConsoleLogger.h \
+  /Users/shreesha/Documents/FlutterTest/Rugby/Rugby/Flutter_test_app/Pods/GoogleDataTransport/GoogleDataTransport/GDTCORLibrary/Public/GoogleDataTransport/GDTCORClock.h \
+  /Users/shreesha/Documents/FlutterTest/Rugby/Rugby/Flutter_test_app/Pods/Target\ Support\ Files/GoogleDataTransport/GoogleDataTransport-umbrella.h \
+  /Users/shreesha/Documents/FlutterTest/Rugby/Rugby/Flutter_test_app/.rugby/build/Pods.build/Debug-iphonesimulator/GoogleUtilities.build/module.modulemap \
+  /Users/shreesha/Documents/FlutterTest/Rugby/Rugby/Flutter_test_app/Pods/GoogleUtilities/GoogleUtilities/UserDefaults/Public/GoogleUtilities/GULUserDefaults.h \
+  /Users/shreesha/Documents/FlutterTest/Rugby/Rugby/Flutter_test_app/Pods/GoogleUtilities/GoogleUtilities/Logger/Public/GoogleUtilities/GULLoggerLevel.h \
+  /Users/shreesha/Documents/FlutterTest/Rugby/Rugby/Flutter_test_app/Pods/GoogleUtilities/GoogleUtilities/Logger/Public/GoogleUtilities/GULLogger.h \
+  /Users/shreesha/Documents/FlutterTest/Rugby/Rugby/Flutter_test_app/Pods/GoogleUtilities/GoogleUtilities/Environment/Public/GoogleUtilities/NSURLSession+GULPromises.h \
+  /Users/shreesha/Documents/FlutterTest/Rugby/Rugby/Flutter_test_app/Pods/GoogleUtilities/GoogleUtilities/Environment/Public/GoogleUtilities/GULURLSessionDataResponse.h \
+  /Users/shreesha/Documents/FlutterTest/Rugby/Rugby/Flutter_test_app/Pods/GoogleUtilities/GoogleUtilities/Environment/Public/GoogleUtilities/GULSecureCoding.h \
+  /Users/shreesha/Documents/FlutterTest/Rugby/Rugby/Flutter_test_app/Pods/GoogleUtilities/GoogleUtilities/Environment/Public/GoogleUtilities/GULKeychainUtils.h \
+  /Users/shreesha/Documents/FlutterTest/Rugby/Rugby/Flutter_test_app/Pods/GoogleUtilities/GoogleUtilities/Environment/Public/GoogleUtilities/GULKeychainStorage.h \
+  /Users/shreesha/Documents/FlutterTest/Rugby/Rugby/Flutter_test_app/Pods/GoogleUtilities/GoogleUtilities/Environment/Public/GoogleUtilities/GULHeartbeatDateStorageUserDefaults.h \
+  /Users/shreesha/Documents/FlutterTest/Rugby/Rugby/Flutter_test_app/Pods/GoogleUtilities/GoogleUtilities/Environment/Public/GoogleUtilities/GULHeartbeatDateStorage.h \
+  /Users/shreesha/Documents/FlutterTest/Rugby/Rugby/Flutter_test_app/Pods/GoogleUtilities/GoogleUtilities/Environment/Public/GoogleUtilities/GULHeartbeatDateStorable.h \
+  /Users/shreesha/Documents/FlutterTest/Rugby/Rugby/Flutter_test_app/Pods/GoogleUtilities/GoogleUtilities/Environment/Public/GoogleUtilities/GULAppEnvironmentUtil.h \
+  /Users/shreesha/Documents/FlutterTest/Rugby/Rugby/Flutter_test_app/Pods/Target\ Support\ Files/GoogleUtilities/GoogleUtilities-umbrella.h \
+  /Users/shreesha/Documents/FlutterTest/Rugby/Rugby/Flutter_test_app/Pods/FirebaseCoreDiagnostics/Interop/CoreDiagnostics/Public/FIRCoreDiagnosticsData.h \
+  /Users/shreesha/Documents/FlutterTest/Rugby/Rugby/Flutter_test_app/Pods/FirebaseCoreDiagnostics/Interop/CoreDiagnostics/Public/FIRCoreDiagnosticsInterop.h \
+  /Users/shreesha/Documents/FlutterTest/Rugby/Rugby/Flutter_test_app/.rugby/build/Pods.build/Debug-iphonesimulator/nanopb.build/module.modulemap \
+  /Users/shreesha/Documents/FlutterTest/Rugby/Rugby/Flutter_test_app/Pods/nanopb/pb_encode.h \
+  /Users/shreesha/Documents/FlutterTest/Rugby/Rugby/Flutter_test_app/Pods/nanopb/pb_decode.h \
+  /Users/shreesha/Documents/FlutterTest/Rugby/Rugby/Flutter_test_app/Pods/nanopb/pb_common.h \
+  /Users/shreesha/Documents/FlutterTest/Rugby/Rugby/Flutter_test_app/Pods/nanopb/pb.h \
+  /Users/shreesha/Documents/FlutterTest/Rugby/Rugby/Flutter_test_app/Pods/Target\ Support\ Files/nanopb/nanopb-umbrella.h \
+  /Users/shreesha/Documents/FlutterTest/Rugby/Rugby/Flutter_test_app/Pods/FirebaseCoreDiagnostics/Firebase/CoreDiagnostics/FIRCDLibrary/Protogen/nanopb/firebasecore.nanopb.h

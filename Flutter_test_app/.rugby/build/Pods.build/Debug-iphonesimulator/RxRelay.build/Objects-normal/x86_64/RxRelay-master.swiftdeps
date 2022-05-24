@@ -1,0 +1,10 @@
+version: "Apple Swift version 5.5.2 (swiftlang-1300.0.47.5 clang-1300.0.29.30)"
+options: "1e08ad39a07f6c50a6c3176857a96e04b88ebf4c8a4bd164df0e6757a0296e58"
+build_start_time: [1653405064, 797837972]
+build_end_time: [1653405064, 977841854]
+inputs:
+  "/Users/shreesha/Documents/FlutterTest/Rugby/Rugby/Flutter_test_app/Pods/RxRelay/RxRelay/BehaviorRelay.swift": [1653405057, 427162647]
+  "/Users/shreesha/Documents/FlutterTest/Rugby/Rugby/Flutter_test_app/Pods/RxRelay/RxRelay/Observable+Bind.swift": [1653405057, 426901578]
+  "/Users/shreesha/Documents/FlutterTest/Rugby/Rugby/Flutter_test_app/Pods/RxRelay/RxRelay/PublishRelay.swift": [1653405057, 426478624]
+  "/Users/shreesha/Documents/FlutterTest/Rugby/Rugby/Flutter_test_app/Pods/RxRelay/RxRelay/ReplayRelay.swift": [1653405057, 426655769]
+  "/Users/shreesha/Documents/FlutterTest/Rugby/Rugby/Flutter_test_app/Pods/RxRelay/RxRelay/Utils.swift": [1653405057, 427029609]

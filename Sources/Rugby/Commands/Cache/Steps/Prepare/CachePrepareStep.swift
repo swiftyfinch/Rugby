@@ -51,20 +51,25 @@ extension CachePrepareStep {
         if projectPatched { throw CacheError.projectAlreadyPatched }
 
         let factory = CacheSubstepFactory(progress: progress, command: command, metrics: metrics)
+        done()
         let (selectedPods, excludedPods) = try factory.selectPods(project)
         let (buildInfo, swiftVersion) = try factory.findBuildPods(selectedPods)
         var (selectedTargets, buildTargets) = try factory.buildTargets((project: project,
                                                                         selectedPods: selectedPods,
                                                                         buildPods: buildInfo.pods))
         selectedTargets = selectedTargets.filter { !excludedPods.contains($0.name) }
+        print("Shreesha: selected pods \(selectedPods) \n \n")
         if !buildTargets.isEmpty {
             try factory.addBuildTarget(.init(target: buildTarget, project: project, dependencies: buildTargets))
         }
         let targets = selectedPods
             .union(selectedTargets.map(\.name))
             .union(selectedTargets.compactMap(\.productName))
-
-        done()
+        
+        print("Shreesha: metrics.targetsCount.before \(metrics.targetsCount.before) \n \n ")
+        print("Shreesha: project \(project) \n \n ")
+        
+        print("Shreesha: excluded pods \(selectedTargets.map { $0.name }) \n \n")
         return Output(scheme: buildTargets.isEmpty ? nil : buildTarget,
                       targets: targets,
                       buildInfo: buildInfo,

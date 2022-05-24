@@ -71,6 +71,7 @@ struct CacheBuildStep: Step {
                 let updatedChecksums = newChecksums.reduce(into: cachedChecksums) { checksums, new in
                     checksums[new.name] = new
                 }
+
                 let checksums = updatedChecksums.map(\.value.string).sorted()
                 let newCache = BuildCache(sdk: sdk,
                                           arch: arch,

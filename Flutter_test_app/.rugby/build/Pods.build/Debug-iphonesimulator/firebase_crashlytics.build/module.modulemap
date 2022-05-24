@@ -1,0 +1,6 @@
+framework module firebase_crashlytics {
+  umbrella header "firebase_crashlytics-umbrella.h"
+
+  export *
+  module * { export * }
+}
