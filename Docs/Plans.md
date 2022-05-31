@@ -7,8 +7,23 @@ OVERVIEW: Run selected plan from .rugby/plans.yml or use cache command if file n
 OPTIONS:
   --plan <plan>     Plan name. (default: the first plan)
 
-  --version         Show the version.
-  -h, --help        Show help information.
+  -s, --sdk <sdk>         Build sdks: sim/ios or both. (default: sim)
+  -a, --arch <arch>       Build architectures. (default: sim x86_64, ios arm64)
+  -c, --config <config>   Build configuration. (default: Debug)
+  --bitcode               Add bitcode for archive builds.
+  -k, --keep-sources      Keep Pods group in project.
+  -e, --exclude <exclude> Exclude pods from cache.
+  --include <include>     Include local pods.
+  --focus <focus>         Keep selected local pods and cache others.
+  --graph/--no-graph      Build changed pods parents. (default: true)
+  --ignore-checksums      Ignore already cached pods checksums.
+
+  --bell/--no-bell        Play bell sound on finish. (default: true)
+  --hide-metrics          Hide metrics.
+  -v, --verbose           Print more information.
+  -q, --quiet             Print nothing.
+  --version               Show the version.
+  -h, --help              Show help information.
 
 SUBCOMMANDS:
   example           Generate example .rugby/plans.yml
