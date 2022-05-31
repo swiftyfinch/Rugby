@@ -12,7 +12,12 @@ final class LogFormatter {
     private var output: (String, OutputType) throws -> Void
     private var buffer: [String] = []
     private let minBufferSize = 3
-    private let parser = Parser()
+    private(set) lazy var parser: Parser = {
+        .init { [weak self] in
+            guard let self = self, !self.buffer.isEmpty else { return nil }
+            return self.buffer.removeFirst()
+        }
+    }()
 
     init(output: @escaping (String, OutputType) throws -> Void) {
         self.output = output
@@ -32,10 +37,7 @@ final class LogFormatter {
     }
 
     private func parse() throws {
-        guard let formatted = parser.parse(line: buffer.removeFirst(), additionalLines: { [weak self] in
-            guard let self = self, !self.buffer.isEmpty else { return nil }
-            return self.buffer.removeFirst()
-        }) else { return }
+        guard let formatted = parser.parse(line: buffer.removeFirst()) else { return }
         try output(formatted, parser.outputType)
     }
 }

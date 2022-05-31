@@ -60,8 +60,8 @@
         "repositoryURL": "https://github.com/apple/swift-argument-parser",
         "state": {
           "branch": null,
-          "revision": "e394bf350e38cb100b6bc4172834770ede1b7232",
-          "version": "1.0.3"
+          "revision": "f3c9084a71ef4376f2fabbdf1d3d90a49f1fabdb",
+          "version": "1.1.2"
         }
       },
       {
@@ -75,11 +75,11 @@
       },
       {
         "package": "xcbeautify",
-        "repositoryURL": "https://github.com/thii/xcbeautify.git",
+        "repositoryURL": "https://github.com/tuist/xcbeautify",
         "state": {
           "branch": null,
-          "revision": "b14660cc03d96889d2144265fbca471ea0076e40",
-          "version": "0.11.0"
+          "revision": "a3f5db18e7218a3817031b1b8227b1cb5704cb93",
+          "version": "0.13.0"
         }
       },
       {
@@ -105,8 +105,8 @@
         "repositoryURL": "https://github.com/jpsim/Yams.git",
         "state": {
           "branch": null,
-          "revision": "9ff1cc9327586db4e0c8f46f064b6a82ec1566fa",
-          "version": "4.0.6"
+          "revision": "01835dc202670b5bb90d07f3eae41867e9ed29f6",
+          "version": "5.0.1"
         }
       }
     ]
