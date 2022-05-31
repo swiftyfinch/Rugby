@@ -10,7 +10,7 @@ let package = Package(
         .executable(name: "rugby", targets: ["Rugby"])
     ],
     dependencies: [
-        .package(url: "https://github.com/apple/swift-argument-parser", from: "1.1.2"),
+        .package(url: "https://github.com/apple/swift-argument-parser", from: "1.0.3"),
         .package(url: "https://github.com/onevcat/Rainbow", from: "4.0.1"),
         .package(url: "https://github.com/JohnSundell/Files", from: "4.2.0"),
         .package(name: "XcodeProj", url: "https://github.com/tuist/xcodeproj", from: "8.7.1"),
