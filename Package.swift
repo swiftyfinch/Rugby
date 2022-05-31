@@ -15,7 +15,7 @@ let package = Package(
         .package(url: "https://github.com/JohnSundell/Files", from: "4.2.0"),
         .package(name: "XcodeProj", url: "https://github.com/tuist/xcodeproj", from: "8.7.1"),
         .package(url: "https://github.com/kareman/SwiftShell", from: "5.1.0"),
-        .package(url: "https://github.com/jpsim/Yams.git", from: "5.0.1"),
+        .package(url: "https://github.com/jpsim/Yams.git", from: "4.0.6"),
         .package(url: "https://github.com/tuist/xcbeautify", from: "0.13.0")
     ],
     targets: [
