@@ -11,7 +11,7 @@ import ArgumentParser
 struct Plans: ParsableCommand {
     @Option(help: "Plan name. (default: the first plan)\n") var plan: String?
 
-    @OptionGroup(_hiddenFromHelp: true) var cacheOptions: Cache
+    @OptionGroup var cacheOptions: Cache
 
     static var configuration = CommandConfiguration(
         abstract: """
