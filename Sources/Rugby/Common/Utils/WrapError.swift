@@ -7,6 +7,7 @@
 //
 
 import Foundation
+import LegibleError
 
 enum WrappedError: Error, LocalizedError {
     case common(String)
@@ -31,7 +32,7 @@ enum WrappedError: Error, LocalizedError {
         do {
             try block()
         } catch {
-            throw WrappedError.common(error.localizedDescription.red)
+            throw WrappedError.common(error.legibleDescription.red)
         }
     }
 }

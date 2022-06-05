@@ -7,6 +7,7 @@
 //
 
 import Foundation
+import LegibleError
 import SwiftShell
 
 @discardableResult
@@ -57,7 +58,7 @@ extension ShellRunner {
             readErrorStreams.wait()
             return stdout ?? ""
         } catch {
-            throw ShellError.common(stderror ?? error.localizedDescription)
+            throw ShellError.common(stderror ?? error.legibleDescription)
         }
     }
 }
