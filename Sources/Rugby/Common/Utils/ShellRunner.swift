@@ -7,7 +7,6 @@
 //
 
 import Foundation
-import LegibleError
 import SwiftShell
 
 @discardableResult
