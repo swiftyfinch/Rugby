@@ -32,7 +32,7 @@ enum WrappedError: Error, LocalizedError {
         do {
             try block()
         } catch {
-            throw WrappedError.common(error.legibleDescription.red)
+            throw WrappedError.common(error.beautifulDescription.red)
         }
     }
 }

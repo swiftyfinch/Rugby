@@ -58,7 +58,7 @@ extension ShellRunner {
             readErrorStreams.wait()
             return stdout ?? ""
         } catch {
-            throw ShellError.common(stderror ?? error.legibleDescription)
+            throw ShellError.common(stderror ?? error.beautifulDescription)
         }
     }
 }
