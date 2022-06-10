@@ -16,8 +16,7 @@ let package = Package(
         .package(name: "XcodeProj", url: "https://github.com/tuist/xcodeproj", from: "8.7.1"),
         .package(url: "https://github.com/kareman/SwiftShell", from: "5.1.0"),
         .package(url: "https://github.com/jpsim/Yams.git", from: "4.0.6"),
-        .package(url: "https://github.com/tuist/xcbeautify", from: "0.13.0"),
-        .package(url: "https://github.com/mxcl/LegibleError", from: "1.0.6")
+        .package(url: "https://github.com/tuist/xcbeautify", from: "0.13.0")
     ],
     targets: [
         .target(name: "Rugby", dependencies: [
@@ -27,8 +26,7 @@ let package = Package(
             "XcodeProj",
             "SwiftShell",
             "Yams",
-            .product(name: "XcbeautifyLib", package: "xcbeautify"),
-            "LegibleError"
+            .product(name: "XcbeautifyLib", package: "xcbeautify")
         ])
     ]
 )

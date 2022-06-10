@@ -7,7 +7,6 @@
 //
 
 import Foundation
-import LegibleError
 
 enum WrappedError: Error, LocalizedError {
     case common(String)
