@@ -9,11 +9,12 @@
   <a href="https://swiftpackageindex.com/swiftyfinch/Rugby"><img src="https://img.shields.io/endpoint?color=orange&label=Swift&logo=swift&logoColor=white&url=https%3A%2F%2Fswiftpackageindex.com%2Fapi%2Fpackages%2Fswiftyfinch%2FRugby%2Fbadge%3Ftype%3Dswift-versions" /></a>
   <a href="https://swiftpackageindex.com/swiftyfinch/Rugby"><img src="https://img.shields.io/endpoint?label=Platform&url=https%3A%2F%2Fswiftpackageindex.com%2Fapi%2Fpackages%2Fswiftyfinch%2FRugby%2Fbadge%3Ftype%3Dplatforms" /></a>
   <br>
+  <a href="https://brew.sh"><img src="https://img.shields.io/badge/Homebrew-8B4513" /></a>
   <a href="https://github.com/yonaskolb/Mint"><img src="https://img.shields.io/badge/Mint-darkgreen?logo=leaflet&logoColor=white" /></a>
   <a href="https://swiftpackageindex.com/swiftyfinch/Rugby"><img src="https://img.shields.io/badge/Swift_Package_Index-red?logo=swift&logoColor=white" /></a>
-  <a href="https://twitter.com/swiftyfinch"><img src="https://img.shields.io/badge/SwiftyFinch-blue?logo=twitter&logoColor=white" /></a>
   <br>
   <img src="https://img.shields.io/badge/Press_★_for_pay_respect-white?logo=github&logoColor=black" />
+  <a href="https://twitter.com/swiftyfinch"><img src="https://img.shields.io/badge/SwiftyFinch-blue?logo=twitter&logoColor=white" /></a>
 </p>
 
 
@@ -59,7 +60,14 @@ Feel free to report any issues or suggest some new feature requests.
 
 <br>
 
-## Quick start with <a href="https://github.com/yonaskolb/Mint">Mint</a> 🌱
+## Download binary with [Homebrew](https://brew.sh) 🍺
+
+```bash
+brew tap swiftyfinch/Rugby https://github.com/swiftyfinch/Rugby.git
+brew install rugby
+```
+
+## Build from source code with <a href="https://github.com/yonaskolb/Mint">Mint</a> 🌱
 
 ```bash
 brew install mint
@@ -69,7 +77,7 @@ mint install swiftyfinch/rugby
 # For example, add this to your ~/.zshrc file and relaunch terminal
 export PATH=$HOME/.mint/bin:$PATH
 ```
-Watch 🎬 [installation demo](https://github.com/swiftyfinch/Rugby/discussions/71)
+More info about [installation](https://github.com/swiftyfinch/Rugby/discussions/71) with demo 🎬
 
 ## How to use 🏈
 
