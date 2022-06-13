@@ -4,7 +4,7 @@ struct Rugby: ParsableCommand {
     static var configuration = CommandConfiguration(
         abstract: """
 
-        🏈 Shake up pods project, build and throw away part of it.
+        🏈 Cache CocoaPods for faster rebuild and indexing Xcode project.
         📖 \("https://github.com/swiftyfinch/Rugby".cyan) (⌘ + double click on link)
         """,
         version: "1.17.2",
