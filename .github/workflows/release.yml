@@ -28,7 +28,7 @@ jobs:
       - run: |
           git config user.name "GitHub Actions"
           git config user.email "swiftyfinch@yandex.com"
-          make ${{ github.event.inputs.bump-type }}
+          ruby .github/scripts/bump.rb ${{ github.event.inputs.bump-type }}
 
       # Build binary
       - uses: maxim-lobanov/setup-xcode@v1
