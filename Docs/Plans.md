@@ -5,7 +5,7 @@
 OVERVIEW: Run selected plan from .rugby/plans.yml or use cache command if file not found.
 
 OPTIONS:
-  --plan <plan>     Plan name. (default: the first plan)
+  --plan <plan>           Plan name. (default: the first plan)
 
   -s, --sdk <sdk>         Build sdks: sim/ios or both. (default: sim)
   -a, --arch <arch>       Build architectures. (default: sim x86_64, ios arm64)
