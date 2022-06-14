@@ -50,6 +50,7 @@ struct Plans: ParsableCommand {
         cache.focus = cacheOptions.focus
         cache.graph = cacheOptions.graph
         cache.flags = cacheOptions.flags
+        cache.offDebugSymbols = cacheOptions.offDebugSymbols
         try cache.wrappedRun()
     }
 }

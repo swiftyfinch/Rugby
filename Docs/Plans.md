@@ -17,6 +17,7 @@ OPTIONS:
   --focus <focus>         Keep selected local pods and cache others.
   --graph/--no-graph      Build changed pods parents. (default: true)
   --ignore-checksums      Ignore already cached pods checksums.
+  --off-debug-symbols     (Experimental) Build without debug symbols.
 
   --bell/--no-bell        Play bell sound on finish. (default: true)
   --hide-metrics          Hide metrics.
@@ -70,6 +71,7 @@ rugby example
     focus: []
     hideMetrics: false
     ignoreChecksums: false
+    offDebugSymbols: false
     verbose: false
     quiet: false
 
