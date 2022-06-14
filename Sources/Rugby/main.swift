@@ -7,7 +7,7 @@ struct Rugby: ParsableCommand {
         🏈 Cache CocoaPods for faster rebuild and indexing Xcode project.
         📖 \("https://github.com/swiftyfinch/Rugby".cyan) (⌘ + double click on link)
         """,
-        version: "1.17.3",
+        version: "1.18.0",
         subcommands: [
             Plans.self,
             Cache.self,
