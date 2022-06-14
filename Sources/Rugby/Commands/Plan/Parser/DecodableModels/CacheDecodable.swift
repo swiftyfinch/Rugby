@@ -17,6 +17,7 @@ struct CacheDecodable: Decodable {
     let include: [String]?
     let focus: [String]?
     let graph: Bool?
+    let offDebugSymbols: Bool?
     let bell: Bool?
     let hideMetrics: Bool?
     @BoolableIntDecodable var verbose: Int?
@@ -35,6 +36,7 @@ extension Cache {
         self.include = decodable.include ?? []
         self.focus = decodable.focus ?? []
         self.graph = decodable.graph ?? true
+        self.offDebugSymbols = decodable.offDebugSymbols ?? false
 
         self.flags = .init()
         self.flags.bell = decodable.bell ?? true

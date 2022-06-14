@@ -5,16 +5,17 @@
 OVERVIEW: Convert pods to prebuilt dependencies.
 
 OPTIONS:
-  -a, --arch <arch>         Build architectures. (default: sim x86_64, ios arm64)
-  -c, --config <config>     Build configuration. (default: Debug)
-  -s, --sdk <sdk>           Build sdks: sim/ios or both. (default: sim)
-  --bitcode                 Add bitcode for archive builds.
-  -k, --keep-sources        Keep Pods group in project.
-  -e, --exclude <exclude>   Exclude pods from cache.
-  --include <include>       Include local pods.
-  --focus <focus>           Keep selected local pods and cache others.
-  --ignore-checksums        Ignore already cached pods checksums.
-  --graph                   Add parents of changed pods to build process.
+  -s, --sdk <sdk>         Build sdks: sim/ios or both. (default: sim)
+  -a, --arch <arch>       Build architectures. (default: sim x86_64, ios arm64)
+  -c, --config <config>   Build configuration. (default: Debug)
+  --bitcode               Add bitcode for archive builds.
+  -k, --keep-sources      Keep Pods group in project.
+  -e, --exclude <exclude> Exclude pods from cache.
+  --include <include>     Include local pods.
+  --focus <focus>         Keep selected local pods and cache others.
+  --graph/--no-graph      Build changed pods parents. (default: true)
+  --ignore-checksums      Ignore already cached pods checksums.
+  --off-debug-symbols     (Experimental) Build without debug symbols.
 
   --bell/--no-bell          Play bell sound on finish. (default: true)
   --hide-metrics            Hide metrics.
@@ -137,4 +138,16 @@ Please, report in the discussions section if you have some troubles building in 
 
 ```bash
 rugby --graph
+```
+
+## Disable debug symbols generation
+
+With this flag, Rugby will off debug symbols generation and strip all already generated symbols.
+
+It can be valuable in enormous projects. Usually, we don't need to debug binaries. It will be better to focus on a group of pods developing currently.
+In some cases, it speeds up debugger attachment by 16x (147s vs 9s) in my work project.
+Also, it slightly speeds up app launch time.
+
+```bash
+rugby --off-debug-symbols
 ```

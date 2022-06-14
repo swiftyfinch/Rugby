@@ -43,7 +43,7 @@ struct CacheBuildStep: Step {
             return done()
         }
 
-        let xcargs = xcargsProvider.xcargs(bitcode: command.bitcode)
+        let xcargs = xcargsProvider.xcargs(bitcode: command.bitcode, withoutDebugSymbols: command.offDebugSymbols)
         for (sdk, arch) in zip(input.buildInfo.sdk, input.buildInfo.arch) {
             try progress.spinner("Building \("\(sdk)-\(arch)".yellow)") {
                 do {

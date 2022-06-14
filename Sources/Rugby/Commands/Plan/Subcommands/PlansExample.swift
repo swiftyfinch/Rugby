@@ -67,6 +67,7 @@ struct PlansExample: ParsableCommand {
             #focus: []
             #hideMetrics: false
             #ignoreChecksums: false
+            #offDebugSymbols: false
             #verbose: false
             quiet: true
 
