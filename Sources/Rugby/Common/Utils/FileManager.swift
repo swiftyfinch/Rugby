@@ -14,6 +14,28 @@ extension Folder {
     func size() -> Int? {
         FileManager.default.directorySize(url)
     }
+
+    func isSubfolderExists(at path: String) -> Bool {
+        (try? subfolder(at: path)) != nil
+    }
+
+    func isFileExists(at path: String) -> Bool {
+        (try? file(at: path)) != nil
+    }
+
+    @discardableResult
+    func deleteSubfolderIfExists(at path: String) -> Bool {
+        guard isSubfolderExists(at: path) else { return false }
+        try? subfolder(at: path).delete()
+        return true
+    }
+
+    @discardableResult
+    func deleteFileIfExists(at path: String) -> Bool {
+        guard isFileExists(at: path) else { return false }
+        try? file(at: path).delete()
+        return true
+    }
 }
 
 private extension FileManager {
