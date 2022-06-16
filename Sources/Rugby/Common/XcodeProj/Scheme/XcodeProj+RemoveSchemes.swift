@@ -55,15 +55,15 @@ extension XcodeProj {
         // Anyway remove schemes from project
         defer { sharedData?.schemes.removeAll { schemesForRemove.contains($0.name) } }
 
+        let sharedSchemes = try? Folder(path: projectPath + "/xcshareddata/xcschemes")
         schemesForRemove.forEach {
-            let sharedSchemes = try? Folder(path: projectPath + "/xcshareddata/xcschemes")
-            try? sharedSchemes?.file(at: $0 + ".xcscheme").delete()
+            sharedSchemes?.deleteFileIfExists(at: $0 + ".xcscheme")
         }
 
         let username = try shell("echo $USER").trimmingCharacters(in: .whitespacesAndNewlines)
+        let userSchemesFolder = try? Folder(path: projectPath + "/xcuserdata/\(username).xcuserdatad/xcschemes")
         schemesForRemove.forEach {
-            let userSchemesFolder = try? Folder(path: projectPath + "/xcuserdata/\(username).xcuserdatad/xcschemes")
-            try? userSchemesFolder?.file(at: $0 + ".xcscheme").delete()
+            userSchemesFolder?.deleteFileIfExists(at: $0 + ".xcscheme")
         }
     }
 }
