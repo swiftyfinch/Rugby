@@ -21,6 +21,7 @@ struct DropRemoveStep: Step {
     let verbose: Int
     let isLast: Bool
     let progress: Printer
+    let backupManager: BackupManager
 
     private let metrics: Metrics
 
@@ -33,6 +34,7 @@ struct DropRemoveStep: Step {
                                      logFile: logFile,
                                      verbose: verbose,
                                      quiet: command.quiet)
+        self.backupManager = BackupManager(progress: progress)
     }
 
     func run(_ input: Input) throws {
@@ -48,6 +50,7 @@ struct DropRemoveStep: Step {
         }
 
         let project = try ProjectProvider.shared.readProject(input.project)
+        try backupManager.backup(path: input.project)
 
         progress.print("Remove frameworks".yellow)
         project.removeFrameworks(products: products)
@@ -77,6 +80,7 @@ struct DropRemoveStep: Step {
         progress.print(removedTargets, text: "Removed targets", deletion: true)
 
         try progress.spinner("Save project") {
+            project.pbxproj.main.set(buildSettingsKey: .rugbyPatched, value: String.yes)
             try project.write(pathString: input.project, override: true)
         }
 
