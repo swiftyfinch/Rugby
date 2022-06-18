@@ -80,7 +80,6 @@ struct DropRemoveStep: Step {
         progress.print(removedTargets, text: "Removed targets", deletion: true)
 
         try progress.spinner("Save project") {
-            project.pbxproj.main.set(buildSettingsKey: .rugbyPatched, value: String.yes)
             try project.write(pathString: input.project, override: true)
         }
 

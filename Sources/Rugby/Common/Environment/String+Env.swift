@@ -41,6 +41,7 @@ extension String {
     // MARK: - Xcode Project Variables
 
     static let rugbyPatched = "RUGBY_PATCHED"
+    static let rugbyHasBackup = "RUGBY_HAS_BACKUP"
     static let yes: Any = "YES"
 
     // MARK: - Cache command
