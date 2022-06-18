@@ -33,37 +33,29 @@ struct BackupManager {
 extension BackupManager {
     func backup(path: String) throws {
         let project = try ProjectProvider.shared.readProject(path)
-        guard !project.pbxproj.main.contains(buildSettingsKey: .rugbyPatched) else {
+        guard !project.pbxproj.main.contains(buildSettingsKey: .rugbyHasBackup) else {
             return /* Backup already must be */
         }
 
         let backupFolder = try Folder.current.createSubfolderIfNeeded(at: .backupFolder)
         let filesForBackup = try prepareForBackup(path: path, backupFolder: backupFolder)
-        try filesForBackup.forEach { filePath in
-            try moveFolder(from: filePath, toBackup: backupFolder)
-            progress.print("Backup ".yellow + filePath)
+        try filesForBackup.forEach { filePath, targetFolder in
+            try Folder.current.subfolder(at: filePath).copy(to: targetFolder)
+            progress.print("Backup ".yellow + filePath, level: .vv)
         }
+        project.pbxproj.main.set(buildSettingsKey: .rugbyHasBackup, value: String.yes)
     }
 
-    private func prepareForBackup(path: String, backupFolder: Folder) throws -> [String] {
+    private func prepareForBackup(path: String, backupFolder: Folder) throws -> [(String, Folder)] {
         if path == .podsProject {
-            try deleteLastBackup(relativePath: .podsFolder, backupFolder: backupFolder)
-            return [.podsProject, .podsTargetSupportFiles]
+            backupFolder.deleteSubfolderIfExists(at: .podsFolder)
+            let podsFolder = try backupFolder.createSubfolder(at: .podsFolder)
+            return [(.podsProject, podsFolder), (.podsTargetSupportFiles, podsFolder)]
         } else {
-            try deleteLastBackup(relativePath: path, backupFolder: backupFolder)
-            return [path]
+            guard let rootSubfolderName = path.components(separatedBy: "/").first else { return [] }
+            backupFolder.deleteSubfolderIfExists(at: rootSubfolderName)
+            return [(rootSubfolderName, backupFolder)]
         }
-    }
-
-    private func deleteLastBackup(relativePath: String, backupFolder: Folder) throws {
-        guard let rootSubfolderName = relativePath.components(separatedBy: "/").first else { return }
-        backupFolder.deleteSubfolderIfExists(at: rootSubfolderName)
-    }
-
-    private func moveFolder(from path: String, toBackup backupFolder: Folder) throws {
-        guard let rootSubfolderName = path.components(separatedBy: "/").first else { return }
-        let targetFolder = try backupFolder.createSubfolderIfNeeded(at: rootSubfolderName)
-        try Folder.current.subfolder(at: path).copy(to: targetFolder)
     }
 }
 
@@ -71,15 +63,15 @@ extension BackupManager {
 
 extension BackupManager {
     func rollback() throws {
-        let map = try prepareRollback()
-        try map.forEach { backupFile, targetFolder in
+        let filesToRestore = try prepareRollback()
+        try filesToRestore.forEach { backupFile, targetFolder in
             targetFolder.deleteFileIfExists(at: backupFile.name)
             try backupFile.copy(to: targetFolder)
 
             let backupFolder = try Folder.current.subfolder(at: .backupFolder)
             let backupPath = backupFile.path(relativeTo: backupFolder)
             let targetFolderPath = targetFolder.path(relativeTo: Folder.current)
-            progress.print("Restore ".yellow + backupPath + " ➞ ".yellow + targetFolderPath)
+            progress.print("Restore ".yellow + backupPath + " from ".yellow + targetFolderPath, level: .vv)
         }
     }
 
