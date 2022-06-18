@@ -12,4 +12,7 @@ private_lane :focus_basic_usage do
         sh "rugby focus \"TestProject\" -p TestProject/TestProject.xcodeproj --no-bell -q"
     end
     build
+
+    sh "cd .. && rugby rollback"
+    ensure_git_clean
 end

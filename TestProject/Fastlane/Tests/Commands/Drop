@@ -22,4 +22,7 @@ private_lane :drop_basic_usage do
     
     sh "cd .. && rugby drop \"TestProject\" -p TestProject/TestProject.xcodeproj --no-bell -q"
     check_that_scemes_empty
+
+    sh "cd .. && rugby rollback"
+    ensure_git_clean
 end

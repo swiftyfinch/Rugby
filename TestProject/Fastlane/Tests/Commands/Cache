@@ -5,16 +5,25 @@ lane :cache_both do
     sh "cd .. && rugby -s ios sim --no-bell -q"
     run_unit_tests
     build_ios
+
+    sh "cd .. && rugby rollback"
+    ensure_git_clean
 end
 
 lane :cache_exclude do
     cocoapods(try_repo_update_on_error: true)
     sh "cd .. && rugby -e Alamofire --no-bell -q"
     run_unit_tests
+
+    sh "cd .. && rugby rollback"
+    ensure_git_clean
 end
 
 lane :cache_different_config do
     cocoapods(try_repo_update_on_error: true)
     sh "cd .. && rugby -c \"Staging With Spaces\" --no-bell -q"
     build(configuration: "Staging With Spaces")
+
+    sh "cd .. && rugby rollback"
+    ensure_git_clean
 end

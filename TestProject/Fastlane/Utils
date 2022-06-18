@@ -1,0 +1,10 @@
+#!/bin/ruby
+
+lane :ensure_git_clean do |options|
+    git_status = %x[git status --porcelain --untracked-files=no]
+    if git_status.empty?
+        puts("Working directory is clean")
+    elsif
+        abort("Error: Working directory is not clean!\n" + git_status)
+    end
+end

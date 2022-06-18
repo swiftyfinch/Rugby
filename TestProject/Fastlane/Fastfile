@@ -1,6 +1,7 @@
 #!/bin/ruby
 
 import "./Xcode"
+import "./Utils"
 import "Tests/Commands/Cache"
 import "Tests/Commands/Drop"
 import "Tests/Commands/Focus"
