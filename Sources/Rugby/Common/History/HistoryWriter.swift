@@ -10,11 +10,22 @@ import Files
 import Foundation
 
 struct HistoryWriter {
+    private let dateFormatter: DateFormatter = {
+        let dateFormatter = DateFormatter()
+        dateFormatter.dateFormat = .dateFormat
+        return dateFormatter
+    }()
+
     func save() throws {
         let historyFolder = try Folder.current.createSubfolderIfNeeded(at: .history)
         let historyCount = historyFolder.subfolders.count()
         if historyCount >= .maxHistoryCount {
-            let sortedFolders = historyFolder.subfolders.sorted { $0.name < $1.name }
+            let sortedFolders = historyFolder.subfolders.sorted {
+                guard let lhsDate = dateFormatter.date(from: $0.name),
+                      let rhsDate = dateFormatter.date(from: $1.name)
+                else { return false } // Silent error here, this is not so important for the main functionality.
+                return lhsDate.timeIntervalSinceReferenceDate < rhsDate.timeIntervalSinceReferenceDate
+            }
             try sortedFolders.prefix(historyCount - .maxHistoryCount + 1).forEach { try $0.delete() }
         }
 
@@ -27,9 +38,7 @@ struct HistoryWriter {
     }
 
     private func generateFolderName() -> String {
-        let dateFormatter = DateFormatter()
-        dateFormatter.dateFormat = .dateFormat
-        return dateFormatter.string(from: Date())
+        dateFormatter.string(from: Date())
     }
 }
 
