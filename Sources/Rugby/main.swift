@@ -13,6 +13,7 @@ struct Rugby: ParsableCommand {
             Cache.self,
             Focus.self,
             Drop.self,
+            Rollback.self,
             Log.self,
             Doctor.self,
             Clean.self
