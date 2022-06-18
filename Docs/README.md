@@ -15,6 +15,7 @@ SUBCOMMANDS:
                        Call it after each pod install.
   focus              • Keep only selected targets and all their dependencies.
   drop               • Remove any targets by RegEx.
+  rollback           • (Beta, Hidden) Deintegrate Rugby from your project.
   log                • Print last command log verbosely.
   doctor             • Show troubleshooting suggestions.
   clean              • Remove cache except plans.yml and logs.
