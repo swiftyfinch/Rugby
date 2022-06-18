@@ -11,4 +11,7 @@ private_lane :plans_basic_usage do
         sh "rugby --plan usual --no-bell -q"
     end
     build
+
+    sh "cd .. && rugby rollback"
+    ensure_git_clean
 end
