@@ -27,9 +27,15 @@ struct Rollback: ParsableCommand, Command {
 
 extension Rollback {
     mutating func run(logFile: File) throws -> Metrics? {
-        let progress = RugbyPrinter(title: "Rollback", logFile: logFile, verbose: verbose, quiet: quiet)
+        let progress = RugbyPrinter(title: "Rollback", logFile: logFile, verbose: verbose + 1, quiet: quiet)
         let backupManager = BackupManager(progress: progress)
-        try backupManager.rollback()
+        if verbose.bool {
+            try backupManager.rollback()
+        } else {
+            try progress.spinner("Rollback") {
+                try backupManager.rollback()
+            }
+        }
         progress.done()
         return nil
     }

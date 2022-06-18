@@ -24,6 +24,6 @@ lane :cache_different_config do
     sh "cd .. && rugby -c \"Staging With Spaces\" --no-bell -q"
     build(configuration: "Staging With Spaces")
 
-    sh "cd .. && rugby rollback"
+    sh "cd .. && rugby rollback -q"
     ensure_git_clean
 end
