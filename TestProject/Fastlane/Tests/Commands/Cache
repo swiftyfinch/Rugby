@@ -6,7 +6,7 @@ lane :cache_both do
     run_unit_tests
     build_ios
 
-    sh "cd .. && rugby rollback"
+    sh "cd .. && rugby rollback -q"
     ensure_git_clean
 end
 
@@ -15,7 +15,7 @@ lane :cache_exclude do
     sh "cd .. && rugby -e Alamofire --no-bell -q"
     run_unit_tests
 
-    sh "cd .. && rugby rollback"
+    sh "cd .. && rugby rollback -q"
     ensure_git_clean
 end
 
