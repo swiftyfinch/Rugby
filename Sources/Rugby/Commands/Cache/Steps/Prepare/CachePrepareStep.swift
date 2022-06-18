@@ -20,6 +20,7 @@ struct CachePrepareStep: Step {
     let verbose: Int
     let isLast: Bool
     let progress: Printer
+    let backupManager: BackupManager
 
     private let command: Cache
     private let metrics: Metrics
@@ -30,6 +31,7 @@ struct CachePrepareStep: Step {
         self.verbose = command.flags.verbose
         self.isLast = isLast
         self.progress = RugbyPrinter(title: "Prepare", logFile: logFile, verbose: verbose, quiet: command.flags.quiet)
+        self.backupManager = BackupManager(progress: progress)
     }
 }
 
@@ -50,6 +52,7 @@ extension CachePrepareStep {
         let projectPatched = project.pbxproj.main.contains(buildSettingsKey: .rugbyPatched)
         if projectPatched { throw CacheError.projectAlreadyPatched }
 
+        try backupManager.backup(path: .podsProject)
         let factory = CacheSubstepFactory(progress: progress, command: command, metrics: metrics)
         let (selectedPods, excludedPods) = try factory.selectPods(project)
         let (buildInfo, swiftVersion) = try factory.findBuildPods(selectedPods)
