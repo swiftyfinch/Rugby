@@ -41,7 +41,7 @@ extension BackupManager {
         let filesForBackup = try prepareForBackup(path: path, backupFolder: backupFolder)
         try filesForBackup.forEach { filePath, targetFolder in
             try Folder.current.subfolder(at: filePath).copy(to: targetFolder)
-            progress.print("Backup ".yellow + filePath, level: .vv)
+            progress.print("Backup ".yellow + filePath)
         }
         project.pbxproj.main.set(buildSettingsKey: .rugbyHasBackup, value: String.yes)
     }
@@ -71,7 +71,7 @@ extension BackupManager {
             let backupFolder = try Folder.current.subfolder(at: .backupFolder)
             let backupPath = backupFile.path(relativeTo: backupFolder)
             let targetFolderPath = targetFolder.path(relativeTo: Folder.current)
-            progress.print("Restore ".yellow + backupPath + " from ".yellow + targetFolderPath, level: .vv)
+            progress.print("Restore ".yellow + backupPath + " from ".yellow + targetFolderPath)
         }
     }
 
