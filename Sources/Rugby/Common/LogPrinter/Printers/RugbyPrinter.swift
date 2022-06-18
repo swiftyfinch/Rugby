@@ -12,24 +12,29 @@ import Foundation
 struct RugbyPrinter: Printer {
     private let begin = ProcessInfo.processInfo.systemUptime
     private let formatter: Formatter
-    private let printers: [Printer]
+    private let screenPrinters: [Printer]
+    private let logPrinters: [Printer]
     private let skipSpinner: Bool
 
-    init(formatter: Formatter, printers: [Printer], skipSpinner: Bool) {
+    init(formatter: Formatter, screenPrinters: [Printer], logPrinters: [Printer], skipSpinner: Bool) {
         self.formatter = formatter
-        self.printers = printers
+        self.screenPrinters = screenPrinters
+        self.logPrinters = logPrinters
         self.skipSpinner = skipSpinner
     }
 
     func print(_ value: String, level: Int) {
-        printers.forEach {
+        screenPrinters.forEach {
+            $0.print(formatter.format(text: value, chop: $0.chop), level: level)
+        }
+        logPrinters.forEach {
             $0.print(formatter.format(text: value, chop: $0.chop), level: level)
         }
     }
 
     func done() {
         let time = ProcessInfo.processInfo.systemUptime - begin
-        printers.forEach {
+        (screenPrinters + logPrinters).forEach {
             let value = formatter.format(text: "✓", time: time.output(), chop: $0.chop)
             $0.print(value)
             $0.done()
@@ -47,11 +52,9 @@ struct RugbyPrinter: Printer {
 
 extension RugbyPrinter {
     init(title: String? = nil, logFile: File? = nil, verbose: Int = 0, quiet: Bool) {
-        var printers: [Printer] = []
-        if !quiet {
-            printers.append(verbose.bool ? DefaultPrinter(verbose: verbose) : OneLinePrinter())
-        }
-        logFile.map { printers.append(FilePrinter(file: $0)) }
-        self.init(formatter: RugbyFormatter(title: title), printers: printers, skipSpinner: quiet)
+        self.init(formatter: RugbyFormatter(title: title),
+                  screenPrinters: quiet ? [] : [verbose.bool ? DefaultPrinter(verbose: verbose) : OneLinePrinter()],
+                  logPrinters: logFile.map { [FilePrinter(file: $0)] } ?? [],
+                  skipSpinner: quiet)
     }
 }
