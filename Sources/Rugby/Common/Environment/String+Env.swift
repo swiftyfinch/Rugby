@@ -15,18 +15,28 @@ extension String {
 
     // MARK: - Common
 
+    static let podsFolder = "Pods"
     static let podsGroup = "Pods"
     static let developmentPodsGroup = "Development Pods"
     static let supportFolder = ".rugby"
     static let log = supportFolder + "/rugby.log"
     static let plans = supportFolder + "/plans.yml"
     static let lockfile = "Podfile.lock"
-    static let podsProject = "Pods/Pods.xcodeproj"
-    static let podsTargetSupportFiles = "Pods/Target Support Files"
+
+    static let podsProjectName = "Pods.xcodeproj"
+    static let podsProject = podsFolder + "/" + podsProjectName
+    static let podsTargetSupportFilesName = "Target Support Files"
+    static let podsTargetSupportFiles = podsFolder + "/" + podsTargetSupportFilesName
 
     // MARK: - History
 
     static let history = supportFolder + "/history"
+
+    // MARK: - Backup
+
+    static let backupFolder = supportFolder + "/backup"
+    static let backupPodsProject = backupFolder + "/" + podsProjectName
+    static let backupPodsTargetSupportFiles = backupFolder + "/" + podsTargetSupportFilesName
 
     // MARK: - Xcode Project Variables
 
