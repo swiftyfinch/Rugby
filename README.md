@@ -72,9 +72,12 @@ brew install rugby
 ```bash
 brew install mint
 mint install swiftyfinch/rugby
+```
 
-# Now on Mint 0.17.0 you'll need to add ~/.mint/bin to your $PATH
-# For example, add this to your ~/.zshrc file and relaunch terminal
+> **Warning**: Now on **Mint 0.17.0** you'll need to add `~/.mint/bin` to your **$PATH**<br>
+> For example, add this to your `~/.zshrc` file and relaunch terminal
+
+```bash
 export PATH=$HOME/.mint/bin:$PATH
 ```
 More info about [installation](https://github.com/swiftyfinch/Rugby/discussions/71) with demo 🎬
