@@ -18,6 +18,7 @@ struct CacheDecodable: Decodable {
     let focus: [String]?
     let graph: Bool?
     let offDebugSymbols: Bool?
+    let useRelativePaths: Bool?
     let bell: Bool?
     let hideMetrics: Bool?
     @BoolableIntDecodable var verbose: Int?
@@ -37,6 +38,7 @@ extension Cache {
         self.focus = decodable.focus ?? []
         self.graph = decodable.graph ?? true
         self.offDebugSymbols = decodable.offDebugSymbols ?? false
+        self.useRelativePaths = decodable.useRelativePaths ?? false
 
         self.flags = .init()
         self.flags.bell = decodable.bell ?? true
