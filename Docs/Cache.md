@@ -15,6 +15,7 @@ OPTIONS:
   --focus <focus>         Keep selected local pods and cache others.
   --graph/--no-graph      Build changed pods parents. (default: true)
   --ignore-checksums      Ignore already cached pods checksums.
+  --use-relative-paths    Use relative paths to cache folder
   --off-debug-symbols     (Experimental) Build without debug symbols.
 
   --bell/--no-bell          Play bell sound on finish. (default: true)
@@ -138,6 +139,25 @@ Please, report in the discussions section if you have some troubles building in 
 
 ```bash
 rugby --graph
+```
+
+## Relative to Pods paths
+
+Without passing this flag we have such default behaviour, for example:
+```diff
+- CONFIGURATION_BUILD_DIR = $PODS_CONFIGURATION_BUILD_DIR/Alamofire
++ CONFIGURATION_BUILD_DIR = ~/absolute_path_to_project/.rugby/build/${CONFIGURATION}${EFFECTIVE_PLATFORM_NAME}/Alamofire
+```
+
+If you pass this flag it replaces paths in all CocoaPods config files with relative ones. ([#153](https://github.com/swiftyfinch/Rugby/issues/153))<br>
+For example:
+```bash
+rugby --use-relative-paths
+```
+
+```diff
+- CONFIGURATION_BUILD_DIR = $PODS_CONFIGURATION_BUILD_DIR/Alamofire
++ CONFIGURATION_BUILD_DIR = ${PODS_ROOT}/../.rugby/build/${CONFIGURATION}${EFFECTIVE_PLATFORM_NAME}/Alamofire
 ```
 
 ## Disable debug symbols generation
