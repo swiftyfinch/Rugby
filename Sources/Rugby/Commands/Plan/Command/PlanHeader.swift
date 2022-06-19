@@ -51,6 +51,7 @@ struct Plans: ParsableCommand {
         cache.graph = cacheOptions.graph
         cache.flags = cacheOptions.flags
         cache.offDebugSymbols = cacheOptions.offDebugSymbols
+        cache.useRelativePaths = cacheOptions.useRelativePaths
         try cache.wrappedRun()
     }
 }
