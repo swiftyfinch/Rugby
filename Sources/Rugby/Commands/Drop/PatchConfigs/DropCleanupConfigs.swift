@@ -23,9 +23,9 @@ struct DropUpdateConfigs {
         ]
         let fileRegex = [#".*-resources\.sh"#, #".*\.xcconfig"#, #".*-frameworks\.sh"#].joined(separator: "|")
         try FilePatcher().replace("(" + lookupMatches.joined(separator: "|") + ")",
-                                          with: "",
-                                          inFilesByRegEx: "(\(fileRegex))",
-                                          folder: supportFilesFolder)
+                                  with: "",
+                                  inFilesByRegEx: "(\(fileRegex))",
+                                  folder: supportFilesFolder)
     }
 
     private func productsNames() -> [String] {
