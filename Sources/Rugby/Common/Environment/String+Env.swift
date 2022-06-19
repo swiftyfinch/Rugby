@@ -55,7 +55,8 @@ extension String {
     static let cacheFile = supportFolder + "/cache.yml"
 
     private static let cacheFolderName = "${CONFIGURATION}${EFFECTIVE_PLATFORM_NAME}"
-    static func cacheFolder(currentPath: String) -> String {
-        "\(currentPath)\(buildFolder)/\(cacheFolderName)"
+    static func cacheFolder(at path: String) -> String {
+        "\(path)\(buildFolder)/\(cacheFolderName)"
     }
+    static let relativeToPodsRootPath = "${PODS_ROOT}/../"
 }
