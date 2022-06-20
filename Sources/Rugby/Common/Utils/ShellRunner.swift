@@ -65,11 +65,14 @@ extension ShellRunner {
 private extension ShellRunner {
     enum ShellError: Swift.Error, LocalizedError {
         case common(String)
+        case emptyShellVariable
 
         var errorDescription: String? {
             switch self {
             case .common(let stderror):
                 return stderror
+            case .emptyShellVariable:
+                return "Shell variable is empty."
             }
         }
     }
@@ -77,20 +80,14 @@ private extension ShellRunner {
 
 final class ShellRunner {
     static let shared = ShellRunner()
-    private var shell: String?
 
     private init() {}
 
     private func getCurrentShell() throws -> String {
-        if let shell = shell { return shell }
-
-        let output = SwiftShell.run(bash: "echo $SHELL")
-        if output.succeeded {
-            shell = output.stdout
-            return output.stdout
-        } else {
-            throw wrapError(output)
+        guard let shell = ProcessInfo.processInfo.environment["SHELL"] else {
+            throw ShellError.emptyShellVariable
         }
+        return shell
     }
 
     private func combine(command: String, args: Any ...) -> String {

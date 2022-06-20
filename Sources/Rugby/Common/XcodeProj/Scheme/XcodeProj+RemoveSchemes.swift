@@ -7,6 +7,7 @@
 //
 
 import Files
+import Foundation
 import XcodeProj
 
 extension XcodeProj {
@@ -60,10 +61,11 @@ extension XcodeProj {
             sharedSchemes?.deleteFileIfExists(at: $0 + ".xcscheme")
         }
 
-        let username = try shell("echo $USER").trimmingCharacters(in: .whitespacesAndNewlines)
-        let userSchemesFolder = try? Folder(path: projectPath + "/xcuserdata/\(username).xcuserdatad/xcschemes")
-        schemesForRemove.forEach {
-            userSchemesFolder?.deleteFileIfExists(at: $0 + ".xcscheme")
+        if let username = ProcessInfo.processInfo.environment["USER"]?.trimmingCharacters(in: .whitespacesAndNewlines) {
+            let userSchemesFolder = try? Folder(path: projectPath + "/xcuserdata/\(username).xcuserdatad/xcschemes")
+            schemesForRemove.forEach {
+                userSchemesFolder?.deleteFileIfExists(at: $0 + ".xcscheme")
+            }
         }
     }
 }
