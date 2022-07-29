@@ -25,8 +25,8 @@ extension String {
     }
 
     /// Check if string contains dot
-    var isFile: Bool {
-        contains(".")
+    var isDirectory: Bool {
+        (try? URL(fileURLWithPath: self).resourceValues(forKeys: [.isDirectoryKey]))?.isDirectory == true
     }
 
     var shellFriendly: String { replacingOccurrences(of: " ", with: "\\ ") }

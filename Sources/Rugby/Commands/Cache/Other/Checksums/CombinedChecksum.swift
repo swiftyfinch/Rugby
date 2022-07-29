@@ -45,7 +45,7 @@ extension LocalPod: CombinedChecksum {
         switch path {
         case ".":
             subpath = name
-        case let filePath where filePath.isFile:
+        case let filePath where !filePath.isDirectory:
             subpath = filePath.dropFileName()
         default:
             subpath = path
