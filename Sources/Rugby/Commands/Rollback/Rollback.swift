@@ -14,8 +14,7 @@ struct Rollback: ParsableCommand, Command {
     @Flag(name: .shortAndLong, help: "Print nothing.") var quiet = false
 
     static var configuration = CommandConfiguration(
-        abstract: "• \("(Beta)".yellow) Deintegrate Rugby from your project.",
-        shouldDisplay: false
+        abstract: "• \("(Beta)".yellow) Deintegrate Rugby from your project."
     )
 
     mutating func run() throws {
