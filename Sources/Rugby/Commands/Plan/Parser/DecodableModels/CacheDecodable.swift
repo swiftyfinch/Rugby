@@ -14,6 +14,7 @@ struct CacheDecodable: Decodable {
     let keepSources: Bool?
     let exclude: [String]?
     let ignoreChecksums: Bool?
+    let experimentalChecksumContent: Bool?
     let include: [String]?
     let focus: [String]?
     let graph: Bool?
@@ -23,6 +24,7 @@ struct CacheDecodable: Decodable {
     let hideMetrics: Bool?
     @BoolableIntDecodable var verbose: Int?
     let quiet: Bool?
+    let nonInteractive: Bool?
 }
 
 extension Cache {
@@ -34,6 +36,7 @@ extension Cache {
         self.keepSources = decodable.keepSources ?? false
         self.exclude = decodable.exclude ?? []
         self.ignoreChecksums = decodable.ignoreChecksums ?? false
+        self.experimentalChecksumContent = decodable.experimentalChecksumContent ?? false
         self.include = decodable.include ?? []
         self.focus = decodable.focus ?? []
         self.graph = decodable.graph ?? true
@@ -45,5 +48,6 @@ extension Cache {
         self.flags.hideMetrics = decodable.hideMetrics ?? false
         self.flags.verbose = decodable.verbose ?? 0
         self.flags.quiet = decodable.quiet ?? false
+        self.flags.nonInteractive = decodable.nonInteractive ?? false
     }
 }
