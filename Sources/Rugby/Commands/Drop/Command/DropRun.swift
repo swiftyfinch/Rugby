@@ -10,6 +10,7 @@ import Files
 
 extension Drop: Command {
     var quiet: Bool { flags.quiet }
+    var nonInteractive: Bool { flags.nonInteractive }
 
     mutating func run(logFile: File) throws -> Metrics? {
         if testFlight, flags.verbose == 0 { flags.verbose = 1 }
