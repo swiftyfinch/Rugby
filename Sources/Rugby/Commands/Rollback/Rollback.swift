@@ -12,7 +12,8 @@ import Files
 struct Rollback: ParsableCommand, Command {
     @Flag(name: .shortAndLong, help: "Print more information.") var verbose: Int
     @Flag(name: .shortAndLong, help: "Print nothing.") var quiet = false
-    @Flag(name: .long, help: "Format output for non-interactive terminal sessions (reduce loading spinner output).") var nonInteractive = false
+    @Flag(help: "Format output for non-interactive terminal sessions (reduce loading spinner output).")
+    var nonInteractive = false
 
     static var configuration = CommandConfiguration(
         abstract: "• \("(Beta)".yellow) Deintegrate Rugby from your project."
@@ -27,7 +28,11 @@ struct Rollback: ParsableCommand, Command {
 
 extension Rollback {
     mutating func run(logFile: File) throws -> Metrics? {
-        let progress = RugbyPrinter(title: "Rollback", logFile: logFile, verbose: verbose, quiet: quiet, nonInteractive: nonInteractive)
+        let progress = RugbyPrinter(title: "Rollback",
+                                    logFile: logFile,
+                                    verbose: verbose,
+                                    quiet: quiet,
+                                    nonInteractive: nonInteractive)
         let backupManager = BackupManager(progress: progress)
         if verbose.bool {
             try backupManager.rollback()

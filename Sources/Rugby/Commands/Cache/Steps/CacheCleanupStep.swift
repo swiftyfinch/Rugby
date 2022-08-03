@@ -28,7 +28,11 @@ struct CacheCleanupStep: Step {
         self.metrics = metrics
         self.verbose = command.flags.verbose
         self.isLast = isLast
-        self.progress = RugbyPrinter(title: "Clean up", logFile: logFile, verbose: verbose, quiet: command.flags.quiet, nonInteractive: command.flags.nonInteractive)
+        self.progress = RugbyPrinter(title: "Clean up",
+                                     logFile: logFile,
+                                     verbose: verbose,
+                                     quiet: command.flags.quiet,
+                                     nonInteractive: command.flags.nonInteractive)
     }
 
     func run(_ input: Input) throws {
