@@ -10,6 +10,7 @@ struct ShellDecodable: Decodable {
     let run: String
     @BoolableIntDecodable var verbose: Int?
     let quiet: Bool?
+    let nonInteractive: Bool?
 }
 
 extension Shell {
@@ -17,5 +18,6 @@ extension Shell {
         self.run = decodable.run
         self.verbose = decodable.verbose ?? 0
         self.quiet = decodable.quiet ?? false
+        self.nonInteractive = decodable.nonInteractive ?? false
     }
 }

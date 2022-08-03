@@ -33,7 +33,8 @@ struct DropRemoveStep: Step {
         self.progress = RugbyPrinter(title: "Drop",
                                      logFile: logFile,
                                      verbose: verbose,
-                                     quiet: command.quiet)
+                                     quiet: command.quiet,
+                                     nonInteractive:  command.nonInteractive)
         self.backupManager = BackupManager(progress: progress)
     }
 
