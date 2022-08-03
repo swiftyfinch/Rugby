@@ -2,7 +2,7 @@
 //  Data+SHA1.swift
 //  Rugby
 //
-//  Created by Colton Schlosser on 8/3/22.
+//  Created on 8/3/22.
 //
 
 import CommonCrypto
