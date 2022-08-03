@@ -26,7 +26,7 @@ struct CacheBuildStep: Step {
     let progress: Printer
 
     private let command: Cache
-    private let checksumsProvider = ChecksumsProvider()
+    private let checksumsProvider: ChecksumsProvider
     private let cacheManager = CacheManager()
     private let xcargsProvider = XCARGSProvider()
 
@@ -35,6 +35,7 @@ struct CacheBuildStep: Step {
         self.verbose = command.flags.verbose
         self.isLast = isLast
         self.progress = RugbyPrinter(title: "Build", logFile: logFile, verbose: verbose, quiet: command.quiet, nonInteractive: command.nonInteractive)
+        self.checksumsProvider = ChecksumsProvider(shouldChecksumLocalPodContent: command.experimentalChecksumContent)
     }
 
     func run(_ input: Input) throws {

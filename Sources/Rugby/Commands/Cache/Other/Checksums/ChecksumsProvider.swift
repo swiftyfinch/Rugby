@@ -30,17 +30,30 @@ struct Checksum {
 
 final class ChecksumsProvider {
     private let podsProvider = PodsProvider.shared
-    private var cachedChecksums: [String: Checksum]?
+    private static var cachedChecksums: [String: Checksum] = [:]
+
+    private var shouldChecksumLocalPodContent: Bool
+
+    init(shouldChecksumLocalPodContent: Bool) {
+        self.shouldChecksumLocalPodContent = shouldChecksumLocalPodContent
+    }
 
     func getChecksums(forPods pods: Set<String>) throws -> [Checksum] {
-        let selectedCachedChecksums = pods.compactMap { cachedChecksums?[$0] }
-        if selectedCachedChecksums.count == pods.count { return selectedCachedChecksums }
-
         let checksums = try podsProvider.pods()
             .filter { pods.contains($0.name) }
-            .map { try $0.combinedChecksum() }
+            .map { try getChecksum(forPod: $0) }
 
-        cachedChecksums = checksums.reduce(into: [:]) { $0[$1.name] = $1 }
+        assert(pods.count == checksums.count, "Asked to checksum unknown pod(s)")
         return checksums
+    }
+
+    private func getChecksum(forPod pod: Pod & CombinedChecksum) throws -> Checksum {
+        if let cachedChecksum = Self.cachedChecksums[pod.name] {
+            return cachedChecksum
+        }
+
+        let checksum = try pod.combinedChecksum(checksumContent: shouldChecksumLocalPodContent)
+        Self.cachedChecksums[pod.name] = checksum
+        return checksum
     }
 }
