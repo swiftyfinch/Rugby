@@ -85,12 +85,11 @@ extension LocalPod: CombinedChecksum {
 
     /// Collect content checksums from all files in folder. Use `deep` for recursively search.
     private func folderContentChecksums(_ url: URL, deep: Bool) throws -> [String] {
-        typealias Error = CombinedChecksumError
         guard let enumerator = FileManager.default.enumerator(
             at: url,
-            includingPropertiesForKeys: [.attributeModificationDateKey],
+            includingPropertiesForKeys: nil,
             options: deep ? [.skipsHiddenFiles] : [.skipsHiddenFiles, .skipsSubdirectoryDescendants]
-        ) else { throw Error.cantBuildFilesEnumerator }
+        ) else { throw CombinedChecksumError.cantBuildFilesEnumerator }
 
         // PERF: Would likely benefit from parallelization (maybe not, disk bound)
         // Also could benefit from using `CC_SHA1_Init`, `CC_SHA1_Update`, and `CC_SHA1_Final` instead of parsing each
