@@ -5,8 +5,8 @@
 //  Created by Colton Schlosser on 8/3/22.
 //
 
-import Foundation
 import CommonCrypto
+import Foundation
 
 extension Data {
     func sha1() -> String {

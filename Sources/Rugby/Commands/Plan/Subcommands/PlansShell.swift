@@ -15,7 +15,11 @@ struct Shell: Command {
     let nonInteractive: Bool
 
     func run(logFile: File) throws -> Metrics? {
-        let progress = RugbyPrinter(title: "Shell 🐚", logFile: logFile, verbose: .verbose, quiet: quiet, nonInteractive: nonInteractive)
+        let progress = RugbyPrinter(title: "Shell 🐚",
+                                    logFile: logFile,
+                                    verbose: .verbose,
+                                    quiet: quiet,
+                                    nonInteractive: nonInteractive)
         progress.print(run.yellow)
         if verbose.bool {
             try printShell(run)

@@ -34,7 +34,7 @@ struct DropRemoveStep: Step {
                                      logFile: logFile,
                                      verbose: verbose,
                                      quiet: command.quiet,
-                                     nonInteractive:  command.nonInteractive)
+                                     nonInteractive: command.nonInteractive)
         self.backupManager = BackupManager(progress: progress)
     }
 

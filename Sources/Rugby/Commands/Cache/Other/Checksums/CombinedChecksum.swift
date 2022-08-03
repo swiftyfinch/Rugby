@@ -35,8 +35,8 @@ extension LocalPod: CombinedChecksum {
             // Experimental method that checksums local pod content.
             // This is slower because more work needs to be done to checksum the actual file content.
             // The benefit of this is a more transferable cache. For example in a continuous integration setup everytime
-            // a new git clone happens all the directories have timestamps of the clone date. This prevents focus from being
-            // as effective as it could in these environments
+            // a new git clone happens all the directories have timestamps of the clone date.
+            // This prevents focus from being as effective as it could in these environments
             let checksums = try folderContentChecksums(rootFolder.url, deep: true)
             return Checksum(name: name, checksum: calculateChecksum(checksums))
         } else {
@@ -93,8 +93,9 @@ extension LocalPod: CombinedChecksum {
         ) else { throw Error.cantBuildFilesEnumerator }
 
         // PERF: Would likely benefit from parallelization (maybe not, disk bound)
-        // Also could benefit from using `CC_SHA1_Init`, `CC_SHA1_Update`, and `CC_SHA1_Final` instead of parsing each checksum into a string
-        // The profile is spending more time in string manipulation than actually checksuming
+        // Also could benefit from using `CC_SHA1_Init`, `CC_SHA1_Update`, and `CC_SHA1_Final` instead of parsing each
+        // checksum into a string.
+        // The profile is spending more time in string manipulation than actually checksuming.
         // METRICS: M1 pro (single threaded)
         // 45% loading files
         // 20% string operations
