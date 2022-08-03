@@ -14,8 +14,15 @@ extension CacheSubstepFactory {
         let command: Cache
         let metrics: Metrics
 
-        private let checksumsProvider = ChecksumsProvider()
+        private let checksumsProvider: ChecksumsProvider
         private let xcargsProvider = XCARGSProvider()
+
+        init(progress: Printer, command: Cache, metrics: Metrics) {
+            self.progress = progress
+            self.command = command
+            self.metrics = metrics
+            self.checksumsProvider = ChecksumsProvider(shouldChecksumLocalPodContent: command.experimentalChecksumContent)
+        }
 
         func run(_ selectedPods: Set<String>) throws -> (
             buildInfo: BuildInfo,

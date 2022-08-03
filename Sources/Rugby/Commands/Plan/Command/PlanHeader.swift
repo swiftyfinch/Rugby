@@ -46,6 +46,7 @@ struct Plans: ParsableCommand {
         cache.keepSources = cacheOptions.keepSources
         cache.exclude = cacheOptions.exclude
         cache.ignoreChecksums = cacheOptions.ignoreChecksums
+        cache.experimentalChecksumContent = cacheOptions.experimentalChecksumContent
         cache.include = cacheOptions.include
         cache.focus = cacheOptions.focus
         cache.graph = cacheOptions.graph
