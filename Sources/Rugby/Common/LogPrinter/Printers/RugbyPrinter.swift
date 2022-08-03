@@ -14,14 +14,20 @@ final class RugbyPrinter: Printer {
     private let formatter: Formatter
     private let screenPrinters: [Printer]
     private let logPrinters: [Printer]
-    private let skipSpinner: Bool
+    private let spinnerMode: SpinnerMode
     private var isSpinnerAnimating = false
 
-    init(formatter: Formatter, screenPrinters: [Printer], logPrinters: [Printer], skipSpinner: Bool) {
+    enum SpinnerMode {
+        case quiet
+        case simple
+        case standard
+    }
+
+    init(formatter: Formatter, screenPrinters: [Printer], logPrinters: [Printer], spinnerMode: SpinnerMode) {
         self.formatter = formatter
         self.screenPrinters = screenPrinters
         self.logPrinters = logPrinters
-        self.skipSpinner = skipSpinner
+        self.spinnerMode = spinnerMode
     }
 
     func print(_ value: String, level: Int) {
@@ -47,19 +53,26 @@ final class RugbyPrinter: Printer {
     @discardableResult
     func spinner<Result>(_ text: String, job: @escaping () throws -> Result) rethrows -> Result {
         defer { print("\(text) \("✓".white)".yellow, level: .vv) }
-        if skipSpinner { return try job() }
-        isSpinnerAnimating = true
-        let result = try Spinner().show(text: text, job)
-        isSpinnerAnimating = false
-        return result
+        switch spinnerMode {
+        case .quiet:
+            return try job()
+        case .simple:
+            print(text)
+            return try job()
+        case .standard:
+            isSpinnerAnimating = true
+            let result = try Spinner().show(text: text, job)
+            isSpinnerAnimating = false
+            return result
+        }
     }
 }
 
 extension RugbyPrinter {
-    convenience init(title: String? = nil, logFile: File? = nil, verbose: Int = 0, quiet: Bool) {
+    convenience init(title: String? = nil, logFile: File? = nil, verbose: Int = 0, quiet: Bool, nonInteractive: Bool) {
         self.init(formatter: RugbyFormatter(title: title),
                   screenPrinters: quiet ? [] : [verbose.bool ? DefaultPrinter(verbose: verbose) : OneLinePrinter()],
                   logPrinters: logFile.map { [FilePrinter(file: $0)] } ?? [],
-                  skipSpinner: quiet)
+                  spinnerMode: quiet ? .quiet : nonInteractive ? .simple : .standard)
     }
 }

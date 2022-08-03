@@ -11,7 +11,7 @@ import Files
 
 extension ParsableCommand {
     func done(logFile: File, time: Double, quiet: Bool) {
-        let logger = RugbyPrinter(logFile: logFile, verbose: .verbose, quiet: quiet)
+        let logger = RugbyPrinter(logFile: logFile, verbose: .verbose, quiet: quiet, nonInteractive: false)
         logger.print(time.output() + " " + .finalMessage)
     }
 }
