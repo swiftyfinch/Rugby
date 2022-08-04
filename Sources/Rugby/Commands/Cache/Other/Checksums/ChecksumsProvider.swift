@@ -32,7 +32,7 @@ final class ChecksumsProvider {
     private let podsProvider = PodsProvider.shared
     private static var cachedChecksums: [String: Checksum] = [:]
 
-    private var shouldChecksumContent: Bool
+    private let shouldChecksumContent: Bool
 
     init(shouldChecksumContent: Bool) {
         self.shouldChecksumContent = shouldChecksumContent
