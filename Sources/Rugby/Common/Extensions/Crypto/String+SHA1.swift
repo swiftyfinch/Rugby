@@ -6,7 +6,6 @@
 //  Copyright © 2021 Vyacheslav Khorkov. All rights reserved.
 //
 
-import CommonCrypto
 import Foundation
 
 extension String {
