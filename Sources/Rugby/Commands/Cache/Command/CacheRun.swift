@@ -10,7 +10,6 @@ import Files
 
 extension Cache: Command {
     var quiet: Bool { flags.quiet }
-    var nonInteractive: Bool { flags.nonInteractive }
 
     mutating func run(logFile: File) throws -> Metrics? {
         if !arch.isEmpty, sdk.count != arch.count { throw CacheError.incorrectArchCount }

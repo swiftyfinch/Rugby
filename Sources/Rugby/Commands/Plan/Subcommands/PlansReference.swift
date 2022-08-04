@@ -11,7 +11,6 @@ import Files
 struct PlansReference {
     let name: String
     let quiet = false
-    let nonInteractive = false
 }
 
 extension PlansReference: Command {

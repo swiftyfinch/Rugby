@@ -95,30 +95,18 @@ extension Plans {
     private func outputProjectMetrics(_ metrics: [Metrics], logFile: File) {
         guard let combinedMetrics = metrics.combine() else { return }
         let projectHeader = "[!] " + combinedMetrics.project + ":"
-        let printer = RugbyPrinter(logFile: logFile,
-                                   verbose: .verbose,
-                                   quiet: cacheOptions.flags.quiet,
-                                   nonInteractive: cacheOptions.flags.nonInteractive)
-        printer.print(projectHeader.green)
+        RugbyPrinter(logFile: logFile, verbose: .verbose, quiet: cacheOptions.flags.quiet).print(projectHeader.green)
         outputMore(combinedMetrics, logFile: logFile, quiet: cacheOptions.flags.quiet)
         printEmptyLine(logFile: logFile)
     }
 
     private func printEmptyLine(logFile: File) {
-        let printer = RugbyPrinter(logFile: logFile,
-                                   verbose: .verbose,
-                                   quiet: cacheOptions.flags.quiet,
-                                   nonInteractive: cacheOptions.flags.nonInteractive)
-        printer.print(.separator)
+        RugbyPrinter(logFile: logFile, verbose: .verbose, quiet: cacheOptions.flags.quiet).print(.separator)
     }
 
     private func printSelectedPlan(plan: String, logFile: File) {
-        let printer = RugbyPrinter(title: "Plans ✈️ ",
-                                   logFile: logFile,
-                                   verbose: .verbose,
-                                   quiet: cacheOptions.flags.quiet,
-                                   nonInteractive: cacheOptions.flags.nonInteractive)
-        printer.print("\(plan.yellow)")
+        RugbyPrinter(title: "Plans ✈️ ", logFile: logFile, verbose: .verbose, quiet: cacheOptions.flags.quiet)
+            .print("\(plan.yellow)")
     }
 }
 

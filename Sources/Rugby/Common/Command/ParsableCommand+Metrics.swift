@@ -18,14 +18,14 @@ extension ParsableCommand {
 
     func outputShort(_ metrics: Metrics?, time: Double, logFile: File, quiet: Bool) {
         guard let metrics = metrics else { return }
-        let logger = RugbyPrinter(logFile: logFile, verbose: .verbose, quiet: quiet, nonInteractive: false)
+        let logger = RugbyPrinter(logFile: logFile, verbose: .verbose, quiet: quiet)
         if let short = metrics.short() {
             logger.print(time.output() + " " + short)
         }
     }
 
     func outputMore(_ metrics: Metrics, logFile: File, quiet: Bool) {
-        let logger = RugbyPrinter(logFile: logFile, verbose: .verbose, quiet: quiet, nonInteractive: false)
+        let logger = RugbyPrinter(logFile: logFile, verbose: .verbose, quiet: quiet)
         metrics.more().forEach {
             logger.print("[!] ".yellow + $0)
         }

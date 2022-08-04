@@ -34,11 +34,7 @@ struct CacheBuildStep: Step {
         self.command = command
         self.verbose = command.flags.verbose
         self.isLast = isLast
-        self.progress = RugbyPrinter(title: "Build",
-                                     logFile: logFile,
-                                     verbose: verbose,
-                                     quiet: command.quiet,
-                                     nonInteractive: command.nonInteractive)
+        self.progress = RugbyPrinter(title: "Build", logFile: logFile, verbose: verbose, quiet: command.quiet)
         self.checksumsProvider = ChecksumsProvider(shouldChecksumContent: command.experimentalChecksumContent)
     }
 
