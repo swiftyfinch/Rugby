@@ -15,7 +15,6 @@ struct FocusDecodable: Decodable {
     let hideMetrics: Bool?
     @BoolableIntDecodable var verbose: Int?
     let quiet: Bool?
-    let nonInteractive: Bool?
 }
 
 extension Focus {
@@ -30,6 +29,5 @@ extension Focus {
         self.flags.hideMetrics = decodable.hideMetrics ?? false
         self.flags.verbose = decodable.verbose ?? 0
         self.flags.quiet = decodable.quiet ?? false
-        self.flags.nonInteractive = decodable.nonInteractive ?? false
     }
 }

@@ -13,7 +13,6 @@ protocol Command {
     var project: String { get }
     var hideMetrics: Bool { get }
     var quiet: Bool { get }
-    var nonInteractive: Bool { get }
 
     mutating func run(logFile: File) throws -> Metrics?
 }

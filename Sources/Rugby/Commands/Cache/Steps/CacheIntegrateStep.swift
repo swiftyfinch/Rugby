@@ -22,8 +22,7 @@ struct CacheIntegrateStep: Step {
         self.progress = RugbyPrinter(title: "Integration",
                                      logFile: logFile,
                                      verbose: verbose,
-                                     quiet: command.flags.quiet,
-                                     nonInteractive: command.flags.nonInteractive)
+                                     quiet: command.flags.quiet)
     }
 
     func run(_ targets: Set<String>) throws {
