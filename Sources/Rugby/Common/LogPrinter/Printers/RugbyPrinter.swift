@@ -57,7 +57,7 @@ final class RugbyPrinter: Printer {
         case .quiet:
             return try job()
         case .simple:
-            print(text)
+            print(text, level: .vv)
             return try job()
         case .standard:
             isSpinnerAnimating = true
