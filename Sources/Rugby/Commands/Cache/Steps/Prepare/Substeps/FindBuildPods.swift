@@ -21,7 +21,7 @@ extension CacheSubstepFactory {
             self.progress = progress
             self.command = command
             self.metrics = metrics
-            self.checksumsProvider = ChecksumsProvider(shouldChecksumContent: command.experimentalChecksumContent)
+            self.checksumsProvider = ChecksumsProvider(useContentChecksums: command.useContentChecksums)
         }
 
         func run(_ selectedPods: Set<String>) throws -> (

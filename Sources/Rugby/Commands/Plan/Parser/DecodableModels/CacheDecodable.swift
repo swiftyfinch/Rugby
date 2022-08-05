@@ -14,7 +14,7 @@ struct CacheDecodable: Decodable {
     let keepSources: Bool?
     let exclude: [String]?
     let ignoreChecksums: Bool?
-    let experimentalChecksumContent: Bool?
+    let useContentChecksums: Bool?
     let include: [String]?
     let focus: [String]?
     let graph: Bool?
@@ -36,7 +36,7 @@ extension Cache {
         self.keepSources = decodable.keepSources ?? false
         self.exclude = decodable.exclude ?? []
         self.ignoreChecksums = decodable.ignoreChecksums ?? false
-        self.experimentalChecksumContent = decodable.experimentalChecksumContent ?? false
+        self.useContentChecksums = decodable.useContentChecksums ?? false
         self.include = decodable.include ?? []
         self.focus = decodable.focus ?? []
         self.graph = decodable.graph ?? true

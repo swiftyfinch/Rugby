@@ -22,10 +22,9 @@ struct Cache: ParsableCommand {
     @Option(parsing: .upToNextOption, help: "Keep selected local pods and cache others.") var focus: [String] = []
     @Flag(inversion: .prefixedNo, help: "Build changed pods parents.") var graph = true
     @Flag(help: "Ignore already cached pods checksums.") var ignoreChecksums = false
-    @Flag(help: "Experimental: Checksum the content of local pods instead of file modification dates.")
-    var experimentalChecksumContent: Bool = false
+    @Flag(help: .beta("Use content checksums instead of modification date.")) var useContentChecksums = false
     @Flag(help: "Use relative paths to cache folder.") var useRelativePaths = false
-    @Flag(help: "\("(Beta)".yellow) Build without debug symbols.\n") var offDebugSymbols = false
+    @Flag(help: .beta("Build without debug symbols.\n")) var offDebugSymbols = false
 
     @OptionGroup var flags: CommonFlags
 

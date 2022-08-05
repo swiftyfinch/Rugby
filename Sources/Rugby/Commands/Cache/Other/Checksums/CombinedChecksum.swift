@@ -15,11 +15,11 @@ enum CombinedChecksumError: Error {
 }
 
 protocol CombinedChecksum {
-    func combinedChecksum(checksumContent: Bool) throws -> Checksum
+    func combinedChecksum(useContentChecksums: Bool) throws -> Checksum
 }
 
 extension RemotePod: CombinedChecksum {
-    func combinedChecksum(checksumContent: Bool) throws -> Checksum {
+    func combinedChecksum(useContentChecksums: Bool) throws -> Checksum {
         let combined = options
             .map { $0.key + ":" + $0.value }
             .sorted()
@@ -29,9 +29,9 @@ extension RemotePod: CombinedChecksum {
 }
 
 extension LocalPod: CombinedChecksum {
-    func combinedChecksum(checksumContent: Bool) throws -> Checksum {
+    func combinedChecksum(useContentChecksums: Bool) throws -> Checksum {
         let rootFolder = try folder()
-        if checksumContent {
+        if useContentChecksums {
             // Experimental method that checksums local pod content.
             // This is slower because more work needs to be done to checksum the actual file content.
             // The benefit of this is a more transferable cache. For example in a continuous integration setup

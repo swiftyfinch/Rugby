@@ -32,10 +32,10 @@ final class ChecksumsProvider {
     private let podsProvider = PodsProvider.shared
     private static var cachedChecksums: [String: Checksum] = [:]
 
-    private let shouldChecksumContent: Bool
+    private let useContentChecksums: Bool
 
-    init(shouldChecksumContent: Bool) {
-        self.shouldChecksumContent = shouldChecksumContent
+    init(useContentChecksums: Bool) {
+        self.useContentChecksums = useContentChecksums
     }
 
     func getChecksums(forPods pods: Set<String>) throws -> [Checksum] {
@@ -52,7 +52,7 @@ final class ChecksumsProvider {
             return cachedChecksum
         }
 
-        let checksum = try pod.combinedChecksum(checksumContent: shouldChecksumContent)
+        let checksum = try pod.combinedChecksum(useContentChecksums: useContentChecksums)
         Self.cachedChecksums[pod.name] = checksum
         return checksum
     }

@@ -39,7 +39,7 @@ struct CacheBuildStep: Step {
                                      verbose: verbose,
                                      quiet: command.quiet,
                                      nonInteractive: command.nonInteractive)
-        self.checksumsProvider = ChecksumsProvider(shouldChecksumContent: command.experimentalChecksumContent)
+        self.checksumsProvider = ChecksumsProvider(useContentChecksums: command.useContentChecksums)
     }
 
     func run(_ input: Input) throws {
