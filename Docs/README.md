@@ -30,7 +30,7 @@ Otherwise `cache` command will be run.
 
 ## Hide interactive animations
 
-Format output for non-interactive terminal sessions. It reduces output of loading spinner, e.g on CI (#183).
+Format output for non-interactive terminal sessions. It reduces output of loading spinner, e.g on CI ([#183](https://github.com/swiftyfinch/Rugby/pull/183)).
 
 ```bash
 rugby --non-interactive
