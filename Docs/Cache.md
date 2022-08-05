@@ -14,16 +14,19 @@ OPTIONS:
   --include <include>     Include local pods.
   --focus <focus>         Keep selected local pods and cache others.
   --graph/--no-graph      Build changed pods parents. (default: true)
+  --use-relative-paths    Use relative paths to cache folder.
+  --off-debug-symbols     Build without debug symbols.
   --ignore-checksums      Ignore already cached pods checksums.
-  --use-relative-paths    Use relative paths to cache folder
-  --off-debug-symbols     (Experimental) Build without debug symbols.
+  --use-content-checksums (Beta) Use content checksums instead of
+                          modification date.
 
-  --bell/--no-bell          Play bell sound on finish. (default: true)
-  --hide-metrics            Hide metrics.
-  -v, --verbose             Print more information.
-  -q, --quiet               Print nothing.
-  --version                 Show the version.
-  -h, --help                Show help information.
+  --bell/--no-bell        Play bell sound on finish. (default: true)
+  --hide-metrics          Hide metrics.
+  -v, --verbose           Print more information.
+  -q, --quiet             Print nothing.
+  --non-interactive       Print non-interactive output.
+  --version               Show the version.
+  -h, --help              Show help information.
 ```
 
 <br>
@@ -170,4 +173,12 @@ Also, it slightly speeds up app launch time.
 
 ```bash
 rugby --off-debug-symbols
+```
+
+## Checksums Algorithm
+
+By default Rugby calculate checksums of file modification dates. But there are some issues with such method. As an alternative you can use file content checksums calculation (#181).
+
+```bash
+rugby --use-content-checksums
 ```

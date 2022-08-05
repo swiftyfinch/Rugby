@@ -15,7 +15,7 @@ SUBCOMMANDS:
                        Call it after each pod install.
   focus              • Keep only selected targets and all their dependencies.
   drop               • Remove any targets by RegEx.
-  rollback           • (Beta, Hidden) Deintegrate Rugby from your project.
+  rollback           • Deintegrate Rugby from your project.
   log                • Print last command log verbosely.
   doctor             • Show troubleshooting suggestions.
   clean              • Remove cache except plans.yml and logs.
@@ -27,6 +27,14 @@ SUBCOMMANDS:
 
 By default 🏈 **Rugby** runs the `plans` command if you have `.rugby/plans.yml` file.\
 Otherwise `cache` command will be run.
+
+## Hide interactive animations
+
+Format output for non-interactive terminal sessions. It reduces output of loading spinner, e.g on CI (#183).
+
+```bash
+rugby --non-interactive
+```
 
 ## Log
 

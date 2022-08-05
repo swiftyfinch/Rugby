@@ -16,18 +16,23 @@ OPTIONS:
   --include <include>     Include local pods.
   --focus <focus>         Keep selected local pods and cache others.
   --graph/--no-graph      Build changed pods parents. (default: true)
+  --use-relative-paths    Use relative paths to cache folder.
+  --off-debug-symbols     Build without debug symbols.
   --ignore-checksums      Ignore already cached pods checksums.
-  --off-debug-symbols     (Experimental) Build without debug symbols.
+  --use-content-checksums (Beta) Use content checksums instead of
+                          modification date.
 
   --bell/--no-bell        Play bell sound on finish. (default: true)
   --hide-metrics          Hide metrics.
   -v, --verbose           Print more information.
   -q, --quiet             Print nothing.
+  --non-interactive       Print non-interactive output.
   --version               Show the version.
   -h, --help              Show help information.
 
 SUBCOMMANDS:
-  example           Generate example .rugby/plans.yml
+  list                    Print all plans and select one if needed
+  example                 Generate example .rugby/plans.yml
 ```
 
 <br>
@@ -71,6 +76,7 @@ rugby example
     focus: []
     hideMetrics: false
     ignoreChecksums: false
+    useContentChecksums: false
     offDebugSymbols: false
     verbose: false
     quiet: false
