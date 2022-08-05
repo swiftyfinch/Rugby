@@ -13,6 +13,5 @@ struct CommonFlags: ParsableCommand {
     @Flag(help: "Hide metrics.") var hideMetrics = false
     @Flag(name: .shortAndLong, help: "Print more information.") var verbose: Int
     @Flag(name: .shortAndLong, help: "Print nothing.") var quiet = false
-    @Flag(help: "Format output for non-interactive terminal sessions (reduce loading spinner output).")
-    var nonInteractive = false
+    @Flag(help: "Print non-interactive output.") var nonInteractive = false
 }
