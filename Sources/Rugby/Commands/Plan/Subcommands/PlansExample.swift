@@ -69,6 +69,7 @@ struct PlansExample: ParsableCommand {
             #ignoreChecksums: false
             #offDebugSymbols: false
             #verbose: false
+            #useContentChecksums: false
             quiet: true
 
           # 🔍 The second command: $ rugby focus "Pods-Main"

@@ -35,3 +35,9 @@ extension Command where Self: ParsableCommand {
         done(logFile: logFile, time: time, quiet: quiet)
     }
 }
+
+extension ArgumentHelp {
+    static func beta(_ help: String) -> ArgumentHelp {
+        "\("(Beta)".yellow) \(help)"
+    }
+}
