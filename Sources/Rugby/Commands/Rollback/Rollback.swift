@@ -16,7 +16,7 @@ struct Rollback: ParsableCommand, Command {
     var nonInteractive = false
 
     static var configuration = CommandConfiguration(
-        abstract: "• \("(Beta)".yellow) Deintegrate Rugby from your project."
+        abstract: "• Deintegrate Rugby from your project."
     )
 
     mutating func run() throws {
