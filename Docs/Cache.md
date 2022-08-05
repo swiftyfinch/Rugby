@@ -177,7 +177,7 @@ rugby --off-debug-symbols
 
 ## Checksums Algorithm
 
-By default Rugby calculate checksums of file modification dates. But there are some issues with such method. As an alternative you can use file content checksums calculation (#181).
+By default Rugby calculate checksums of file modification dates. But there are some issues with such method. As an alternative you can use file content checksums calculation ([#181](https://github.com/swiftyfinch/Rugby/pull/181)).
 
 ```bash
 rugby --use-content-checksums
