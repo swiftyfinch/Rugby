@@ -5,23 +5,24 @@
 OVERVIEW: Remove any targets by RegEx.
 
 ARGUMENTS:
-  <targets>                   RegEx targets for removing.
-                              - Use backward slashes \ for escaping special characters;
-                              - Add "" for safer use (without shell's interpretation). 
+  <targets>               RegEx targets for removing.
+                          - Use backward slashes \ for escaping special characters;
+                          - Add "" for safer use (without shell's interpretation). 
 
 OPTIONS:
-  -i, --invert                Invert regEx.
-  -e, --exclude <exclude>     Exclude targets. (not RegEx)
-  -t, --test-flight           Show output without any changes.
-  -p, --project <project>     Project location. (default: Pods/Pods.xcodeproj)
-  -k, --keep-sources          Keep sources & resources in project.
+  -i, --invert            Invert RegEx.
+  -e, --exclude <exclude> Exclude targets. (not RegEx)
+  -t, --test-flight       Show output without any changes.
+  -p, --project <project> Project location. (default: Pods/Pods.xcodeproj)
+  -k, --keep-sources      Keep sources & resources in project.
 
-  --bell/--no-bell            Play bell sound on finish. (default: true)
-  --hide-metrics              Hide metrics.
-  -v, --verbose               Print more information.
-  -q, --quiet                 Print nothing.
-  --version                   Show the version.
-  -h, --help                  Show help information.
+  --bell/--no-bell        Play bell sound on finish. (default: true)
+  --hide-metrics          Hide metrics.
+  -v, --verbose           Print more information.
+  -q, --quiet             Print nothing.
+  --non-interactive       Print non-interactive output.
+  --version               Show the version.
+  -h, --help              Show help information.
 ```
 
 <br>
