@@ -32,7 +32,7 @@ struct CleanStep: Step {
     }
 
     func run(_ input: Void) {
-        if Folder.current.deleteSubfolderIfExists(at: .backupFolder) {
+        if Folder.current.deleteSubfolderIfExists(at: .buildFolder) {
             progress.print("Removed \(String.buildFolder)".yellow)
         }
 
