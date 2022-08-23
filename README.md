@@ -44,7 +44,7 @@ You can read 📖 [full story](https://swiftyfinch.github.io/en/2021-03-09-rugby
 ✨ Fancy log output\
 🚀 Swiftish!
 
-Ruby alternatives:\
+Rugby alternatives:\
 `-` [PodBuilder](https://github.com/Subito-it/PodBuilder)\
 `-` [CocoaPods Binary Cache](https://github.com/grab/cocoapods-binary-cache)\
 `-` [CocoaPods Binary](https://github.com/leavez/cocoapods-binary)
