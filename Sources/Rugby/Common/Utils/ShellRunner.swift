@@ -47,7 +47,7 @@ extension ShellRunner {
                 stdout = asyncCommand.stdout.read()
             }
             let readErrorStreams = DispatchWorkItem {
-                stderror = asyncCommand.stderror.read()
+                stderror = asyncCommand.stderror.read().trimmingCharacters(in: .whitespacesAndNewlines)
             }
             DispatchQueue.global().async(execute: readOutStreams)
             DispatchQueue.global().async(execute: readErrorStreams)
@@ -57,7 +57,14 @@ extension ShellRunner {
             readErrorStreams.wait()
             return stdout ?? ""
         } catch {
-            throw ShellError.common(stderror ?? error.beautifulDescription)
+            let errorMessage: String
+            if let stderror = stderror, !stderror.isEmpty {
+                errorMessage = stderror
+            } else {
+                errorMessage = error.beautifulDescription
+            }
+
+            throw ShellError.common(errorMessage)
         }
     }
 }
