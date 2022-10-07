@@ -50,7 +50,7 @@ struct CacheBuildStep: Step {
 
         let xcargs = xcargsProvider.xcargs(bitcode: command.bitcode, withoutDebugSymbols: command.offDebugSymbols)
         for (sdk, arch) in zip(input.buildInfo.sdk, input.buildInfo.arch) {
-            try progress.spinner("Building \("\(sdk)-\(arch)".yellow)") {
+            try progress.spinner("Building \("\(sdk)-\(arch): \(command.config ?? "Debug")".yellow)") {
                 do {
                     try XcodeBuild(
                         project: .podsProject,
