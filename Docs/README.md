@@ -44,8 +44,8 @@ If you run any command without `--verbose` flag you still can get verbosity outp
 rugby log
 ```
 
-## Doctor
+## 🚑 Doctor
 
 If you encourage any problems, please call `rugby doctor` and follow suggestions.
 
-<img width="729" alt="Screenshot 2021-11-30 at 21 08 47" src="https://user-images.githubusercontent.com/64660122/144104545-84c7ac6f-2c39-4812-bdba-511b10b8194d.png">
+<img width="832" alt="Screenshot 2022-10-08 at 14 17 15" src="https://user-images.githubusercontent.com/64660122/194700295-2fd7ecf9-a0a7-4ea1-b3c1-bcfeef767d8c.png">
