@@ -15,7 +15,7 @@
   <a href="https://github.com/yonaskolb/Mint"><img src="https://img.shields.io/badge/Mint-darkgreen?logo=leaflet&logoColor=white" /></a>
   <a href="https://swiftpackageindex.com/swiftyfinch/Rugby"><img src="https://img.shields.io/badge/Swift_Package_Index-red?logo=swift&logoColor=white" /></a>
   <br>
-  <img src="https://img.shields.io/badge/Press_★_for_pay_respect-white?logo=github&logoColor=black" />
+  <img src="https://img.shields.io/badge/Press_★_to_pay_respects-white?logo=github&logoColor=black" />
   <a href="https://twitter.com/swiftyfinch"><img src="https://img.shields.io/badge/SwiftyFinch-blue?logo=twitter&logoColor=white" /></a>
 </p>
 
@@ -68,21 +68,7 @@ Feel free to report any issues or suggest some new feature requests.
 brew tap swiftyfinch/Rugby https://github.com/swiftyfinch/Rugby.git
 brew install rugby
 ```
-
-## Build from source code with <a href="https://github.com/yonaskolb/Mint">Mint</a> 🌱
-
-```bash
-brew install mint
-mint install swiftyfinch/rugby
-```
-
-> **Warning**: Now on **Mint 0.17.0** you'll need to add `~/.mint/bin` to your **$PATH**<br>
-> For example, add this to your `~/.zshrc` file and relaunch terminal
-
-```bash
-export PATH=$HOME/.mint/bin:$PATH
-```
-More info about [installation](https://github.com/swiftyfinch/Rugby/discussions/71) with demo 🎬
+More info [here](https://github.com/swiftyfinch/Rugby/discussions/71) 🎬
 
 ## How to use 🏈
 
@@ -108,7 +94,6 @@ Read more [about advanced usage](Docs/Plans.md#-generate-example)
 🎬 [Installation Demo](https://github.com/swiftyfinch/Rugby/discussions/71)
 🎬 [Basic Usage Demo](https://github.com/swiftyfinch/Rugby/discussions/72)
 🎬 [Debug Demo](https://github.com/swiftyfinch/Rugby/discussions/142)
-🎬 [Rugby Review (ru)](https://github.com/swiftyfinch/Rugby/discussions/146)
 <br>
 
 ### `Author`
