@@ -11,7 +11,7 @@
   <a href="https://swiftpackageindex.com/swiftyfinch/Rugby"><img src="https://img.shields.io/endpoint?color=orange&label=Swift&logo=swift&logoColor=white&url=https%3A%2F%2Fswiftpackageindex.com%2Fapi%2Fpackages%2Fswiftyfinch%2FRugby%2Fbadge%3Ftype%3Dswift-versions" /></a>
   <a href="https://swiftpackageindex.com/swiftyfinch/Rugby"><img src="https://img.shields.io/endpoint?label=Platform&url=https%3A%2F%2Fswiftpackageindex.com%2Fapi%2Fpackages%2Fswiftyfinch%2FRugby%2Fbadge%3Ftype%3Dplatforms" /></a>
   <br>
-  <a href="https://brew.sh"><img src="https://img.shields.io/badge/Homebrew-8B4513" /></a>
+  <a href="https://brew.sh"><img src="https://img.shields.io/badge/🍺_Homebrew-8B4513" /></a>
   <a href="https://github.com/yonaskolb/Mint"><img src="https://img.shields.io/badge/Mint-darkgreen?logo=leaflet&logoColor=white" /></a>
   <a href="https://swiftpackageindex.com/swiftyfinch/Rugby"><img src="https://img.shields.io/badge/Swift_Package_Index-red?logo=swift&logoColor=white" /></a>
   <br>
@@ -20,16 +20,16 @@
 </p>
 
 
-### `Motivation`
+# Motivation
 
 Working on a project with a huge amount of pods I had some troubles:\
 `-` Slow and unnecessary indexing of pods targets, which implementation I rarely try to edit;\
-`-` Redundant rebuild time, probably as a result of problems `CocoaPods` hooks or Xcode build system;\
+`-` Redundant rebuild time, probably as a result of problems [CocoaPods](https://cocoapods.org) hooks or Xcode build system;\
 `-` Freezing UI during navigation.
 
 You can read 📖 [full story](https://swiftyfinch.github.io/en/2021-03-09-rugby-story/) on my blog.
 
-### `Description`
+## Description
 
 🏈 `Rugby` is CLI tool that was developed to solve the above problems:\
 `+` Cache all pods dependencies and remove their targets from the Pods project;\
@@ -37,7 +37,7 @@ You can read 📖 [full story](https://swiftyfinch.github.io/en/2021-03-09-rugby
 `+` Remove unnecessary sources from a project and reduce project size;\
 `+` Drop any unneeded targets with sources and resources by RegEx.
 
-### `What makes it different?`
+## What makes it different?
 
 🕊 Not a dependency, just an optional step\
 🔒 Doesn't change Podfile and Podfile.lock\
@@ -48,29 +48,31 @@ You can read 📖 [full story](https://swiftyfinch.github.io/en/2021-03-09-rugby
 
 Ruby alternatives: [PodBuilder](https://github.com/Subito-it/PodBuilder) | [CocoaPods Binary Cache](https://github.com/grab/cocoapods-binary-cache) | [CocoaPods Binary](https://github.com/leavez/cocoapods-binary)
 
-### `Discussions`
+### Discussions
 
-You can read more about 🏈 Rugby in [`discussions`](https://github.com/swiftyfinch/Rugby/discussions) section.\
+You can read more about 🏈 Rugby in [discussions](https://github.com/swiftyfinch/Rugby/discussions) section.\
 Feel free to report any issues or suggest some new feature requests.
 
 <br>
 
-## Download binary with [Homebrew](https://brew.sh) 🍺
+# Install using [Homebrew](https://brew.sh) 🍺
 
-```bash
+```shell
 brew tap swiftyfinch/Rugby https://github.com/swiftyfinch/Rugby.git
 brew install rugby
 ```
-More info [here](https://github.com/swiftyfinch/Rugby/discussions/71) 🎬
+More information 🎬 [here](https://github.com/swiftyfinch/Rugby/discussions/71).
 
-## How to use 🏈
+<br>
+
+# How to use 🏈
 
 Run in your project directory after each pod install:
 ```bash
 pod install && rugby
 ```
-Watch 🎬 [Basic Usage Demo](https://github.com/swiftyfinch/Rugby/discussions/72)<br>
-Read more [about advanced usage](Docs/Plans.md#-generate-example)
+Watch 🎬 [Basic Usage Demo](https://github.com/swiftyfinch/Rugby/discussions/72).<br>
+Read more [about advanced usage](Docs/Plans.md#-generate-example).
 
 ## Documentation 📚
 
@@ -87,13 +89,14 @@ Read more [about advanced usage](Docs/Plans.md#-generate-example)
 🎬 [Installation Demo](https://github.com/swiftyfinch/Rugby/discussions/71)
 🎬 [Basic Usage Demo](https://github.com/swiftyfinch/Rugby/discussions/72)
 🎬 [Debug Demo](https://github.com/swiftyfinch/Rugby/discussions/142)
+
+###### Known limitations
+
+`-` Not supported WatchOS SDK
+
 <br>
 
-### `Known limitations`
-
-`-` Not supported `WatchOS` SDK
-
-### `Author`
+### Author
 
 Vyacheslav Khorkov\
 Twitter: [@SwiftyFinch](https://twitter.com/swiftyfinch)\
