@@ -63,6 +63,17 @@ brew install rugby
 ```
 More information 🎬 [here](https://github.com/swiftyfinch/Rugby/discussions/71).
 
+## Beta is coming ☃️
+
+<img width="260" src="https://user-images.githubusercontent.com/64660122/207603869-f011fbc7-a893-4eef-8c48-c724b16d2dd2.png" align="left">
+
+Features:\
+`*` Cache Consistency;\
+`*` W/o Magic Interfaces;\
+`*` More Optimisations;\
+`*` Cache Distribution.
+<br clear="left"/>
+
 <br>
 
 # How to use 🏈
