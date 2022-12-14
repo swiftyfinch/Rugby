@@ -65,13 +65,13 @@ More information 🎬 [here](https://github.com/swiftyfinch/Rugby/discussions/71
 
 ## Beta is coming ☃️
 
-<img width="260" src="https://user-images.githubusercontent.com/64660122/207603869-f011fbc7-a893-4eef-8c48-c724b16d2dd2.png" align="left">
+<img width="250" src="https://user-images.githubusercontent.com/64660122/207603869-f011fbc7-a893-4eef-8c48-c724b16d2dd2.png" align="left">
 
 Features:\
 `*` Cache Consistency;\
-`*` W/o Magic Interfaces;\
+`*` Cache Distribution;\
 `*` More Optimisations;\
-`*` Cache Distribution.
+`*` W/o Magic Interfaces.
 <br clear="left"/>
 
 <br>
@@ -89,11 +89,11 @@ Read more [about advanced usage](Docs/Plans.md#-generate-example).
 
 | Command | Description |
 | :----- | :------ |
-🚑 [`Help`](Docs/README.md) | General Rugby documentation.
-🏈 [`Cache`](Docs/Cache.md) | Convert pods to prebuilt dependencies.
-✈️ [`Plans`](Docs/Plans.md) | Run a predefined sequence of commands.
-🔍 [`Focus`](Docs/Focus.md) | Keep only selected targets and all their dependencies.
-🗑 [`Drop`](Docs/Drop.md) | Remove any targets by RegEx.
+🚑 [Help](Docs/README.md) | General Rugby documentation.
+🏈 [Cache](Docs/Cache.md) | Convert pods to prebuilt dependencies.
+✈️ [Plans](Docs/Plans.md) | Run a predefined sequence of commands.
+🔍 [Focus](Docs/Focus.md) | Keep only selected targets and all their dependencies.
+🗑 [Drop](Docs/Drop.md) | Remove any targets by RegEx.
 
 | 🎓 How To |
 | :----- |
