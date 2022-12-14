@@ -46,19 +46,12 @@ You can read 📖 [full story](https://swiftyfinch.github.io/en/2021-03-09-rugby
 ✨ Fancy log output\
 🚀 Swiftish!
 
-Ruby alternatives:\
-`-` [PodBuilder](https://github.com/Subito-it/PodBuilder)\
-`-` [CocoaPods Binary Cache](https://github.com/grab/cocoapods-binary-cache)\
-`-` [CocoaPods Binary](https://github.com/leavez/cocoapods-binary)
+Ruby alternatives: [PodBuilder](https://github.com/Subito-it/PodBuilder) | [CocoaPods Binary Cache](https://github.com/grab/cocoapods-binary-cache) | [CocoaPods Binary](https://github.com/leavez/cocoapods-binary)
 
 ### `Discussions`
 
 You can read more about 🏈 Rugby in [`discussions`](https://github.com/swiftyfinch/Rugby/discussions) section.\
 Feel free to report any issues or suggest some new feature requests.
-
-### `Known limitations`
-
-`-` Not supported `WatchOS` SDK
 
 <br>
 
@@ -95,6 +88,10 @@ Read more [about advanced usage](Docs/Plans.md#-generate-example)
 🎬 [Basic Usage Demo](https://github.com/swiftyfinch/Rugby/discussions/72)
 🎬 [Debug Demo](https://github.com/swiftyfinch/Rugby/discussions/142)
 <br>
+
+### `Known limitations`
+
+`-` Not supported `WatchOS` SDK
 
 ### `Author`
 
