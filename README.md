@@ -17,6 +17,8 @@
   <br>
   <img src="https://img.shields.io/badge/Press_★_to_pay_respects-white?logo=github&logoColor=black" />
   <a href="https://twitter.com/swiftyfinch"><img src="https://img.shields.io/badge/SwiftyFinch-blue?logo=twitter&logoColor=white" /></a>
+  <br>
+  <a href="https://github.com/swiftyfinch/Rugby/releases/tag/2.0.0b2"><img src="https://img.shields.io/badge/Early_Beta_Available-4BA057" /></a>
 </p>
 
 
@@ -63,16 +65,10 @@ brew install rugby
 ```
 More information 🎬 [here](https://github.com/swiftyfinch/Rugby/discussions/71).
 
-## Beta is coming ☃️
+## 🏈 Rugby Remastered <a href="https://github.com/swiftyfinch/Rugby/releases/tag/2.0.0b2"><img src="https://img.shields.io/badge/Early_Beta_Available-4BA057" /></a>
 
-<img width="250" src="https://user-images.githubusercontent.com/64660122/207603869-f011fbc7-a893-4eef-8c48-c724b16d2dd2.png" align="left">
-
-Features:\
-`*` Cache Consistency;\
-`*` Cache Distribution;\
-`*` More Optimisations;\
-`*` W/o Magic Interfaces.
-<br clear="left"/>
+You can find all information in [readme](https://github.com/swiftyfinch/Rugby/tree/beta#readme).<br>
+📦 The first pre-release is already [here](https://github.com/swiftyfinch/Rugby/releases/tag/2.0.0b2).
 
 <br>
 
