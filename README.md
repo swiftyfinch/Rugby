@@ -1,8 +1,3 @@
-<br>
-<p align="center">
-  <img src="https://user-images.githubusercontent.com/64660122/140398205-9328806e-897d-483d-a898-c90f66840196.png" width="600"/>
-</p>
-
 <p align="center">
    <img src="https://user-images.githubusercontent.com/64660122/194708589-7331a02a-6d6e-4c0f-a7ec-e367f7228080.gif" width="600"/>
 </p>
@@ -15,7 +10,7 @@
   <a href="https://github.com/yonaskolb/Mint"><img src="https://img.shields.io/badge/Mint-darkgreen?logo=leaflet&logoColor=white" /></a>
   <a href="https://swiftpackageindex.com/swiftyfinch/Rugby"><img src="https://img.shields.io/badge/Swift_Package_Index-red?logo=swift&logoColor=white" /></a>
   <br>
-  <img src="https://img.shields.io/badge/Press_★_to_pay_respects-white?logo=github&logoColor=black" />
+  <img src="https://img.shields.io/badge/Press_★_to_pay_respects-44494E?logo=github&logoColor=white" />
   <a href="https://twitter.com/swiftyfinch"><img src="https://img.shields.io/badge/SwiftyFinch-blue?logo=twitter&logoColor=white" /></a>
   <br>
   <a href="https://github.com/swiftyfinch/Rugby/releases/tag/2.0.0b2"><img src="https://img.shields.io/badge/Early_Beta_Available-4BA057" /></a>
@@ -75,7 +70,7 @@ You can find all information in [readme](https://github.com/swiftyfinch/Rugby/tr
 # How to use 🏈
 
 Run in your project directory after each pod install:
-```bash
+```shell
 pod install && rugby
 ```
 Watch 🎬 [Basic Usage Demo](https://github.com/swiftyfinch/Rugby/discussions/72).<br>
@@ -103,9 +98,11 @@ Read more [about advanced usage](Docs/Plans.md#-generate-example).
 
 <br>
 
-### Author
+###### 📮 Support
 
-Vyacheslav Khorkov\
-Twitter: [@SwiftyFinch](https://twitter.com/swiftyfinch)\
-Blog: [swiftyfinch.github.io](https://swiftyfinch.github.io/en)\
-Feel free to contact me 📮
+If you want to support this project, you can do some of these:\
+`1)` <ins><b>Press</b></ins> ⭐️. It's a great pointer that Rugby is useful;\
+`2)` <ins><b>Share</b></ins> the project 🌍 somewhere with anybody;\
+`3)` <ins><b>Leave feedback</b></ins> in the discussions 💬 section.
+
+If you have any questions or feature requests, feel free to open a discussion or an issue.
