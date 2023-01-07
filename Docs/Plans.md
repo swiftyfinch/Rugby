@@ -7,32 +7,33 @@ OVERVIEW: Run selected plan from .rugby/plans.yml or use cache command if file n
 OPTIONS:
   --plan <plan>           Plan name. (default: the first plan)
 
-  -s, --sdk <sdk>         Build sdks: sim/ios or both. (default: sim)
-  -a, --arch <arch>       Build architectures. (default: sim x86_64, ios arm64)
-  -c, --config <config>   Build configuration. (default: Debug)
-  --bitcode               Add bitcode for archive builds.
-  -k, --keep-sources      Keep Pods group in project.
-  -e, --exclude <exclude> Exclude pods from cache.
-  --include <include>     Include local pods.
-  --focus <focus>         Keep selected local pods and cache others.
-  --graph/--no-graph      Build changed pods parents. (default: true)
-  --use-relative-paths    Use relative paths to cache folder.
-  --off-debug-symbols     Build without debug symbols.
-  --ignore-checksums      Ignore already cached pods checksums.
-  --use-content-checksums (Beta) Use content checksums instead of
-                          modification date.
+  -s, --sdk <sdk>               Build sdks: sim/ios or both. (default: sim)
+  -a, --arch <arch>             Build architectures. (default: sim x86_64, ios arm64)
+  -c, --config <config>         Build configuration. (default: Debug)
+  --bitcode                     Add bitcode for archive builds.
+  -k, --keep-sources            Keep Pods group in project.
+  -e, --exclude <exclude>       Exclude pods from cache.
+  --include <include>           Include local pods.
+  --focus <focus>               Keep selected local pods and cache others.
+  --graph/--no-graph            Build changed pods parents. (default: true)
+  --use-relative-paths          Use relative paths to cache folder.
+  --off-debug-symbols           Build without debug symbols.
+  --ignore-checksums            Ignore already cached pods checksums.
+  --use-content-checksums       (Beta) Use content checksums instead of
+                                modification date.
+  --ignore-git-dirty-local-pods Ignore local pods which git is dirty.
 
-  --bell/--no-bell        Play bell sound on finish. (default: true)
-  --hide-metrics          Hide metrics.
-  -v, --verbose           Print more information.
-  -q, --quiet             Print nothing.
-  --non-interactive       Print non-interactive output.
-  --version               Show the version.
-  -h, --help              Show help information.
+  --bell/--no-bell              Play bell sound on finish. (default: true)
+  --hide-metrics                Hide metrics.
+  -v, --verbose                 Print more information.
+  -q, --quiet                   Print nothing.
+  --non-interactive             Print non-interactive output.
+  --version                     Show the version.
+  -h, --help                    Show help information.
 
 SUBCOMMANDS:
-  list                    Print all plans and select one if needed
-  example                 Generate example .rugby/plans.yml
+  list                          Print all plans and select one if needed
+  example                       Generate example .rugby/plans.yml
 ```
 
 <br>
@@ -77,6 +78,7 @@ rugby example
     hideMetrics: false
     ignoreChecksums: false
     useContentChecksums: false
+    ignoreGitDirtyLocalPods: false
     offDebugSymbols: false
     verbose: false
     quiet: false

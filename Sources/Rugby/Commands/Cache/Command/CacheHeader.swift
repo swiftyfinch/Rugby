@@ -25,7 +25,7 @@ struct Cache: ParsableCommand {
     @Flag(help: "Build without debug symbols.") var offDebugSymbols = false
     @Flag(help: "Ignore already cached pods checksums.") var ignoreChecksums = false
     @Flag(help: .beta("Use content checksums instead of modification date.\n")) var useContentChecksums = false
-	@Flag(name: .shortAndLong, help: "Ignore local pods which git is dirty.\n") var ignoreGitDirtyLocalPods = false
+	@Flag(help: "Ignore local pods which git is dirty.\n") var ignoreGitDirtyLocalPods = false
 
     @OptionGroup var flags: CommonFlags
 
