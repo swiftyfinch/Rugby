@@ -48,7 +48,8 @@ extension PodsProvider {
         for source in lockfile.externalSources {
             guard let checksum = lockfile.specChecksums[source.key] else { continue }
             if let path = source.value[.path] {
-                localPods[source.key] = LocalPod(name: source.key, path: path, checksum: checksum)
+				let isGitClean = (try? shell("cd \(path) && git status --porcelain").trimmingCharacters(in: .newlines).isEmpty) ?? true
+				localPods[source.key] = LocalPod(name: source.key, path: path, checksum: checksum, isGitClean: isGitClean)
             } else {
                 remotePods[source.key] = RemotePod(name: source.key, options: source.value, checksum: checksum)
             }

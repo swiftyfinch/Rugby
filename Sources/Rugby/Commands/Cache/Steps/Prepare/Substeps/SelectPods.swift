@@ -23,7 +23,16 @@ extension CacheSubstepFactory {
                 pods = allPods.subtracting(command.focus)
             } else if !command.include.isEmpty {
                 let remotePods = try podsProvider.remotePodsNames()
-                let localPods = try podsProvider.podsNames().filter { command.include.contains($0) }
+                let localPods = try podsProvider.pods()
+					.filter {
+						if let pod = $0 as? LocalPod, command.ignoreGitDirtyLocalPods {
+							return pod.isGitClean
+						}
+						return true
+					}
+					.map(\.name)
+					.filter { command.include.contains($0) }
+				
                 pods = remotePods.union(localPods)
             } else {
                 pods = try podsProvider.remotePodsNames()
