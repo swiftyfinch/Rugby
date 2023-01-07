@@ -25,7 +25,7 @@ struct CacheDecodable: Decodable {
     @BoolableIntDecodable var verbose: Int?
     let quiet: Bool?
     let nonInteractive: Bool?
-	let ignoreGitDirtyLocalPods: Bool?
+    let ignoreGitDirtyLocalPods: Bool?
 }
 
 extension Cache {
@@ -43,7 +43,7 @@ extension Cache {
         self.graph = decodable.graph ?? true
         self.offDebugSymbols = decodable.offDebugSymbols ?? false
         self.useRelativePaths = decodable.useRelativePaths ?? false
-		self.ignoreGitDirtyLocalPods = decodable.ignoreGitDirtyLocalPods ?? false
+        self.ignoreGitDirtyLocalPods = decodable.ignoreGitDirtyLocalPods ?? false
 
         self.flags = .init()
         self.flags.bell = decodable.bell ?? true

@@ -15,7 +15,7 @@ struct LocalPod: Pod {
     let name: String
     let path: String
     let checksum: Checksum
-	let isGitClean: Bool
+    let isGitClean: Bool
 }
 
 struct RemotePod: Pod {
