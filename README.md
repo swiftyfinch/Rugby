@@ -101,7 +101,7 @@ Read more [about advanced usage](Docs/Plans.md#-generate-example).
 ###### 📮 Support
 
 If you want to support this project, you can do some of these:\
-`1)` <ins><b>Press</b></ins> ⭐️. It's a great pointer that Rugby is useful;\
+`1)` <ins><b>Press</b></ins> ⭐️. It's a great sign that Rugby is useful;\
 `2)` <ins><b>Share</b></ins> the project 🌍 somewhere with anybody;\
 `3)` <ins><b>Leave feedback</b></ins> in the discussions 💬 section.
 
