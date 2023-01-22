@@ -102,7 +102,10 @@ extension LocalPod: CombinedChecksum {
         // 12% SHA1 checksum
         // 5% Other
         var checksums: [String] = []
-        for case let url as URL in enumerator where !url.hasDirectoryPath {
+        for case let url as URL in enumerator {
+			let resolvedSymlinksUrl = url.resolvingSymlinksInPath()
+			guard FileManager.default.isReadableFile(atPath: resolvedSymlinksUrl.path),
+				  !resolvedSymlinksUrl.hasDirectoryPath else { continue }
             let data = try Data(contentsOf: url)
             checksums.append(data.sha1())
         }
