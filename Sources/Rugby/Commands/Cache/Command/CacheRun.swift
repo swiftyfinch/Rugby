@@ -15,6 +15,12 @@ extension Cache: Command {
     mutating func run(logFile: File) throws -> Metrics? {
         if !arch.isEmpty, sdk.count != arch.count { throw CacheError.incorrectArchCount }
         if arch.isEmpty { arch = sdk.map(\.defaultARCH) /* Set default arch for each sdk */ }
+        arch = zip(sdk, arch).map { s, a in
+            if s == .sim, a == "auto" {
+                return machineArchitecture() ?? ARCH.x86_64.rawValue
+            }
+            return a
+        }
 
         // For build configuration name use Debug by default.
         if config == nil { config = CONFIG.debug }
