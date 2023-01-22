@@ -6,7 +6,7 @@ OVERVIEW: Convert pods to prebuilt dependencies.
 
 OPTIONS:
   -s, --sdk <sdk>         Build sdks: sim/ios or both. (default: sim)
-  -a, --arch <arch>       Build architectures. (default: sim auto(x86_64 on x86 mac, arm64 on arm64 mac), ios arm64)
+  -a, --arch <arch>       Build architectures. (default: sim x86_64, ios arm64. Especially, sim auto means x86_64 on x86 mac, arm64 on arm64 mac)
   -c, --config <config>   Build configuration. (default: Debug)
   --bitcode               Add bitcode for archive builds.
   -k, --keep-sources      Keep Pods group in project.
@@ -126,7 +126,7 @@ rugby --focus ""
 
 ## Ignore checksums
 
-**Rugby** has cache file at `.rugby/cache.yml`. There keep checksums and other build settings. During each run **Rugby** try to save your time and do not pass all targets to Xcode building process. But sometimes something can get wrong. 
+**Rugby** has cache file at `.rugby/cache.yml`. There keep checksums and other build settings. During each run **Rugby** try to save your time and do not pass all targets to Xcode building process. But sometimes something can get wrong.
 
 If you have troubles with the building process you can try to use that flag. It will ignore CocoaPods checksums and add all targets to Xcode build process. Also will be great if you report about that in the discussions sections. It can help to improve the cache system.
 

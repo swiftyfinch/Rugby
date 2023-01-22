@@ -19,29 +19,11 @@ enum SDK: String, Codable, ExpressibleByArgument {
     }
 
     var defaultARCH: String {
-		let arch: ARCH
         switch self {
         case .ios:
-			arch = ARCH.arm64
+            return ARCH.arm64.rawValue
         case .sim:
-			arch = systemArch() ?? .x86_64
+            return ARCH.x86_64.rawValue
         }
-		return arch.rawValue
     }
-}
-
-import Foundation
-
-private func systemArch() -> ARCH? {
-	var systeminfo = utsname()
-	uname(&systeminfo)
-	let machine = withUnsafeBytes(of: &systeminfo.machine) { bufPtr -> String in
-		let data = Data(bufPtr)
-		if let lastIndex = data.lastIndex(where: {$0 != 0}) {
-			return String(data: data[0...lastIndex], encoding: .isoLatin1)!
-		} else {
-			return String(data: data, encoding: .isoLatin1)!
-		}
-	}
-	return ARCH(rawValue: machine)
 }
