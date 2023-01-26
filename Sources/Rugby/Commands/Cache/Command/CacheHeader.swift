@@ -13,7 +13,7 @@ struct Cache: ParsableCommand {
     @Option(name: .shortAndLong, parsing: .upToNextOption, help: "Build sdks: sim/ios or both.") var sdk: [SDK] = [.sim]
     @Option(name: .shortAndLong,
             parsing: .upToNextOption,
-            help: "Build architectures. (default: sim \(ARCH.x86_64), ios \(ARCH.arm64))") var arch: [String] = []
+            help: "Build architectures. (default: sim \(ARCH.x86_64), ios \(ARCH.arm64)). In particular, sim auto means x86_64 on x86 mac, arm64 on arm64 mac.") var arch: [String] = []
     @Option(name: .shortAndLong, help: "Build configuration. (default: \(CONFIG.debug))") var config: String?
     @Flag(name: .long, help: "Add bitcode for archive builds.") var bitcode = false
     @Flag(name: .shortAndLong, help: "Keep Pods group in project.") var keepSources = false
