@@ -17,7 +17,7 @@ extension Cache: Command {
         if arch.isEmpty { arch = sdk.map(\.defaultARCH) /* Set default arch for each sdk */ }
         arch = zip(sdk, arch).map { s, a in
             if s == .sim, a == "auto" {
-                return machineArchitecture() ?? ARCH.x86_64.rawValue
+                return machineArchitecture() ?? ARCH.x86_64
             }
             return a
         }

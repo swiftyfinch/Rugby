@@ -21,9 +21,9 @@ enum SDK: String, Codable, ExpressibleByArgument {
     var defaultARCH: String {
         switch self {
         case .ios:
-            return ARCH.arm64.rawValue
+            return ARCH.arm64
         case .sim:
-            return ARCH.x86_64.rawValue
+            return ARCH.x86_64
         }
     }
 }
