@@ -63,3 +63,6 @@ whiteList:
   - fd
   - ecf
   - bcfeef
+  - mlch
+  - utsname
+  - uname
