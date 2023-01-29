@@ -7,7 +7,8 @@
 ```
 
 ```sh
-> Set of base commands combinations.
+
+ > Set of base commands combinations.
 
  Subcommands:
 ╭─────────────────────────────────────────────────────────────────────────────────╮

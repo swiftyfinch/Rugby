@@ -10,7 +10,7 @@
  Subcommands:
 ╭─────────────────────────────────────────────────────────────────────────────╮
 │ shortcuts  * Set of base commands combinations.                             │
-│ build      * Build or analyse targets from Pods project.                    │
+│ build      * Build targets from Pods project.                               │
 │ use        * Use already built binaries instead of sources in Pods project. │
 │ delete     * Delete targets from the project.                               │
 │ plan       * Run sequence of Rugby commands.                                │

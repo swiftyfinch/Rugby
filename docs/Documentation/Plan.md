@@ -7,18 +7,19 @@
 ```
 
 ```sh
-> Run sequence of Rugby commands.
 
-Arguments:
+ > Run sequence of Rugby commands.
+
+ Arguments:
 ╭──────────────────────────────╮
 │ name  * Name of plan to run. │
 ╰──────────────────────────────╯
-Options:
+ Options:
 ╭────────────────────────────────────────────────────────╮
 │ -p, --path    * Path to plans yaml. (.rugby/plans.yml) │
 │ -o, --output  * Output mode: fold, multiline, quiet.   │
 ╰────────────────────────────────────────────────────────╯
-Flags:
+ Flags:
 ╭────────────────────────────────────────────╮
 │ -v, --verbose []  * Log level.             │
 │ -h, --help        * Show help information. │

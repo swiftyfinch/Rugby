@@ -7,13 +7,14 @@
 ```
 
 ```sh
-> Delete .rugby/build folder.
 
-Options:
+ > Delete .rugby/build folder.
+
+ Options:
 ╭──────────────────────────────────────────────────────╮
 │ -o, --output  * Output mode: fold, multiline, quiet. │
 ╰──────────────────────────────────────────────────────╯
-Flags:
+ Flags:
 ╭────────────────────────────────────────────╮
 │ -v, --verbose []  * Log level.             │
 │ -h, --help        * Show help information. │

@@ -7,13 +7,14 @@
 ```
 
 ```sh
-> Delete .rugby/binaries folder.
 
-Options:
+ > Delete .rugby/bin folder.
+
+ Options:
 ╭──────────────────────────────────────────────────────╮
 │ -o, --output  * Output mode: fold, multiline, quiet. │
 ╰──────────────────────────────────────────────────────╯
-Flags:
+ Flags:
 ╭────────────────────────────────────────────╮
 │ -v, --verbose []  * Log level.             │
 │ -h, --help        * Show help information. │

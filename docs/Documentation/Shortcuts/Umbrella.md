@@ -7,13 +7,14 @@
 ```
 
 ```sh
-> Run the plan command if plans file exists or run the cache command.
 
-Arguments:
+ > Run the plan command if plans file exists or run the cache command.
+
+ Arguments:
 ╭──────────────────────────────────────────────────────────╮
 │ arguments []  * Any arguments of plan or cache commands. │
 ╰──────────────────────────────────────────────────────────╯
-Flags:
+ Flags:
 ╭──────────────────────────────────────╮
 │ -h, --help  * Show help information. │
 ╰──────────────────────────────────────╯

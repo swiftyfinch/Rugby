@@ -108,7 +108,6 @@ usual:
   sdk: sim
   ignore-cache: false
   except: PodName
-  except-as-regex: false
 ```
 
 This command will be converted to `rugby cache --sdk sim --except PodName`.
