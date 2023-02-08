@@ -8,7 +8,7 @@
 
 ```sh
 
- > Use already built binaries instead of sources in Pods project.
+ > Use already built binaries instead of sources.
 
  Options:
 ╭────────────────────────────────────────────────────────────────────────────────╮
