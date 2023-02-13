@@ -7,7 +7,7 @@
 <a href="https://twitter.com/swiftyfinch"><img src="https://img.shields.io/badge/SwiftyFinch-blue?logo=twitter&logoColor=white" /></a>
 </p>
 
-<img width="250" src="https://user-images.githubusercontent.com/64660122/209378011-87bbfb87-66a4-4aa9-a30b-972615d0a803.png" align="left">
+<img width="250" src="https://user-images.githubusercontent.com/64660122/218528409-066eaaa9-7005-4004-9364-1f70cd5f3e42.png" align="left">
 
 \
 🙋🏼‍♀️ [Welcome](docs/Welcome.md)\
