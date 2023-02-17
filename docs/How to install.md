@@ -29,34 +29,54 @@ but it's right inside Rugby.
 
 ### First Install (zsh)
 
-Select your architecture: `arm64` or `x86_64`. Run a five commands below. I described them in points 1-5:
+Select your architecture: `arm64` or `x86_64`. Run the five commands below. I described them in points 1-5:
 
 1. Create and change the current directory to `~/.rugby/clt/downloads` (recommended);
-2. Download the specific version of Rugby. E.g. `2.0.0b2`;
+2. Download the specific version of Rugby. E.g. `2.0.0b5`;
 3. Unzip archive;
 4. Copy binary from `~/.rugby/clt/downloads/rugby` to `~/.rugby/clt`;
 5. Add Rugby path to your `$PATH` environment variable. After this call you can use `rugby` in your\
-terminal without passing the whole path `~/.rugby/clt`.
+terminal without passing the whole path `~/.rugby/clt`. You need to open a new window or tab in terminal.
 
 ```bash
-# x86_64 (Intel)
-mkdir -p ~/.rugby/clt/downloads && cd ~/.rugby/clt/downloads                       #1
-curl -LO https://github.com/swiftyfinch/Rugby/releases/download/2.0.0b2/x86_64.zip #2
-unzip x86_64.zip                                                                   #3
-cp rugby ~/.rugby/clt                                                              #4
-echo 'export PATH=$PATH:~/.rugby/clt' >> ~/.zshrc && source ~/.zshrc               #5
+mkdir -p ~/.rugby/clt/downloads && cd ~/.rugby/clt/downloads
 ```
 
-<details><summary><code>arm64 (M1)</code></summary>
+<details><summary><code>x86_64 (Intel)</code></summary>
 <p>
 
 ```bash
-curl -LO https://github.com/swiftyfinch/Rugby/releases/download/2.0.0b2/arm64.zip  #2
-unzip arm64.zip                                                                    #3
+curl -LO https://github.com/swiftyfinch/Rugby/releases/download/2.0.0b5/x86_64.zip
+```
+```bash
+unzip x86_64.zip
 ```
 
+<hr>
 </p>
 </details>
+
+<details><summary><code>arm64 (M1+)</code></summary>
+<p>
+
+```bash
+curl -LO https://github.com/swiftyfinch/Rugby/releases/download/2.0.0b5/arm64.zip
+```
+```bash
+unzip arm64.zip
+```
+
+<hr>
+</p>
+</details>
+
+```bash
+cp rugby ~/.rugby/clt
+```
+```bash
+echo '\nexport PATH=$PATH:~/.rugby/clt' >> ~/.zshrc
+```
+Open a new window or tab in terminal.
 
 <details><summary>How to keep the first Rugby version (e.g. during beta)</summary>
 <p>
@@ -64,8 +84,9 @@ unzip arm64.zip                                                                 
 Instead of adding the path to your `$PATH` environment variable in the 5th point, use an alias like `rugby2`.
 
 ```bash
-echo 'alias rugby2="~/.rugby/clt/rugby"' >> ~/.zshenv && source ~/.zshenv
+echo '\nalias rugby2="~/.rugby/clt/rugby"' >> ~/.zshenv
 ```
+Open a new window or tab in terminal.
 
 </p>
 </details>
@@ -84,7 +105,7 @@ rugby update --beta
 If you want to install a specific version:
 
 ```bash
-rugby update --version 2.0.0b2
+rugby update --version 2.0.0b5
 ```
 
 If you want to find out which versions are available:
