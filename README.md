@@ -1,4 +1,4 @@
-# 🏈 Remastered: Early Beta
+# 🏈 Remastered: Release candidate 1
 
 <p>
 <img src="https://img.shields.io/badge/Swift-FF6B4B?logo=swift&logoColor=white" />
@@ -7,7 +7,7 @@
 <a href="https://twitter.com/swiftyfinch"><img src="https://img.shields.io/badge/SwiftyFinch-blue?logo=twitter&logoColor=white" /></a>
 </p>
 
-<img width="250" src="https://user-images.githubusercontent.com/64660122/218528409-066eaaa9-7005-4004-9364-1f70cd5f3e42.png" align="left">
+<img width="250" src="https://user-images.githubusercontent.com/64660122/222205266-2bb5ac10-9573-4394-a254-2876df25f23f.png" align="left">
 
 \
 🙋🏼‍♀️ [Welcome](docs/Welcome.md)\
@@ -22,6 +22,18 @@
 > This version collects a count of usage. It's just an indicator for me.<br>
 > If many people use this version and it has no problems,<br>
 > we're ready to release :shipit: it.
+
+## Release Roadmap 🎯
+
+- [x] All planned features have done
+- [ ] Write about Remote Cache 🐳 and open command
+- [ ] Feature requests:
+  - [ ] Support [`:generate_multiple_pod_projects`](https://guides.cocoapods.org/syntax/podfile.html#install_bang)
+- [ ] Refactoring
+- [ ] Tests
+- [ ] CI Pipelines
+- [ ] **`Release`** 🚀
+- [ ] Open Source
 
 ###### 🎬 Demo
 
