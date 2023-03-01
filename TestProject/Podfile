@@ -39,8 +39,4 @@ post_install do |installer|
       config.build_settings['ENABLE_BITCODE'] = bitcode_enabled ? 'YES' : 'NO'
     end
   end
-  
-  installer.pods_project.root_object.build_configuration_list.build_configurations.each { |config|
-    config.build_settings["EXCLUDED_ARCHS[sdk=iphonesimulator*]"] = "arm64"
-  }
 end
