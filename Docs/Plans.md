@@ -66,7 +66,7 @@ rugby example
   - command: cache
     # Optional parameters with default values:
     graph: true
-    arch: [] # By default: sim x86_64, ios arm64. In particular, sim auto means x86_64 on x86 mac, arm64 on arm64 mac.
+    arch: [arm64]
     config: null # By default Debug
     sdk: [sim]
     bitcode: false

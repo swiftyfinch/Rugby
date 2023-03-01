@@ -57,7 +57,7 @@ struct PlansExample: ParsableCommand {
           - command: cache
             # Optional parameters with default values:
             #graph: true
-            #arch: [] # By default: sim x86_64, ios arm64
+            arch: [arm64]
             #config: null # By default Debug
             #sdk: [sim]
             #bitcode: false
