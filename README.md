@@ -29,6 +29,7 @@
 - [ ] Write about Remote Cache 🐳 and open command
 - [ ] Feature requests:
   - [ ] Support [`:generate_multiple_pod_projects`](https://guides.cocoapods.org/syntax/podfile.html#install_bang)
+  - [ ] A better ability to find out which binaries need to be downloaded from remote cache service [#220](https://github.com/swiftyfinch/Rugby/issues/220)
 - [ ] Refactoring
 - [ ] Tests
 - [ ] CI Pipelines
