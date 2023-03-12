@@ -1,8 +1,8 @@
 [< README](../README.md)
 
-### 🚏 Migration Guide
+# 🚏 Migration Guide
 
-###### 🚩 First steps
+#### 🚩 First steps
 
 If you use the previous Rugby version I recommend you to follow this steps:
 
@@ -14,7 +14,7 @@ If you use the previous Rugby version I recommend you to follow this steps:
 
 <br>
 
-###### 🚚 Plans → Shortcuts
+#### 🚚 Plans → Shortcuts
 
 The default command `plans` was replaced by a new default command `shortcuts`. This command\
 contains combinations of different commands. Now there are two subcommands: `umbrella` and `cache`.
@@ -44,7 +44,7 @@ Documentation: 📍 [Shortcuts](Documentation/Shortcuts.md)
 
 <br>
 
-###### ♻️ Plans → Plan
+#### ♻️ Plans → Plan
 
 The `plans` command was renamed to the `plan` command. Also, now you can call a plan with\
 a name as an argument (not an option):
@@ -60,7 +60,7 @@ Documentation: ✈️ [Plan](Documentation/Plan.md)
 
 <br>
 
-###### ♻️ File `plans.yml`
+#### ♻️ File `plans.yml`
 
 First of all, use an array as root structure instead of a dictionary.
 
@@ -116,7 +116,7 @@ Documentation: ✈️ [Plan](Documentation/Plan.md)
 
 <br>
 
-###### 🧩 Cache = build + use
+#### 🧩 Cache = build + use
 
 In the new Rugby you can build your Pods project without the step of integrating binaries\
 into the project. It allows to build many times with different configurations and in the end\
@@ -147,7 +147,7 @@ Documentation:\
 
 <br>
 
-###### ♻️ Drop → Delete
+#### ♻️ Drop → Delete
 
 You can’t find the `drop` command in the new Rugby version. Use the `delete` command instead.\
 This name is more clear and it does the same work.
@@ -156,7 +156,7 @@ Documentation: 🗑️ [Delete](Documentation/Delete.md)
 
 <br>
 
-###### ♻️ Focus → `delete --safe`
+#### ♻️ Focus → `delete --safe`
 
 The `focus` command was also removed.\
 Now you can use `delete --safe --except PodA` in the similar manner.
@@ -165,7 +165,7 @@ Documentation: 🗑️ [Delete](Documentation/Delete.md)
 
 <br>
 
-###### ♻️ Clean → Clear
+#### ♻️ Clean → Clear
 
 The `clean` command was renamed and now you can decide which part of cache folders you want to delete.
 
@@ -173,6 +173,6 @@ Documentation: 🧼 [Clear](Documentation/Clear.md)
 
 <br>
 
-###### ⛔️ ~~Log~~ & ~~Doctor~~
+#### ⛔️ ~~Log~~ & ~~Doctor~~
 
 I haven’t remade these commands yet. I’m going to think about them during the public beta period.

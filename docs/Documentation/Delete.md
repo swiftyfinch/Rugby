@@ -1,6 +1,6 @@
 [< 📚 Documentation](../Documentation.md)
 
-### 🗑️ Delete
+# 🗑️ Delete
 
 ```sh
 > rugby delete --help

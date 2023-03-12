@@ -1,6 +1,6 @@
 [< 📚 Documentation](../Documentation.md)
 
-### 📦 Update
+# 📦 Update
 
 ```sh
 > rugby update --help

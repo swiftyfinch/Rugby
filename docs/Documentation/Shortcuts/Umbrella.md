@@ -1,6 +1,6 @@
 [< 📍 Shortcuts](../Shortcuts.md)
 
-### ⛱️ Umbrella
+# ⛱️ Umbrella
 
 ```sh
 > rugby shortcuts umbrella --help

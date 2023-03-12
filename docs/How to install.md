@@ -1,6 +1,8 @@
 [< README](../README.md)
 
-### 📦 How to install
+# 📦 How to install
+
+### Introduction
 
 The previous version has four ways to install:
 
@@ -27,12 +29,14 @@ It’s all about downloading binary. The first-time users should install it manu
 they can use the new command `rugby update` for Rugby self-updating. It’s similar to the package manager,\
 but it's right inside Rugby.
 
-### First Install (zsh)
+<br>
+
+## First Install (zsh)
 
 Select your architecture: `arm64` or `x86_64`. Run the five commands below. I described them in points 1-5:
 
 1. Create and change the current directory to `~/.rugby/clt/downloads` (recommended);
-2. Download the specific version of Rugby. E.g. `2.0.0b5`;
+2. Download the specific version of Rugby. E.g. `2.0.0b7`;
 3. Unzip archive;
 4. Copy binary from `~/.rugby/clt/downloads/rugby` to `~/.rugby/clt`;
 5. Add Rugby path to your `$PATH` environment variable. After this call you can use `rugby` in your\
@@ -46,7 +50,7 @@ mkdir -p ~/.rugby/clt/downloads && cd ~/.rugby/clt/downloads
 <p>
 
 ```bash
-curl -LO https://github.com/swiftyfinch/Rugby/releases/download/2.0.0b5/x86_64.zip
+curl -LO https://github.com/swiftyfinch/Rugby/releases/download/2.0.0b7/x86_64.zip
 ```
 ```bash
 unzip x86_64.zip
@@ -60,7 +64,7 @@ unzip x86_64.zip
 <p>
 
 ```bash
-curl -LO https://github.com/swiftyfinch/Rugby/releases/download/2.0.0b5/arm64.zip
+curl -LO https://github.com/swiftyfinch/Rugby/releases/download/2.0.0b7/arm64.zip
 ```
 ```bash
 unzip arm64.zip
@@ -91,7 +95,9 @@ Open a new window or tab in terminal.
 </p>
 </details>
 
-### Self-Update
+<br>
+
+## Self-Update
 
 If you already have Rugby, which version is at least `2.0.0b2`, you can use such a command.\
 But it will work only if you install rugby to `~/.rugby/clt/rugby` path as I recommended above.
@@ -105,7 +111,7 @@ rugby update --beta
 If you want to install a specific version:
 
 ```bash
-rugby update --version 2.0.0b5
+rugby update --version 2.0.0b7
 ```
 
 If you want to find out which versions are available:
@@ -114,6 +120,7 @@ If you want to find out which versions are available:
 rugby update list
 ```
 
+---
 <br>
 
 🚀 I hope you successfully installed Rugby!\

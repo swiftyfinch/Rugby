@@ -1,6 +1,6 @@
 [< 🧼 Clear](../Clear.md)
 
-### 🧼 Clear Shared
+# 🧼 Clear Shared
 
 ```sh
 > rugby clear shared --help

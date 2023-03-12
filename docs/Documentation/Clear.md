@@ -1,6 +1,6 @@
 [< 📚 Documentation](../Documentation.md)
 
-### 🧼 Clear
+# 🧼 Clear
 
 ```sh
 > rugby clear --help

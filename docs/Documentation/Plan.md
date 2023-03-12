@@ -1,6 +1,6 @@
 [< 📚 Documentation](../Documentation.md)
 
-### ✈️ Plan
+# ✈️ Plan
 
 ```sh
 > rugby plan --help

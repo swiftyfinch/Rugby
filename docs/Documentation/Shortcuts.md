@@ -1,6 +1,6 @@
 [< 📚 Documentation](../Documentation.md)
 
-### 📍 Shortcuts
+# 📍 Shortcuts
 
 ```sh
 > rugby shortcuts --help

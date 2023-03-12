@@ -1,6 +1,6 @@
 [< README](../README.md)
 
-### 📚 Documentation
+# 📚 Documentation
 
 ```sh
 > rugby --help
@@ -8,16 +8,17 @@
 
 ```sh
  Subcommands:
-╭─────────────────────────────────────────────────────────────────────────────╮
-│ shortcuts  * Set of base commands combinations.                             │
-│ build      * Build targets from Pods project.                               │
-│ use        * Use already built binaries instead of sources in Pods project. │
-│ delete     * Delete targets from the project.                               │
-│ plan       * Run sequence of Rugby commands.                                │
-│ rollback   * Restore projects state before the last Rugby usage.            │
-│ clear      * Clear modules cache.                                           │
-│ update     * Update Rugby version.                                          │
-╰─────────────────────────────────────────────────────────────────────────────╯
+╭──────────────────────────────────────────────────────────────────────╮
+│ shortcuts  * Set of base commands combinations.                      │
+│ warmup     * Download remote binaries for targets from Pods project. │
+│ build      * Build targets from Pods project.                        │
+│ use        * Use already built binaries instead of sources.          │
+│ delete     * Delete targets from the project.                        │
+│ plan       * Run sequence of Rugby commands.                         │
+│ rollback   * Restore projects state before the last Rugby usage.     │
+│ clear      * Clear modules cache.                                    │
+│ update     * Update Rugby version.                                   │
+╰──────────────────────────────────────────────────────────────────────╯
  Flags:
 ╭──────────────────────────────────────╮
 │ --version   * Show the version.      │
@@ -28,6 +29,7 @@
 | Subcommands |
 | :---: |
 | 📍 [Shortcuts](Documentation/Shortcuts.md) |
+| 🐳 [Warmup](Documentation/Warmup.md) |
 | 🏗️ [Build](Documentation/Build.md) |
 | 🎯 [Use](Documentation/Use.md) |
 | 🗑️ [Delete](Documentation/Delete.md) |

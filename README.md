@@ -1,4 +1,4 @@
-# 🏈 Remastered: Release candidate 1
+# 🏈 Remastered: RC2 (Release candidate)
 
 <p>
 <img src="https://img.shields.io/badge/Swift-FF6B4B?logo=swift&logoColor=white" />
@@ -7,13 +7,14 @@
 <a href="https://twitter.com/swiftyfinch"><img src="https://img.shields.io/badge/SwiftyFinch-blue?logo=twitter&logoColor=white" /></a>
 </p>
 
-<img width="250" src="https://user-images.githubusercontent.com/64660122/222205266-2bb5ac10-9573-4394-a254-2876df25f23f.png" align="left">
+<img width="300" src="https://user-images.githubusercontent.com/64660122/224528575-733d01cf-a2e0-4351-bb97-306e39495ba4.png" align="left">
 
 \
 🙋🏼‍♀️ [Welcome](docs/Welcome.md)\
 📦 [How to Install](docs/How%20to%20install.md)\
 📚 [Documentation](docs/Documentation.md)\
-🚏 [Migration Guide](docs/Migration%20Guide.md)
+🚏 [Migration Guide](docs/Migration%20Guide.md)\
+🐳 [Remote Cache](docs/Remote%20Cache.md)
 <br clear="left"/>
 
 <img width="303" src="https://user-images.githubusercontent.com/64660122/209438135-d9491bd7-7b8a-4c85-83b3-a7df6e1ace04.png" align="left">
@@ -25,14 +26,11 @@
 
 ## Release Roadmap 🎯
 
-- [x] All planned features have done
-- [ ] Write about Remote Cache 🐳 and open command
-- [ ] Feature requests:
-  - [ ] Support [`:generate_multiple_pod_projects`](https://guides.cocoapods.org/syntax/podfile.html#install_bang)
-  - [ ] A better ability to find out which binaries need to be downloaded from remote cache service [#220](https://github.com/swiftyfinch/Rugby/issues/220)
-- [ ] Refactoring
-- [ ] Tests
-- [ ] CI Pipelines
+- [x] [RC2 (Release candidate)](https://github.com/swiftyfinch/Rugby/releases/tag/2.0.0b7)
+- [ ] RC3?
+    - [ ] Refactoring
+    - [ ] Tests
+    - [ ] CI Pipelines
 - [ ] **`Release`** 🚀
 - [ ] Open Source
 

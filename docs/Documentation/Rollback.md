@@ -1,6 +1,6 @@
 [< 📚 Documentation](../Documentation.md)
 
-### ♻️ Rollback
+# ♻️ Rollback
 
 ```sh
 > rugby rollback --help
