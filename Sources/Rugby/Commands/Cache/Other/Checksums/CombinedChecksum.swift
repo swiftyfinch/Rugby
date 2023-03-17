@@ -58,6 +58,8 @@ extension LocalPod: CombinedChecksum {
             subpath = name
         case let filePath where !filePath.isDirectory:
             subpath = filePath.dropFileName()
+		case let filePath where filePath.starts(with: "/"):
+			return try Folder(path: filePath)
         default:
             subpath = path
         }

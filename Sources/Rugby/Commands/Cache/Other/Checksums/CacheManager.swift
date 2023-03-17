@@ -16,6 +16,10 @@ struct BuildCache: Codable {
     let swift: String?
     let xcargs: [String]?
     let checksums: [String]?
+	
+	func cacheKey() -> String {
+		rugby.cacheKey(sdk: sdk, config: config)
+	}
 }
 
 private func cacheKey(sdk: SDK, config: String?) -> String {
@@ -38,7 +42,7 @@ struct CacheManager {
     func update(cache: BuildCache) throws {
         // Update only selected sdk cache
         var cacheFile = load() ?? [:]
-        let key = cacheKey(sdk: cache.sdk, config: cache.config)
+        let key = cache.cacheKey()
         cacheFile[key] = cache
 
         // Save
