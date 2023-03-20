@@ -8,8 +8,8 @@
 import ArgumentParser
 import Files
 import Foundation
-import XcodeProj
 import PathKit
+import XcodeProj
 
 extension LocalCache {
     struct LocalCacheSave: ParsableCommand, Command {
@@ -62,7 +62,7 @@ struct LocalCacheSaveStep: Step {
         }
         let remoteLocation = try Folder(path: options.location).createSubfolderIfNeeded(withName: projectName)
         try caches.forEach { name, cache in
-            let remoteFolder = try remoteLocation.createSubfolderIfNeeded(withName: cache.LocalCacheFolderName())
+            let remoteFolder = try remoteLocation.createSubfolderIfNeeded(withName: cache.localCacheFolderName())
             let sourceFolder = try Folder(path: .buildFolder).subfolder(named: name)
             let frameworkFolder = try? sourceFolder.subfolder(named: .buildFrameworkFolder)
             let savedPod = try PodsProvider.shared.pods().filter { pod in

@@ -1,19 +1,19 @@
 //
 //  Utils.swift
-//  
+//
 //
 //  Created by mlch911 on 2023/3/16.
 //
 
-import Foundation
 import Files
+import Foundation
 
 extension String {
     static let buildFrameworkFolder = "XCFrameworkIntermediates"
 }
 
 extension BuildCache {
-    func LocalCacheFolderName() -> String {
+    func localCacheFolderName() -> String {
         var nameItems: [String?] = [cacheKeyName(), sdk.rawValue, arch, config, swift]
         nameItems += (xcargs ?? [])
         return nameItems.compactMap { $0 }.joined(separator: "-")
@@ -52,12 +52,12 @@ extension Folder {
             try $0.copy(to: folder)
         }
     }
-    
+
     func deleteAllContent() throws {
         try files.forEach { try $0.delete() }
         try subfolders.forEach { try $0.delete() }
     }
-    
+
     func contentChecksum() throws -> String {
         try folderContentChecksum(url)
     }
@@ -73,7 +73,7 @@ private func folderContentChecksums(_ url: URL, deep: Bool) throws -> [String] {
         includingPropertiesForKeys: nil,
         options: deep ? [.skipsHiddenFiles] : [.skipsHiddenFiles, .skipsSubdirectoryDescendants]
     ) else { throw CombinedChecksumError.cantBuildFilesEnumerator }
-    
+
     // PERF: Would likely benefit from parallelization (maybe not, disk bound)
     // Also could benefit from using `CC_SHA1_Init`, `CC_SHA1_Update`, and `CC_SHA1_Final` instead of parsing each
     // checksum into a string.

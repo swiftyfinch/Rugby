@@ -39,6 +39,7 @@ struct PlanParser {
 
 extension PlanParser {
     private enum Commands: String {
+        // swiftlint:disable:next identifier_name
         case cache, focus, drop, shell, plans, local_cache
     }
 
