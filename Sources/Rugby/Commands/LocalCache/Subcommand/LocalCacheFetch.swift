@@ -30,7 +30,7 @@ extension LocalCache {
         }
         
         mutating func run(logFile: Files.File) throws -> Metrics? {
-            let progress = RugbyPrinter(title: "LocalCacheSave", verbose: flags.verbose, quiet: flags.quiet, nonInteractive: flags.nonInteractive)
+            let progress = RugbyPrinter(title: "LocalCacheFetch", verbose: flags.verbose, quiet: flags.quiet, nonInteractive: flags.nonInteractive)
             try LocalCacheFetchStep(options: options, progress: progress, buildOptions: buildOptions).run()
             return nil
         }
@@ -71,7 +71,7 @@ struct LocalCacheFetchStep: Step {
                                        checksums: nil)
             let folderName = fakeCache.LocalCacheFolderName()
             guard remoteLocation.containsSubfolder(named: folderName) else { return }
-            let buildFolder = try Folder(path: .supportFolder).createSubfolder(named: "build").createSubfolderIfNeeded(withName: fakeCache.cacheKey())
+            let buildFolder = try Folder(path: .supportFolder).createSubfolder(named: "build").createSubfolderIfNeeded(withName: fakeCache.cacheKeyName())
             let copyPods = try copyPodsFromRemote(remoteLocation.subfolder(named: folderName), buildFolder)
             
             guard !copyPods.isEmpty else { return }

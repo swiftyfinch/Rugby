@@ -17,9 +17,9 @@ struct BuildCache: Codable {
     let xcargs: [String]?
     let checksums: [String]?
 	
-    func cacheKey() -> String {
-        rugby.cacheKey(sdk: sdk, config: config)
-    }
+	func cacheKeyName() -> String {
+		cacheKey(sdk: sdk, config: config)
+	}
 }
 
 private func cacheKey(sdk: SDK, config: String?) -> String {
@@ -42,7 +42,7 @@ struct CacheManager {
     func update(cache: BuildCache) throws {
         // Update only selected sdk cache
         var cacheFile = load() ?? [:]
-        let key = cache.cacheKey()
+        let key = cache.cacheKeyName()
         cacheFile[key] = cache
 
         // Save

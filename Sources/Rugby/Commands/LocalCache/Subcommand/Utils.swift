@@ -14,7 +14,7 @@ extension String {
 
 extension BuildCache {
     func LocalCacheFolderName() -> String {
-        var nameItems: [String?] = [cacheKey(), sdk.rawValue, arch, config, swift]
+        var nameItems: [String?] = [cacheKeyName(), sdk.rawValue, arch, config, swift]
         nameItems += (xcargs ?? [])
         return nameItems.compactMap { $0 }.joined(separator: "-")
     }
