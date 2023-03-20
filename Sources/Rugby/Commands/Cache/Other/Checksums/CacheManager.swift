@@ -17,9 +17,9 @@ struct BuildCache: Codable {
     let xcargs: [String]?
     let checksums: [String]?
 	
-	func cacheKey() -> String {
-		rugby.cacheKey(sdk: sdk, config: config)
-	}
+    func cacheKey() -> String {
+        rugby.cacheKey(sdk: sdk, config: config)
+    }
 }
 
 private func cacheKey(sdk: SDK, config: String?) -> String {
