@@ -61,7 +61,7 @@ extension LocalCache {
     struct Util {
         static func findProjectName(_ mainProjectLocation: String?) throws -> String {
             let mainProject: XcodeProj
-            if let mainProjectLocation {
+            if let mainProjectLocation = mainProjectLocation {
                 mainProject = try XcodeProj(pathString: File(path: mainProjectLocation).path)
             } else {
                 let xcodeProjects = Folder.current.subfolders.filter { $0.extension == "xcodeproj" && $0.name != .podsProjectName }

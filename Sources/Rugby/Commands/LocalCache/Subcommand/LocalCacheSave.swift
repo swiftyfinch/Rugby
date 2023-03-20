@@ -97,7 +97,7 @@ struct LocalCacheSaveStep: Step {
     }
 
     private func copyFrameworkIfNeed(pod: Pod, remoteFolder: Folder, frameworkFolder: Folder?) throws -> Bool {
-        guard let frameworkFolder, frameworkFolder.containsSubfolder(named: pod.name) else { return false }
+        guard let frameworkFolder = frameworkFolder, frameworkFolder.containsSubfolder(named: pod.name) else { return false }
         let folder = try frameworkFolder.subfolder(named: pod.name)
 
         let targetFolder = try remoteFolder
