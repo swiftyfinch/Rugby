@@ -64,10 +64,10 @@ extension LocalCache {
             if let mainProjectLocation {
                 mainProject = try XcodeProj(pathString: File(path: mainProjectLocation).path)
             } else {
-                let xcodeprojs = Folder.current.subfolders.filter { $0.extension == "xcodeproj" && $0.name != .podsProjectName }
-                guard !xcodeprojs.isEmpty else { throw LocalCacheError.mainProjectNotFound }
-                guard xcodeprojs.count == 1 else { throw LocalCacheError.foundMoreThanOneProject }
-                mainProject = try XcodeProj(pathString: xcodeprojs.first!.path)
+                let xcodeProjects = Folder.current.subfolders.filter { $0.extension == "xcodeproj" && $0.name != .podsProjectName }
+                guard !xcodeProjects.isEmpty else { throw LocalCacheError.mainProjectNotFound }
+                guard xcodeProjects.count == 1 else { throw LocalCacheError.foundMoreThanOneProject }
+                mainProject = try XcodeProj(pathString: xcodeProjects.first!.path)
             }
             guard let projectName = try mainProject.pbxproj.rootProject()?.name else { throw LocalCacheError.projectNameNotFound }
             return projectName
