@@ -26,7 +26,7 @@ struct XcodeBuild {
         ]
         arguments.append(contentsOf: xcargs)
 
-        if var arch = arch {
+		if var arch = arch, arch != ARCH.generic {
 			if arch == "auto" {
 				arch = sdk.defaultARCH
 			}
