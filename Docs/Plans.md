@@ -10,7 +10,7 @@ OPTIONS:
   -s, --sdk <sdk>         Build sdks: sim/ios or both. (default: sim)
   -a, --arch <arch>       Build architectures. (default: [sim x86_64], [ios arm64].
                           In particular, [sim auto] means x86_64 on x86 mac, arm64 on arm64 mac.
-                          In some case, build sim with arch wouldn't work properly. You can use [sim generic].)
+                          In some case, build sim with arch would not work properly. You can use [sim generic].)
   -c, --config <config>   Build configuration. (default: Debug)
   --bitcode               Add bitcode for archive builds.
   -k, --keep-sources      Keep Pods group in project.
@@ -68,7 +68,7 @@ rugby example
   - command: cache
     # Optional parameters with default values:
     graph: true
-    arch: [] # By default: [sim x86_64], [ios arm64]. In particular, [sim auto] means x86_64 on x86 mac, arm64 on arm64 mac. In some case, build sim with arch wouldn't work properly. You can use [sim generic].
+    arch: [] # By default: [sim x86_64], [ios arm64]. In particular, [sim auto] means x86_64 on x86 mac, arm64 on arm64 mac. In some case, build sim with arch would not work properly. You can use [sim generic].
     config: null # By default Debug
     sdk: [sim]
     bitcode: false

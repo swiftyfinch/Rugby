@@ -8,5 +8,5 @@
 enum ARCH {
     static let x86_64 = "x86_64" // swiftlint:disable:this identifier_name
     static let arm64 = "arm64"
-	static let generic = "generic"
+    static let generic = "generic"
 }

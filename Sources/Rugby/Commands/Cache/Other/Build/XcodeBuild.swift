@@ -26,10 +26,10 @@ struct XcodeBuild {
         ]
         arguments.append(contentsOf: xcargs)
 
-		if var arch = arch, arch != ARCH.generic {
-			if arch == "auto" {
-				arch = sdk.defaultARCH
-			}
+        if var arch = arch, arch != ARCH.generic {
+            if arch == "auto" {
+                arch = sdk.defaultARCH
+            }
             arguments.append("ARCHS=\(arch)")
         }
         if let config = config {
