@@ -12,9 +12,13 @@
   <br>
   <img src="https://img.shields.io/badge/Press_★_to_pay_respects-44494E?logo=github&logoColor=white" />
   <a href="https://twitter.com/swiftyfinch"><img src="https://img.shields.io/badge/SwiftyFinch-blue?logo=twitter&logoColor=white" /></a>
-  <br>
-  <a href="https://github.com/swiftyfinch/Rugby/releases/tag/2.0.0b8"><img src="https://img.shields.io/badge/🏈_Remastered:_RC3_Available-4BA057" /></a>
 </p>
+
+
+### 🏈 Rugby Remastered
+
+> You can find all information in the [RC3 Readme](https://github.com/swiftyfinch/Rugby/tree/beta#readme).<br>
+📦 The latest pre-release is [here](https://github.com/swiftyfinch/Rugby/releases/tag/2.0.0b8).
 
 
 # Motivation
@@ -59,11 +63,6 @@ brew tap swiftyfinch/Rugby https://github.com/swiftyfinch/Rugby.git
 brew install rugby
 ```
 More information 🎬 [here](https://github.com/swiftyfinch/Rugby/discussions/71).
-
-## 🏈 Rugby Remastered <a href="https://github.com/swiftyfinch/Rugby/releases/tag/2.0.0b8"><img src="https://img.shields.io/badge/RC3_Available-4BA057" /></a>
-
-You can find all information in the [readme](https://github.com/swiftyfinch/Rugby/tree/beta#readme).<br>
-📦 The latest pre-release is [here](https://github.com/swiftyfinch/Rugby/releases/tag/2.0.0b8).
 
 <br>
 
