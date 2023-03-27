@@ -36,7 +36,7 @@ but it's right inside Rugby.
 Select your architecture: `arm64` or `x86_64`. Run the five commands below. I described them in points 1-5:
 
 1. Create and change the current directory to `~/.rugby/clt/downloads` (recommended);
-2. Download the specific version of Rugby. E.g. `2.0.0b7`;
+2. Download the specific version of Rugby. E.g. `2.0.0b8`;
 3. Unzip archive;
 4. Copy binary from `~/.rugby/clt/downloads/rugby` to `~/.rugby/clt`;
 5. Add Rugby path to your `$PATH` environment variable. After this call you can use `rugby` in your\
@@ -50,7 +50,7 @@ mkdir -p ~/.rugby/clt/downloads && cd ~/.rugby/clt/downloads
 <p>
 
 ```bash
-curl -LO https://github.com/swiftyfinch/Rugby/releases/download/2.0.0b7/x86_64.zip
+curl -LO https://github.com/swiftyfinch/Rugby/releases/download/2.0.0b8/x86_64.zip
 ```
 ```bash
 unzip x86_64.zip
@@ -64,7 +64,7 @@ unzip x86_64.zip
 <p>
 
 ```bash
-curl -LO https://github.com/swiftyfinch/Rugby/releases/download/2.0.0b7/arm64.zip
+curl -LO https://github.com/swiftyfinch/Rugby/releases/download/2.0.0b8/arm64.zip
 ```
 ```bash
 unzip arm64.zip
@@ -111,7 +111,7 @@ rugby update --beta
 If you want to install a specific version:
 
 ```bash
-rugby update --version 2.0.0b7
+rugby update --version 2.0.0b8
 ```
 
 If you want to find out which versions are available:

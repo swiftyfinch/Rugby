@@ -1,4 +1,4 @@
-# 🏈 Remastered: RC2 (Release candidate)
+# 🏈 Remastered: RC3 (Release candidate)
 
 <p>
 <img src="https://img.shields.io/badge/Swift-FF6B4B?logo=swift&logoColor=white" />
@@ -7,7 +7,7 @@
 <a href="https://twitter.com/swiftyfinch"><img src="https://img.shields.io/badge/SwiftyFinch-blue?logo=twitter&logoColor=white" /></a>
 </p>
 
-<img width="300" src="https://user-images.githubusercontent.com/64660122/224528575-733d01cf-a2e0-4351-bb97-306e39495ba4.png" align="left">
+<img width="300" src="https://user-images.githubusercontent.com/64660122/228051171-9686b491-873a-4fd3-b4b7-470a94bb3124.png" align="left">
 
 \
 🙋🏼‍♀️ [Welcome](docs/Welcome.md)\
@@ -26,13 +26,12 @@
 
 ## Release Roadmap 🎯
 
-- [x] [RC2 (Release candidate)](https://github.com/swiftyfinch/Rugby/releases/tag/2.0.0b7)
-- [ ] RC3?
+- [x] Release Candidate 3
+- [ ] **`Release`** 🚀
+- [ ] Open Source
     - [ ] Refactoring
     - [ ] Tests
     - [ ] CI Pipelines
-- [ ] **`Release`** 🚀
-- [ ] Open Source
 
 ###### 🎬 Demo
 
