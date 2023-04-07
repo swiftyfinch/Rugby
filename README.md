@@ -5,9 +5,6 @@
 <p align="center">
   <a href="https://swiftpackageindex.com/swiftyfinch/Rugby"><img src="https://img.shields.io/endpoint?color=orange&label=Swift&logo=swift&logoColor=white&url=https%3A%2F%2Fswiftpackageindex.com%2Fapi%2Fpackages%2Fswiftyfinch%2FRugby%2Fbadge%3Ftype%3Dswift-versions" /></a>
   <a href="https://swiftpackageindex.com/swiftyfinch/Rugby"><img src="https://img.shields.io/endpoint?label=Platform&url=https%3A%2F%2Fswiftpackageindex.com%2Fapi%2Fpackages%2Fswiftyfinch%2FRugby%2Fbadge%3Ftype%3Dplatforms" /></a>
-  <br>
-  <a href="https://brew.sh"><img src="https://img.shields.io/badge/🍺_Homebrew-8B4513" /></a>
-  <a href="https://github.com/yonaskolb/Mint"><img src="https://img.shields.io/badge/Mint-darkgreen?logo=leaflet&logoColor=white" /></a>
   <a href="https://swiftpackageindex.com/swiftyfinch/Rugby"><img src="https://img.shields.io/badge/Swift_Package_Index-red?logo=swift&logoColor=white" /></a>
   <br>
   <img src="https://img.shields.io/badge/Press_★_to_pay_respects-44494E?logo=github&logoColor=white" />
@@ -56,13 +53,24 @@ Feel free to report any issues or suggest some new feature requests.
 
 <br>
 
-# Install using [Homebrew](https://brew.sh) 🍺
+# How to install 📦
 
-```shell
-brew tap swiftyfinch/Rugby https://github.com/swiftyfinch/Rugby.git
-brew install rugby
+You can download 🏈 Rugby as a binary:
+```sh
+> curl -LO https://github.com/swiftyfinch/Rugby/releases/download/1.22.0/rugby.zip
+> unzip rugby.zip
+> sudo mkdir -p /usr/local/bin && sudo cp rugby/bin/rugby /usr/local/bin
 ```
-More information 🎬 [here](https://github.com/swiftyfinch/Rugby/discussions/71).
+
+Or you can build it from source, but be sure that you selected Xcode CLT (Preferences → Locations):
+```sh
+> git clone --depth 1 --branch 1.22.0 https://github.com/swiftyfinch/Rugby.git
+> cd Rugby
+> swift build -c release
+> sudo mkdir -p /usr/local/bin && sudo cp `swift build -c release --show-bin-path`/rugby /usr/local/bin
+```
+
+If you look for the 🏈 Rugby Remastered, please visit [the last pre-release page](https://github.com/swiftyfinch/Rugby/releases/tag/2.0.0b8).
 
 <br>
 
