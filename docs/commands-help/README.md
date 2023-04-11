@@ -1,6 +1,6 @@
 [< README](../README.md)
 
-# 📚 Documentation
+# 📖 Commands Help
 
 ```sh
 > rugby --help
@@ -18,6 +18,8 @@
 │ rollback   * Restore projects state before the last Rugby usage.     │
 │ clear      * Clear modules cache.                                    │
 │ update     * Update Rugby version.                                   │
+│ doctor     * Heal your wounds after using Rugby (or not).            │
+│ shell      * Run shell command from Rugby.                           │
 ╰──────────────────────────────────────────────────────────────────────╯
  Flags:
 ╭──────────────────────────────────────╮
@@ -26,14 +28,8 @@
 ╰──────────────────────────────────────╯
 ```
 
-| Subcommands |
-| :---: |
-| 📍 [Shortcuts](Documentation/Shortcuts.md) |
-| 🐳 [Warmup](Documentation/Warmup.md) |
-| 🏗️ [Build](Documentation/Build.md) |
-| 🎯 [Use](Documentation/Use.md) |
-| 🗑️ [Delete](Documentation/Delete.md) |
-| ✈️ [Plan](Documentation/Plan.md) |
-| ♻️ [Rollback](Documentation/Rollback.md) |
-| 🧼 [Clear](Documentation/Clear.md) |
-| 📦 [Update](Documentation/Update.md) |
+| Mixed | Basic | Advanced | Utils | Misc |
+| :---: | :---: | :---: | :---: | :---: |
+| 📍 [Shortcuts](shortcuts.md) | 🏗️ [Build](build.md) | 🐳 [Warmup](warmup.md) | ♻️ [Rollback](rollback.md) | 📦 [Update](update.md) |
+| ✈️ [Plan](plan.md) | 🎯 [Use](use.md) | 🗑️ [Delete](delete.md) | 🧼 [Clear](clear.md) | 🚑 [Doctor](doctor.md) |
+|  | | | 🐚 [Shell](shell.md) | |

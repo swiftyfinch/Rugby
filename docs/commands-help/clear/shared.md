@@ -1,14 +1,14 @@
-[< 📚 Documentation](../Documentation.md)
+[< 🧼 Clear](../clear.md)
 
-# ♻️ Rollback
+# 🧼 Shared
 
 ```sh
-> rugby rollback --help
+> rugby clear shared --help
 ```
 
 ```sh
 
- > Restore projects state before the last Rugby usage.
+ > Delete .rugby/bin folder.
 
  Options:
 ╭──────────────────────────────────────────────────────╮

@@ -1,4 +1,4 @@
-[< README](../README.md)
+[< Documentation](README.md)
 
 # 🚏 Migration Guide
 
@@ -40,7 +40,7 @@ rugby cache
 rugby shortcuts cache
 ```
 
-Documentation: 📍 [Shortcuts](Documentation/Shortcuts.md)
+Documentation: 📍 [Shortcuts](commands-help/shortcuts.md)
 
 <br>
 
@@ -56,7 +56,7 @@ rugby plan pods
 
 The subcommands `example` and `list` haven’t been remade yet.
 
-Documentation: ✈️ [Plan](Documentation/Plan.md) 
+Documentation: ✈️ [Plan](commands-help/plan.md)
 
 <br>
 
@@ -112,7 +112,7 @@ usual:
 
 This command will be converted to `rugby cache --sdk sim --except PodName`.
 
-Documentation: ✈️ [Plan](Documentation/Plan.md) 
+Documentation: ✈️ [Plan](commands-help/plan.md)
 
 <br>
 
@@ -141,9 +141,9 @@ rugby cache
 Some options and flags haven’t been remade yet.
 
 Documentation:\
-🏈 [Cache](Documentation/Shortcuts/Cache.md)\
-🏗️ [Build](Documentation/Build.md)\
-🎯 [Use](Documentation/Use.md)
+🏈 [Cache](commands-help/shortcuts/cache.md)\
+🏗️ [Build](commands-help/build.md)\
+🎯 [Use](commands-help/use.md)
 
 <br>
 
@@ -152,7 +152,7 @@ Documentation:\
 You can’t find the `drop` command in the new Rugby version. Use the `delete` command instead.\
 This name is more clear and it does the same work.
 
-Documentation: 🗑️ [Delete](Documentation/Delete.md) 
+Documentation: 🗑️ [Delete](commands-help/delete.md)
 
 <br>
 
@@ -161,7 +161,7 @@ Documentation: 🗑️ [Delete](Documentation/Delete.md)
 The `focus` command was also removed.\
 Now you can use `delete --safe --except PodA` in the similar manner.
 
-Documentation: 🗑️ [Delete](Documentation/Delete.md) 
+Documentation: 🗑️ [Delete](commands-help/delete.md)
 
 <br>
 
@@ -169,7 +169,7 @@ Documentation: 🗑️ [Delete](Documentation/Delete.md)
 
 The `clean` command was renamed and now you can decide which part of cache folders you want to delete.
 
-Documentation: 🧼 [Clear](Documentation/Clear.md) 
+Documentation: 🧼 [Clear](commands-help/clear.md)
 
 <br>
 

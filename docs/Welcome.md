@@ -1,4 +1,4 @@
-[< README](../README.md)
+[< Documentation](README.md)
 
 # 🙋🏼‍♀️ Welcome
 
@@ -44,4 +44,4 @@ Also, I got carried away during refactoring and reinvented a lot of Rugby parts 
 <br>
 
 Welcome to 🏈 **Rugby: Remastered**!\
-And learn [> How to Install](How%20to%20install.md) 📦 it.
+And learn [> How to Install](how-to-install.md) 📦 it.

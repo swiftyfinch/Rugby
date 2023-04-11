@@ -1,6 +1,6 @@
-[< 🧼 Clear](../Clear.md)
+[< 🧼 Clear](../clear.md)
 
-# 🧼 Clear Build
+# 🧼 Build
 
 ```sh
 > rugby clear build --help

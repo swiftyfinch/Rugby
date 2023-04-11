@@ -1,4 +1,4 @@
-[< 📚 Documentation](../Documentation.md)
+[< 📚 Commands Help](README.md)
 
 # 🧼 Clear
 
@@ -29,5 +29,30 @@
 
 | Subcommands |
 | :---: |
-| 🧼 [Clear Build](Clear/Build.md) |
-| 🧼 [Clear Shared](Clear/Shared.md) |
+| 🧼 [Build](clear/build.md) |
+| 🧼 [Shared](clear/shared.md) |
+
+## Discussion
+
+By default, 🏈 Rugby cleans shared binaries and the build folder if they take about 50 GB.\
+If you want to clean them up by yourself, call `clear` command or its subcommands.
+
+You can delete specific modules binaries:
+```sh
+> rugby clear --modules PodA PodB
+```
+
+Or you can delete all binaries:
+```sh
+> rugby clear shared
+```
+
+Also, you can delete just the build folder:
+```sh
+> rugby clear build
+```
+
+And finally, you can delete all binaries and build folder:
+```sh
+> rugby clear
+```

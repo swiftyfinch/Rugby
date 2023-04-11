@@ -1,4 +1,4 @@
-[< 📚 Documentation](../Documentation.md)
+[< 📚 Commands Help](README.md)
 
 # 📍 Shortcuts
 
@@ -23,5 +23,13 @@
 
 | Subcommands |
 | :---: |
-| ⛱️ [Umbrella](Shortcuts/Umbrella.md) |
-| 🏈 [Cache](Shortcuts/Cache.md) |
+| ⛱️ [Umbrella](shortcuts/umbrella.md) |
+| 🏈 [Cache](shortcuts/cache.md) |
+
+<br>
+
+# Discussion
+
+The main goal of this command is to simplify 🏈 Rugby usage.\
+It's a combination of base commands with usual behavior for most users.\
+Read subcommands help pages for more information.

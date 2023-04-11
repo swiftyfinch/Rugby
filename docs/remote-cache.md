@@ -1,4 +1,4 @@
-[< README](../README.md)
+[< Documentation](README.md)
 
 # 🐳 Remote Cache
 
@@ -18,7 +18,7 @@
 
 ## 🐳 Upload Cache
 
-After each [`rugby build`](Documentation/Build.md) (or [`rugby cache`](Documentation/Shortcuts/Cache.md), which includes `build`) command, 🏈 Rugby creates the file with changes.\
+After each [`rugby build`](commands-help/build.md) (or [`rugby cache`](commands-help/shortcuts/cache.md), which includes `build`) command, 🏈 Rugby creates the file with changes.\
 You can find it here: `~/.rugby/bin/+latest`.
 
 This file contains something like:
@@ -34,7 +34,7 @@ All you need is just parse this file after each building and upload binaries fro
 
 ## 🐳 Download Cache
 
-If you can download binaries from your remote storage via HTTPS, you can use the [`rugby warmup`](Documentation/Warmup.md) command.
+If you can download binaries from your remote storage via HTTPS, you can use the [`rugby warmup`](commands-help/warmup.md) command.
 
 ```shell
 rugby warmup s3.eu-west-2.amazonaws.com
@@ -72,7 +72,7 @@ default:
 
 ### Custom way
 
-If you have a more complex workflow with your remote storage, you can use the command [`rugby warmup --analyse`](Documentation/Warmup.md).\
+If you have a more complex workflow with your remote storage, you can use the command [`rugby warmup --analyse`](commands-help/warmup.md).\
 The command with this flag analyses local binaries and then you can grep it like so:
 ```shell
 rugby warmup --analyse --verbose --output multiline | grep "^-\s"
