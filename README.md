@@ -69,7 +69,7 @@ Or you can build it from source, but be sure that you selected Xcode CLT (Prefer
 > sudo mkdir -p /usr/local/bin && sudo cp `swift build -c release --show-bin-path`/rugby /usr/local/bin
 ```
 
-If you look for the 🏈 Rugby Remastered, please visit [the last pre-release page](https://github.com/swiftyfinch/Rugby/releases/tag/2.0.0b8).
+If you look for the 🏈 Rugby Remastered, please visit [the last pre-release page](https://github.com/swiftyfinch/Rugby/releases/tag/2.0.0b9).
 
 <br>
 
