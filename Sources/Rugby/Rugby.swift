@@ -1,4 +1,5 @@
 import ArgumentParser
+import Foundation
 
 // It's a temporary main file only for support https://swiftpackageindex.com/swiftyfinch/Rugby
 // I'm going to open source of Rugby this summer.
