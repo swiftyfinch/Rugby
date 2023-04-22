@@ -1,4 +1,4 @@
-[< README](../README.md)
+[< Documentation](../README.md)
 
 # 📖 Commands Help
 
