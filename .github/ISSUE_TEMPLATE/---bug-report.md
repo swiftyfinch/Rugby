@@ -27,7 +27,7 @@ A clear and concise description of what you expected to happen.
 If applicable, add screenshots to help explain your problem.
 
 ## Environment (please complete the following information):
- - Version [e.g. 1.13.0]
+ - Version [e.g. 2.0.0]
  - Logs (use `rugby doctor`)
  - Podfile or Example project (if you can share these)
 

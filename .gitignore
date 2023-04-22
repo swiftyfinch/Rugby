@@ -1,18 +1,4 @@
 .DS_Store
-
+.rugby
 .build
-Packages
 .swiftpm
-xcuserdata
-TestProject/build
-
-*/Fastlane/report.xml
-*/Fastlane/README.md
-*/Fastlane/test_output/*
-
-TestProject/Pods/*
-TestProject/Pods
-# Keep shared schemes for iOS build
-!TestProject/Pods/Pods.xcodeproj
-TestProject/Pods/Pods.xcodeproj/*
-!TestProject/Pods/Pods.xcodeproj/xcshareddata

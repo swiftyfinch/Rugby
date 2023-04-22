@@ -1,32 +1,35 @@
-// swift-tools-version:5.3
-// The swift-tools-version declares the minimum version of Swift required to build this package.
+// swift-tools-version:5.7
 
 import PackageDescription
 
+// It's a temporary package description only for support https://swiftpackageindex.com/swiftyfinch/Rugby
+// I'm going to open source of Rugby this summer.
+// You can find the Rugby1.x source code here: https://github.com/swiftyfinch/Rugby/tree/1.23.0
+
 let package = Package(
     name: "Rugby",
-    platforms: [.macOS(.v11)],
+    platforms: [.macOS(.v12)],
     products: [
         .executable(name: "rugby", targets: ["Rugby"])
     ],
     dependencies: [
-        .package(url: "https://github.com/apple/swift-argument-parser", from: "1.0.3"),
+        .package(url: "https://github.com/apple/swift-argument-parser", from: "1.2.2"),
         .package(url: "https://github.com/onevcat/Rainbow", from: "4.0.1"),
-        .package(url: "https://github.com/JohnSundell/Files", from: "4.2.0"),
-        .package(name: "XcodeProj", url: "https://github.com/tuist/xcodeproj", from: "8.7.1"),
+        .package(url: "https://github.com/tuist/XcodeProj", from: "8.9.0"),
         .package(url: "https://github.com/kareman/SwiftShell", from: "5.1.0"),
-        .package(url: "https://github.com/jpsim/Yams.git", from: "4.0.6"),
-        .package(url: "https://github.com/tuist/xcbeautify", from: "0.13.0")
+        .package(url: "https://github.com/tuist/xcbeautify", from: "0.17.0"),
+        .package(url: "https://github.com/jpsim/Yams.git", from: "5.0.5"),
+        .package(url: "https://github.com/marmelroy/Zip.git", from: "2.1.2")
     ],
     targets: [
-        .target(name: "Rugby", dependencies: [
+        .executableTarget(name: "Rugby", dependencies: [
             .product(name: "ArgumentParser", package: "swift-argument-parser"),
             "Rainbow",
-            "Files",
             "XcodeProj",
             "SwiftShell",
+            .product(name: "XcbeautifyLib", package: "xcbeautify"),
             "Yams",
-            .product(name: "XcbeautifyLib", package: "xcbeautify")
+            "Zip"
         ])
     ]
 )
