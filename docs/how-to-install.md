@@ -82,19 +82,6 @@ echo '\nexport PATH=$PATH:~/.rugby/clt' >> ~/.zshrc
 ```
 Open a new window or tab in terminal.
 
-<details><summary>How to keep the first Rugby version (e.g. during beta)</summary>
-<p>
-
-Instead of adding the path to your `$PATH` environment variable in the 5th point, use an alias like `rugby2`.
-
-```bash
-echo '\nalias rugby2="~/.rugby/clt/rugby"' >> ~/.zshenv
-```
-Open a new window or tab in terminal.
-
-</p>
-</details>
-
 <br>
 
 ## Self-Update
@@ -119,6 +106,13 @@ If you want to find out which versions are available:
 ```bash
 rugby update list
 ```
+
+<br>
+
+## Install in CI Environment
+
+You can install Rugby with common `curl` and `unzip` commands.\
+For example, check out [this workflow file](https://github.com/swiftyfinch/Rugby/blob/main/.github/workflows/regress.yml#L33) of Rugby regress.
 
 ---
 <br>

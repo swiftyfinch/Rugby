@@ -12,7 +12,7 @@ jobs:
       - name: Check spelling
         run: sh .github/scripts/checkSpell.sh
 
-  rugby:
+  build:
     runs-on: macos-latest
     steps:
       - uses: actions/checkout@v3
@@ -29,3 +29,17 @@ jobs:
         with:
           name: rugby
           path: ${{ env.rugby_path }}
+
+  install:
+    runs-on: macos-latest
+    steps:
+      - uses: actions/checkout@v3
+      - name: Install Rugby
+        run: |
+          mkdir bin && cd bin
+          git fetch --tags && git fetch --prune --unshallow || true
+          tag=$(git describe --abbrev=0 --tags)
+          curl -LO "https://github.com/swiftyfinch/Rugby/releases/download/$tag/x86_64.zip"
+          unzip x86_64.zip
+          chmod +x rugby && echo `pwd` >> $GITHUB_PATH
+      - run: rugby -h
