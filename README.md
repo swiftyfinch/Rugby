@@ -15,7 +15,7 @@
 Why do we need some optimizations while working on huge projects with [CocoaPods](https://github.com/CocoaPods/CocoaPods)?\
 `-` Slow and unnecessary indexing of pods targets, which implementation we rarely try to edit;\
 `-` Redundant rebuild time, probably as a result of problems, related to CocoaPods or Xcode build system;\
-`-` Freezing UI during navigation through a project or editing it;\
+`-` Freezing UI during navigating through a project or editing it;\
 `-` Broken or extremely slow autocompletion;\
 `-` Noisy laptop turbines, heated aluminum, and infinite spinning pinwheel.
 
@@ -66,7 +66,7 @@ If you look for the legacy `Rugby 1.x`, which source is opened, visit [this page
 </p>
 </details>
 
-Then run in your project directory after each `pod install`. This command will build all targets by default:
+Then run this command in your project directory after each `pod install`. It will build all targets by default:
 ```sh
 > rugby
 ```
@@ -102,7 +102,7 @@ Feel free to open a pull request / an issue or a discussion.
 ## 📮 Support
 
 If you want to support this project, you can do some of these:\
-`1)` <ins><b>Press</b></ins> ⭐️. It's a nice mark that Rugby is useful;\
+`1)` <ins><b>Press</b></ins> ⭐️. It's a nice mark which means that Rugby is useful;\
 `2)` <ins><b>Share</b></ins> the project 🌍 somewhere with somebody;\
 `3)` <ins><b>Leave feedback</b></ins> in the discussions 💬 section.
 
