@@ -31,7 +31,7 @@
 ## Discussion
 
 Usually, you don't need to delete targets from projects.\
-But if you work in a huge one, it can be useful to focus on a few of them.
+But if you work with a huge one, it can be useful to focus on a few of them.
 
 For example, I delete tests of different development teams when I'm pretty sure I won't break them.\
 BTW, these targets will be present in a final pipeline on CI.

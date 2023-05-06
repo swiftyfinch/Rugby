@@ -10,7 +10,7 @@ If you use the previous Rugby version I recommend you to follow this steps:
    changed and can lead to some issues while calling `rugby rollback` command;
 3. Optionally, you can remove all content from `.rugby` folder except for `.rugby/build`\
    and `.rugby/plans.yml`;
-5. Rewrite content of your `plans.yml` files according the new documentation.
+5. Rewrite content of your `plans.yml` files according to the new documentation.
 
 <br>
 
@@ -20,7 +20,7 @@ The default command `plans` was replaced by a new default command `shortcuts`. T
 contains combinations of different commands. Now there are two subcommands: `umbrella` and `cache`.
 
 The first one is similar to the `plans` command from Rugby `1.x`. It runs a new command `plan`\
-if there is a `plans.yml` file or runs cache command if there isn’t such file. Every time when you\
+if there is a `plans.yml` file or runs cache command if there isn’t such a file. Every time when you\
 call Rugby without any arguments, options or flags, this command will be called as a default one:
 
 ```sh
@@ -89,7 +89,7 @@ tests:
   argument: base
 ```
 
-That is because now this command will be called as a usual terminal command `plan base`\
+That's because now this command will be called as a usual terminal command `plan base`\
 without additional conversion.
 
 Use all options and flags as they are, but without `-` and `--` prefixes.
@@ -119,7 +119,7 @@ Documentation: ✈️ [Plan](commands-help/plan.md)
 #### 🧩 Cache = build + use
 
 In the new Rugby you can build your Pods project without the step of integrating binaries\
-into the project. It allows to build many times with different configurations and in the end\
+into the project. It allows to build many times with different configurations and\
 use them all at once. For example:
 
 ```sh

@@ -4,7 +4,7 @@
 
 ### Introduction
 
-The previous version has four ways to install:
+There were four ways to install the previous version:
 
 1. **Package managers**:
     1. 🌱 **Mint**. Allows selecting any git reference, cloning it, and building Rugby from\
@@ -12,7 +12,7 @@ The previous version has four ways to install:
     version and CLT. It’s not so convenient. Sometimes users have to use older Xcode versions.\
     And it also limits me from upgrading to the latest version and using the newest features\
     for development. The second problem is I’m not ready to publish the source code of the new version;
-    2. 🍺 **Brew**. Allows downloading only the latest Rugby binary and only from the default branch.\
+    2. 🍺 **Brew**. Allows to download only the latest Rugby binary and only from the default branch.\
     It’s not suitable for the distribution of pre-release versions. And users can’t get the previous\
     version if the latest one is broken.
 2. **W/o package managers**:
@@ -33,7 +33,7 @@ but it's right inside Rugby.
 
 ## First Install (zsh)
 
-Select your architecture: `arm64` or `x86_64`. Run the five commands below. I described them in points 1-5:
+Select your architecture: `arm64` or `x86_64`. Run five commands below. I described them in points 1-5:
 
 1. Create and change the current directory to `~/.rugby/clt/downloads` (recommended);
 2. Download the specific version of Rugby. E.g. `2.0.0`;

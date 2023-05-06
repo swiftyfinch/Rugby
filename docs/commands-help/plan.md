@@ -54,7 +54,7 @@ You can use this command to create a file:
 ```sh
 > touch .rugby/plans.yml
 ```
-Then write to it your plans.
+Then add to it your plans.
 
 <br>
 
@@ -126,7 +126,7 @@ Yeah, it's not a mistake. Just call the command without any arguments.
 
 ### Syntax
 
-Each plans file should be a dictionary when you describe plans names as keys.\
+Each plans file should be a dictionary where you describe plans names as keys.\
 The value for each key should be an array with commands.
 ```yml
 key1: # It's a plan name
@@ -145,7 +145,7 @@ usual:
   argument: pod install
 ```
 For example, the [shell](shell.md) command has an argument with the name `command`.\
-But you need to translate all names of arguments just to the `argument` keyword.
+But you need to change all names of arguments just to the `argument` keyword.
 
 Options should be written in YAML without prefixes `--` and `-`.\
 And use only the long version of an option name.

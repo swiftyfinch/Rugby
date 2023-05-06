@@ -28,7 +28,7 @@ This file contains something like:
 /Users/swiftyfinch/.rugby/bin/KeyboardLayoutGuide/Debug-iphonesimulator-x86_64/f44e1b4
 ```
 
-All you need is just parse this file after each building and upload binaries from these paths to your remote storage.
+All you need is just to parse this file after each building and upload binaries from these paths to your remote storage.
 
 <br>
 
