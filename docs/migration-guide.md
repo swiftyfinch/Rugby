@@ -6,11 +6,12 @@
 
 If you use the previous Rugby version I recommend you to follow this steps:
 
-1. Remove `.rugby/backup` folder from each project. The structure in this folder has been\
+1. Remove Rugby `1.x` and follow the guide 🦮 [how to install](how-to-install.md) Rugby `2.x`;
+2. Remove `.rugby/backup` folder from each project. The structure in this folder has been\
    changed and can lead to some issues while calling `rugby rollback` command;
 3. Optionally, you can remove all content from `.rugby` folder except for `.rugby/build`\
    and `.rugby/plans.yml`;
-5. Rewrite content of your `plans.yml` files according to the new documentation.
+4. Rewrite content of your `plans.yml` files according to the new documentation.
 
 <br>
 
