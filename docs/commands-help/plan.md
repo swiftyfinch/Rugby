@@ -76,6 +76,13 @@ Read more about [umbrella](shortcuts/umbrella.md) command.
 
 <br>
 
+### Application
+
+You can use 🏈 [RugbyPlanner](https://github.com/swiftyfinch/RugbyPlanner) application for visualizing changes in your project without applying them.\
+It can significantly improve your experience working on your plans.
+
+<br>
+
 ### Several plans
 
 You can write many plans in one file or different ones.\

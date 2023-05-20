@@ -77,6 +77,7 @@ Deintegrate it with the [rollback](docs/commands-help/rollback.md) command:
 ```
 
 Also, you can write a custom [plan](docs/commands-help/plan.md) (sequence of commands).\
+Use 🏈 [RugbyPlanner](https://github.com/swiftyfinch/RugbyPlanner) application for visualizing changes in your project without applying them.\
 For advanced usage, please read the documentation below.
 
 ## 📚 Documentation
