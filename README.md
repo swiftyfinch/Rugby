@@ -31,9 +31,10 @@ More in the 📖 [foundation](https://swiftyfinch.github.io/en/2021-03-09-rugby-
 ## What makes it different?
 
 🕊 Not a project dependency, just an optional step;\
-🔒 Doesn't change Podfile and Podfile.lock;\
-✈️ Can run a sequence of commands from a YAML file;\
-👶 Single command usage;\
+🌱 Doesn't change Podfile and Podfile.lock;\
+✈️ Can run [a sequence of commands from a YAML file](docs/commands-help/plan.md);\
+🕹️ Single command usage;\
+🐳 Ready for [remote cache](docs/remote-cache.md);\
 🧣 Cozy log output;\
 🚀 Swiftish and uses native Xcode build system.
 
