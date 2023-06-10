@@ -101,7 +101,7 @@ Use all options and flags as they are, but without `-` and `--` prefixes.
   - command: cache
     sdk: [sim]
     ignoreChecksums: false
-    exclude: PodName
+    exclude: [PodName]
 
 # Rugby 2.x
 usual:
