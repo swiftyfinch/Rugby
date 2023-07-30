@@ -18,7 +18,7 @@
 
 Why do we need some optimizations while working on huge projects with [CocoaPods](https://github.com/CocoaPods/CocoaPods)?\
 `-` Slow and unnecessary indexing of pods targets, which implementation we rarely try to edit;\
-`-` Redundant rebuild time, probably as a result of problems, related to CocoaPods or Xcode build system;\
+`-` Redundant rebuild time, probably as a result of problems, related to CocoaPods or Xcode;\
 `-` Freezing UI during navigating through a project or editing it;\
 `-` Broken or extremely slow autocompletion;\
 `-` Noisy laptop turbines, heated aluminum, and infinite spinning pinwheel.
@@ -71,7 +71,8 @@ If you look for the legacy `Rugby 1.x`, which source is opened, visit [this page
 </p>
 </details>
 
-Then run this command in your project directory after each `pod install`. It will build all targets by default:
+Then run this command in your project directory after each `pod install`.\
+It will build all targets by default:
 ```sh
 > rugby
 ```
@@ -82,7 +83,7 @@ Deintegrate it with the [rollback](docs/commands-help/rollback.md) command:
 ```
 
 Also, you can write a custom [plan](docs/commands-help/plan.md) (sequence of commands).\
-Use 🏈 [RugbyPlanner](https://github.com/swiftyfinch/RugbyPlanner) application for visualizing changes in your project without applying them.\
+Use 🏈 [RugbyPlanner](https://github.com/swiftyfinch/RugbyPlanner) for visualizing changes in your project without applying them.\
 For advanced usage, please read the documentation below.
 
 ## 📚 Documentation
