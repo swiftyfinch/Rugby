@@ -36,6 +36,14 @@ but it's right inside Rugby.
 First of all, if you have the first version Rugby 1.x, you need to delete it.\
 Then call `where rugby` command and be sure that there are no any of paths to rugby.
 
+#### Running script (Recommended) 🚀
+
+```bash
+curl -Ls https://raw.githubusercontent.com/swiftyfinch/Rugby/main/.github/scripts/install.sh | bash
+```
+
+#### Manually 🧐
+
 Select your architecture: `arm64` or `x86_64`. Run five commands below. I described them in points 1-5:
 
 1. Create and change the current directory to `~/.rugby/clt/downloads` (recommended);
