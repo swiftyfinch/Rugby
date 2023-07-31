@@ -63,6 +63,7 @@ mkdir -p ~/.rugby/clt/downloads && cd ~/.rugby/clt/downloads
 ```bash
 curl -LO https://github.com/swiftyfinch/Rugby/releases/download/2.0.0/x86_64.zip
 ```
+
 ```bash
 unzip x86_64.zip
 ```
@@ -77,6 +78,7 @@ unzip x86_64.zip
 ```bash
 curl -LO https://github.com/swiftyfinch/Rugby/releases/download/2.0.0/arm64.zip
 ```
+
 ```bash
 unzip arm64.zip
 ```
@@ -88,6 +90,7 @@ unzip arm64.zip
 ```bash
 cp rugby ~/.rugby/clt
 ```
+
 ```bash
 echo '\nexport PATH=$PATH:~/.rugby/clt' >> ~/.zshrc
 ```
@@ -103,19 +106,19 @@ But it will work only if you install rugby to `~/.rugby/clt/rugby` path as I rec
 Getting the latest version including pre-release ones:
 
 ```bash
-rugby update --beta
+> rugby update --beta
 ```
 
 If you want to install a specific version:
 
 ```bash
-rugby update --version 2.0.0
+> rugby update --version 2.0.0
 ```
 
 If you want to find out which versions are available:
 
 ```bash
-rugby update list
+> rugby update list
 ```
 
 <br>
