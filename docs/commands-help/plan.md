@@ -20,10 +20,11 @@
 │ -o, --output  * Output mode: fold, multiline, quiet.   │
 ╰────────────────────────────────────────────────────────╯
  Flags:
-╭────────────────────────────────────────────╮
-│ -v, --verbose []  * Log level.             │
-│ -h, --help        * Show help information. │
-╰────────────────────────────────────────────╯
+╭─────────────────────────────────────────────────────────────────────────╮
+│ -r, --rollback    * Restore projects state before the last Rugby usage. │
+│ -v, --verbose []  * Log level.                                          │
+│ -h, --help        * Show help information.                              │
+╰─────────────────────────────────────────────────────────────────────────╯
 ```
 
 # Discussion
@@ -44,9 +45,9 @@ cache_plan_name:
 
 It's equal to this sequence of commands:
 ```sh
-> warmup s3.eu-west-2.amazonaws.com --except SomePod --arch x86_64
-> build --except SomePod --arch x86_64
-> use --except SomePod
+> rugby warmup s3.eu-west-2.amazonaws.com --except SomePod --arch x86_64
+> rugby build --except SomePod --arch x86_64
+> rugby use --except SomePod
 ```
 
 Then you need to save YAML to `.rugby/plans.yml` file or in another place.\
