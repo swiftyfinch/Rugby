@@ -97,9 +97,10 @@ For advanced usage, please read the documentation below.
 
 # 🎯 Roadmap
 
-- [ ] Refactoring
+- [x] Refactoring
+- [x] GitHub Actions (On staging)
+- [ ] DocC
 - [ ] Tests
-- [ ] GitHub Actions
 - [ ] Open Source
 
 ## 🤝 Contribution
