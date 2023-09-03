@@ -99,8 +99,8 @@ For advanced usage, please read the documentation below.
 
 - [x] Refactoring
 - [x] GitHub Actions (On staging)
-- [ ] DocC
-- [ ] Tests
+- [x] Minimal Code Docs
+- [ ] Tests (2%)
 - [ ] Open Source
 
 ## 🤝 Contribution
