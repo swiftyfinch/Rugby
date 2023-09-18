@@ -10,6 +10,6 @@ struct Rugby: AsyncParsableCommand {
     static var configuration = CommandConfiguration(
         // Use someting from Foundation for excluding Linux from Swift Package Index.
         // Rugby doesn't support this platform.
-        version: NSString(string: "2.0.2").description
+        version: NSString(string: "2.0.3").description
     )
 }
