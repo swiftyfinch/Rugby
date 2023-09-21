@@ -100,8 +100,8 @@ For advanced usage, please read the documentation below.
 - [x] Refactoring
 - [x] GitHub Actions (On staging)
 - [x] Minimal Code Docs
-- [ ] Tests (2%)
 - [ ] Open Source
+- [ ] Tests (2%)
 
 ## 🤝 Contribution
 
