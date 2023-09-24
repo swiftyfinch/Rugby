@@ -19,6 +19,15 @@
       }
     },
     {
+      "identity" : "fish",
+      "kind" : "remoteSourceControl",
+      "location" : "https://github.com/swiftyfinch/Fish",
+      "state" : {
+        "revision" : "78b0685ff956af62ee6c2eb20ff3751c14e16d13",
+        "version" : "0.1.0"
+      }
+    },
+    {
       "identity" : "pathkit",
       "kind" : "remoteSourceControl",
       "location" : "https://github.com/kylef/PathKit.git",
@@ -68,8 +77,8 @@
       "kind" : "remoteSourceControl",
       "location" : "https://github.com/tuist/xcbeautify",
       "state" : {
-        "revision" : "e3bc4e04618efa7aaf8fac4727f7fe7ffd951e08",
-        "version" : "0.19.0"
+        "revision" : "a996cc125e45afb9f2d77cacc5710f3595bcdd07",
+        "version" : "1.0.0"
       }
     },
     {
@@ -77,8 +86,8 @@
       "kind" : "remoteSourceControl",
       "location" : "https://github.com/tuist/XcodeProj",
       "state" : {
-        "revision" : "fae27b48bc14ff3fd9b02902e48c4665ce5a0793",
-        "version" : "8.9.0"
+        "revision" : "c4d5f9d7f789dd944222be95938810947561e559",
+        "version" : "8.12.0"
       }
     },
     {
@@ -86,23 +95,23 @@
       "kind" : "remoteSourceControl",
       "location" : "https://github.com/MaxDesiatov/XMLCoder.git",
       "state" : {
-        "revision" : "c438dad94f6a243b411b70a4b4bac54595064808",
-        "version" : "0.15.0"
+        "revision" : "b1e944cbd0ef33787b13f639a5418d55b3bed501",
+        "version" : "0.17.1"
       }
     },
     {
       "identity" : "yams",
       "kind" : "remoteSourceControl",
-      "location" : "https://github.com/jpsim/Yams.git",
+      "location" : "https://github.com/jpsim/Yams",
       "state" : {
-        "revision" : "f47ba4838c30dbd59998a4e4c87ab620ff959e8a",
-        "version" : "5.0.5"
+        "revision" : "0d9ee7ea8c4ebd4a489ad7a73d5c6cad55d6fed3",
+        "version" : "5.0.6"
       }
     },
     {
       "identity" : "zip",
       "kind" : "remoteSourceControl",
-      "location" : "https://github.com/marmelroy/Zip.git",
+      "location" : "https://github.com/marmelroy/Zip",
       "state" : {
         "revision" : "67fa55813b9e7b3b9acee9c0ae501def28746d76",
         "version" : "2.1.2"

@@ -1,4 +1,11 @@
 .DS_Store
-.rugby
+
 .build
 .swiftpm
+
+/Release
+
+xcuserdata
+Example/Pods
+Example/build
+Example/.rugby

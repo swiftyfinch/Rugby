@@ -1,15 +1,92 @@
-import ArgumentParser
-import Foundation
+//
+//  Rugby.swift
+//  Rugby
+//
+//  Created by Vyacheslav Khorkov on 04.07.2022.
+//  Copyright © 2022 Vyacheslav Khorkov. All rights reserved.
+//
 
-// It's a temporary main file only for support https://swiftpackageindex.com/swiftyfinch/Rugby
-// I'm going to open source of Rugby this summer.
-// You can find the Rugby1.x source code here: https://github.com/swiftyfinch/Rugby/tree/1.23.0
+import ArgumentParser
+import RugbyFoundation
+
+extension String {
+    static let version = "2.0.3"
+    // ╭────────────────────────────────╮
+    // │                                │
+    // │       █▀█ █ █ █▀▀ █▄▄ █▄█      │
+    // │     > █▀▄ █▄█ █▄█ █▄█  █       │
+    // │                 v.2.0.3        │
+    // │ Cache Cocoa 🌱 pods            │
+    // │             for faster rebuild │
+    // │   and indexing Xcode project   │
+    // │                                │
+    // ╰────────────────────────────────╯
+    static let abstract = """
+    ╭────────────────────────────────╮
+    │                                │
+    │       \("█▀█ █ █ █▀▀ █▄▄ █▄█".accent)      │
+    │     \(">".black.bold.onAccent) \("█▀▄ █▄█ █▄█ █▄█  █".accent)       │
+    │                 \("v.\(version)".accent.bold)        │
+    │ \("Cache Cocoa 🌱 pods".bold)            │
+    │             \("for faster rebuild".bold) │
+    │   \("and indexing Xcode project".bold)   │
+    │                                │
+    ╰────────────────────────────────╯
+    """.white
+}
 
 @main
 struct Rugby: AsyncParsableCommand {
     static var configuration = CommandConfiguration(
-        // Use someting from Foundation for excluding Linux from Swift Package Index.
-        // Rugby doesn't support this platform.
-        version: NSString(string: "2.0.3").description
+        abstract: String.abstract,
+        discussion: Links.docs("README.md"),
+        version: String.version,
+        subcommands: [
+            Shortcuts.self,
+            Build.self,
+            Use.self,
+            Delete.self,
+            Warmup.self,
+            Rollback.self,
+            Plan.self,
+            Clear.self,
+            Update.self,
+            Doctor.self,
+            Shell.self,
+            Env.self
+        ],
+        defaultSubcommand: Shortcuts.self
     )
+
+    static func main() async {
+        prepareDependencies()
+        do {
+            if try printHelp() { return }
+
+            var command = try parseCommand()
+            if var asyncCommand = command as? AsyncParsableCommand {
+                try await asyncCommand.run()
+            } else {
+                try command.run()
+            }
+        } catch {
+            exit(withError: error)
+        }
+    }
+
+    // MARK: - Private
+
+    private static func prepareDependencies() {
+        Vault.setupShared(
+            featureToggles: FeatureToggles(),
+            logger: Logger()
+        )
+    }
+
+    private static func printHelp() throws -> Bool {
+        if CommonFlags.help.isDisjoint(with: CommandLine.arguments) { return false }
+        let commandInfo = try HelpDumper().dump(command: Rugby.self)
+        HelpPrinter().print(command: commandInfo)
+        return true
+    }
 }

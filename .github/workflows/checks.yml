@@ -1,0 +1,85 @@
+name: Checks
+
+on: [workflow_dispatch, pull_request, push]
+
+jobs:
+  install:
+    runs-on: macos-latest
+    steps:
+    - uses: actions/checkout@v3
+    - name: Install Rugby
+      run: |
+        curl -Ls https://raw.githubusercontent.com/swiftyfinch/Rugby/main/.github/scripts/install.sh | bash
+        chmod +x ~/.rugby/clt/rugby && echo ~/.rugby/clt >> $GITHUB_PATH
+    - run: rugby -h
+
+  tests:
+    runs-on: macos-latest
+    env:
+      LCOV_PATH: .build/artifacts/info.lcov
+      BUILD_FOLDER: .build/debug/RugbyPackageTests.xctest/Contents/MacOS/RugbyPackageTests
+      PROFDATA_FOLDER: .build/debug/codecov/default.profdata
+      IGNORE_FILENAME_REGEX: .build|Tests
+    steps:
+    - uses: actions/checkout@v3
+    - run: brew install xcbeautify
+    - name: Test
+      run: swift test --enable-code-coverage | xcbeautify
+    - name: Prepare coverage to upload
+      run: |
+        xcrun llvm-cov export $BUILD_FOLDER \
+          -instr-profile $PROFDATA_FOLDER > $LCOV_PATH \
+          --ignore-filename-regex=$IGNORE_FILENAME_REGEX \
+          -format="lcov" \
+          --use-color
+    - name: Upload coverage reports to Codecov
+      uses: codecov/codecov-action@v3
+      env:
+        CODECOV_TOKEN: ${{ secrets.CODECOV_TOKEN }}
+
+  bin:
+    runs-on: macos-latest
+    steps:
+    - uses: actions/checkout@v3
+    - name: Build
+      run: |
+        swift build -c release
+        path=`swift build -c release --show-bin-path`
+        echo "rugby_path=$path/rugby" >> $GITHUB_ENV
+        swift run rugby --version
+    - uses: actions/upload-artifact@v3
+      with:
+        name: rugby
+        path: ${{ env.rugby_path }}
+
+  smoke:
+    needs: bin
+    runs-on: macos-latest
+    steps:
+    - uses: actions/checkout@v3
+    - uses: actions/download-artifact@v3
+      with: { name: rugby }
+    - run: chmod +x rugby && echo `pwd` >> $GITHUB_PATH
+    - run: rugby --version
+
+    - name: CocoaPods
+      working-directory: ./Example
+      run: pod install --repo-update
+
+    - name: Rugby
+      working-directory: ./Example
+      run: rugby cache --output multiline
+
+    - run: brew install xcbeautify
+    - name: XcodeBuild Test
+      working-directory: ./Example
+      run: |
+        set -o pipefail && env NSUnbufferedIO=YES xcodebuild clean test \
+          -workspace Example.xcworkspace \
+          -scheme Example \
+          -configuration Debug \
+          -destination 'platform=iOS Simulator,name=iPhone 14' \
+          -derivedDataPath build \
+          COMPILER_INDEX_STORE_ENABLE=NO \
+          SWIFT_COMPILATION_MODE=wholemodule \
+          | xcbeautify
