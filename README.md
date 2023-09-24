@@ -4,7 +4,7 @@
   <img src="https://img.shields.io/badge/Platform-macOS-2679eb" />
   <a href="https://swiftpackageindex.com/swiftyfinch/Rugby"><img src="https://img.shields.io/endpoint?url=https%3A%2F%2Fswiftpackageindex.com%2Fapi%2Fpackages%2Fswiftyfinch%2FRugby%2Fbadge%3Ftype%3Dswift-versions" /></a>
   <br>
-  <img src="https://img.shields.io/codecov/c/github/swiftyfinch/rugby/main?label=Coverage">
+  <a href="https://app.codecov.io/gh/swiftyfinch/Rugby"><img src="https://img.shields.io/codecov/c/github/swiftyfinch/rugby/main?label=Coverage"></a>
   <br>
   <img src="https://img.shields.io/badge/Press_★_to_pay_respects-fff?logo=github&logoColor=black" />
   <a href="https://twitter.com/swiftyfinch"><img src="https://img.shields.io/badge/SwiftyFinch-blue?logo=twitter&logoColor=white" /></a>
