@@ -4,6 +4,7 @@
   <img src="https://img.shields.io/badge/Platform-macOS-2679eb" />
   <a href="https://swiftpackageindex.com/swiftyfinch/Rugby"><img src="https://img.shields.io/endpoint?url=https%3A%2F%2Fswiftpackageindex.com%2Fapi%2Fpackages%2Fswiftyfinch%2FRugby%2Fbadge%3Ftype%3Dswift-versions" /></a>
   <br>
+  <a href="https://swiftpackageindex.com/swiftyfinch/Rugby/main/documentation/rugbyfoundation"><img src="https://img.shields.io/badge/Docs-4BA057?logo=googledocs&logoColor=white" /></a>
   <a href="https://app.codecov.io/gh/swiftyfinch/Rugby"><img src="https://img.shields.io/codecov/c/github/swiftyfinch/rugby/main?label=Coverage"></a>
   <br>
   <img src="https://img.shields.io/badge/Press_★_to_pay_respects-fff?logo=github&logoColor=black" />
@@ -50,11 +51,8 @@ Ruby alternatives: [PodBuilder](https://github.com/Subito-it/PodBuilder) | [Coco
 
 # How to install 📦
 
-This version of Rugby hasn't opened source yet. I'm going to open it this summer.\
-There are still [a lot of preparation steps](README.md#-roadmap) to do.
-
-But you can download a binary, read the guide 🦮 [how to install](Docs/how-to-install.md) it.\
-If you look for the legacy `Rugby 1.x`, which source is opened, visit [this page](https://github.com/swiftyfinch/Rugby/tree/1.23.0#how-to-install-).
+You can download a binary, read the guide 🦮 [how to install](Docs/how-to-install.md) it.\
+If you look for the legacy `Rugby 1.x`, visit [this page](https://github.com/swiftyfinch/Rugby/tree/1.23.0#how-to-install-).
 
 ## How to use 🏈
 
