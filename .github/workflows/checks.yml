@@ -79,6 +79,11 @@ jobs:
     - run: chmod +x rugby && echo `pwd` >> $GITHUB_PATH
     - run: rugby --version
 
+    - uses: actions/cache@v3
+      with:
+        path: Example/Pods
+        key: ${{ runner.os }}-pods-${{ hashFiles('Example/Podfile.lock') }}
+        restore-keys: ${{ runner.os }}-pods-
     - name: CocoaPods
       working-directory: ./Example
       run: pod install --repo-update
