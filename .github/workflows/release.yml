@@ -37,8 +37,8 @@ jobs:
       - name: Build Release
         run: make release
 
-#     - name: Git Push
-#       run: git push origin
+      - name: Git Push
+        run: git push origin
 
       - name: Release Draft
         uses: softprops/action-gh-release@v1
