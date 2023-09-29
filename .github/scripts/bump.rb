@@ -28,6 +28,6 @@ NEW_VERSION = VERSION_PARTS.join(".")
 # Update version in Rugby.swift for ArgumentParser
 %x[sed -i '' 's/#{VERSION}/#{NEW_VERSION}/g' Sources/Rugby/Rugby.swift]
 # Add bump commit
-%x[git commit -i Sources/Rugby/Rugby.swift -m "Bump version #{NEW_VERSION}"]
+%x[git commit -i Sources/Rugby/Rugby.swift -m "[skip ci] Bump version #{NEW_VERSION}"]
 
 puts NEW_VERSION
