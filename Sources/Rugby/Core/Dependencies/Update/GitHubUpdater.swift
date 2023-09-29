@@ -19,12 +19,6 @@ final class GitHubUpdater: Loggable {
         let newVersion: Version
         let current: String
         let min: String
-
-        init(newVersion: Version, current: String, min: String) {
-            self.newVersion = newVersion
-            self.current = current
-            self.min = min
-        }
     }
 
     enum Error: LocalizedError {
