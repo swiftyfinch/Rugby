@@ -32,6 +32,7 @@ jobs:
           BUMP_TYPE=${{ github.event.inputs.bump-type }}
           NEW_VERSION=`ruby .github/scripts/bump.rb $BUMP_TYPE`
           echo "NEW_VERSION=$NEW_VERSION" >> $GITHUB_ENV
+          echo "[$BUMP_TYPE] `git describe --tags --abbrev=0` → $NEW_VERSION"
 
       - name: Build Release
         run: make release
