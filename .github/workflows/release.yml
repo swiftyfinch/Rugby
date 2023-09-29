@@ -27,7 +27,7 @@ jobs:
       # Update version in all files and commit
       - name: Bump and Git Commit
         run: |
-          git config user.name "GitHub Actions"
+          git config user.name "swiftyfinch"
           git config user.email "swiftyfinch@yandex.com"
           BUMP_TYPE=${{ github.event.inputs.bump-type }}
           NEW_VERSION=`ruby .github/scripts/bump.rb $BUMP_TYPE`
