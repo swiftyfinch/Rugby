@@ -38,8 +38,8 @@ Then call `where rugby` command and be sure that there are no any of paths to ru
 
 #### Running script (Recommended) 🚀
 
-```bash
-curl -Ls https://raw.githubusercontent.com/swiftyfinch/Rugby/main/.github/scripts/install.sh | bash
+```sh
+curl -Ls https://swiftyfinch.github.io/rugby/install.sh | bash
 ```
 
 #### Manually 🧐
@@ -126,7 +126,7 @@ If you want to find out which versions are available:
 ## Install in CI Environment
 
 You can install Rugby with common `curl` and `unzip` commands.\
-For example, check out [this workflow file](https://github.com/swiftyfinch/Rugby/blob/main/.github/workflows/regress.yml#L33) of Rugby regress.
+For example, check out [this workflow file](https://github.com/swiftyfinch/Rugby/blob/main/.github/workflows/checks.yml#L18) of Rugby regress.
 
 ---
 <br>

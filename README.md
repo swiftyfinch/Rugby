@@ -57,7 +57,7 @@ Then call `where rugby` command and be sure that there are no any of paths to ru
 ### First Install
 
 ```sh
-curl -Ls https://raw.githubusercontent.com/swiftyfinch/Rugby/main/.github/scripts/install.sh | bash
+curl -Ls https://swiftyfinch.github.io/rugby/install.sh | bash
 ```
 
 ### Self-Update
