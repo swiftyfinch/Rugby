@@ -51,7 +51,26 @@ Ruby alternatives: [PodBuilder](https://github.com/Subito-it/PodBuilder) | [Coco
 
 # How to install 📦
 
-You can download a binary, read the guide 🦮 [how to install](Docs/how-to-install.md) it.\
+First of all, if you have the first version `Rugby 1.x`, you need to delete it.\
+Then call `where rugby` command and be sure that there are no any of paths to rugby.
+
+### First Install
+
+```sh
+curl -Ls https://raw.githubusercontent.com/swiftyfinch/Rugby/main/.github/scripts/install.sh | bash
+```
+
+### Self-Update
+
+If you already have Rugby, which version is at least `2.0.0b2`, you can use such a command.
+
+```sh
+> rugby update
+```
+
+### Full Guide
+
+Read more in the guide [how to install](Docs/how-to-install.md) it.\
 If you look for the legacy `Rugby 1.x`, visit [this page](https://github.com/swiftyfinch/Rugby/tree/1.23.0#how-to-install-).
 
 ## How to use 🏈
