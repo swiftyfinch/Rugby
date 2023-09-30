@@ -28,6 +28,7 @@ let package = Package(
             .product(name: "ArgumentParser", package: "swift-argument-parser"),
             "RugbyFoundation"
         ]),
+        .testTarget(name: "RugbyTests", dependencies: ["Rugby"]),
 
         // RugbyFoundation
         .target(name: "RugbyFoundation", dependencies: [
@@ -40,5 +41,6 @@ let package = Package(
             "Fish"
         ]),
         .testTarget(name: "FoundationTests", dependencies: ["RugbyFoundation"])
+        
     ]
 )
