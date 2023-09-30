@@ -6,6 +6,7 @@
   <br>
   <a href="https://swiftpackageindex.com/swiftyfinch/Rugby/main/documentation/rugbyfoundation"><img src="https://img.shields.io/badge/Docs-4BA057?logo=googledocs&logoColor=white" /></a>
   <a href="https://app.codecov.io/gh/swiftyfinch/Rugby"><img src="https://img.shields.io/codecov/c/github/swiftyfinch/rugby/main?label=Coverage"></a>
+  <a href="https://tooomm.github.io/github-release-stats/?username=swiftyfinch&repository=Rugby"><img src="https://img.shields.io/github/downloads/swiftyfinch/Rugby/total?label=Downloads&logo=github"></a>
   <br>
   <img src="https://img.shields.io/badge/Press_★_to_pay_respects-fff?logo=github&logoColor=black" />
   <a href="https://twitter.com/swiftyfinch"><img src="https://img.shields.io/badge/SwiftyFinch-blue?logo=twitter&logoColor=white" /></a>
@@ -134,3 +135,6 @@ If you want to support this project, you can do some of these:\
 `3)` <ins><b>Leave feedback</b></ins> in the discussions 💬 section.
 
 Let's Roll-oll 🏈
+<br>
+
+![visitors](https://visitor-badge.laobi.icu/badge?page_id=swiftyfinch.rugby&left_text=Views)
