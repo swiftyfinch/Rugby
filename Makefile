@@ -4,8 +4,11 @@ debug: lint
 
 .PHONY: lint
 lint:
+	@which swiftformat || \
+	(printf '\e[31m⛔️ Could not find SwiftFormat.\e[m\n\e[33m🚑 Run: brew install swiftformat\e[m\n' && exit 1)
 	@which swiftlint || \
 	(printf '\e[31m⛔️ Could not find SwiftLint.\e[m\n\e[33m🚑 Run: brew install swiftlint\e[m\n' && exit 1)
+	swiftformat --quiet .
 	swiftlint --strict --quiet
 
 .PHONY: release
