@@ -1,5 +1,5 @@
-import Foundation
 import Alamofire
+import Foundation
 
 public final class DummySource {
     public init() {}
