@@ -1,17 +1,10 @@
-//
-//  ContentView.swift
-//  Example
-//
-//  Created by Vyacheslav Khorkov on 16.08.2023.
-//
-
 import Alamofire
+import KeyboardLayoutGuide
+import Kingfisher
+import LocalPod
 import Moya
 import SnapKit
-import Kingfisher
-import KeyboardLayoutGuide
 import SwiftUI
-import LocalPod
 
 struct ContentView: View {
     private let dummy = DummySource()

@@ -1,14 +1,6 @@
-//
-//  ExampleUITestsLaunchTests.swift
-//  ExampleUITests
-//
-//  Created by Vyacheslav Khorkov on 16.08.2023.
-//
-
 import XCTest
 
 final class ExampleUITestsLaunchTests: XCTestCase {
-
     func testLaunch() throws {
         let app = XCUIApplication()
         app.launch()
