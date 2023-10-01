@@ -12,6 +12,7 @@ jobs:
     runs-on: macos-latest
     steps:
     - uses: actions/checkout@v3
+    - run: swiftformat --lint --quiet --reporter github-actions-log
     - run: swiftlint --strict --quiet --reporter github-actions-logging
 
   install:
