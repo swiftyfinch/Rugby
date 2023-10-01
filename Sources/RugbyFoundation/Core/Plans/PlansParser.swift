@@ -6,15 +6,19 @@ import Yams
 
 /// The protocol describing a service to parse YAML files with Rugby plans.
 public protocol IPlansParser {
+    /// Returns plans list.
+    /// - Parameter path: A path to plans file.
+    func plans(atPath path: String) throws -> [Plan]
+
     /// Returns the first plan from file at a path.
     /// - Parameter path: A path to plans file.
-    func top(path: String) throws -> Plan
+    func topPlan(atPath path: String) throws -> Plan
 
     /// Returns a plan with the name.
     /// - Parameters:
     ///   - name: A name of plan to find.
     ///   - path: A path to plans file.
-    func named(_ name: String, path: String) throws -> Plan
+    func planNamed(_ name: String, path: String) throws -> Plan
 }
 
 /// The Rugby plan structure.
@@ -187,16 +191,20 @@ private struct StringsFieldParser: FieldParser {
 // MARK: - IPlansParser
 
 extension PlansParser: IPlansParser {
-    public func top(path: String) throws -> Plan {
-        let plans = try parse(path: path)
+    public func plans(atPath path: String) throws -> [Plan] {
+        try parse(path: path)
+    }
+
+    public func topPlan(atPath path: String) throws -> Plan {
+        let plans = try plans(atPath: path)
         guard let plan = plans.first else {
             throw Error.noPlans
         }
         return plan
     }
 
-    public func named(_ name: String, path: String) throws -> Plan {
-        let plans = try parse(path: path)
+    public func planNamed(_ name: String, path: String) throws -> Plan {
+        let plans = try plans(atPath: path)
         guard let plan = plans.first(where: { $0.name == name }) else {
             throw Error.noPlanWithName(name)
         }
