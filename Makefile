@@ -4,6 +4,8 @@ debug: lint
 
 .PHONY: lint
 lint:
+	@which swiftlint || \
+	(printf '\e[31m⛔️ Could not find SwiftLint.\e[m\n\e[33m🚑 Run: brew install swiftlint\e[m\n' && exit 1)
 	swiftlint --strict --quiet
 
 .PHONY: release
