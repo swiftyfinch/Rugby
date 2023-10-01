@@ -40,7 +40,6 @@ let package = Package(
             "Zip",
             "Fish"
         ]),
-        .testTarget(name: "FoundationTests", dependencies: ["RugbyFoundation"])
-        
+        .testTarget(name: "FoundationTests", dependencies: ["RugbyFoundation"])        
     ]
 )

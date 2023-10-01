@@ -25,8 +25,11 @@ extension VersionParserTests {
 
     func testParseValidVersion() throws {
         let version = "1.0.0"
-        let ghVersion = GitHubUpdaterVersion(major: 1, minor: 0, patch: 0, prerelease: GitHubUpdaterVersion.Prerelease.prod, build: 0)
+        let ghVersion = GitHubUpdaterVersion(major: 1, minor: 0, patch: 0, prerelease: GitHubUpdaterVersion.Prerelease.prod, build: 0)        
+        // Act
         let parsedVersion = try self.parser.parse(version)
+
+        // Assert
         XCTAssertEqual(ghVersion.major, parsedVersion.major)
         XCTAssertEqual(ghVersion.minor, parsedVersion.minor)
         XCTAssertEqual(ghVersion.patch, parsedVersion.patch)
@@ -37,7 +40,10 @@ extension VersionParserTests {
     func testParseValidBetaVersion() throws {
         let version = "1.0.0b"
         let ghVersion = GitHubUpdaterVersion(major: 1, minor: 0, patch: 0, prerelease: GitHubUpdaterVersion.Prerelease.beta, build: 0)
+        // Act
         let parsedVersion = try self.parser.parse(version)
+
+        // Assert
         XCTAssertEqual(ghVersion.major, parsedVersion.major)
         XCTAssertEqual(ghVersion.minor, parsedVersion.minor)
         XCTAssertEqual(ghVersion.patch, parsedVersion.patch)
@@ -48,7 +54,10 @@ extension VersionParserTests {
     func testParseValidBuildVersion() throws {
         let version = "1.0.0b1"
         let ghVersion = GitHubUpdaterVersion(major: 1, minor: 0, patch: 0, prerelease: GitHubUpdaterVersion.Prerelease.beta, build: 1)
+        // Act
         let parsedVersion = try self.parser.parse(version)
+        
+        // Assert
         XCTAssertEqual(ghVersion.major, parsedVersion.major)
         XCTAssertEqual(ghVersion.minor, parsedVersion.minor)
         XCTAssertEqual(ghVersion.patch, parsedVersion.patch)
@@ -59,7 +68,10 @@ extension VersionParserTests {
     func testParseInvalidBuildVersion() throws {
         let version = "1.0.0ba"
         let ghVersion = GitHubUpdaterVersion(major: 1, minor: 0, patch: 0, prerelease: GitHubUpdaterVersion.Prerelease.beta, build: 1)
+        // Act
         let parsedVersion = try self.parser.parse(version)
+        
+        // Assert
         XCTAssertEqual(ghVersion.major, parsedVersion.major)
         XCTAssertEqual(ghVersion.minor, parsedVersion.minor)
         XCTAssertEqual(ghVersion.patch, parsedVersion.patch)
@@ -70,7 +82,10 @@ extension VersionParserTests {
     func testParseInvalidBetaVersion() throws {
         let version = "1.0.0a1"
         let ghVersion = GitHubUpdaterVersion(major: 1, minor: 0, patch: 0, prerelease: GitHubUpdaterVersion.Prerelease.beta, build: 1)
+        // Act
         let parsedVersion = try self.parser.parse(version)
+        
+        // Assert
         XCTAssertEqual(ghVersion.major, parsedVersion.major)
         XCTAssertEqual(ghVersion.minor, parsedVersion.minor)
         XCTAssertEqual(ghVersion.patch, parsedVersion.patch)
@@ -80,15 +95,21 @@ extension VersionParserTests {
     
     func testInvalidShortVersionParse() {
         let version = "1.0"
-        XCTAssertThrowsError(try self.parser.parse(version)) { error in
-            XCTAssertEqual((error as! VersionParserError).localizedDescription, VersionParserError.incorrectVersion(version).localizedDescription)
+        let expectedLocalizedDescription = VersionParserError.incorrectVersion(version).localizedDescription
+                
+        // Act & Assert
+        XCTAssertThrowsError(try parser.parse(version)) { error in
+            XCTAssertEqual((error as? VersionParserError)?.localizedDescription, expectedLocalizedDescription)
         }
     }
     
     func testInvalidCharVersionParse() {
         let version = "1.o.0"
-        XCTAssertThrowsError(try self.parser.parse(version)) { error in
-            XCTAssertEqual((error as! VersionParserError).localizedDescription, VersionParserError.incorrectVersion(version).localizedDescription)            
+        let expectedLocalizedDescription = VersionParserError.incorrectVersion(version).localizedDescription
+                
+        // Act & Assert
+        XCTAssertThrowsError(try parser.parse(version)) { error in
+            XCTAssertEqual((error as? VersionParserError)?.localizedDescription, expectedLocalizedDescription)
         }
     }
 }
