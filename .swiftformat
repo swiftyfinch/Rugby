@@ -1,3 +1,5 @@
+--exclude **/Mocks/**/*.swift
+
 # rules
 --commas inline
 --header strip

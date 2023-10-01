@@ -90,7 +90,6 @@ opt_in_rules:
   - weak_delegate
   - xctfail_message
   - explicit_init
-  - file_header
   - missing_docs
 
 included:
