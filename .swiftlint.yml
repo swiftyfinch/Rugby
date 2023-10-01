@@ -95,6 +95,7 @@ opt_in_rules:
 
 included:
   - Sources
+  - Tests
 
 # Custom
 large_tuple: 4
