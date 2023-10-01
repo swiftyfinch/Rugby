@@ -1,11 +1,3 @@
-//
-//  XcodeCLTVersionProviderTests.swift
-//  FoundationTests
-//
-//  Created by Vyacheslav Khorkov on 21.04.2023.
-//  Copyright © 2023 Vyacheslav Khorkov. All rights reserved.
-//
-
 @testable import RugbyFoundation
 import XCTest
 
@@ -128,7 +120,7 @@ extension XcodeCLTVersionProviderTests {
         } catch {
             resultError = error
         }
-        
+
         // Assert
         let unwrappedError = try XCTUnwrap(resultError as? XcodeCLTVersionProviderError)
         XCTAssertEqual(unwrappedError, .unknownXcodeCLT)
