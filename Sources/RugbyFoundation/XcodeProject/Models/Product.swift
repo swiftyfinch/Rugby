@@ -1,11 +1,3 @@
-//
-//  Product.swift
-//  RugbyFoundation
-//
-//  Created by Vyacheslav Khorkov on 29.08.2022.
-//  Copyright © 2022 Vyacheslav Khorkov. All rights reserved.
-//
-
 import XcodeProj
 
 final class Product {

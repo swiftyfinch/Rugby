@@ -1,11 +1,3 @@
-//
-//  BuildManager.swift
-//  RugbyFoundation
-//
-//  Created by Vyacheslav Khorkov on 04.07.2022.
-//  Copyright © 2022 Vyacheslav Khorkov. All rights reserved.
-//
-
 import Foundation
 
 // MARK: - Interface
@@ -100,9 +92,9 @@ final class BuildManager: Loggable {
                                  ignoreCache: Bool) async throws -> Target? {
         guard targets.isNotEmpty else { throw BuildError.cantFindBuildTargets }
 
-        try await log("Backuping", auto: try await backupManager.backup(xcodeProject, kind: .tmp))
-        try await log("Checking Binaries Storage", auto: try await binariesCleaner.freeSpace())
-        try await log("Hashing Targets", auto: try await targetsHasher.hash(targets, xcargs: options.xcargs))
+        try await log("Backuping", auto: await backupManager.backup(xcodeProject, kind: .tmp))
+        try await log("Checking Binaries Storage", auto: await binariesCleaner.freeSpace())
+        try await log("Hashing Targets", auto: await targetsHasher.hash(targets, xcargs: options.xcargs))
 
         var shared: Set<Target> = []
         var buildTargets = targets
@@ -130,15 +122,15 @@ final class BuildManager: Loggable {
 
             await log("Reusing Binaries: \n\(shared.map { "* \($0.name)" }.sorted().joined(separator: "\n"))",
                       level: .info)
-            try await log("Reusing Binaries", auto: try await useBinariesManager.use(targets: shared, keepGroups: true))
+            try await log("Reusing Binaries", auto: await useBinariesManager.use(targets: shared, keepGroups: true))
 
-            try await log("Saving Project", auto: try await xcodeProject.save())
+            try await log("Saving Project", auto: await xcodeProject.save())
             xcodeProject.resetCache()
         }
 
         let buildTarget = try await log("Creating Build Target",
-                                        auto: try await buildTargetsManager.createTarget(dependencies: buildTargets))
-        try await log("Saving Project", auto: try await xcodeProject.save())
+                                        auto: await buildTargetsManager.createTarget(dependencies: buildTargets))
+        try await log("Saving Project", auto: await xcodeProject.save())
 
         return buildTarget
     }
@@ -178,7 +170,7 @@ extension BuildManager: IBuildManager {
         guard try await !rugbyXcodeProject.isAlreadyUsingRugby() else { throw RugbyError.alreadyUseRugby }
         let targets = try await log(
             "Finding Build Targets",
-            auto: try await buildTargetsManager.findTargets(targetsRegex, exceptTargets: exceptTargetsRegex)
+            auto: await buildTargetsManager.findTargets(targetsRegex, exceptTargets: exceptTargetsRegex)
         )
         let buildTarget = try await makeBuildTarget(targets: targets,
                                                     options: options,
@@ -188,9 +180,9 @@ extension BuildManager: IBuildManager {
 
         try await log(
             "Saving binaries (\(buildTarget.explicitDependencies.count))",
-            auto: try await binariesManager.saveBinaries(ofTargets: buildTarget.explicitDependencies,
-                                                         buildOptions: options,
-                                                         buildPaths: paths)
+            auto: await binariesManager.saveBinaries(ofTargets: buildTarget.explicitDependencies,
+                                                     buildOptions: options,
+                                                     buildPaths: paths)
         )
     }
 }

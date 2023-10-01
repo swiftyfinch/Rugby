@@ -1,11 +1,3 @@
-//
-//  ILogger.swift
-//  RugbyFoundation
-//
-//  Created by Vyacheslav Khorkov on 18.02.2023.
-//  Copyright © 2023 Vyacheslav Khorkov. All rights reserved.
-//
-
 /// The protocol describing logger service.
 public protocol ILogger: AnyObject {
     /// Configures the logger with specific printers.

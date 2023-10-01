@@ -1,18 +1,10 @@
-//
-//  Vault+Build.swift
-//  RugbyFoundation
-//
-//  Created by Vyacheslav Khorkov on 05.08.2023.
-//  Copyright © 2023 Vyacheslav Khorkov. All rights reserved.
-//
-
 import Fish
 import Rainbow
 
-extension Vault {
+public extension Vault {
     /// The manager to build CocoaPods project.
     /// - Parameter workingDirectory: A directory with Pods folder.
-    public func buildManager(workingDirectory: IFolder) -> IBuildManager {
+    func buildManager(workingDirectory: IFolder) -> IBuildManager {
         let logFormatter = BuildLogFormatter(colored: Rainbow.enabled)
         let xcodeBuildExecutor = XcodeBuildExecutor(
             shellExecutor: shellExecutor,

@@ -1,11 +1,3 @@
-//
-//  Debugger.swift
-//  Rugby
-//
-//  Created by Vyacheslav Khorkov on 05.02.2023.
-//  Copyright © 2023 Vyacheslav Khorkov. All rights reserved.
-//
-
 import Foundation
 
 final class Debugger {

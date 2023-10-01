@@ -1,11 +1,3 @@
-//
-//  Printer.swift
-//  RugbyFoundation
-//
-//  Created by Vyacheslav Khorkov on 17.09.2022.
-//  Copyright © 2022 Vyacheslav Khorkov. All rights reserved.
-//
-
 /// The protocol describing a printer which can be used in the logger.
 public protocol Printer {
     /// Returns true if text can be printed.

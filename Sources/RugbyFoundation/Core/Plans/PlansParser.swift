@@ -1,11 +1,3 @@
-//
-//  PlansParser.swift
-//  RugbyFoundation
-//
-//  Created by Vyacheslav Khorkov on 09.09.2022.
-//  Copyright © 2022 Vyacheslav Khorkov. All rights reserved.
-//
-
 import Fish
 import Foundation
 import Yams
@@ -78,7 +70,6 @@ enum PlansParserError: LocalizedError {
 // MARK: - Implementation
 
 final class PlansParser {
-
     private typealias Error = PlansParserError
     private typealias RawCommand = [String: Any]
     private var cache: [String: [Plan]] = [:]

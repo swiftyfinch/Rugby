@@ -1,11 +1,3 @@
-//
-//  UseBinariesManager.swift
-//  RugbyFoundation
-//
-//  Created by Vyacheslav Khorkov on 19.07.2022.
-//  Copyright © 2022 Vyacheslav Khorkov. All rights reserved.
-//
-
 import Foundation
 
 // MARK: - Interface
@@ -69,7 +61,6 @@ final class UseBinariesManager: Loggable {
 // MARK: - File Replacements
 
 extension UseBinariesManager {
-
     private func patchProductFiles(binaryTargets: Set<Target>) async throws -> Set<Target> {
         let binaryUsers = try await findBinaryUsers(binaryTargets)
         try binaryUsers.forEach { target in
@@ -152,21 +143,21 @@ extension UseBinariesManager: IUseBinariesManager {
         guard try await !rugbyXcodeProject.isAlreadyUsingRugby() else { throw RugbyError.alreadyUseRugby }
         let binaryTargets = try await log(
             "Finding Build Targets",
-            auto: try await buildTargetsManager.findTargets(targetsRegex, exceptTargets: exceptTargetsRegex)
+            auto: await buildTargetsManager.findTargets(targetsRegex, exceptTargets: exceptTargetsRegex)
         )
-        try await log("Hashing Targets", auto: try await targetsHasher.hash(binaryTargets, xcargs: xcargs))
-        try await log("Backuping", auto: try await backupManager.backup(xcodeProject, kind: .original))
+        try await log("Hashing Targets", auto: await targetsHasher.hash(binaryTargets, xcargs: xcargs))
+        try await log("Backuping", auto: await backupManager.backup(xcodeProject, kind: .original))
         try await use(targets: binaryTargets, keepGroups: !deleteSources)
         try await rugbyXcodeProject.markAsUsingRugby()
-        try await log("Saving Project", auto: try await xcodeProject.save())
+        try await log("Saving Project", auto: await xcodeProject.save())
     }
 
     public func use(targets: Set<Target>, keepGroups: Bool) async throws {
         let binaryTargets = try await log("Patching Product Files",
-                                          auto: try await patchProductFiles(binaryTargets: targets))
+                                          auto: await patchProductFiles(binaryTargets: targets))
         try await log(
             "Deleting Targets (\(binaryTargets.count))",
-            auto: try await xcodeProject.deleteTargets(binaryTargets, keepGroups: keepGroups)
+            auto: await xcodeProject.deleteTargets(binaryTargets, keepGroups: keepGroups)
         )
     }
 }

@@ -1,11 +1,3 @@
-//
-//  WarmupManager.swift
-//  RugbyFoundation
-//
-//  Created by Vyacheslav Khorkov on 16.01.2023.
-//  Copyright © 2023 Vyacheslav Khorkov. All rights reserved.
-//
-
 import Foundation
 
 // MARK: - Interface
@@ -39,7 +31,7 @@ enum WarmupManagerError: LocalizedError {
 
     var errorDescription: String? {
         switch self {
-        case .incorrectEndpoint(let endpoint):
+        case let .incorrectEndpoint(endpoint):
             return "Incorrect endpoint: \(endpoint)"
         }
     }
@@ -79,18 +71,18 @@ final class WarmupManager: Loggable {
                                    options: XcodeBuildOptions) async throws -> Set<Target> {
         let targets = try await log(
             "Finding Build Targets",
-            auto: try await buildTargetsManager.findTargets(targetsRegex, exceptTargets: exceptTargetsRegex)
+            auto: await buildTargetsManager.findTargets(targetsRegex, exceptTargets: exceptTargetsRegex)
         )
         guard targets.isNotEmpty else { throw BuildError.cantFindBuildTargets }
 
-        try await log("Hashing Targets", auto: try await targetsHasher.hash(targets, xcargs: options.xcargs))
+        try await log("Hashing Targets", auto: await targetsHasher.hash(targets, xcargs: options.xcargs))
         let (_, notFound) = try await log(
             "Finding Binaries",
             auto: binariesManager.findBinaries(ofTargets: targets, buildOptions: options)
         )
 
         let notFoundPaths = try notFound.compactMap {
-            "- \(try binariesManager.finderBinaryFolderPath($0, buildOptions: options))"
+            try "- \(binariesManager.finderBinaryFolderPath($0, buildOptions: options))"
         }
         if notFoundPaths.isNotEmpty {
             let list = notFoundPaths.caseInsensitiveSorted().joined(separator: "\n")
@@ -143,7 +135,7 @@ final class WarmupManager: Loggable {
 }
 
 private extension WarmupManager {
-    typealias RemoteBinaryInfo = ((url: URL, localPath: URL))
+    typealias RemoteBinaryInfo = (url: URL, localPath: URL)
 
     private func collectRemoteBinariesInfo(
         targets: Set<Target>,

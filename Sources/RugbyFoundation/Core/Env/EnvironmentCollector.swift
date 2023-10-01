@@ -1,11 +1,3 @@
-//
-//  EnvironmentCollector.swift
-//  RugbyFoundation
-//
-//  Created by Vyacheslav Khorkov on 09.12.2022.
-//  Copyright © 2022 Vyacheslav Khorkov. All rights reserved.
-//
-
 import Fish
 import Foundation
 
@@ -100,9 +92,9 @@ extension EnvironmentCollector: IEnvironmentCollector {
     ) async throws -> [String] {
         let xcodeCLTInfo = try xcodeCLTVersionProvider.version()
         let xcodeCLTVersion = xcodeCLTInfo.build.map { "\(xcodeCLTInfo.base) (\($0))" } ?? xcodeCLTInfo.base
-        return [
+        return try [
             "Rugby version: \(rugbyVersion)",
-            try await getSwiftVersion(),
+            await getSwiftVersion(),
             "CLT: \(xcodeCLTVersion)",
             getCPU(),
             getProject(workingDirectory: workingDirectory),

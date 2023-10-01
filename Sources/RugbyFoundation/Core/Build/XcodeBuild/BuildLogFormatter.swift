@@ -1,11 +1,3 @@
-//
-//  BuildLogFormatter.swift
-//  RugbyFoundation
-//
-//  Created by Vyacheslav Khorkov on 14.07.2022.
-//  Copyright © 2022 Vyacheslav Khorkov. All rights reserved.
-//
-
 import XcbeautifyLib
 
 final class BuildLogFormatter {

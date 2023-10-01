@@ -1,11 +1,3 @@
-//
-//  PBXTarget+Paths.swift
-//  RugbyFoundation
-//
-//  Created by Vyacheslav Khorkov on 29.08.2022.
-//  Copyright © 2022 Vyacheslav Khorkov. All rights reserved.
-//
-
 import Foundation
 import XcodeProj
 

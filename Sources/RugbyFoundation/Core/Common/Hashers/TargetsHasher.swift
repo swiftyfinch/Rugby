@@ -1,11 +1,3 @@
-//
-//  TargetsHasher.swift
-//  RugbyFoundation
-//
-//  Created by Vyacheslav Khorkov on 27.08.2022.
-//  Copyright © 2022 Vyacheslav Khorkov. All rights reserved.
-//
-
 import Foundation
 import Yams
 
@@ -88,17 +80,17 @@ final class TargetsHasher {
     }
 
     private func targetHashContext(_ target: Target, xcargs: [String]) async throws -> [String: Any] {
-        await [
+        try await [
             "name": target.name,
-            "swift_version": try swiftVersionProvider.swiftVersion(),
+            "swift_version": swiftVersionProvider.swiftVersion(),
             "buildOptions": [
                 "xcargs": xcargs.sorted()
             ],
-            "buildPhases": try buildPhaseHasher.hashContext(target: target),
+            "buildPhases": buildPhaseHasher.hashContext(target: target),
             "product": target.product.map(productHasher.hashContext) as Any,
-            "configurations": try configurationsHasher.hashContext(target),
-            "cocoaPodsScripts": try cocoaPodsScriptsHasher.hashContext(target),
-            "buildRules": try buildRulesHasher.hashContext(target.buildRules)
+            "configurations": configurationsHasher.hashContext(target),
+            "cocoaPodsScripts": cocoaPodsScriptsHasher.hashContext(target),
+            "buildRules": buildRulesHasher.hashContext(target.buildRules)
         ]
     }
 

@@ -1,11 +1,3 @@
-//
-//  ErrorWrapper.swift
-//  Rugby
-//
-//  Created by Vyacheslav Khorkov on 04.07.2022.
-//  Copyright © 2022 Vyacheslav Khorkov. All rights reserved.
-//
-
 import ArgumentParser
 import Foundation
 import Rainbow
@@ -26,6 +18,7 @@ extension ParsableCommand {
     // swiftlint:disable:next identifier_name
     static var _errorLabel: String { errorPrefix() }
 }
+
 private func errorPrefix() -> String {
     "⛔️ \(Rainbow.enabled ? "\u{1B}[31m" : "")Error"
 }
@@ -37,7 +30,7 @@ private enum PresentableError: LocalizedError {
 
     var errorDescription: String? {
         switch self {
-        case .common(let description):
+        case let .common(description):
             return "\(errorSuffix())\(description)"
         }
     }

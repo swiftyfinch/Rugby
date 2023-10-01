@@ -1,11 +1,3 @@
-//
-//  Use.swift
-//  Rugby
-//
-//  Created by Vyacheslav Khorkov on 19.07.2022.
-//  Copyright © 2022 Vyacheslav Khorkov. All rights reserved.
-//
-
 import ArgumentParser
 import Fish
 import RugbyFoundation
@@ -42,11 +34,11 @@ extension Use: RunnableCommand {
     func body() async throws {
         try await dependencies.useBinariesManager(workingDirectory: Folder.current)
             .use(
-                targetsRegex: try regex(
+                targetsRegex: regex(
                     patterns: targetsOptions.targetsAsRegex,
                     exactMatches: targetsOptions.targets
                 ),
-                exceptTargetsRegex: try regex(
+                exceptTargetsRegex: regex(
                     patterns: targetsOptions.exceptAsRegex,
                     exactMatches: targetsOptions.exceptTargets
                 ),

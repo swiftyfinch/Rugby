@@ -1,11 +1,3 @@
-//
-//  Logger.swift
-//  Rugby
-//
-//  Created by Vyacheslav Khorkov on 21.08.2022.
-//  Copyright © 2022 Vyacheslav Khorkov. All rights reserved.
-//
-
 import Foundation
 import Rainbow
 import RugbyFoundation

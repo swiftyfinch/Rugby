@@ -1,11 +1,3 @@
-//
-//  String+HomeRelativePath.swift
-//  RugbyFoundation
-//
-//  Created by Vyacheslav Khorkov on 26.07.2022.
-//  Copyright © 2022 Vyacheslav Khorkov. All rights reserved.
-//
-
 import Foundation
 
 extension String {

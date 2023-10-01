@@ -1,11 +1,3 @@
-//
-//  BinariesCleaner.swift
-//  RugbyFoundation
-//
-//  Created by Vyacheslav Khorkov on 13.11.2022.
-//  Copyright © 2023 Vyacheslav Khorkov. All rights reserved.
-//
-
 import Fish
 import Foundation
 
@@ -19,7 +11,7 @@ final class BinariesCleaner: Loggable {
 
     private let binariesPathDepth = 4
     private let reserveMultiplier = 1.2 // 20%
-    private let freeMultiplier = 0.4    // 40%
+    private let freeMultiplier = 0.4 // 40%
     private let formatter: ByteCountFormatter = {
         let formatter = ByteCountFormatter()
         formatter.allowedUnits = [.useGB]
@@ -41,7 +33,7 @@ final class BinariesCleaner: Loggable {
     }
 
     func freeSpace() async throws {
-        let cleanUpInfo = try await log("Calculating Storage Info", auto: try await calculateCleanUpInfo())
+        let cleanUpInfo = try await log("Calculating Storage Info", auto: await calculateCleanUpInfo())
         let usedPercent = cleanUpInfo.used.percent(total: limit)
         await log("Used: \(formatter.string(fromByteCount: Int64(cleanUpInfo.used))) (\(usedPercent)%)")
 
@@ -51,10 +43,10 @@ final class BinariesCleaner: Loggable {
         await log("Limit: \(formatter.string(fromByteCount: Int64(limit)))", level: .info)
         await log("To Free: \(formatter.string(fromByteCount: Int64(cleanUpInfo.spaceToFree)))", level: .info)
 
-        let candidatesForDeletion = try await log("Finding Candidates", auto: try findCandidatesForDeletion())
+        let candidatesForDeletion = try await log("Finding Candidates", auto: findCandidatesForDeletion())
         let filesForDeletion = try await log(
             "Selecting Binaries",
-            auto: try await selectFoldersForDeletion(in: candidatesForDeletion, spaceToFree: cleanUpInfo.spaceToFree)
+            auto: await selectFoldersForDeletion(in: candidatesForDeletion, spaceToFree: cleanUpInfo.spaceToFree)
         )
         let logText = filesForDeletion.reduce(into: "Folders For Deletion:\n") { text, group in
             text.append("\(group.key)\n")

@@ -1,11 +1,3 @@
-//
-//  Delete.swift
-//  Rugby
-//
-//  Created by Vyacheslav Khorkov on 01.08.2022.
-//  Copyright © 2022 Vyacheslav Khorkov. All rights reserved.
-//
-
 import ArgumentParser
 import Fish
 import RugbyFoundation
@@ -48,11 +40,11 @@ extension Delete: RunnableCommand {
             projectPath: path
         )
         try await deleteTargetsManager.delete(
-            targetsRegex: try regex(
+            targetsRegex: regex(
                 patterns: targetsOptions.targetsAsRegex,
                 exactMatches: targetsOptions.targets
             ),
-            exceptTargetsRegex: try regex(
+            exceptTargetsRegex: regex(
                 patterns: targetsOptions.exceptAsRegex,
                 exactMatches: targetsOptions.exceptTargets
             ),

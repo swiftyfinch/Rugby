@@ -5,7 +5,6 @@
 --header strip
 
 --enable blankLineAfterImports
---enable docComments
 
 --disable wrapMultilineStatementBraces
 --disable redundantType

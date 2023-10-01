@@ -1,11 +1,3 @@
-//
-//  DeleteTargetsManager.swift
-//  RugbyFoundation
-//
-//  Created by Vyacheslav Khorkov on 02.08.2022.
-//  Copyright © 2022 Vyacheslav Khorkov. All rights reserved.
-//
-
 import Foundation
 
 // MARK: - Interface
@@ -49,7 +41,7 @@ extension DeleteTargetsManager: IDeleteTargetsManager {
                        deleteSources: Bool) async throws {
         var shouldBeRemoved = try await log(
             "Finding Targets",
-            auto: try await xcodeProject.findTargets(by: targetsRegex, except: exceptTargetsRegex)
+            auto: await xcodeProject.findTargets(by: targetsRegex, except: exceptTargetsRegex)
         )
         try await log("Keeping Excepted Targets Dependencies", block: {
             if keepExceptedTargetsDependencies {
@@ -59,9 +51,9 @@ extension DeleteTargetsManager: IDeleteTargetsManager {
                 }
             }
         })
-        try await log("Backuping", auto: try await backupManager.backup(xcodeProject, kind: .original))
+        try await log("Backuping", auto: await backupManager.backup(xcodeProject, kind: .original))
         try await log("Deleting Targets (\(shouldBeRemoved.count))",
-                      auto: try await xcodeProject.deleteTargets(shouldBeRemoved, keepGroups: !deleteSources))
-        try await log("Saving Project", auto: try await xcodeProject.save())
+                      auto: await xcodeProject.deleteTargets(shouldBeRemoved, keepGroups: !deleteSources))
+        try await log("Saving Project", auto: await xcodeProject.save())
     }
 }

@@ -1,11 +1,3 @@
-//
-//  VersionParser.swift
-//  Rugby
-//
-//  Created by Vyacheslav Khorkov on 30.11.2022.
-//  Copyright © 2022 Vyacheslav Khorkov. All rights reserved.
-//
-
 import Foundation
 import RugbyFoundation
 
@@ -41,7 +33,7 @@ final class VersionParser {
 
         var errorDescription: String? {
             switch self {
-            case .incorrectVersion(let version):
+            case let .incorrectVersion(version):
                 return "Incorrect version: \(version)"
             }
         }

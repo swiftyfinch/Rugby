@@ -1,11 +1,3 @@
-//
-//  XcodeTargetsDataSource.swift
-//  RugbyFoundation
-//
-//  Created by Vyacheslav Khorkov on 20.08.2022.
-//  Copyright © 2022 Vyacheslav Khorkov. All rights reserved.
-//
-
 import Foundation
 import XcodeProj
 
@@ -14,7 +6,7 @@ enum XcodeTargetsDataSourceError: LocalizedError {
 
     var errorDescription: String? {
         switch self {
-        case .missingTarget(let target):
+        case let .missingTarget(target):
             return "Missing target '\(target ?? "Unknown")'."
         }
     }
@@ -100,9 +92,9 @@ final class XcodeTargetsDataSource {
             if let sharedTarget = builtTargets[dependency.uuid] {
                 target = sharedTarget
             } else if let project = targets[dependency.uuid]?.project {
-                target = Target(pbxTarget: dependency,
-                                project: project,
-                                projectBuildConfigurations: try await project.buildConfigurations)
+                target = try Target(pbxTarget: dependency,
+                                    project: project,
+                                    projectBuildConfigurations: await project.buildConfigurations)
             } else {
                 throw Error.missingTarget(dependency.name)
             }
@@ -110,9 +102,9 @@ final class XcodeTargetsDataSource {
         }
 
         guard let project = targets[target.uuid]?.project else { throw Error.missingTarget(target.name) }
-        builtTargets[target.uuid] = Target(pbxTarget: target,
-                                           project: project,
-                                           explicitDependencies: dependencies,
-                                           projectBuildConfigurations: try await project.buildConfigurations)
+        builtTargets[target.uuid] = try Target(pbxTarget: target,
+                                               project: project,
+                                               explicitDependencies: dependencies,
+                                               projectBuildConfigurations: await project.buildConfigurations)
     }
 }

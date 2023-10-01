@@ -1,11 +1,3 @@
-//
-//  FileContentHasher.swift
-//  RugbyFoundation
-//
-//  Created by Vyacheslav Khorkov on 30.08.2022.
-//  Copyright © 2022 Vyacheslav Khorkov. All rights reserved.
-//
-
 import Fish
 import Foundation
 
@@ -26,7 +18,7 @@ final class FileContentHasher {
 
     private func hashContext(path: String) throws -> String {
         let file = try File.at(path)
-        return "\(file.relativePath(to: workingDirectory)): \(try hash(file))"
+        return try "\(file.relativePath(to: workingDirectory)): \(hash(file))"
     }
 
     private func hash(_ file: IFile) throws -> String {

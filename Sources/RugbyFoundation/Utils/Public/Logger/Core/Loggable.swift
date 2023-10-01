@@ -1,18 +1,10 @@
-//
-//  Loggable.swift
-//  RugbyFoundation
-//
-//  Created by Vyacheslav Khorkov on 18.02.2023.
-//  Copyright © 2023 Vyacheslav Khorkov. All rights reserved.
-//
-
 /// The protocol describing the convenient way to use a logger.
 public protocol Loggable {
     /// The specific logger instance.
     var logger: ILogger { get }
 }
 
-extension Loggable {
+public extension Loggable {
     /// Logs block.
     /// - Parameters:
     ///   - header: A header of block.
@@ -22,7 +14,7 @@ extension Loggable {
     ///   - output: An output type.
     ///   - block: An autoclosure to do.
     @discardableResult
-    public func log<Result>(
+    func log<Result>(
         _ header: String,
         footer: String? = nil,
         metricKey: String? = nil,
@@ -49,7 +41,7 @@ extension Loggable {
     ///   - output: An output type.
     ///   - block: A closure to do.
     @discardableResult
-    public func log<Result>(
+    func log<Result>(
         _ header: String,
         footer: String? = nil,
         metricKey: String? = nil,
@@ -72,7 +64,7 @@ extension Loggable {
     ///   - text: A text to log.
     ///   - level: A level of logging.
     ///   - output: An output type.
-    public func log(
+    func log(
         _ text: String,
         level: LogLevel = .compact,
         output: LoggerOutput = .all
@@ -89,7 +81,7 @@ extension Loggable {
     ///   - text: A text to log.
     ///   - level: A level of logging.
     ///   - output: An output type.
-    public func logPlain(
+    func logPlain(
         _ text: String,
         level: LogLevel = .compact,
         output: LoggerOutput = .all

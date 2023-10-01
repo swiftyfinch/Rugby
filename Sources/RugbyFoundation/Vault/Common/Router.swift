@@ -1,11 +1,3 @@
-//
-//  Router.swift
-//  RugbyFoundation
-//
-//  Created by Vyacheslav Khorkov on 27.08.2023.
-//  Copyright © 2023 Vyacheslav Khorkov. All rights reserved.
-//
-
 import Fish
 
 /// The service providing all paths for Rugby infrastructure.
@@ -24,9 +16,9 @@ public final class Router {
 
 // MARK: - Paths
 
-extension Router {
+public extension Router {
     /// The structure describing the general paths to Rugby shared folders.
-    public struct Paths {
+    struct Paths {
         /// The path to the main shared folder.
         public let sharedFolder: String
         /// The path to the binaries folder.

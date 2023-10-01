@@ -1,11 +1,3 @@
-//
-//  Routing.swift
-//  Rugby
-//
-//  Created by Vyacheslav Khorkov on 27.08.2023.
-//  Copyright © 2023 Vyacheslav Khorkov. All rights reserved.
-//
-
 import Fish
 import RugbyFoundation
 

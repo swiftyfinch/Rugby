@@ -1,11 +1,3 @@
-//
-//  RugbyXcodeProject.swift
-//  RugbyFoundation
-//
-//  Created by Vyacheslav Khorkov on 20.09.2022.
-//  Copyright © 2022 Vyacheslav Khorkov. All rights reserved.
-//
-
 import Foundation
 
 // MARK: - Interface
@@ -17,7 +9,7 @@ enum RugbyError: LocalizedError {
         switch self {
         case .alreadyUseRugby:
             return "The project is already using 🏈 Rugby.\n".red
-            + "🚑 Call \(#""rugby rollback""#) or \(#""pod install""#).".yellow
+                + "🚑 Call \(#""rugby rollback""#) or \(#""pod install""#).".yellow
         }
     }
 }

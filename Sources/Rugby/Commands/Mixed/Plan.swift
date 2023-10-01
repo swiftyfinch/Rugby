@@ -1,11 +1,3 @@
-//
-//  Plan.swift
-//  Rugby
-//
-//  Created by Vyacheslav Khorkov on 06.09.2022.
-//  Copyright © 2022 Vyacheslav Khorkov. All rights reserved.
-//
-
 import ArgumentParser
 import Foundation
 import RugbyFoundation
@@ -63,7 +55,7 @@ extension Plan: RunnableCommand {
         let overriddenCommands = commands.map(overrideCommand)
         let runnableCommands = try overriddenCommands.map { command in
             let commandWithArgs = ([command.name.capitalized.green] + command.args).joined(separator: " ")
-            return (command.name, commandWithArgs, try convertToRunnable(command))
+            return try (command.name, commandWithArgs, convertToRunnable(command))
         }
         for (commandName, commandWithArgs, runnableCommand) in runnableCommands {
             try await log(commandWithArgs, footer: commandName.capitalized.green, metricKey: commandName) {

@@ -1,11 +1,3 @@
-//
-//  XcodeBuildExecutor.swift
-//  RugbyFoundation
-//
-//  Created by Vyacheslav Khorkov on 14.07.2022.
-//  Copyright © 2022 Vyacheslav Khorkov. All rights reserved.
-//
-
 import Fish
 import Foundation
 import SwiftShell
@@ -61,11 +53,11 @@ final class XcodeBuildExecutor {
         let firstLineParts = firstLine.components(separatedBy: ": ")
         guard firstLineParts.count == 2 else {
             /*
-            ❌ error: Build input file cannot be found:
-            '/Users/swiftyfinch/Developer/Repos/SwiftyFinch/Rugby/TestProject/.rugby/build/Debug-iphonesimulator/
-            SnapKit/SnapKit.framework/SnapKit'. Did you forget to declare this file as an output of a script phase or
-            custom build rule which produces it? (in target 'SnapKit' from project 'Pods')
-            */
+             ❌ error: Build input file cannot be found:
+             '/Users/swiftyfinch/Developer/Repos/SwiftyFinch/Rugby/TestProject/.rugby/build/Debug-iphonesimulator/
+             SnapKit/SnapKit.framework/SnapKit'. Did you forget to declare this file as an output of a script phase or
+             custom build rule which produces it? (in target 'SnapKit' from project 'Pods')
+             */
             return formattedError
                 .replacingOccurrences(of: "error: ", with: "")
                 .replacingOccurrences(of: "❌", with: " 💥")

@@ -1,11 +1,3 @@
-//
-//  Sequence+ConcurrentForEach.swift
-//  RugbyFoundation
-//
-//  Created by Vyacheslav Khorkov on 15.03.2023.
-//  Copyright © 2023 Vyacheslav Khorkov. All rights reserved.
-//
-
 extension Sequence {
     func concurrentForEach(
         maxInParallel: Int = Int.max,

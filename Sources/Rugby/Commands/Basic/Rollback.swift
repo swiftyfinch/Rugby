@@ -1,11 +1,3 @@
-//
-//  Rollback.swift
-//  Rugby
-//
-//  Created by Vyacheslav Khorkov on 12.08.2022.
-//  Copyright © 2022 Vyacheslav Khorkov. All rights reserved.
-//
-
 import ArgumentParser
 import Fish
 import RugbyFoundation
