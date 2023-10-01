@@ -35,26 +35,24 @@ enum VersionParserError: LocalizedError {
         }
     }
 }
-
-
 // MARK: - Implementation
 
 final class VersionParser {
-    
 
+    private typealias Error = VersionParserError
     func parse(_ string: String) throws -> GitHubUpdaterVersion {
         let groups = try string.groups(regex: "(\\d+)\\.(\\d+)\\.(\\d+)(b?)(\\d*)")
         guard groups.count > 3,
               let major = Int(groups[1]),
               let minor = Int(groups[2]),
-              let patch = Int(groups[3]) else { throw VersionParserError.incorrectVersion(string) }
+              let patch = Int(groups[3]) else { throw Error.incorrectVersion(string) }
 
         let prerelease: GitHubUpdaterVersion.Prerelease
         if groups.count > 4, !groups[4].isEmpty {
             if groups[4] == "b" {
                 prerelease = .beta
             } else {
-                throw VersionParserError.incorrectVersion(string)
+                throw Error.incorrectVersion(string)
             }
         } else {
             prerelease = .prod
@@ -62,7 +60,7 @@ final class VersionParser {
 
         let build: Int
         if groups.count > 5, !groups[5].isEmpty {
-            guard let int = Int(groups[5]) else { throw VersionParserError.incorrectVersion(string) }
+            guard let int = Int(groups[5]) else { throw Error.incorrectVersion(string) }
             build = int
         } else {
             build = 0
