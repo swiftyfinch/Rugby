@@ -30,15 +30,15 @@ enum VersionParserError: LocalizedError {
 
     var errorDescription: String? {
         switch self {
-        case .incorrectVersion(let version):
+        case let .incorrectVersion(version):
             return "Incorrect version: \(version)"
         }
     }
 }
+
 // MARK: - Implementation
 
 final class VersionParser {
-
     private typealias Error = VersionParserError
     func parse(_ string: String) throws -> GitHubUpdaterVersion {
         let groups = try string.groups(regex: "(\\d+)\\.(\\d+)\\.(\\d+)(b?)(\\d*)")
