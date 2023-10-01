@@ -8,11 +8,16 @@ on:
     paths-ignore: ['Docs/**', 'README.md']
 
 jobs:
-  lint:
+  swiftformat:
     runs-on: macos-latest
     steps:
     - uses: actions/checkout@v3
     - run: swiftformat . --lint --quiet --reporter github-actions-log
+  
+  swiftlint:
+    runs-on: macos-latest
+    steps:
+    - uses: actions/checkout@v3
     - run: swiftlint --strict --quiet --reporter github-actions-logging
 
   install:
