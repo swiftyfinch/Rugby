@@ -1,0 +1,11 @@
+# rules
+--commas inline
+--header strip
+
+--enable blankLineAfterImports
+--enable docComments
+
+--disable wrapMultilineStatementBraces
+--disable redundantType
+--disable andOperator
+--disable redundantInternal
