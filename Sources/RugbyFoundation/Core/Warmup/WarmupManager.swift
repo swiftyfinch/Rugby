@@ -215,7 +215,7 @@ extension WarmupManager: IWarmupManager {
             options: options
         )
 
-        guard let endpointURL = endpointURL else { return }
+        guard let endpointURL else { return }
         try await downloadRemoteBinaries(
             targets: notFoundTargets,
             endpointURL: endpointURL,

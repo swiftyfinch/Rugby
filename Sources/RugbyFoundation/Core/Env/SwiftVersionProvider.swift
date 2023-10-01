@@ -38,7 +38,7 @@ final actor SwiftVersionProvider {
 
 extension SwiftVersionProvider: ISwiftVersionProvider {
     public func swiftVersion() throws -> String {
-        if let cachedSwiftVersion = cachedSwiftVersion { return cachedSwiftVersion }
+        if let cachedSwiftVersion { return cachedSwiftVersion }
         let output = try shellExecutor.throwingShell("swift --version")
         let regex = #"(?<=Apple Swift version )(\d+\.\d+(?:\.\d)?)"#
         guard let version = try output?.groups(regex: regex).first else { throw Error.parsingFailed }

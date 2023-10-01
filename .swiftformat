@@ -1,3 +1,4 @@
+--swiftversion 5.7
 --exclude **/Mocks/**/*.swift
 
 # rules
@@ -10,3 +11,4 @@
 --disable redundantType
 --disable andOperator
 --disable redundantInternal
+--disable hoistAwait

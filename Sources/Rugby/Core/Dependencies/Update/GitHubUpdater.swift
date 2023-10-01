@@ -119,7 +119,7 @@ final class GitHubUpdater: Loggable {
     private func list(count: Int,
                       architecture: GitHubUpdaterArchitecture,
                       minVersion: GitHubUpdaterVersion) async throws -> [Release] {
-        return try await releaseListLoader.load(count: count, architecture: architecture).filter {
+        try await releaseListLoader.load(count: count, architecture: architecture).filter {
             try versionParser.parse($0.version) >= minVersion
         }
     }

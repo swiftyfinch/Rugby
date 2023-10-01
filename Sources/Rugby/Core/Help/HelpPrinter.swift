@@ -129,7 +129,7 @@ private extension ArgumentInfoV0 {
     }
 }
 
-private extension Array where Element == ArgumentInfoV0.NameInfoV0 {
+private extension [ArgumentInfoV0.NameInfoV0] {
     var string: String {
         sorted(by: { $0.kind.string.count < $1.kind.string.count })
             .map(\.string)

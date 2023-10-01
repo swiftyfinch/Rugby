@@ -33,7 +33,7 @@ final class BoxPainter {
             wrappedLines.append((line.left, rightLines))
         }
 
-        guard let maxRightWidth = wrappedLines.flatMap({ $0.rights }).max(by: { $0.rawCount < $1.rawCount })?.rawCount
+        guard let maxRightWidth = wrappedLines.flatMap(\.rights).max(by: { $0.rawCount < $1.rawCount })?.rawCount
         else { return nil }
 
         let rightWidth = min(terminalRight, maxRightWidth)

@@ -19,7 +19,7 @@ final class XcodeTargetsDataSource {
 
     var targets: Set<Target> {
         get async throws {
-            if let cachedTargets = cachedTargets { return cachedTargets }
+            if let cachedTargets { return cachedTargets }
             var targets: [String: (target: PBXTarget, project: Project)] = [:]
 
             // Collect targets from root project
