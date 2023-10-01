@@ -1,16 +1,7 @@
-//
-//  StringTests.swift
-//  FoundationTests
-//
-//  Created by Vyacheslav Khorkov on 03.09.2023.
-//  Copyright © 2023 Vyacheslav Khorkov. All rights reserved.
-//
-
 @testable import RugbyFoundation
 import XCTest
 
 final class StringTests: XCTestCase {
-
     // MARK: - homeFinderRelativePath
 
     func test_homeFinderRelativePath_success() {
