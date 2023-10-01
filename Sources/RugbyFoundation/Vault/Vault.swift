@@ -3,7 +3,7 @@ import Fish
 /// The main container of Rugby stuff.
 public final class Vault {
     /// The shared singleton instance.
-    public static private(set) var shared: Vault!
+    public private(set) static var shared: Vault!
 
     /// Setups the shared singleton instance.
     /// - Parameters:
