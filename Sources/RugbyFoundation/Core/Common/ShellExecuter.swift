@@ -92,7 +92,7 @@ private extension ShellExecutor {
             return (stdout, nil)
         } catch {
             let errorMessage: String
-            if let stderror = stderror, !stderror.isEmpty {
+            if let stderror, !stderror.isEmpty {
                 errorMessage = stderror
             } else {
                 errorMessage = error.beautifulDescription
@@ -129,7 +129,7 @@ extension ShellExecutor: IShellExecutor {
     @discardableResult
     public func throwingShell(_ command: String, args: Any ...) throws -> String? {
         let (output, error) = run(command, args: args)
-        if let error = error { throw error }
+        if let error { throw error }
         return output
     }
 

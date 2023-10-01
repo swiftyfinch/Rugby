@@ -37,7 +37,7 @@ extension Plan: RunnableCommand {
     }
 
     private func selectPlan() throws -> RugbyFoundation.Plan {
-        if let name = name {
+        if let name {
             return try dependencies.plansParser.named(name, path: path)
         } else {
             return try dependencies.plansParser.top(path: path)

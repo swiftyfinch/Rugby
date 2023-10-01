@@ -6,7 +6,7 @@ final class BuildLogFormatter {
     private let minBufferSize = 3
     private(set) lazy var parser: Parser =
         Parser(colored: colored, renderer: .terminal) { [weak self] in
-            guard let self = self, self.buffer.isNotEmpty else { return nil }
+            guard let self, self.buffer.isNotEmpty else { return nil }
             return self.buffer.removeFirst()
         }
 

@@ -39,7 +39,7 @@ final actor ProgressPrinter {
         var frameIndex = -1
         let begin = ProcessInfo.processInfo.systemUptime
         return { [weak self] in
-            guard let self = self else { return }
+            guard let self else { return }
 
             frameIndex = (frameIndex + 1) % self.frames.count
             let frame = self.frames[frameIndex]

@@ -72,7 +72,7 @@ final class Project {
     private var cachedBuildConfigurations: [String: XCBuildConfiguration]?
     var buildConfigurations: [String: XCBuildConfiguration] {
         get async throws {
-            if let cachedBuildConfigurations = cachedBuildConfigurations { return cachedBuildConfigurations }
+            if let cachedBuildConfigurations { return cachedBuildConfigurations }
             let buildConfigurations = try buildConfigurationList.buildConfigurations
             let buildConfigurationsMap = Dictionary(uniqueKeysWithValues: buildConfigurations.map { ($0.name, $0) })
             cachedBuildConfigurations = buildConfigurationsMap

@@ -25,7 +25,7 @@ final class XcodeTargetsFinder {
         targets.filter {
             if let regex = exceptRegex, $0.name.match(regex) {
                 return false
-            } else if let regex = regex {
+            } else if let regex {
                 return $0.name.match(regex)
             }
             return true

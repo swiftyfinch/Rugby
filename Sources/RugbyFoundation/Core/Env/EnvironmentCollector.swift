@@ -73,7 +73,7 @@ final class EnvironmentCollector: Loggable {
         return "Git branch: \(branch ?? .unknown)"
     }
 
-    private func getCommandDump<Command>(command: Command) -> String {
+    private func getCommandDump(command: some Any) -> String {
         let commandDump = "\(command)".replacingOccurrences(of: "\\b_", with: "", options: .regularExpression)
         return "Command dump: \(commandDump)"
     }
@@ -102,7 +102,7 @@ extension EnvironmentCollector: IEnvironmentCollector {
         ]
     }
 
-    public func write<Command>(rugbyVersion: String, command: Command, workingDirectory: IFolder) async throws {
+    public func write(rugbyVersion: String, command: some Any, workingDirectory: IFolder) async throws {
         var environment = try await env(rugbyVersion: rugbyVersion, workingDirectory: workingDirectory)
         environment.append(getCommandDump(command: command))
         for value in environment {
@@ -114,7 +114,7 @@ extension EnvironmentCollector: IEnvironmentCollector {
         try await log("CLT: \(xcodeCLTVersionProvider.version().base)")
     }
 
-    public func logCommandDump<Command>(command: Command) async {
+    public func logCommandDump(command: some Any) async {
         await log(getCommandDump(command: command), output: .file)
     }
 }

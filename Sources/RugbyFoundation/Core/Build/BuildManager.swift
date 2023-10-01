@@ -141,7 +141,7 @@ final class BuildManager: Loggable {
                   level: .info)
 
         try await log(title, metricKey: "xcodebuild", block: { [weak self] in
-            guard let self = self else { return }
+            guard let self else { return }
 
             let cleanup = {
                 try? self.backupManager.restore(.tmp)
@@ -175,7 +175,7 @@ extension BuildManager: IBuildManager {
         let buildTarget = try await makeBuildTarget(targets: targets,
                                                     options: options,
                                                     ignoreCache: ignoreCache)
-        guard let buildTarget = buildTarget else { return }
+        guard let buildTarget else { return }
         try await build(buildTarget, options: options, paths: paths)
 
         try await log(
