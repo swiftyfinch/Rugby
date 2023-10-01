@@ -1,11 +1,3 @@
-//
-//  XcodeProjectDataSource.swift
-//  RugbyFoundation
-//
-//  Created by Vyacheslav Khorkov on 20.08.2022.
-//  Copyright © 2022 Vyacheslav Khorkov. All rights reserved.
-//
-
 import Foundation
 import XcodeProj
 
@@ -19,7 +11,7 @@ final class XcodeProjectDataSource: Loggable {
     var rootProject: Project {
         get async throws {
             if let cachedRootProject = cachedRootProject { return cachedRootProject }
-            let project = try await log("Reading Project", auto: try Project(path: .string(projectPath)))
+            let project = try await log("Reading Project", auto: Project(path: .string(projectPath)))
             cachedRootProject = project
             return project
         }

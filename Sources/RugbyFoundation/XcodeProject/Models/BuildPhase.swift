@@ -1,14 +1,6 @@
-//
-//  BuildPhase.swift
-//  RugbyFoundation
-//
-//  Created by Vyacheslav Khorkov on 31.08.2022.
-//  Copyright © 2022 Vyacheslav Khorkov. All rights reserved.
-//
-
-import class XcodeProj.PBXBuildPhase
 import enum XcodeProj.BuildPhase
 import class XcodeProj.PBXBuildFile
+import class XcodeProj.PBXBuildPhase
 
 struct BuildPhase {
     enum Kind: String {
@@ -41,10 +33,10 @@ extension BuildPhase {
 
         self.name = name
         self.type = type
-        self.buildActionMask = pbxPhase.buildActionMask
-        self.runOnlyForDeploymentPostprocessing = pbxPhase.runOnlyForDeploymentPostprocessing
-        self.inputFileListPaths = pbxPhase.inputFileListPaths ?? []
-        self.outputFileListPaths = pbxPhase.outputFileListPaths ?? []
+        buildActionMask = pbxPhase.buildActionMask
+        runOnlyForDeploymentPostprocessing = pbxPhase.runOnlyForDeploymentPostprocessing
+        inputFileListPaths = pbxPhase.inputFileListPaths ?? []
+        outputFileListPaths = pbxPhase.outputFileListPaths ?? []
         self.files = files
     }
 }

@@ -1,11 +1,3 @@
-//
-//  BackupManager.swift
-//  RugbyFoundation
-//
-//  Created by Vyacheslav Khorkov on 10.08.2022.
-//  Copyright © 2022 Vyacheslav Khorkov. All rights reserved.
-//
-
 import Fish
 import Foundation
 
@@ -77,7 +69,6 @@ private extension BackupKind {
 // MARK: - Private Backup
 
 extension BackupManager {
-
     private func backupFolderPath(subfolderName: String) -> String {
         "\(backupFolderPath)/\(subfolderName)"
     }
@@ -116,7 +107,6 @@ extension BackupManager {
 // MARK: - Private Restore
 
 extension BackupManager {
-
     private func restoreSteps(from subfolderName: String) throws -> [(source: IFile, target: String)] {
         let backupFolderPath = backupFolderPath(subfolderName: subfolderName)
         guard let backupFolder = try? Folder.at(backupFolderPath),
@@ -156,7 +146,6 @@ extension BackupManager {
 // MARK: - IBackupManager
 
 extension BackupManager: IBackupManager {
-
     public func backup(_ xcodeProject: XcodeProject, kind: BackupKind) async throws {
         let projects = try await xcodeProject.folderPaths().map(Folder.at)
         switch kind {

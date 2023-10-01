@@ -1,11 +1,3 @@
-//
-//  ShellExecuter.swift
-//  RugbyFoundation
-//
-//  Created by Vyacheslav Khorkov on 04.07.2022.
-//  Copyright © 2022 Vyacheslav Khorkov. All rights reserved.
-//
-
 import Foundation
 import SwiftShell
 
@@ -41,7 +33,7 @@ enum ShellError: LocalizedError {
     var errorDescription: String? {
         let output: String
         switch self {
-        case .common(let stderror):
+        case let .common(stderror):
             output = stderror
         case .emptyShellVariable:
             output = "Shell variable is empty."
@@ -61,7 +53,6 @@ final class ShellExecutor {
 }
 
 private extension ShellExecutor {
-
     func runAndPrint(_ command: String, args: Any ...) throws {
         let commandWithArgs = combine(command: command, args: args)
         let currentShell = try getCurrentShell()
@@ -114,7 +105,6 @@ private extension ShellExecutor {
 // MARK: - Utils
 
 private extension ShellExecutor {
-
     func getCurrentShell() throws -> String {
         guard let shell = ProcessInfo.processInfo.environment["SHELL"] else {
             throw ShellError.emptyShellVariable

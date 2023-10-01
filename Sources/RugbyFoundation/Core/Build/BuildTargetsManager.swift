@@ -1,11 +1,3 @@
-//
-//  BuildTargetsManager.swift
-//  RugbyFoundation
-//
-//  Created by Vyacheslav Khorkov on 07.08.2022.
-//  Copyright © 2023 Vyacheslav Khorkov. All rights reserved.
-//
-
 import Foundation
 
 final class BuildTargetsManager {

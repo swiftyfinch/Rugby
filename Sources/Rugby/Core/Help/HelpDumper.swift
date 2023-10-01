@@ -1,11 +1,3 @@
-//
-//  HelpDumper.swift
-//  Rugby
-//
-//  Created by Vyacheslav Khorkov on 01.11.2022.
-//  Copyright © 2022 Vyacheslav Khorkov. All rights reserved.
-//
-
 import ArgumentParser
 import ArgumentParserToolInfo
 import Foundation

@@ -1,11 +1,3 @@
-//
-//  FilePrinter.swift
-//  Rugby
-//
-//  Created by Vyacheslav Khorkov on 17.09.2022.
-//  Copyright © 2022 Vyacheslav Khorkov. All rights reserved.
-//
-
 import Fish
 import Foundation
 import RugbyFoundation
@@ -29,9 +21,9 @@ final class FilePrinter {
 // MARK: - Printer
 
 extension FilePrinter: Printer {
-    func canPrint(level: Int) -> Bool { true }
+    func canPrint(level _: Int) -> Bool { true }
 
-    func print(_ text: String, level: Int, updateLine: Bool) {
+    func print(_ text: String, level _: Int, updateLine _: Bool) {
         let time = timeFormatter.string(from: Date())
         let text = "[\(time)]: \(text)\n".raw
         try? file.append(text)

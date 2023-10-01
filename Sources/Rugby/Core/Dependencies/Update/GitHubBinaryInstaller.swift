@@ -1,11 +1,3 @@
-//
-//  GitHubBinaryInstaller.swift
-//  Rugby
-//
-//  Created by Vyacheslav Khorkov on 30.11.2022.
-//  Copyright © 2022 Vyacheslav Khorkov. All rights reserved.
-//
-
 import Fish
 import Foundation
 import RugbyFoundation
@@ -30,7 +22,7 @@ struct GitHubUpdaterPaths {
         self.downloadsPath = downloadsPath
         self.cltFolderPath = cltFolderPath
         self.cltName = cltName
-        self.cltPath = "\(cltFolderPath)/\(cltName)"
+        cltPath = "\(cltFolderPath)/\(cltName)"
         self.repositoryPath = repositoryPath
     }
 }
@@ -42,9 +34,9 @@ enum GitHubBinaryInstallerError: LocalizedError {
 
     var errorDescription: String? {
         switch self {
-        case .incorrectZipURL(let url):
+        case let .incorrectZipURL(url):
             return "Incorrect zip URL \(url)"
-        case .couldnotFindVersion(let version):
+        case let .couldnotFindVersion(version):
             return "Couldn't find such version \(version)"
         case .incorrectResponse:
             return "Incorrect response."
@@ -77,9 +69,9 @@ final class GitHubBinaryInstaller: Loggable {
 
         await log("v\(version) (\(architecture.rawValue))")
         let (fileURL, _) = try await log("Downloading",
-                                         auto: try await URLSession.shared.download(from: zipURL))
+                                         auto: await URLSession.shared.download(from: zipURL))
         try await log("Unzipping",
-                      auto: try shellExecutor.throwingShell("unzip", args: fileURL.path, "-d", downloads.path))
+                      auto: shellExecutor.throwingShell("unzip", args: fileURL.path, "-d", downloads.path))
 
         try await log("Installing into \(paths.cltFolderPath.homeFinderRelativePath())", block: {
             let cltFile = try downloads.file(named: paths.cltName)

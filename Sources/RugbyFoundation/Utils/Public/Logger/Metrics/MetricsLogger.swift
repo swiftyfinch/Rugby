@@ -1,11 +1,3 @@
-//
-//  MetricsLogger.swift
-//  RugbyFoundation
-//
-//  Created by Vyacheslav Khorkov on 11.02.2023.
-//  Copyright © 2023 Vyacheslav Khorkov. All rights reserved.
-//
-
 import Fish
 
 /// The protocol describing a service to log commands metrics.

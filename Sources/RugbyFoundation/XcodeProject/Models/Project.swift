@@ -1,11 +1,3 @@
-//
-//  Project.swift
-//  RugbyFoundation
-//
-//  Created by Vyacheslav Khorkov on 07.03.2023.
-//  Copyright © 2023 Vyacheslav Khorkov. All rights reserved.
-//
-
 import Foundation
 import XcodeProj
 
@@ -39,16 +31,16 @@ final class Project {
             switch self {
             case .string:
                 return nil
-            case .reference(let reference):
+            case let .reference(reference):
                 return reference
             }
         }
 
         var string: String? {
             switch self {
-            case .string(let path):
+            case let .string(path):
                 return path
-            case .reference(let reference):
+            case let .reference(reference):
                 return reference.fullPath
             }
         }
@@ -57,8 +49,8 @@ final class Project {
     init(path: Path) throws {
         guard let pathString = path.string else { throw ProjectError.emptyProjectPath }
         self.path = pathString
-        self.xcodeProj = try XcodeProj(pathString: pathString)
-        self.reference = path.reference
+        xcodeProj = try XcodeProj(pathString: pathString)
+        reference = path.reference
     }
 
     var pbxProj: PBXProj { xcodeProj.pbxproj }

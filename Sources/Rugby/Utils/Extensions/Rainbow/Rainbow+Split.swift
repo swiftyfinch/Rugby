@@ -1,11 +1,3 @@
-//
-//  Rainbow+Split.swift
-//  Rugby
-//
-//  Created by Vyacheslav Khorkov on 04.11.2022.
-//  Copyright © 2022 Vyacheslav Khorkov. All rights reserved.
-//
-
 import Rainbow
 
 extension String {

@@ -1,11 +1,3 @@
-//
-//  Scheme+Reachable.swift
-//  RugbyFoundation
-//
-//  Created by Vyacheslav Khorkov on 29.07.2022.
-//  Copyright © 2022 Vyacheslav Khorkov. All rights reserved.
-//
-
 extension Scheme {
     func isReachable(fromReferences references: Set<String>) -> Bool {
         if references.contains(profileReference) { return true }

@@ -1,11 +1,3 @@
-//
-//  TargetTreePainter.swift
-//  RugbyFoundation
-//
-//  Created by Vyacheslav Khorkov on 31.03.2023.
-//  Copyright © 2023 Vyacheslav Khorkov. All rights reserved.
-//
-
 // MARK: - Interface
 
 protocol ITargetTreePainter {
@@ -107,11 +99,11 @@ private extension TargetTreePainter {
                                       seen: &seen,
                                       allowed: allowed)
                         )
-                    }/* else if !isRoot { // It's generate too many lines
-                        subtrees.append(
-                            Tree(name: target.name, info: target.hash, isCollapsed: true)
-                        )
-                    }*/
+                    } /* else if !isRoot { // It's generate too many lines
+                         subtrees.append(
+                             Tree(name: target.name, info: target.hash, isCollapsed: true)
+                         )
+                     }*/
                 }
                 .sorted(by: { $0.name < $1.name })
         )

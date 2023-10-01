@@ -1,11 +1,3 @@
-//
-//  RunnableCommand.swift
-//  Rugby
-//
-//  Created by Vyacheslav Khorkov on 17.09.2022.
-//  Copyright © 2022 Vyacheslav Khorkov. All rights reserved.
-//
-
 import ArgumentParser
 import Darwin
 import Fish
@@ -45,7 +37,7 @@ extension RunnableCommand {
         try await log("\(name.green)\(description)",
                       footer: name.green,
                       metricKey: name,
-                      auto: try await handle(block))
+                      auto: await handle(block))
         await log("\("⚑".yellow) Let's Roll-oll 🏈".green)
     }
 }

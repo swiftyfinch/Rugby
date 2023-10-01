@@ -1,11 +1,3 @@
-//
-//  XCARGSProvider.swift
-//  RugbyFoundation
-//
-//  Created by Vyacheslav Khorkov on 14.07.2022.
-//  Copyright © 2022 Vyacheslav Khorkov. All rights reserved.
-//
-
 /// The provider of xcargs which is used in Rugby.
 public final class XCARGSProvider {
     private let base = ["COMPILER_INDEX_STORE_ENABLE=NO",

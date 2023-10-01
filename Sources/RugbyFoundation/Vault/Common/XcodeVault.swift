@@ -1,11 +1,3 @@
-//
-//  XcodeVault.swift
-//  RugbyFoundation
-//
-//  Created by Vyacheslav Khorkov on 05.08.2023.
-//  Copyright © 2023 Vyacheslav Khorkov. All rights reserved.
-//
-
 import Fish
 
 /// The container of Xcode stuff.

@@ -1,11 +1,3 @@
-//
-//  Vault+Update.swift
-//  Rugby
-//
-//  Created by Vyacheslav Khorkov on 05.08.2023.
-//  Copyright © 2023 Vyacheslav Khorkov. All rights reserved.
-//
-
 import RugbyFoundation
 
 extension Vault {

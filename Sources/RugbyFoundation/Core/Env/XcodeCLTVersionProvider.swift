@@ -1,11 +1,3 @@
-//
-//  XcodeCLTVersionProvider.swift
-//  RugbyFoundation
-//
-//  Created by Vyacheslav Khorkov on 21.04.2023.
-//  Copyright © 2023 Vyacheslav Khorkov. All rights reserved.
-//
-
 import Foundation
 
 // MARK: - Interface

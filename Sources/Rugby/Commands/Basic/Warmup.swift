@@ -1,11 +1,3 @@
-//
-//  Warmup.swift
-//  Rugby
-//
-//  Created by Vyacheslav Khorkov on 16.01.2023.
-//  Copyright © 2023 Vyacheslav Khorkov. All rights reserved.
-//
-
 import ArgumentParser
 import Fish
 import Foundation
@@ -76,11 +68,11 @@ extension Warmup: RunnableCommand {
             httpMaximumConnectionsPerHost: maxConnections
         ).warmup(
             mode: mode,
-            targetsRegex: try regex(
+            targetsRegex: regex(
                 patterns: buildOptions.targetsOptions.targetsAsRegex,
                 exactMatches: buildOptions.targetsOptions.targets
             ),
-            exceptTargetsRegex: try regex(
+            exceptTargetsRegex: regex(
                 patterns: buildOptions.targetsOptions.exceptAsRegex,
                 exactMatches: buildOptions.targetsOptions.exceptTargets
             ),

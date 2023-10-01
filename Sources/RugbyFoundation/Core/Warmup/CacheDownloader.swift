@@ -1,11 +1,3 @@
-//
-//  CacheDownloader.swift
-//  RugbyFoundation
-//
-//  Created by Vyacheslav Khorkov on 18.01.2023.
-//  Copyright © 2023 Vyacheslav Khorkov. All rights reserved.
-//
-
 import Fish
 import Foundation
 import Zip

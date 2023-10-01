@@ -1,11 +1,3 @@
-//
-//  XcodeProject.swift
-//  RugbyFoundation
-//
-//  Created by Vyacheslav Khorkov on 27.07.2022.
-//  Copyright © 2022 Vyacheslav Khorkov. All rights reserved.
-//
-
 import Foundation
 
 /// The service for Xcode project managment.
@@ -29,7 +21,6 @@ public final class XcodeProject {
 // MARK: - Implementation
 
 extension XcodeProject {
-
     // MARK: - File System
 
     func folderPaths() async throws -> [String] {

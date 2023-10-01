@@ -1,11 +1,3 @@
-//
-//  String+RegEx.swift
-//  RugbyFoundation
-//
-//  Created by Vyacheslav Khorkov on 05.07.2022.
-//  Copyright © 2022 Vyacheslav Khorkov. All rights reserved.
-//
-
 import Foundation
 
 enum RegexError: Error {
@@ -24,7 +16,7 @@ extension String {
 
     func groups(_ regex: NSRegularExpression) throws -> [String] {
         guard let result = regex.firstMatch(self) else { return [] }
-        return try (0..<result.numberOfRanges).map {
+        return try (0 ..< result.numberOfRanges).map {
             let nsrange = result.range(at: $0)
             guard let range = Range(nsrange, in: self) else { throw RegexError.incorrectStringRange }
             return String(self[range])

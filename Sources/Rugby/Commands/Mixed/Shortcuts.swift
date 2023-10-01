@@ -1,11 +1,3 @@
-//
-//  Shortcuts.swift
-//  Rugby
-//
-//  Created by Vyacheslav Khorkov on 14.10.2022.
-//  Copyright © 2022 Vyacheslav Khorkov. All rights reserved.
-//
-
 import ArgumentParser
 import Fish
 import RugbyFoundation
