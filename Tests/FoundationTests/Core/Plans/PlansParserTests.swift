@@ -41,7 +41,7 @@ extension PlansParserTests {
         let pathURL = URL(fileURLWithPath: path)
 
         // Act
-        let result = try sut.top(path: path)
+        let result = try sut.topPlan(atPath: path)
 
         // Assert
         XCTAssertEqual(result, expected)
@@ -66,8 +66,8 @@ extension PlansParserTests {
         let pathURL = URL(fileURLWithPath: path)
 
         // Act
-        let result = try sut.top(path: path)
-        let result2 = try sut.top(path: path)
+        let result = try sut.topPlan(atPath: path)
+        let result2 = try sut.topPlan(atPath: path)
 
         // Assert
         XCTAssertEqual(result, expected)
@@ -94,7 +94,7 @@ extension PlansParserTests {
         let pathURL = URL(fileURLWithPath: path)
 
         // Act
-        let result = try sut.top(path: path)
+        let result = try sut.topPlan(atPath: path)
 
         // Assert
         XCTAssertEqual(result, expected)
@@ -112,7 +112,7 @@ extension PlansParserTests {
         var result: Plan?
         var resultError: Error?
         do {
-            result = try sut.top(path: path)
+            result = try sut.topPlan(atPath: path)
         } catch {
             resultError = error
         }
@@ -149,7 +149,7 @@ extension PlansParserTests {
         let pathURL = URL(fileURLWithPath: path)
 
         // Act
-        let result = try sut.named("tests", path: path)
+        let result = try sut.planNamed("tests", path: path)
 
         // Assert
         XCTAssertEqual(result, expected)
@@ -173,7 +173,7 @@ extension PlansParserTests {
         var result: Plan?
         var resultError: Error?
         do {
-            result = try sut.named(planName, path: path)
+            result = try sut.planNamed(planName, path: path)
         } catch {
             resultError = error
         }
@@ -201,7 +201,7 @@ extension PlansParserTests {
         var result: Plan?
         var resultError: Error?
         do {
-            result = try sut.named(planName, path: path)
+            result = try sut.planNamed(planName, path: path)
         } catch {
             resultError = error
         }
@@ -228,7 +228,7 @@ extension PlansParserTests {
         var result: Plan?
         var resultError: Error?
         do {
-            result = try sut.named(planName, path: path)
+            result = try sut.planNamed(planName, path: path)
         } catch {
             resultError = error
         }
@@ -258,7 +258,7 @@ extension PlansParserTests {
         var result: Plan?
         var resultError: Error?
         do {
-            result = try sut.named(planName, path: path)
+            result = try sut.planNamed(planName, path: path)
         } catch {
             resultError = error
         }
