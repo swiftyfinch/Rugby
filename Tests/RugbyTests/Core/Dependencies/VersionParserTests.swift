@@ -1,9 +1,3 @@
-//
-//  VersionParserTests.swift
-//
-//
-//  Created by Marcel Canhisares on 2023-09-30.
-//
 @testable import Rugby
 import XCTest
 
