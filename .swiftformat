@@ -1,5 +1,6 @@
 --swiftversion 5.7
 --exclude **/Mocks/**/*.swift
+--exclude Example/Pods
 
 # rules
 --commas inline
