@@ -18,9 +18,9 @@ public protocol IPlansParser {
 }
 
 /// The Rugby plan structure.
-public struct Plan {
+public struct Plan: Equatable {
     /// The model of commands in the plan.
-    public struct Command {
+    public struct Command: Equatable {
         /// The command name.
         public let name: String
         /// The command arguments.
@@ -114,10 +114,10 @@ final class PlansParser {
             throw Error.missedCommandType
         }
 
-        let args: [String] = try command.reduce(into: []) { args, field in
-            guard field.key != .commandKey else { return }
-            guard parsers.contains(where: { $0.parse(field.value, ofField: field.key, toArgs: &args) }) else {
-                throw Error.unknownArgumentType(field.value)
+        let args: [String] = try command.keys.sorted().reduce(into: []) { args, key in
+            guard let value = command[key], key != .commandKey else { return }
+            guard parsers.contains(where: { $0.parse(value, ofField: key, toArgs: &args) }) else {
+                throw Error.unknownArgumentType(value)
             }
         }
         return Plan.Command(name: commandName, args: args)
