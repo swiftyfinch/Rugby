@@ -39,7 +39,7 @@ mocks:
 
 .PHONY: test
 test:
-	swift test | xcbeautify
+	set -o pipefail && swift test 2>&1 | xcbeautify
 
 .PHONY: smoke
 smoke:

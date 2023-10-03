@@ -46,7 +46,7 @@ jobs:
         key: ${{ runner.os }}-spm-${{ hashFiles('Package.resolved') }}
         restore-keys: ${{ runner.os }}-spm-
     - name: Test
-      run: swift test --enable-code-coverage | xcbeautify
+      run: set -o pipefail && swift test --enable-code-coverage 2>&1 | xcbeautify
     - name: Prepare coverage to upload
       run: |
         xcrun llvm-cov export $BUILD_FOLDER \
