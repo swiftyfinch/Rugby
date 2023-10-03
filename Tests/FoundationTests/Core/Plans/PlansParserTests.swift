@@ -38,7 +38,7 @@ extension PlansParserTests {
             """
         }
         let path = "test"
-        let pathURL = URL(filePath: path)
+        let pathURL = URL(fileURLWithPath: path)
 
         // Act
         let result = try sut.top(path: path)
@@ -63,7 +63,7 @@ extension PlansParserTests {
             """
         }
         let path = "test"
-        let pathURL = URL(filePath: path)
+        let pathURL = URL(fileURLWithPath: path)
 
         // Act
         let result = try sut.top(path: path)
@@ -91,7 +91,7 @@ extension PlansParserTests {
             """
         }
         let path = "test"
-        let pathURL = URL(filePath: path)
+        let pathURL = URL(fileURLWithPath: path)
 
         // Act
         let result = try sut.top(path: path)
@@ -106,7 +106,7 @@ extension PlansParserTests {
         let expectedError = PlansParserError.noPlans
         fishSharedStorage.readFileClosure = { _ in "" }
         let path = "test"
-        let pathURL = URL(filePath: path)
+        let pathURL = URL(fileURLWithPath: path)
 
         // Act
         var result: Plan?
@@ -146,7 +146,7 @@ extension PlansParserTests {
             """
         }
         let path = "test"
-        let pathURL = URL(filePath: path)
+        let pathURL = URL(fileURLWithPath: path)
 
         // Act
         let result = try sut.named("tests", path: path)
@@ -167,7 +167,7 @@ extension PlansParserTests {
             """
         }
         let path = "test"
-        let pathURL = URL(filePath: path)
+        let pathURL = URL(fileURLWithPath: path)
 
         // Act
         var result: Plan?
@@ -195,7 +195,7 @@ extension PlansParserTests {
             """
         }
         let path = "test"
-        let pathURL = URL(filePath: path)
+        let pathURL = URL(fileURLWithPath: path)
 
         // Act
         var result: Plan?
@@ -222,7 +222,7 @@ extension PlansParserTests {
             """
         }
         let path = "test"
-        let pathURL = URL(filePath: path)
+        let pathURL = URL(fileURLWithPath: path)
 
         // Act
         var result: Plan?
@@ -252,7 +252,7 @@ extension PlansParserTests {
             """
         }
         let path = "test"
-        let pathURL = URL(filePath: path)
+        let pathURL = URL(fileURLWithPath: path)
 
         // Act
         var result: Plan?
