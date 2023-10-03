@@ -186,6 +186,8 @@
 {% for type in types.protocols where type.based.AutoMockable or type|annotated:"AutoMockable" %}{% if type.name != "AutoMockable" %}
 // sourcery:file:Mocks/{{ type.name }}Mock
 
+// swiftlint:disable all
+
 import Foundation
 {% for import in type.annotations.imports %}
 import {{ import }}
@@ -213,5 +215,8 @@ import {{ import }}
 {% endfor %}
 {% endif %}
 }
+
+// swiftlint:enable all
+
 // sourcery:end
 {% endif %}{% endfor %}

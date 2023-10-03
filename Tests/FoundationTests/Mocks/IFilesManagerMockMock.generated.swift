@@ -1,8 +1,10 @@
-// Generated using Sourcery 2.0.2 — https://github.com/krzysztofzablocki/Sourcery
+// Generated using Sourcery 2.1.1 — https://github.com/krzysztofzablocki/Sourcery
 // DO NOT EDIT
 
-import Fish
+// swiftlint:disable all
+
 import Foundation
+import Fish
 
 final class IFilesManagerMockMock: IFilesManagerMock {
 
@@ -442,3 +444,5 @@ final class IFilesManagerMockMock: IFilesManagerMock {
         try copyItemAtToReplaceClosure?(itemURL, folderPath, replace)
     }
 }
+
+// swiftlint:enable all
