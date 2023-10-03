@@ -9,7 +9,7 @@ lint:
 	@which swiftlint || \
 	(printf '\e[31m⛔️ Could not find SwiftLint.\e[m\n\e[33m🚑 Run: brew install swiftlint\e[m\n' && exit 1)
 	swiftformat --quiet .
-	swiftlint --strict --quiet
+	swiftlint --fix --strict --quiet
 
 .PHONY: release
 release:
