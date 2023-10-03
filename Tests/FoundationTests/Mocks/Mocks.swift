@@ -12,5 +12,5 @@ import RugbyFoundation
 // sourcery: AutoMockable, imports = ["RugbyFoundation"]
 extension IShellExecutor {}
 
-// sourcery: AutoMockable, imports = ["Fish"]
+//// sourcery: AutoMockable, imports = ["Fish"]
 protocol IFilesManagerMock: IFilesManager {}

@@ -1,5 +1,7 @@
-// Generated using Sourcery 2.0.2 — https://github.com/krzysztofzablocki/Sourcery
+// Generated using Sourcery 2.1.1 — https://github.com/krzysztofzablocki/Sourcery
 // DO NOT EDIT
+
+// swiftlint:disable all
 
 import Foundation
 import RugbyFoundation
@@ -73,3 +75,5 @@ public final class IShellExecutorMock: IShellExecutor {
         try printShellArgsClosure?(command, args)
     }
 }
+
+// swiftlint:enable all
