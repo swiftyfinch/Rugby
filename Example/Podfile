@@ -2,7 +2,8 @@ platform :ios, '16.0'
 project 'Example/Example.xcodeproj'
 
 target 'Example' do
-  use_frameworks!
+  #use_frameworks!
+  use_modular_headers!
 
   pod 'SnapKit'
   pod 'Keyboard+LayoutGuide'
