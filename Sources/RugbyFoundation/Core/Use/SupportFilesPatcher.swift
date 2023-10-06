@@ -37,11 +37,16 @@ final class SupportFilesPatcher {
     private func prepareXCConfigReplacements(target: IInternalTarget) throws -> [FileReplacement] {
         let replacementsPairs: [Replacement] = target.binaryProducts.values.reduce(into: []) { result, product in
             guard product.type != .bundle, let binaryFolderPath = product.binaryPath else { return }
-            if let parentFolderName = product.parentFolderName {
-                result.append((parentFolderName, replacement: binaryFolderPath))
-            }
             result.append(("\(product.nameWithParent)/\(HEADERS)",
                            replacement: "\(binaryFolderPath)/\(product.fileName)/\(HEADERS)"))
+
+            guard let parentFolderName = product.parentFolderName else { return }
+            result.append((parentFolderName, replacement: binaryFolderPath))
+
+            guard let moduleName = product.moduleName else { return }
+            let moduleMap = "\(moduleName).modulemap"
+            result.append(("\(parentFolderName)/\(moduleMap)",
+                           replacement: "\(binaryFolderPath)/\(moduleMap)"))
         }
 
         let replacements = buildMap(from: replacementsPairs,
