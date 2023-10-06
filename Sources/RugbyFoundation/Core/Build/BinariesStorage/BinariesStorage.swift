@@ -78,23 +78,27 @@ final class BinariesStorage: Loggable {
         ofTargets targets: TargetsMap,
         buildConfigFolder: String,
         sharedBinariesConfigFolder: String
-    ) async throws -> [(source: IItem, hashContext: String?, target: String)] {
+    ) async throws -> [(source: [IItem], hashContext: String?, target: String)] {
         try targets.values.reduce(into: []) { result, target in
-            guard let product = target.product else { throw Error.targetHasNotProduct(target.name) }
+            guard let product = target.product, let productFolderName = product.parentFolderName else {
+                throw Error.targetHasNotProduct(target.name)
+            }
+
+            let productFiles: [IItem]
+            // Copy bundle to separate bin folder
+            if target.product?.type == .bundle {
+                let binaryPath = "\(buildConfigFolder)\(product.nameWithParent)"
+                productFiles = try [Folder.at(binaryPath)]
+            } else {
+                let productFolder = try Folder.at("\(buildConfigFolder)\(productFolderName)")
+                let foldersExceptBundle = try productFolder.folders().filter {
+                    $0.pathExtension != .bundleExtension
+                }
+                productFiles = try productFolder.files() + foldersExceptBundle
+            }
 
             let targetFolder = try binaryFolderPath(target, configFolder: sharedBinariesConfigFolder)
-            let binaryPath = "\(buildConfigFolder)\(product.nameWithParent)"
-            let binary: IItem
-            if Folder.isExist(at: binaryPath) {
-                binary = try Folder.at(binaryPath)
-            } else {
-                binary = try File.at(binaryPath)
-            }
-            result.append((binary, target.hashContext, targetFolder))
-
-            if let dSYM = try? Folder.at("\(binaryPath).dSYM") {
-                result.append((dSYM, nil, targetFolder))
-            }
+            result.append((productFiles, target.hashContext, targetFolder))
         }
     }
 
@@ -172,4 +176,8 @@ extension BinariesStorage: IBinariesStorage {
             return Folder.isExist(at: path)
         }
     }
+}
+
+private extension String {
+    static let bundleExtension = "bundle"
 }
