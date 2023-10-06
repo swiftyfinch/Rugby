@@ -106,6 +106,11 @@ final class BinariesStorage: Loggable {
         let content = "\(paths.caseInsensitiveSorted().joined(separator: "\n"))\n"
         try folder.createFile(named: latestFileName, contents: content)
     }
+
+    private func patchModuleMap(_ modulemap: IFile) throws {
+        guard let parentPath = modulemap.parent?.path else { return }
+        try modulemap.replaceOccurrences(of: "\(parentPath)/")
+    }
 }
 
 // MARK: - IBinariesStorage
@@ -147,11 +152,16 @@ extension BinariesStorage: IBinariesStorage {
         let sharedFolder = try Folder.create(at: sharedPath)
         try createLatestFile(paths: steps.map(\.target), in: sharedFolder)
 
-        try await steps.concurrentForEach { binary, hashContext, destinationFolderPath in
-            try binary.move(to: destinationFolderPath, replace: true)
+        try await steps.concurrentForEach { productFiles, hashContext, destinationFolderPath in
+            let destinationFolder = try Folder.create(at: destinationFolderPath)
+            try productFiles.forEach { file in
+                if file.pathExtension == .modulemapExtension {
+                    try (file as? IFile).map(self.patchModuleMap)
+                }
+                try file.move(to: destinationFolderPath, replace: true)
+            }
 
             if self.keepHashYamls, let hashContext {
-                let destinationFolder = try Folder.at(destinationFolderPath)
                 let fileName = "\(destinationFolder.name).yml"
                 try destinationFolder.createFile(named: fileName, contents: hashContext)
             }
@@ -180,4 +190,5 @@ extension BinariesStorage: IBinariesStorage {
 
 private extension String {
     static let bundleExtension = "bundle"
+    static let modulemapExtension = "modulemap"
 }
