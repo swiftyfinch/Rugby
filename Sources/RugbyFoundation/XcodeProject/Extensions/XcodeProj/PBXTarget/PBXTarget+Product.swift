@@ -7,6 +7,12 @@ extension PBXTarget {
               let productType else { return nil }
         let configurationBuildDir = buildSettings["CONFIGURATION_BUILD_DIR"] as? String
         let parentName = configurationBuildDir?.components(separatedBy: "/").last
-        return Product(name: productName, type: productType, parentFolderName: parentName)
+        let productModuleName = buildSettings["PRODUCT_MODULE_NAME"] as? String
+        return Product(
+            name: productName,
+            moduleName: productModuleName,
+            type: productType,
+            parentFolderName: parentName
+        )
     }
 }
