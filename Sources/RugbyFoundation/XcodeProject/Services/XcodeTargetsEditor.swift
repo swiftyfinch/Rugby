@@ -21,15 +21,15 @@ final class XcodeTargetsEditor: Loggable {
         targetsDataSource.resetCache()
     }
 
-    func createAggregatedTarget(name: String, dependencies: Set<Target>) async throws -> Target {
+    func createAggregatedTarget(name: String, dependencies: [String: Target]) async throws -> Target {
         let project = try await projectDataSource.rootProject
         let pbxTarget = PBXAggregateTarget(name: name)
         pbxTarget.buildConfigurationList = try project.buildConfigurationList
         try project.pbxProject.targets.append(pbxTarget)
         project.pbxProj.add(object: pbxTarget)
 
-        try dependencies.forEach {
-            try project.pbxProj.addDependency($0, toTarget: pbxTarget)
+        try dependencies.values.forEach { target in
+            try project.pbxProj.addDependency(target, toTarget: pbxTarget)
         }
 
         let target = try await Target(pbxTarget: pbxTarget,
@@ -42,17 +42,17 @@ final class XcodeTargetsEditor: Loggable {
 
     // MARK: - Delete Targets
 
-    func deleteTargets(_ targetsForRemove: Set<Target>, keepGroups: Bool) async throws {
+    func deleteTargets(_ targetsForRemove: [String: Target], keepGroups: Bool) async throws {
         guard targetsForRemove.isNotEmpty else { return }
 
         // Remove all dependencies with these targets
         let targets = try await targetsDataSource.targets.subtracting(targetsForRemove)
-        try await targets.concurrentCompactMap { target in
+        try await targets.values.concurrentCompactMap { target in
             // Add sub-dependencies of removing dependency explicitly
             let dependencies = target.explicitDependencies.intersection(targetsForRemove)
             guard dependencies.isNotEmpty else { return }
 
-            try dependencies.forEach { targetForRemove in
+            try dependencies.values.forEach { targetForRemove in
                 let shouldBeExplicit = targetForRemove.dependencies
                     .subtracting(targetsForRemove)
                     .subtracting(target.explicitDependencies)
@@ -64,8 +64,8 @@ final class XcodeTargetsEditor: Loggable {
         }
 
         if !keepGroups {
-            let targetsByProject: [Project: Set<Target>] = targetsForRemove.reduce(into: [:]) { dictionary, target in
-                dictionary[target.project, default: []].insert(target)
+            let targetsByProject = targetsForRemove.values.reduce(into: [:]) { dictionary, target in
+                dictionary[target.project, default: [:]][target.uuid] = target
             }
             let targets = try await targetsDataSource.targets
             targetsByProject.forEach { project, targetsForRemove in
@@ -73,8 +73,8 @@ final class XcodeTargetsEditor: Loggable {
             }
         }
 
-        let pbxTargetsForRemove = targetsForRemove.lazy.map(\.pbxTarget)
-        try targetsForRemove.forEach { target in
+        let pbxTargetsForRemove = targetsForRemove.values.lazy.map(\.pbxTarget)
+        try targetsForRemove.values.forEach { target in
             try target.project.pbxProj.deleteTargetReferences(target.pbxTarget)
             try target.project.pbxProject.targets.removeAll(where: { $0.uuid == target.pbxTarget.uuid })
         }

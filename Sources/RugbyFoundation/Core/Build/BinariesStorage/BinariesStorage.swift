@@ -11,15 +11,15 @@ protocol IBinariesStorage: AnyObject {
     func xcodeBinaryFolderPath(_ target: Target) throws -> String
 
     func saveBinaries(
-        ofTargets targets: Set<Target>,
+        ofTargets targets: [String: Target],
         buildOptions: XcodeBuildOptions,
         buildPaths: XcodeBuildPaths
     ) async throws
 
     func findBinaries(
-        ofTargets targets: Set<Target>,
+        ofTargets targets: [String: Target],
         buildOptions: XcodeBuildOptions
-    ) throws -> (found: Set<Target>, notFound: Set<Target>)
+    ) throws -> (found: [String: Target], notFound: [String: Target])
 }
 
 enum BinariesStorageError: LocalizedError {
@@ -75,11 +75,11 @@ final class BinariesStorage: Loggable {
     }
 
     private func moveBinariesSteps(
-        ofTargets targets: Set<Target>,
+        ofTargets targets: [String: Target],
         buildConfigFolder: String,
         sharedBinariesConfigFolder: String
     ) async throws -> [(source: IItem, hash: String?, target: String)] {
-        try targets.reduce(into: []) { result, target in
+        try targets.values.reduce(into: []) { result, target in
             guard let product = target.product else { throw Error.targetHasNotProduct(target.name) }
 
             let targetFolder = try binaryFolderPath(target, configFolder: sharedBinariesConfigFolder)
@@ -122,7 +122,7 @@ extension BinariesStorage: IBinariesStorage {
     }
 
     func saveBinaries(
-        ofTargets targets: Set<Target>,
+        ofTargets targets: [String: Target],
         buildOptions: XcodeBuildOptions,
         buildPaths: XcodeBuildPaths
     ) async throws {
@@ -163,11 +163,11 @@ extension BinariesStorage: IBinariesStorage {
     }
 
     func findBinaries(
-        ofTargets targets: Set<Target>,
+        ofTargets targets: [String: Target],
         buildOptions: XcodeBuildOptions
-    ) throws -> (found: Set<Target>, notFound: Set<Target>) {
+    ) throws -> (found: [String: Target], notFound: [String: Target]) {
         let configFolder = binariesConfigFolder(buildOptions: buildOptions)
-        return try targets.partition { target in
+        return try targets.partition { _, target in
             let path = try binaryFolderPath(target, configFolder: configFolder)
             return Folder.isExist(at: path)
         }

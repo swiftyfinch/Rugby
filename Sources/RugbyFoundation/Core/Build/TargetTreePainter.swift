@@ -1,7 +1,7 @@
 // MARK: - Interface
 
 protocol ITargetTreePainter {
-    func paint(targets: Set<Target>) -> String
+    func paint(targets: [String: Target]) -> String
 }
 
 // MARK: - Implementation
@@ -29,14 +29,14 @@ private extension TargetTreePainter {
         }
     }
 
-    func depthOfTree(root: Target, allowed: Set<Target>) -> Int {
+    func depthOfTree(root: Target, allowed: [String: Target]) -> Int {
         var foundTreeDepths: [Target: Int] = [:]
         return depthOfTree(root: root, allowed: allowed, foundTreeDepths: &foundTreeDepths, depth: 0)
     }
 
-    private func buildTree(targets: Set<Target>) -> Tree {
-        var seen: Set<Target> = []
-        return buildTree(name: "root", isRoot: true, targets: targets, seen: &seen, allowed: targets)
+    private func buildTree(targets: [String: Target]) -> Tree {
+        var seen: Set<String> = []
+        return buildTree(name: "root", isRoot: true, targets: targets.values, seen: &seen, allowed: targets)
     }
 
     private func renderTree(_ tree: Tree) -> String {
@@ -48,12 +48,12 @@ private extension TargetTreePainter {
 
 private extension TargetTreePainter {
     func depthOfTree(root: Target,
-                     allowed: Set<Target>,
+                     allowed: [String: Target],
                      foundTreeDepths: inout [Target: Int],
                      depth: Int) -> Int {
         var maxDepth = depth
-        for dependency in root.explicitDependencies {
-            guard allowed.contains(dependency) else { continue }
+        for dependency in root.explicitDependencies.values {
+            guard allowed.contains(dependency.uuid) else { continue }
             if let foundDepth = foundTreeDepths[dependency] {
                 maxDepth = max(maxDepth, depth + foundDepth)
                 continue
@@ -75,8 +75,8 @@ private extension TargetTreePainter {
                    isCollapsed: Bool = false,
                    info: String? = nil,
                    targets: some Sequence<Target>,
-                   seen: inout Set<Target>,
-                   allowed: Set<Target>) -> Tree {
+                   seen: inout Set<String>,
+                   allowed: [String: Target]) -> Tree {
         Tree(
             name: name,
             isRoot: isRoot,
@@ -89,13 +89,13 @@ private extension TargetTreePainter {
                 .sorted { $0.maxDepth > $1.maxDepth }
                 .map(\.target)
                 .reduce(into: []) { subtrees, target in
-                    guard allowed.contains(target) else { return }
-                    if seen.insert(target).inserted {
+                    guard allowed.contains(target.uuid) else { return }
+                    if seen.insert(target.uuid).inserted {
                         subtrees.append(
                             buildTree(name: target.name,
                                       isCollapsed: false,
                                       info: target.hash,
-                                      targets: target.explicitDependencies,
+                                      targets: target.explicitDependencies.values,
                                       seen: &seen,
                                       allowed: allowed)
                         )
@@ -139,7 +139,7 @@ private extension TargetTreePainter {
 // MARK: - ITargetTreePainter
 
 extension TargetTreePainter: ITargetTreePainter {
-    public func paint(targets: Set<Target>) -> String {
+    public func paint(targets: [String: Target]) -> String {
         let tree = buildTree(targets: targets)
         return renderTree(tree)
     }

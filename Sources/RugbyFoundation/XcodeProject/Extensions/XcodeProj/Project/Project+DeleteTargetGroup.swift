@@ -1,11 +1,11 @@
 import XcodeProj
 
 extension Project {
-    func deleteTargetGroups(_ targetsForRemove: Set<Target>, targets: Set<Target>) {
+    func deleteTargetGroups(_ targetsForRemove: [String: Target], targets: [String: Target]) {
         let excludedFiles = targets
-            .subtracting(targetsForRemove)
+            .subtracting(targetsForRemove).values.set()
             .flatMap { targetFiles($0.pbxTarget) }
-        let filesForRemove = targetsForRemove
+        let filesForRemove = targetsForRemove.values.set()
             .flatMap { targetFiles($0.pbxTarget) }
             .subtracting(excludedFiles)
         filesForRemove.forEach(deleteFileElement)

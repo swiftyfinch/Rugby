@@ -44,15 +44,15 @@ final class TargetsHasher {
         self.buildRulesHasher = buildRulesHasher
     }
 
-    func hash(_ targets: Set<Target>, xcargs: [String], rehash: Bool = false) async throws {
+    func hash(_ targets: [String: Target], xcargs: [String], rehash: Bool = false) async throws {
         targets.modifyIf(rehash) { resetHash($0) }
 
-        try await targets.union(targets.flatMap(\.dependencies)).concurrentForEach { target in
+        try await targets.merging(targets.flatMapValues(\.dependencies)).values.concurrentForEach { target in
             guard target.targetHashContext == nil else { return }
             target.targetHashContext = try await self.targetHashContext(target, xcargs: xcargs)
         }
 
-        for target in targets {
+        for target in targets.values {
             try await hash(target)
         }
     }
@@ -63,7 +63,7 @@ final class TargetsHasher {
         guard target.hash == nil else { return }
 
         var dependencyHashes: [String: String?] = [:]
-        for dependency in target.dependencies {
+        for dependency in target.dependencies.values {
             try await hash(dependency)
             dependencyHashes.updateValue(dependency.hash, forKey: dependency.name)
         }
@@ -94,8 +94,8 @@ final class TargetsHasher {
         ]
     }
 
-    private func resetHash(_ targets: Set<Target>) {
-        targets.union(targets.flatMap(\.dependencies)).forEach { target in
+    private func resetHash(_ targets: [String: Target]) {
+        targets.merging(targets.flatMapValues(\.dependencies)).values.forEach { target in
             target.hash = nil
             target.hashContext = nil
             target.targetHashContext = nil

@@ -15,9 +15,9 @@ enum XcodeTargetsDataSourceError: LocalizedError {
 final class XcodeTargetsDataSource {
     private typealias Error = XcodeTargetsDataSourceError
     private let dataSource: XcodeProjectDataSource
-    private var cachedTargets: Set<Target>?
+    private var cachedTargets: [String: Target]?
 
-    var targets: Set<Target> {
+    var targets: [String: Target] {
         get async throws {
             if let cachedTargets { return cachedTargets }
             var targets: [String: (target: PBXTarget, project: Project)] = [:]
@@ -40,9 +40,8 @@ final class XcodeTargetsDataSource {
             for target in targets.values.map(\.target) {
                 try await buildTargetsTree(target, targets: targets, builtTargets: &builtTargets)
             }
-            let rugbyTargets = builtTargets.values.set()
-            cachedTargets = rugbyTargets
-            return rugbyTargets
+            cachedTargets = builtTargets
+            return builtTargets
         }
     }
 
@@ -59,13 +58,13 @@ final class XcodeTargetsDataSource {
     }
 
     func addAggregatedTarget(_ target: Target) {
-        cachedTargets?.insert(target)
+        cachedTargets?[target.uuid] = target
         target.resetDependencies()
     }
 
-    func deleteTargets(_ targets: Set<Target>) {
+    func deleteTargets(_ targets: [String: Target]) {
         cachedTargets?.subtract(targets)
-        cachedTargets?.forEach { $0.resetDependencies() }
+        cachedTargets?.values.forEach { $0.resetDependencies() }
     }
 
     // MARK: - Private
@@ -87,7 +86,7 @@ final class XcodeTargetsDataSource {
             try await buildTargetsTree(target, targets: targets, builtTargets: &builtTargets)
         }
 
-        let dependencies: Set<Target> = try await pbxDependencies.reduce(into: []) { set, dependency in
+        let dependencies: [String: Target] = try await pbxDependencies.reduce(into: [:]) { dictionary, dependency in
             let target: Target
             if let sharedTarget = builtTargets[dependency.uuid] {
                 target = sharedTarget
@@ -98,7 +97,7 @@ final class XcodeTargetsDataSource {
             } else {
                 throw Error.missingTarget(dependency.name)
             }
-            set.insert(target)
+            dictionary[target.uuid] = target
         }
 
         guard let project = targets[target.uuid]?.project else { throw Error.missingTarget(target.name) }
