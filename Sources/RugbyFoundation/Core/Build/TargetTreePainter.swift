@@ -30,7 +30,7 @@ private extension TargetTreePainter {
     }
 
     func depthOfTree(root: Target, allowed: [String: Target]) -> Int {
-        var foundTreeDepths: [Target: Int] = [:]
+        var foundTreeDepths: [String: Int] = [:]
         return depthOfTree(root: root, allowed: allowed, foundTreeDepths: &foundTreeDepths, depth: 0)
     }
 
@@ -49,12 +49,12 @@ private extension TargetTreePainter {
 private extension TargetTreePainter {
     func depthOfTree(root: Target,
                      allowed: [String: Target],
-                     foundTreeDepths: inout [Target: Int],
+                     foundTreeDepths: inout [String: Int],
                      depth: Int) -> Int {
         var maxDepth = depth
         for dependency in root.explicitDependencies.values {
             guard allowed.contains(dependency.uuid) else { continue }
-            if let foundDepth = foundTreeDepths[dependency] {
+            if let foundDepth = foundTreeDepths[dependency.uuid] {
                 maxDepth = max(maxDepth, depth + foundDepth)
                 continue
             }
@@ -64,7 +64,7 @@ private extension TargetTreePainter {
                 foundTreeDepths: &foundTreeDepths,
                 depth: depth + 1
             )
-            foundTreeDepths[dependency] = treeDepth
+            foundTreeDepths[dependency.uuid] = treeDepth
             maxDepth = max(maxDepth, treeDepth)
         }
         return maxDepth
