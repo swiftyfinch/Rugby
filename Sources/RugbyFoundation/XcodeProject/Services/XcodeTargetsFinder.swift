@@ -9,7 +9,7 @@ final class XcodeTargetsFinder {
 
     func findTargets(by regex: NSRegularExpression? = nil,
                      except exceptRegex: NSRegularExpression? = nil,
-                     includingDependencies: Bool = false) async throws -> [String: Target] {
+                     includingDependencies: Bool = false) async throws -> [String: IInternalTarget] {
         let targets = try await targetsDataSource.targets
         return try resolveTargets(targets: targets,
                                   by: regex,
@@ -17,10 +17,10 @@ final class XcodeTargetsFinder {
                                   includingDependencies: includingDependencies)
     }
 
-    private func resolveTargets(targets: [String: Target],
+    private func resolveTargets(targets: [String: IInternalTarget],
                                 by regex: NSRegularExpression? = nil,
                                 except exceptRegex: NSRegularExpression? = nil,
-                                includingDependencies: Bool) throws -> [String: Target] {
+                                includingDependencies: Bool) throws -> [String: IInternalTarget] {
         targets.filter { _, target in
             if let regex = exceptRegex, target.name.match(regex) {
                 return false

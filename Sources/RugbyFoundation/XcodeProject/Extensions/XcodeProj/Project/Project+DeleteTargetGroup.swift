@@ -1,7 +1,7 @@
 import XcodeProj
 
 extension Project {
-    func deleteTargetGroups(_ targetsForRemove: [String: Target], targets: [String: Target]) {
+    func deleteTargetGroups(_ targetsForRemove: [String: IInternalTarget], targets: [String: IInternalTarget]) {
         let excludedFiles = targets
             .subtracting(targetsForRemove).values
             .flatMap { targetFiles($0.pbxTarget) }

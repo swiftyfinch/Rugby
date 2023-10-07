@@ -15,9 +15,9 @@ enum XcodeTargetsDataSourceError: LocalizedError {
 final class XcodeTargetsDataSource {
     private typealias Error = XcodeTargetsDataSourceError
     private let dataSource: XcodeProjectDataSource
-    private var cachedTargets: [String: Target]?
+    private var cachedTargets: [String: IInternalTarget]?
 
-    var targets: [String: Target] {
+    var targets: [String: IInternalTarget] {
         get async throws {
             if let cachedTargets { return cachedTargets }
             var targets: [String: (target: PBXTarget, project: Project)] = [:]
@@ -36,7 +36,7 @@ final class XcodeTargetsDataSource {
                 }
             }
 
-            var builtTargets: [String: Target] = [:]
+            var builtTargets: [String: IInternalTarget] = [:]
             for target in targets.values.map(\.target) {
                 try await buildTargetsTree(target, targets: targets, builtTargets: &builtTargets)
             }
@@ -57,12 +57,12 @@ final class XcodeTargetsDataSource {
         cachedTargets = nil
     }
 
-    func addAggregatedTarget(_ target: Target) {
+    func addAggregatedTarget(_ target: IInternalTarget) {
         cachedTargets?[target.uuid] = target
         target.resetDependencies()
     }
 
-    func deleteTargets(_ targets: [String: Target]) {
+    func deleteTargets(_ targets: [String: IInternalTarget]) {
         cachedTargets?.subtract(targets)
         cachedTargets?.values.forEach { $0.resetDependencies() }
     }
@@ -71,7 +71,7 @@ final class XcodeTargetsDataSource {
 
     private func buildTargetsTree(_ target: PBXTarget,
                                   targets: [String: (target: PBXTarget, project: Project)],
-                                  builtTargets: inout [String: Target]) async throws {
+                                  builtTargets: inout [String: IInternalTarget]) async throws {
         guard builtTargets[target.uuid] == nil else { return }
 
         let pbxDependencies = try target.dependencies.compactMap { dependency in
@@ -86,8 +86,10 @@ final class XcodeTargetsDataSource {
             try await buildTargetsTree(target, targets: targets, builtTargets: &builtTargets)
         }
 
-        let dependencies: [String: Target] = try await pbxDependencies.reduce(into: [:]) { dictionary, dependency in
-            let target: Target
+        let dependencies: [String: IInternalTarget] = try await pbxDependencies.reduce(
+            into: [:]
+        ) { dictionary, dependency in
+            let target: IInternalTarget
             if let sharedTarget = builtTargets[dependency.uuid] {
                 target = sharedTarget
             } else if let project = targets[dependency.uuid]?.project {

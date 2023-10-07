@@ -44,7 +44,7 @@ final class TargetsHasher {
         self.buildRulesHasher = buildRulesHasher
     }
 
-    func hash(_ targets: [String: Target], xcargs: [String], rehash: Bool = false) async throws {
+    func hash(_ targets: [String: IInternalTarget], xcargs: [String], rehash: Bool = false) async throws {
         targets.modifyIf(rehash) { resetHash($0) }
 
         try await targets.merging(targets.flatMapValues(\.dependencies)).values.concurrentForEach { target in
@@ -59,7 +59,7 @@ final class TargetsHasher {
 
     // MARK: - Private
 
-    private func hash(_ target: Target) async throws {
+    private func hash(_ target: IInternalTarget) async throws {
         guard target.hash == nil else { return }
 
         var dependencyHashes: [String: String?] = [:]
@@ -73,13 +73,13 @@ final class TargetsHasher {
         target.hashContext = hashContext
     }
 
-    private func hashContext(_ target: Target, dependencyHashes: [String: String?]) async throws -> String {
+    private func hashContext(_ target: IInternalTarget, dependencyHashes: [String: String?]) async throws -> String {
         guard var targetHashContext = target.targetHashContext else { fatalError("Can't find target hash context.") }
         targetHashContext["dependencies"] = dependencyHashes
         return try Yams.dump(object: targetHashContext, width: -1, sortKeys: true)
     }
 
-    private func targetHashContext(_ target: Target, xcargs: [String]) async throws -> [String: Any] {
+    private func targetHashContext(_ target: IInternalTarget, xcargs: [String]) async throws -> [String: Any] {
         try await [
             "name": target.name,
             "swift_version": swiftVersionProvider.swiftVersion(),
@@ -94,7 +94,7 @@ final class TargetsHasher {
         ]
     }
 
-    private func resetHash(_ targets: [String: Target]) {
+    private func resetHash(_ targets: [String: IInternalTarget]) {
         targets.merging(targets.flatMapValues(\.dependencies)).values.forEach { target in
             target.hash = nil
             target.hashContext = nil
@@ -105,7 +105,7 @@ final class TargetsHasher {
 
 // MARK: - Context Properties
 
-extension Target {
+extension IInternalTarget {
     var hash: String? {
         get { context[String.hashKey] as? String }
         set { context[String.hashKey] = newValue }

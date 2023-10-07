@@ -6,20 +6,20 @@ import Foundation
 protocol IBinariesStorage: AnyObject {
     var sharedPath: String { get }
 
-    func binaryRelativePath(_ target: Target, buildOptions: XcodeBuildOptions) throws -> String
-    func finderBinaryFolderPath(_ target: Target, buildOptions: XcodeBuildOptions) throws -> String
-    func xcodeBinaryFolderPath(_ target: Target) throws -> String
+    func binaryRelativePath(_ target: IInternalTarget, buildOptions: XcodeBuildOptions) throws -> String
+    func finderBinaryFolderPath(_ target: IInternalTarget, buildOptions: XcodeBuildOptions) throws -> String
+    func xcodeBinaryFolderPath(_ target: IInternalTarget) throws -> String
 
     func saveBinaries(
-        ofTargets targets: [String: Target],
+        ofTargets targets: [String: IInternalTarget],
         buildOptions: XcodeBuildOptions,
         buildPaths: XcodeBuildPaths
     ) async throws
 
     func findBinaries(
-        ofTargets targets: [String: Target],
+        ofTargets targets: [String: IInternalTarget],
         buildOptions: XcodeBuildOptions
-    ) throws -> (found: [String: Target], notFound: [String: Target])
+    ) throws -> (found: [String: IInternalTarget], notFound: [String: IInternalTarget])
 }
 
 enum BinariesStorageError: LocalizedError {
@@ -55,13 +55,13 @@ final class BinariesStorage: Loggable {
 
     // MARK: - Private
 
-    private func binaryRelativePath(_ target: Target, configFolder: String) throws -> String {
+    private func binaryRelativePath(_ target: IInternalTarget, configFolder: String) throws -> String {
         guard let binaryName = target.product?.name else { throw Error.targetHasNotProduct(target.name) }
         let hashFolder = target.hash.map { "/" + $0 } ?? ""
         return "\(binaryName)/\(configFolder)\(hashFolder)"
     }
 
-    private func binaryFolderPath(_ target: Target, configFolder: String) throws -> String {
+    private func binaryFolderPath(_ target: IInternalTarget, configFolder: String) throws -> String {
         let relativePath = try binaryRelativePath(target, configFolder: configFolder)
         return "\(sharedPath)/\(relativePath)"
     }
@@ -75,7 +75,7 @@ final class BinariesStorage: Loggable {
     }
 
     private func moveBinariesSteps(
-        ofTargets targets: [String: Target],
+        ofTargets targets: [String: IInternalTarget],
         buildConfigFolder: String,
         sharedBinariesConfigFolder: String
     ) async throws -> [(source: IItem, hash: String?, target: String)] {
@@ -107,22 +107,22 @@ final class BinariesStorage: Loggable {
 // MARK: - IBinariesStorage
 
 extension BinariesStorage: IBinariesStorage {
-    func binaryRelativePath(_ target: Target, buildOptions: XcodeBuildOptions) throws -> String {
+    func binaryRelativePath(_ target: IInternalTarget, buildOptions: XcodeBuildOptions) throws -> String {
         let binariesConfigFolder = binariesConfigFolder(buildOptions: buildOptions)
         return try binaryRelativePath(target, configFolder: binariesConfigFolder)
     }
 
-    func finderBinaryFolderPath(_ target: Target, buildOptions: XcodeBuildOptions) throws -> String {
+    func finderBinaryFolderPath(_ target: IInternalTarget, buildOptions: XcodeBuildOptions) throws -> String {
         let binariesConfigFolder = binariesConfigFolder(buildOptions: buildOptions)
         return try binaryFolderPath(target, configFolder: binariesConfigFolder)
     }
 
-    func xcodeBinaryFolderPath(_ target: Target) throws -> String {
+    func xcodeBinaryFolderPath(_ target: IInternalTarget) throws -> String {
         try binaryFolderPath(target, configFolder: xcodeConfigFolder).homeEnvRelativePath()
     }
 
     func saveBinaries(
-        ofTargets targets: [String: Target],
+        ofTargets targets: [String: IInternalTarget],
         buildOptions: XcodeBuildOptions,
         buildPaths: XcodeBuildPaths
     ) async throws {
@@ -163,9 +163,9 @@ extension BinariesStorage: IBinariesStorage {
     }
 
     func findBinaries(
-        ofTargets targets: [String: Target],
+        ofTargets targets: [String: IInternalTarget],
         buildOptions: XcodeBuildOptions
-    ) throws -> (found: [String: Target], notFound: [String: Target]) {
+    ) throws -> (found: [String: IInternalTarget], notFound: [String: IInternalTarget]) {
         let configFolder = binariesConfigFolder(buildOptions: buildOptions)
         return try targets.partition { _, target in
             let path = try binaryFolderPath(target, configFolder: configFolder)

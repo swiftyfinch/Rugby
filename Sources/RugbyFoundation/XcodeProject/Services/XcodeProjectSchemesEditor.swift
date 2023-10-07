@@ -11,7 +11,10 @@ final class XcodeProjectSchemesEditor: Loggable {
         self.dataSource = dataSource
     }
 
-    func deleteSchemes(ofTargets targetsForRemove: [String: Target], targets: [String: Target]) async throws {
+    func deleteSchemes(
+        ofTargets targetsForRemove: [String: IInternalTarget],
+        targets: [String: IInternalTarget]
+    ) async throws {
         try await deleteSchemes(ofTargets: targetsForRemove,
                                 targets: targets,
                                 project: dataSource.rootProject)
@@ -23,8 +26,8 @@ final class XcodeProjectSchemesEditor: Loggable {
         }
     }
 
-    private func deleteSchemes(ofTargets targetsForRemove: [String: Target],
-                               targets: [String: Target],
+    private func deleteSchemes(ofTargets targetsForRemove: [String: IInternalTarget],
+                               targets: [String: IInternalTarget],
                                project: Project) async throws {
         let schemes = try await findSchemes(projectPath: project.path)
         let brokenSchemes = try findBrokenSchemes(schemes, ofTargets: targets)
@@ -40,12 +43,18 @@ final class XcodeProjectSchemesEditor: Loggable {
         return schemes.set()
     }
 
-    private func findBrokenSchemes(_ schemes: Set<Scheme>, ofTargets targets: [String: Target]) throws -> Set<Scheme> {
+    private func findBrokenSchemes(
+        _ schemes: Set<Scheme>,
+        ofTargets targets: [String: IInternalTarget]
+    ) throws -> Set<Scheme> {
         let references = targets.values.map(\.uuid).set()
         return schemes.filter { !$0.isReachable(fromReferences: references) }
     }
 
-    private func findSchemes(_ schemes: Set<Scheme>, byTargets targets: [String: Target]) throws -> Set<Scheme> {
+    private func findSchemes(
+        _ schemes: Set<Scheme>,
+        byTargets targets: [String: IInternalTarget]
+    ) throws -> Set<Scheme> {
         let targetNames = targets.values.map(\.name).set()
         return schemes.filter { targetNames.contains($0.name) }
     }

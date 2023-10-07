@@ -68,7 +68,7 @@ final class WarmupManager: Loggable {
 
     private func findLocalBinaries(targetsRegex: NSRegularExpression?,
                                    exceptTargetsRegex: NSRegularExpression?,
-                                   options: XcodeBuildOptions) async throws -> [String: Target] {
+                                   options: XcodeBuildOptions) async throws -> [String: IInternalTarget] {
         let targets = try await log(
             "Finding Build Targets",
             auto: await buildTargetsManager.findTargets(targetsRegex, exceptTargets: exceptTargetsRegex)
@@ -95,7 +95,7 @@ final class WarmupManager: Loggable {
         return notFound
     }
 
-    private func downloadRemoteBinaries(targets: [String: Target],
+    private func downloadRemoteBinaries(targets: [String: IInternalTarget],
                                         endpointURL: URL,
                                         options: XcodeBuildOptions,
                                         dryRun: Bool,
@@ -138,7 +138,7 @@ private extension WarmupManager {
     typealias RemoteBinaryInfo = (url: URL, localPath: URL)
 
     private func collectRemoteBinariesInfo(
-        targets: [String: Target],
+        targets: [String: IInternalTarget],
         endpoint: URL,
         options: XcodeBuildOptions
     ) throws -> [RemoteBinaryInfo] {

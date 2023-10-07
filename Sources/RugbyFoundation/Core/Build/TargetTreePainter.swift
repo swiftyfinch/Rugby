@@ -1,7 +1,7 @@
 // MARK: - Interface
 
 protocol ITargetTreePainter {
-    func paint(targets: [String: Target]) -> String
+    func paint(targets: [String: IInternalTarget]) -> String
 }
 
 // MARK: - Implementation
@@ -29,12 +29,12 @@ private extension TargetTreePainter {
         }
     }
 
-    func depthOfTree(root: Target, allowed: [String: Target]) -> Int {
+    func depthOfTree(root: IInternalTarget, allowed: [String: IInternalTarget]) -> Int {
         var foundTreeDepths: [String: Int] = [:]
         return depthOfTree(root: root, allowed: allowed, foundTreeDepths: &foundTreeDepths, depth: 0)
     }
 
-    private func buildTree(targets: [String: Target]) -> Tree {
+    private func buildTree(targets: [String: IInternalTarget]) -> Tree {
         var seen: Set<String> = []
         return buildTree(name: "root", isRoot: true, targets: targets.values, seen: &seen, allowed: targets)
     }
@@ -47,8 +47,8 @@ private extension TargetTreePainter {
 }
 
 private extension TargetTreePainter {
-    func depthOfTree(root: Target,
-                     allowed: [String: Target],
+    func depthOfTree(root: IInternalTarget,
+                     allowed: [String: IInternalTarget],
                      foundTreeDepths: inout [String: Int],
                      depth: Int) -> Int {
         var maxDepth = depth
@@ -74,9 +74,9 @@ private extension TargetTreePainter {
                    isRoot: Bool = false,
                    isCollapsed: Bool = false,
                    info: String? = nil,
-                   targets: some Sequence<Target>,
+                   targets: some Sequence<IInternalTarget>,
                    seen: inout Set<String>,
-                   allowed: [String: Target]) -> Tree {
+                   allowed: [String: IInternalTarget]) -> Tree {
         Tree(
             name: name,
             isRoot: isRoot,
@@ -139,7 +139,7 @@ private extension TargetTreePainter {
 // MARK: - ITargetTreePainter
 
 extension TargetTreePainter: ITargetTreePainter {
-    public func paint(targets: [String: Target]) -> String {
+    public func paint(targets: [String: IInternalTarget]) -> String {
         let tree = buildTree(targets: targets)
         return renderTree(tree)
     }
