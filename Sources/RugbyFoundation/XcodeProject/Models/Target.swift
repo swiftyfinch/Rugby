@@ -4,7 +4,7 @@ import XcodeProj
 /// The model describing Xcode project target and its capabilities.
 public final class Target {
     var context: [AnyHashable: Any] = [:]
-    private(set) var explicitDependencies: Set<Target>
+    private(set) var explicitDependencies: [String: Target]
 
     internal let pbxTarget: PBXTarget
     internal let project: Project
@@ -35,7 +35,7 @@ public final class Target {
 
     init(pbxTarget: PBXTarget,
          project: Project,
-         explicitDependencies: Set<Target> = [],
+         explicitDependencies: [String: Target] = [:],
          projectBuildConfigurations: [String: XCBuildConfiguration]) {
         self.pbxTarget = pbxTarget
         self.project = project
@@ -45,25 +45,25 @@ public final class Target {
 
     // MARK: - Methods
 
-    private func collectDependencies() -> Set<Target> {
+    private func collectDependencies() -> [String: Target] {
         explicitDependencies.reduce(into: explicitDependencies) { collection, dependency in
-            collection.formUnion(dependency.dependencies)
+            collection.merge(dependency.value.dependencies)
         }
     }
 
-    private func collectProducts() -> Set<Product> {
-        dependencies.compactMap(\.product)
+    private func collectProducts() -> [String: Product] {
+        dependencies.compactMapValues(\.product)
     }
 }
 
 // MARK: - Dependencies Methods
 
 extension Target {
-    func addDependencies(_ other: Set<Target>) {
-        explicitDependencies.formUnion(other)
+    func addDependencies(_ other: [String: Target]) {
+        explicitDependencies.merge(other)
     }
 
-    func deleteDependencies(_ other: Set<Target>) {
+    func deleteDependencies(_ other: [String: Target]) {
         explicitDependencies.subtract(other)
     }
 

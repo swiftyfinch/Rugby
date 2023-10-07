@@ -87,7 +87,7 @@ final class BuildManager: Loggable {
         self.targetTreePainter = targetTreePainter
     }
 
-    private func makeBuildTarget(targets: Set<Target>,
+    private func makeBuildTarget(targets: [String: Target],
                                  options: XcodeBuildOptions,
                                  ignoreCache: Bool) async throws -> Target? {
         guard targets.isNotEmpty else { throw BuildError.cantFindBuildTargets }
@@ -96,7 +96,7 @@ final class BuildManager: Loggable {
         try await log("Checking Binaries Storage", auto: await binariesCleaner.freeSpace())
         try await log("Hashing Targets", auto: await targetsHasher.hash(targets, xcargs: options.xcargs))
 
-        var shared: Set<Target> = []
+        var shared: [String: Target] = [:]
         var buildTargets = targets
         if !ignoreCache {
             (shared, buildTargets) = try await log(
@@ -120,7 +120,7 @@ final class BuildManager: Loggable {
             let percent = shared.count.percent(total: targets.count)
             await log("Found \(percent)% Binaries (\(shared.count)/\(targets.count))")
 
-            await log("Reusing Binaries: \n\(shared.map { "* \($0.name)" }.sorted().joined(separator: "\n"))",
+            await log("Reusing Binaries: \n\(shared.values.map { "* \($0.name)" }.sorted().joined(separator: "\n"))",
                       level: .info)
             try await log("Reusing Binaries", auto: await useBinariesManager.use(targets: shared, keepGroups: true))
 
@@ -137,8 +137,10 @@ final class BuildManager: Loggable {
 
     private func build(_ target: Target, options: XcodeBuildOptions, paths: XcodeBuildPaths) async throws {
         let title = "\(options.config): \(options.sdk.string)-\(options.arch) (\(target.explicitDependencies.count))"
-        await log("\(title)\n\(target.explicitDependencies.map { "* \($0.name)" }.sorted().joined(separator: "\n"))",
-                  level: .info)
+        await log(
+            "\(title)\n\(target.explicitDependencies.values.map { "* \($0.name)" }.sorted().joined(separator: "\n"))",
+            level: .info
+        )
 
         try await log(title, metricKey: "xcodebuild", block: { [weak self] in
             guard let self else { return }

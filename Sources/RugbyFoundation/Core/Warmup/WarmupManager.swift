@@ -68,7 +68,7 @@ final class WarmupManager: Loggable {
 
     private func findLocalBinaries(targetsRegex: NSRegularExpression?,
                                    exceptTargetsRegex: NSRegularExpression?,
-                                   options: XcodeBuildOptions) async throws -> Set<Target> {
+                                   options: XcodeBuildOptions) async throws -> [String: Target] {
         let targets = try await log(
             "Finding Build Targets",
             auto: await buildTargetsManager.findTargets(targetsRegex, exceptTargets: exceptTargetsRegex)
@@ -81,7 +81,7 @@ final class WarmupManager: Loggable {
             auto: binariesManager.findBinaries(ofTargets: targets, buildOptions: options)
         )
 
-        let notFoundPaths = try notFound.compactMap {
+        let notFoundPaths = try notFound.values.compactMap {
             try "- \(binariesManager.finderBinaryFolderPath($0, buildOptions: options))"
         }
         if notFoundPaths.isNotEmpty {
@@ -95,7 +95,7 @@ final class WarmupManager: Loggable {
         return notFound
     }
 
-    private func downloadRemoteBinaries(targets: Set<Target>,
+    private func downloadRemoteBinaries(targets: [String: Target],
                                         endpointURL: URL,
                                         options: XcodeBuildOptions,
                                         dryRun: Bool,
@@ -138,11 +138,11 @@ private extension WarmupManager {
     typealias RemoteBinaryInfo = (url: URL, localPath: URL)
 
     private func collectRemoteBinariesInfo(
-        targets: Set<Target>,
+        targets: [String: Target],
         endpoint: URL,
         options: XcodeBuildOptions
     ) throws -> [RemoteBinaryInfo] {
-        try targets.map { target in
+        try targets.values.map { target in
             let binaryPath = try binariesManager.finderBinaryFolderPath(target, buildOptions: options)
             let binaryConfigFolder = URL(fileURLWithPath: binaryPath).deletingLastPathComponent()
 

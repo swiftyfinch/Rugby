@@ -45,7 +45,7 @@ extension DeleteTargetsManager: IDeleteTargetsManager {
         )
         try await log("Keeping Excepted Targets Dependencies", block: {
             if keepExceptedTargetsDependencies {
-                try await xcodeProject.findTargets().subtracting(shouldBeRemoved).forEach {
+                try await xcodeProject.findTargets().subtracting(shouldBeRemoved).values.forEach {
                     let intersection = $0.dependencies.intersection(shouldBeRemoved)
                     shouldBeRemoved.subtract(intersection)
                 }

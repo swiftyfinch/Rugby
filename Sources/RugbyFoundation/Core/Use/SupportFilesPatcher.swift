@@ -35,7 +35,7 @@ final class SupportFilesPatcher {
     }
 
     private func prepareXCConfigReplacements(target: Target) throws -> [FileReplacement] {
-        let replacementsPairs: [Replacement] = target.binaryProducts.reduce(into: []) { result, product in
+        let replacementsPairs: [Replacement] = target.binaryProducts.values.reduce(into: []) { result, product in
             guard product.type != .bundle, let binaryFolderPath = product.binaryPath else { return }
             if let parentFolderName = product.parentFolderName {
                 result.append((parentFolderName, replacement: binaryFolderPath))
@@ -61,7 +61,7 @@ final class SupportFilesPatcher {
         guard target.isTests || target.isPodsUmbrella,
               let filePath = target.frameworksScriptPath else { return nil }
 
-        let replacementsPairs: [Replacement] = target.binaryProducts.compactMap { product in
+        let replacementsPairs: [Replacement] = target.binaryProducts.values.compactMap { product in
             guard product.type != .bundle, let binaryFolderPath = product.binaryPath else { return nil }
             return (product.nameWithParent, replacement: "\(binaryFolderPath)/\(product.fileName)")
         }
@@ -81,11 +81,11 @@ final class SupportFilesPatcher {
         guard target.isTests || target.isPodsUmbrella,
               let filePath = target.resourcesScriptPath else { return nil }
 
-        let bundlesReplacementsPairs: [Replacement] = target.binaryProducts.compactMap { product in
+        let bundlesReplacementsPairs: [Replacement] = target.binaryProducts.values.compactMap { product in
             guard product.type == .bundle, let binaryFolderPath = product.binaryPath else { return nil }
             return (product.nameWithParent, replacement: "\(binaryFolderPath)/\(product.fileName)")
         }
-        let frameworksReplacementsPairs: [Replacement] = target.binaryProducts.compactMap { product in
+        let frameworksReplacementsPairs: [Replacement] = target.binaryProducts.values.compactMap { product in
             guard product.type != .bundle, let binaryFolderPath = product.binaryPath else { return nil }
             return ("\(product.nameWithParent)/", replacement: "\(binaryFolderPath)/\(product.fileName)/")
         }

@@ -19,7 +19,7 @@ public protocol IUseBinariesManager {
     /// - Parameters:
     ///   - targets: A set of targets to select.
     ///   - keepGroups: An option to keep groups after removing targets in Xcode project.
-    func use(targets: Set<Target>,
+    func use(targets: [String: Target],
              keepGroups: Bool) async throws
 }
 
@@ -61,10 +61,10 @@ final class UseBinariesManager: Loggable {
 // MARK: - File Replacements
 
 extension UseBinariesManager {
-    private func patchProductFiles(binaryTargets: Set<Target>) async throws -> Set<Target> {
+    private func patchProductFiles(binaryTargets: [String: Target]) async throws -> [String: Target] {
         let binaryUsers = try await findBinaryUsers(binaryTargets)
-        try binaryUsers.forEach { target in
-            target.binaryProducts = try target.binaryDependencies.compactMap { target in
+        try binaryUsers.values.forEach { target in
+            target.binaryProducts = try target.binaryDependencies.compactMapValues { target in
                 guard let product = target.product else { return nil }
                 product.binaryPath = try binariesManager.xcodeBinaryFolderPath(target)
                 return product
@@ -73,19 +73,18 @@ extension UseBinariesManager {
 
         // For all dynamic frameworks we should keep resource bundles which is produced by targets.
         // The easiest way is just find resource bundle targets and exclude them from reusing from binaries.
-        let resourceBundleTargets = try await binaryUsers.concurrentFlatMap { target -> [Target] in
-            guard target.product?.type == .framework else { return [] }
+        let resourceBundleTargets: [String: Target] = try binaryUsers.flatMapValues { target in
+            guard target.product?.type == .framework else { return [:] }
 
             let resourceBundleNames = try target.resourceBundleNames()
-            let found = binaryTargets.filter {
-                guard let productName = $0.product?.name else { return false }
+            return binaryTargets.filter {
+                guard let productName = $0.value.product?.name else { return false }
                 return resourceBundleNames.contains(productName)
             }
-            return Array(found)
         }
         let binaryTargets = binaryTargets.subtracting(resourceBundleTargets)
 
-        let fileReplacements = try await binaryUsers.concurrentFlatMap(supportFilesPatcher.prepareReplacements)
+        let fileReplacements = try await binaryUsers.values.concurrentFlatMap(supportFilesPatcher.prepareReplacements)
         try await fileReplacements.concurrentCompactMap { fileReplacement in
             try self.fileContentEditor.replace(fileReplacement.replacements,
                                                regex: fileReplacement.regex,
@@ -95,20 +94,20 @@ extension UseBinariesManager {
         return binaryTargets
     }
 
-    private func findBinaryUsers(_ binaryTargets: Set<Target>) async throws -> Set<Target> {
+    private func findBinaryUsers(_ binaryTargets: [String: Target]) async throws -> [String: Target] {
         let binaryUsers = try await xcodeProject.findTargets().subtracting(binaryTargets)
-        binaryUsers.forEach { target in
+        binaryUsers.values.forEach { target in
             target.binaryDependencies = target.dependencies.intersection(binaryTargets)
         }
-        return binaryUsers.filter(\.binaryDependencies.isNotEmpty)
+        return binaryUsers.filter(\.value.binaryDependencies.isNotEmpty)
     }
 }
 
 // MARK: - Context Properties
 
 extension Target {
-    var binaryProducts: Set<Product> {
-        get { (context[String.binaryProductsKey] as? Set<Product>) ?? [] }
+    var binaryProducts: [String: Product] {
+        get { (context[String.binaryProductsKey] as? [String: Product]) ?? [:] }
         set { context[String.binaryProductsKey] = newValue }
     }
 }
@@ -121,8 +120,8 @@ extension Product {
 }
 
 private extension Target {
-    var binaryDependencies: Set<Target> {
-        get { (context[String.binaryDependenciesKey] as? Set<Target>) ?? [] }
+    var binaryDependencies: [String: Target] {
+        get { (context[String.binaryDependenciesKey] as? [String: Target]) ?? [:] }
         set { context[String.binaryDependenciesKey] = newValue }
     }
 }
@@ -152,7 +151,7 @@ extension UseBinariesManager: IUseBinariesManager {
         try await log("Saving Project", auto: await xcodeProject.save())
     }
 
-    public func use(targets: Set<Target>, keepGroups: Bool) async throws {
+    public func use(targets: [String: Target], keepGroups: Bool) async throws {
         let binaryTargets = try await log("Patching Product Files",
                                           auto: await patchProductFiles(binaryTargets: targets))
         try await log(

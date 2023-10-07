@@ -9,15 +9,17 @@ final class BuildTargetsManager {
     }
 
     func findTargets(_ targets: NSRegularExpression?,
-                     exceptTargets: NSRegularExpression?) async throws -> Set<Target> {
+                     exceptTargets: NSRegularExpression?) async throws -> [String: Target] {
         try await xcodeProject.findTargets(
             by: targets,
             except: exceptTargets,
             includingDependencies: true
-        ).filter { $0.isNative && !$0.isTests && !$0.isPodsUmbrella }
+        ).filter { _, target in
+            target.isNative && !target.isTests && !target.isPodsUmbrella
+        }
     }
 
-    func createTarget(dependencies: Set<Target>) async throws -> Target {
+    func createTarget(dependencies: [String: Target]) async throws -> Target {
         try await xcodeProject.createAggregatedTarget(name: buildTargetName, dependencies: dependencies)
     }
 }
