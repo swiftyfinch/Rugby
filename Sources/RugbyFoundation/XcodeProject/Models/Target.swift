@@ -86,15 +86,3 @@ extension Target {
             .compactMap { $0.excludingExtension() }
     }
 }
-
-// MARK: - Hashable
-
-extension Target: Hashable {
-    public static func == (lhs: Target, rhs: Target) -> Bool {
-        lhs.pbxTarget == rhs.pbxTarget
-    }
-
-    public func hash(into hasher: inout Hasher) {
-        pbxTarget.hash(into: &hasher)
-    }
-}
