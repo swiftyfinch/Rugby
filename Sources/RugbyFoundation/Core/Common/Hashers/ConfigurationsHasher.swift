@@ -11,7 +11,7 @@ final class ConfigurationsHasher {
         self.excludeKeys = excludeKeys
     }
 
-    func hashContext(_ target: Target) throws -> [Any] {
+    func hashContext(_ target: IInternalTarget) throws -> [Any] {
         guard let configurations = target.configurations?.values, configurations.isNotEmpty else { return [] }
         let sortedConfigurations = configurations.sorted { $0.name < $1.name }
         return separateCommonBuildSettings(sortedConfigurations)

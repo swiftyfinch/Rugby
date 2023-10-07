@@ -19,7 +19,7 @@ public protocol IUseBinariesManager {
     /// - Parameters:
     ///   - targets: A set of targets to select.
     ///   - keepGroups: An option to keep groups after removing targets in Xcode project.
-    func use(targets: [String: Target],
+    func use(targets: [String: ITarget],
              keepGroups: Bool) async throws
 }
 
@@ -61,7 +61,7 @@ final class UseBinariesManager: Loggable {
 // MARK: - File Replacements
 
 extension UseBinariesManager {
-    private func patchProductFiles(binaryTargets: [String: Target]) async throws -> [String: Target] {
+    private func patchProductFiles(binaryTargets: [String: IInternalTarget]) async throws -> [String: IInternalTarget] {
         let binaryUsers = try await findBinaryUsers(binaryTargets)
         try binaryUsers.values.forEach { target in
             target.binaryProducts = try target.binaryDependencies.compactMapValues { target in
@@ -73,7 +73,7 @@ extension UseBinariesManager {
 
         // For all dynamic frameworks we should keep resource bundles which is produced by targets.
         // The easiest way is just find resource bundle targets and exclude them from reusing from binaries.
-        let resourceBundleTargets: [String: Target] = try binaryUsers.flatMapValues { target in
+        let resourceBundleTargets: [String: IInternalTarget] = try binaryUsers.flatMapValues { target in
             guard target.product?.type == .framework else { return [:] }
 
             let resourceBundleNames = try target.resourceBundleNames()
@@ -94,7 +94,7 @@ extension UseBinariesManager {
         return binaryTargets
     }
 
-    private func findBinaryUsers(_ binaryTargets: [String: Target]) async throws -> [String: Target] {
+    private func findBinaryUsers(_ binaryTargets: [String: IInternalTarget]) async throws -> [String: IInternalTarget] {
         let binaryUsers = try await xcodeProject.findTargets().subtracting(binaryTargets)
         binaryUsers.values.forEach { target in
             target.binaryDependencies = target.dependencies.intersection(binaryTargets)
@@ -105,7 +105,7 @@ extension UseBinariesManager {
 
 // MARK: - Context Properties
 
-extension Target {
+extension IInternalTarget {
     var binaryProducts: [String: Product] {
         get { (context[String.binaryProductsKey] as? [String: Product]) ?? [:] }
         set { context[String.binaryProductsKey] = newValue }
@@ -119,9 +119,9 @@ extension Product {
     }
 }
 
-private extension Target {
-    var binaryDependencies: [String: Target] {
-        get { (context[String.binaryDependenciesKey] as? [String: Target]) ?? [:] }
+private extension IInternalTarget {
+    var binaryDependencies: [String: IInternalTarget] {
+        get { (context[String.binaryDependenciesKey] as? [String: IInternalTarget]) ?? [:] }
         set { context[String.binaryDependenciesKey] = newValue }
     }
 }
@@ -151,9 +151,10 @@ extension UseBinariesManager: IUseBinariesManager {
         try await log("Saving Project", auto: await xcodeProject.save())
     }
 
-    public func use(targets: [String: Target], keepGroups: Bool) async throws {
+    public func use(targets: [String: ITarget], keepGroups: Bool) async throws {
+        let internalTargets = targets.compactMapValues { $0 as? IInternalTarget }
         let binaryTargets = try await log("Patching Product Files",
-                                          auto: await patchProductFiles(binaryTargets: targets))
+                                          auto: await patchProductFiles(binaryTargets: internalTargets))
         try await log(
             "Deleting Targets (\(binaryTargets.count))",
             auto: await xcodeProject.deleteTargets(binaryTargets, keepGroups: keepGroups)

@@ -23,7 +23,7 @@ final class BuildPhaseHasher: Loggable {
         self.xcodeEnvResolver = xcodeEnvResolver
     }
 
-    func hashContext(target: Target) async throws -> Any {
+    func hashContext(target: IInternalTarget) async throws -> Any {
         // Get the first configuration sorted by name.
         guard
             let configurationName = (target.configurations ?? [:]).keys.sorted().first,

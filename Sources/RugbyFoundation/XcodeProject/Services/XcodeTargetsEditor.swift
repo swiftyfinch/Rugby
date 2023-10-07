@@ -21,7 +21,7 @@ final class XcodeTargetsEditor: Loggable {
         targetsDataSource.resetCache()
     }
 
-    func createAggregatedTarget(name: String, dependencies: [String: Target]) async throws -> Target {
+    func createAggregatedTarget(name: String, dependencies: [String: IInternalTarget]) async throws -> IInternalTarget {
         let project = try await projectDataSource.rootProject
         let pbxTarget = PBXAggregateTarget(name: name)
         pbxTarget.buildConfigurationList = try project.buildConfigurationList
@@ -42,7 +42,7 @@ final class XcodeTargetsEditor: Loggable {
 
     // MARK: - Delete Targets
 
-    func deleteTargets(_ targetsForRemove: [String: Target], keepGroups: Bool) async throws {
+    func deleteTargets(_ targetsForRemove: [String: IInternalTarget], keepGroups: Bool) async throws {
         guard targetsForRemove.isNotEmpty else { return }
 
         // Remove all dependencies with these targets

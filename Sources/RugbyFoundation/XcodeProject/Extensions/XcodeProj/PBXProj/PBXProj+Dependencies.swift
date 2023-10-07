@@ -16,7 +16,7 @@ enum AddDependencyError: LocalizedError {
 }
 
 extension PBXProj {
-    func addDependencies(_ dependencies: [String: Target], target: Target) throws {
+    func addDependencies(_ dependencies: [String: IInternalTarget], target: IInternalTarget) throws {
         try dependencies.values.forEach { dependency in
             try addDependency(dependency, toTarget: target.pbxTarget)
         }
@@ -24,7 +24,7 @@ extension PBXProj {
     }
 
     @discardableResult
-    func addDependency(_ dependency: Target, toTarget target: PBXTarget) throws -> PBXTargetDependency {
+    func addDependency(_ dependency: IInternalTarget, toTarget target: PBXTarget) throws -> PBXTargetDependency {
         let proxyType: PBXContainerItemProxy.ProxyType
         let containerPortal: PBXContainerItemProxy.ContainerPortal
         if let reference = dependency.project.reference {
@@ -56,7 +56,7 @@ extension PBXProj {
         return targetDependency
     }
 
-    func deleteDependencies(_ dependencies: [String: Target], target: Target) {
+    func deleteDependencies(_ dependencies: [String: IInternalTarget], target: IInternalTarget) {
         let dependenciesUUIDs = dependencies.values.map(\.pbxTarget.uuid).set()
         let pbxDependencies = target.pbxTarget.dependencies.filter {
             guard let remoteGlobalID = $0.targetProxy?.remoteGlobalID else { return false }

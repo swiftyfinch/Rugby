@@ -7,7 +7,7 @@ final class CocoaPodsScriptsHasher {
         self.fileContentHasher = fileContentHasher
     }
 
-    func hashContext(_ target: Target) async throws -> [String] {
+    func hashContext(_ target: IInternalTarget) async throws -> [String] {
         let paths = [target.resourcesScriptPath, target.frameworksScriptPath]
             .compactMap()
             .filter(File.isExist)

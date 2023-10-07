@@ -1,10 +1,9 @@
 import Foundation
 import XcodeProj
 
-/// The model describing Xcode project target and its capabilities.
-public final class Target {
+final class Target: IInternalTarget {
     var context: [AnyHashable: Any] = [:]
-    private(set) var explicitDependencies: [String: Target]
+    private(set) var explicitDependencies: [String: IInternalTarget]
 
     internal let pbxTarget: PBXTarget
     internal let project: Project
@@ -35,7 +34,7 @@ public final class Target {
 
     init(pbxTarget: PBXTarget,
          project: Project,
-         explicitDependencies: [String: Target] = [:],
+         explicitDependencies: [String: IInternalTarget] = [:],
          projectBuildConfigurations: [String: XCBuildConfiguration]) {
         self.pbxTarget = pbxTarget
         self.project = project
@@ -45,7 +44,7 @@ public final class Target {
 
     // MARK: - Methods
 
-    private func collectDependencies() -> [String: Target] {
+    private func collectDependencies() -> [String: IInternalTarget] {
         explicitDependencies.reduce(into: explicitDependencies) { collection, dependency in
             collection.merge(dependency.value.dependencies)
         }
@@ -59,11 +58,11 @@ public final class Target {
 // MARK: - Dependencies Methods
 
 extension Target {
-    func addDependencies(_ other: [String: Target]) {
+    func addDependencies(_ other: [String: IInternalTarget]) {
         explicitDependencies.merge(other)
     }
 
-    func deleteDependencies(_ other: [String: Target]) {
+    func deleteDependencies(_ other: [String: IInternalTarget]) {
         explicitDependencies.subtract(other)
     }
 

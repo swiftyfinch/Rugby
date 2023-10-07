@@ -23,7 +23,7 @@ final class SupportFilesPatcher {
         }
     }
 
-    func prepareReplacements(forTarget target: Target) throws -> [FileReplacement] {
+    func prepareReplacements(forTarget target: IInternalTarget) throws -> [FileReplacement] {
         var replacements = try prepareXCConfigReplacements(target: target)
         if let frameworksReplacements = try prepareFrameworksReplacements(target: target) {
             replacements.append(frameworksReplacements)
@@ -34,7 +34,7 @@ final class SupportFilesPatcher {
         return replacements
     }
 
-    private func prepareXCConfigReplacements(target: Target) throws -> [FileReplacement] {
+    private func prepareXCConfigReplacements(target: IInternalTarget) throws -> [FileReplacement] {
         let replacementsPairs: [Replacement] = target.binaryProducts.values.reduce(into: []) { result, product in
             guard product.type != .bundle, let binaryFolderPath = product.binaryPath else { return }
             if let parentFolderName = product.parentFolderName {
@@ -57,7 +57,7 @@ final class SupportFilesPatcher {
         }
     }
 
-    private func prepareFrameworksReplacements(target: Target) throws -> FileReplacement? {
+    private func prepareFrameworksReplacements(target: IInternalTarget) throws -> FileReplacement? {
         guard target.isTests || target.isPodsUmbrella,
               let filePath = target.frameworksScriptPath else { return nil }
 
@@ -77,7 +77,7 @@ final class SupportFilesPatcher {
         return FileReplacement(replacements: replacements, filePath: filePath, regex: regex)
     }
 
-    private func prepareResourcesReplacements(target: Target) throws -> FileReplacement? {
+    private func prepareResourcesReplacements(target: IInternalTarget) throws -> FileReplacement? {
         guard target.isTests || target.isPodsUmbrella,
               let filePath = target.resourcesScriptPath else { return nil }
 

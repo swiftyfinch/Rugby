@@ -87,16 +87,16 @@ final class BuildManager: Loggable {
         self.targetTreePainter = targetTreePainter
     }
 
-    private func makeBuildTarget(targets: [String: Target],
+    private func makeBuildTarget(targets: [String: IInternalTarget],
                                  options: XcodeBuildOptions,
-                                 ignoreCache: Bool) async throws -> Target? {
+                                 ignoreCache: Bool) async throws -> IInternalTarget? {
         guard targets.isNotEmpty else { throw BuildError.cantFindBuildTargets }
 
         try await log("Backuping", auto: await backupManager.backup(xcodeProject, kind: .tmp))
         try await log("Checking Binaries Storage", auto: await binariesCleaner.freeSpace())
         try await log("Hashing Targets", auto: await targetsHasher.hash(targets, xcargs: options.xcargs))
 
-        var shared: [String: Target] = [:]
+        var shared: [String: IInternalTarget] = [:]
         var buildTargets = targets
         if !ignoreCache {
             (shared, buildTargets) = try await log(
@@ -135,7 +135,7 @@ final class BuildManager: Loggable {
         return buildTarget
     }
 
-    private func build(_ target: Target, options: XcodeBuildOptions, paths: XcodeBuildPaths) async throws {
+    private func build(_ target: IInternalTarget, options: XcodeBuildOptions, paths: XcodeBuildPaths) async throws {
         let title = "\(options.config): \(options.sdk.string)-\(options.arch) (\(target.explicitDependencies.count))"
         await log(
             "\(title)\n\(target.explicitDependencies.values.map { "* \($0.name)" }.sorted().joined(separator: "\n"))",
