@@ -7,10 +7,16 @@
 //
 
 import Fish
-import RugbyFoundation
+@testable import RugbyFoundation
 
 // sourcery: AutoMockable, imports = ["RugbyFoundation"]
 extension IShellExecutor {}
+
+//// sourcery: AutoMockable, imports = ["RugbyFoundation", "XcodeProj"]
+extension IInternalTarget {}
+
+//// sourcery: AutoMockable, imports = ["RugbyFoundation"]
+extension ILogger {}
 
 //// sourcery: AutoMockable, imports = ["Fish"]
 protocol IFilesManagerMock: IFilesManager {}
