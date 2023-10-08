@@ -9,7 +9,7 @@ final class BuildTargetsManager {
     }
 
     func findTargets(_ targets: NSRegularExpression?,
-                     exceptTargets: NSRegularExpression?) async throws -> [String: IInternalTarget] {
+                     exceptTargets: NSRegularExpression?) async throws -> TargetsMap {
         try await xcodeProject.findTargets(
             by: targets,
             except: exceptTargets,
@@ -19,7 +19,7 @@ final class BuildTargetsManager {
         }
     }
 
-    func createTarget(dependencies: [String: IInternalTarget]) async throws -> IInternalTarget {
+    func createTarget(dependencies: TargetsMap) async throws -> IInternalTarget {
         try await xcodeProject.createAggregatedTarget(name: buildTargetName, dependencies: dependencies)
     }
 }

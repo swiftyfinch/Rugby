@@ -3,12 +3,14 @@ import XcodeProj
 /// The model describing Xcode project target and its capabilities.
 public protocol ITarget: AnyObject {}
 
+typealias TargetId = String
+typealias TargetsMap = [TargetId: IInternalTarget]
 protocol IInternalTarget: ITarget {
     var name: String { get }
-    var uuid: String { get }
+    var uuid: TargetId { get }
 
     var context: [AnyHashable: Any] { get set }
-    var explicitDependencies: [String: IInternalTarget] { get }
+    var explicitDependencies: TargetsMap { get }
 
     var pbxTarget: PBXTarget { get }
     var project: Project { get }
@@ -18,7 +20,7 @@ protocol IInternalTarget: ITarget {
     var isTests: Bool { get }
 
     /// All dependencies including implicit ones
-    var dependencies: [String: IInternalTarget] { get }
+    var dependencies: TargetsMap { get }
 
     var product: Product? { get }
     var configurations: [String: Configuration]? { get }
@@ -30,7 +32,7 @@ protocol IInternalTarget: ITarget {
     var resourcesScriptPath: String? { get }
     func resourceBundleNames() throws -> [String]
 
-    func addDependencies(_ other: [String: IInternalTarget])
-    func deleteDependencies(_ other: [String: IInternalTarget])
+    func addDependencies(_ other: TargetsMap)
+    func deleteDependencies(_ other: TargetsMap)
     func resetDependencies()
 }

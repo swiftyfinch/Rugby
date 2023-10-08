@@ -1,7 +1,7 @@
 // MARK: - Interface
 
 protocol ITargetTreePainter {
-    func paint(targets: [String: IInternalTarget]) -> String
+    func paint(targets: TargetsMap) -> String
 }
 
 // MARK: - Implementation
@@ -29,12 +29,12 @@ private extension TargetTreePainter {
         }
     }
 
-    func depthOfTree(root: IInternalTarget, allowed: [String: IInternalTarget]) -> Int {
+    func depthOfTree(root: IInternalTarget, allowed: TargetsMap) -> Int {
         var foundTreeDepths: [String: Int] = [:]
         return depthOfTree(root: root, allowed: allowed, foundTreeDepths: &foundTreeDepths, depth: 0)
     }
 
-    private func buildTree(targets: [String: IInternalTarget]) -> Tree {
+    private func buildTree(targets: TargetsMap) -> Tree {
         var seen: Set<String> = []
         return buildTree(name: "root", isRoot: true, targets: targets.values, seen: &seen, allowed: targets)
     }
@@ -48,7 +48,7 @@ private extension TargetTreePainter {
 
 private extension TargetTreePainter {
     func depthOfTree(root: IInternalTarget,
-                     allowed: [String: IInternalTarget],
+                     allowed: TargetsMap,
                      foundTreeDepths: inout [String: Int],
                      depth: Int) -> Int {
         var maxDepth = depth
@@ -76,7 +76,7 @@ private extension TargetTreePainter {
                    info: String? = nil,
                    targets: some Sequence<IInternalTarget>,
                    seen: inout Set<String>,
-                   allowed: [String: IInternalTarget]) -> Tree {
+                   allowed: TargetsMap) -> Tree {
         Tree(
             name: name,
             isRoot: isRoot,
@@ -139,7 +139,7 @@ private extension TargetTreePainter {
 // MARK: - ITargetTreePainter
 
 extension TargetTreePainter: ITargetTreePainter {
-    public func paint(targets: [String: IInternalTarget]) -> String {
+    public func paint(targets: TargetsMap) -> String {
         let tree = buildTree(targets: targets)
         return renderTree(tree)
     }

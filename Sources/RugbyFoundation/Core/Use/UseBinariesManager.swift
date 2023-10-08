@@ -61,7 +61,7 @@ final class UseBinariesManager: Loggable {
 // MARK: - File Replacements
 
 extension UseBinariesManager {
-    private func patchProductFiles(binaryTargets: [String: IInternalTarget]) async throws -> [String: IInternalTarget] {
+    private func patchProductFiles(binaryTargets: TargetsMap) async throws -> TargetsMap {
         let binaryUsers = try await findBinaryUsers(binaryTargets)
         try binaryUsers.values.forEach { target in
             target.binaryProducts = try target.binaryDependencies.compactMapValues { target in
@@ -73,7 +73,7 @@ extension UseBinariesManager {
 
         // For all dynamic frameworks we should keep resource bundles which is produced by targets.
         // The easiest way is just find resource bundle targets and exclude them from reusing from binaries.
-        let resourceBundleTargets: [String: IInternalTarget] = try await binaryUsers.concurrentFlatMapValues { target in
+        let resourceBundleTargets: TargetsMap = try await binaryUsers.concurrentFlatMapValues { target in
             guard target.product?.type == .framework else { return [:] }
 
             let resourceBundleNames = try target.resourceBundleNames()
@@ -94,7 +94,7 @@ extension UseBinariesManager {
         return binaryTargets
     }
 
-    private func findBinaryUsers(_ binaryTargets: [String: IInternalTarget]) async throws -> [String: IInternalTarget] {
+    private func findBinaryUsers(_ binaryTargets: TargetsMap) async throws -> TargetsMap {
         let binaryUsers = try await xcodeProject.findTargets().subtracting(binaryTargets)
         binaryUsers.values.forEach { target in
             target.binaryDependencies = target.dependencies.intersection(binaryTargets)
@@ -120,8 +120,8 @@ extension Product {
 }
 
 private extension IInternalTarget {
-    var binaryDependencies: [String: IInternalTarget] {
-        get { (context[String.binaryDependenciesKey] as? [String: IInternalTarget]) ?? [:] }
+    var binaryDependencies: TargetsMap {
+        get { (context[String.binaryDependenciesKey] as? TargetsMap) ?? [:] }
         set { context[String.binaryDependenciesKey] = newValue }
     }
 }

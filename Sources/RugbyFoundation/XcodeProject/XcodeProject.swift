@@ -51,7 +51,7 @@ extension XcodeProject {
 
     func findTargets(by regex: NSRegularExpression? = nil,
                      except exceptRegex: NSRegularExpression? = nil,
-                     includingDependencies: Bool = false) async throws -> [String: IInternalTarget] {
+                     includingDependencies: Bool = false) async throws -> TargetsMap {
         try await targetsFinder.findTargets(by: regex,
                                             except: exceptRegex,
                                             includingDependencies: includingDependencies)
@@ -60,13 +60,13 @@ extension XcodeProject {
     // MARK: - Create Targets
 
     func createAggregatedTarget(name: String,
-                                dependencies: [String: IInternalTarget]) async throws -> IInternalTarget {
+                                dependencies: TargetsMap) async throws -> IInternalTarget {
         try await targetsEditor.createAggregatedTarget(name: name, dependencies: dependencies)
     }
 
     // MARK: - Delete Targets
 
-    func deleteTargets(_ targetsForRemove: [String: IInternalTarget], keepGroups: Bool = true) async throws {
+    func deleteTargets(_ targetsForRemove: TargetsMap, keepGroups: Bool = true) async throws {
         try await targetsEditor.deleteTargets(targetsForRemove, keepGroups: keepGroups)
     }
 }

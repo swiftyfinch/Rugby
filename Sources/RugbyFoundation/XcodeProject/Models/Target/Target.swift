@@ -3,7 +3,7 @@ import XcodeProj
 
 final class Target: IInternalTarget {
     var context: [AnyHashable: Any] = [:]
-    private(set) var explicitDependencies: [String: IInternalTarget]
+    private(set) var explicitDependencies: TargetsMap
 
     internal let pbxTarget: PBXTarget
     internal let project: Project
@@ -30,11 +30,11 @@ final class Target: IInternalTarget {
     // MARK: - Computed Properties
 
     var name: String { pbxTarget.name }
-    internal var uuid: String { pbxTarget.uuid }
+    internal var uuid: TargetId { pbxTarget.uuid }
 
     init(pbxTarget: PBXTarget,
          project: Project,
-         explicitDependencies: [String: IInternalTarget] = [:],
+         explicitDependencies: TargetsMap = [:],
          projectBuildConfigurations: [String: XCBuildConfiguration]) {
         self.pbxTarget = pbxTarget
         self.project = project
@@ -44,7 +44,7 @@ final class Target: IInternalTarget {
 
     // MARK: - Methods
 
-    private func collectDependencies() -> [String: IInternalTarget] {
+    private func collectDependencies() -> TargetsMap {
         explicitDependencies.reduce(into: explicitDependencies) { collection, dependency in
             collection.merge(dependency.value.dependencies)
         }
@@ -58,11 +58,11 @@ final class Target: IInternalTarget {
 // MARK: - Dependencies Methods
 
 extension Target {
-    func addDependencies(_ other: [String: IInternalTarget]) {
+    func addDependencies(_ other: TargetsMap) {
         explicitDependencies.merge(other)
     }
 
-    func deleteDependencies(_ other: [String: IInternalTarget]) {
+    func deleteDependencies(_ other: TargetsMap) {
         explicitDependencies.subtract(other)
     }
 
