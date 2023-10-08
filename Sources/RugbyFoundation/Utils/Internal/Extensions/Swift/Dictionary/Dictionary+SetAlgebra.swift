@@ -19,7 +19,7 @@ extension Dictionary {
         return copy
     }
 
-    @inlinable func intersection(_ other: [Key: Value]) -> [Key: Value] {
+    @inlinable func keysIntersection(_ other: [Key: Value]) -> [Key: Value] {
         reduce(into: [:]) { dictionary, element in
             guard other[element.key] != nil else { return }
             dictionary[element.key] = element.value

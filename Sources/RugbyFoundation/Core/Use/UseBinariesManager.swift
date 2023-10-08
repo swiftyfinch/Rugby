@@ -97,7 +97,7 @@ extension UseBinariesManager {
     private func findBinaryUsers(_ binaryTargets: TargetsMap) async throws -> TargetsMap {
         let binaryUsers = try await xcodeProject.findTargets().subtracting(binaryTargets)
         binaryUsers.values.forEach { target in
-            target.binaryDependencies = target.dependencies.intersection(binaryTargets)
+            target.binaryDependencies = target.dependencies.keysIntersection(binaryTargets)
         }
         return binaryUsers.filter(\.value.binaryDependencies.isNotEmpty)
     }
