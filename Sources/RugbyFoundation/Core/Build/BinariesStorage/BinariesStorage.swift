@@ -80,7 +80,7 @@ final class BinariesStorage: Loggable {
         sharedBinariesConfigFolder: String
     ) async throws -> [(source: [IItem], hashContext: String?, target: String)] {
         try targets.values.reduce(into: []) { result, target in
-            guard let product = target.product, let productFolderName = product.parentFolderName else {
+            guard let product = target.product else {
                 throw Error.targetHasNotProduct(target.name)
             }
 
@@ -89,12 +89,15 @@ final class BinariesStorage: Loggable {
             if target.product?.type == .bundle {
                 let binaryPath = "\(buildConfigFolder)\(product.nameWithParent)"
                 productFiles = try [Folder.at(binaryPath)]
-            } else {
+            } else if let productFolderName = product.parentFolderName {
                 let productFolder = try Folder.at("\(buildConfigFolder)\(productFolderName)")
                 let foldersExceptBundle = try productFolder.folders().filter {
                     $0.pathExtension != .bundleExtension
                 }
                 productFiles = try productFolder.files() + foldersExceptBundle
+            } else {
+                // Unsupported products
+                productFiles = []
             }
 
             let targetFolder = try binaryFolderPath(target, configFolder: sharedBinariesConfigFolder)
