@@ -78,7 +78,7 @@ final class BinariesStorage: Loggable {
         ofTargets targets: TargetsMap,
         buildConfigFolder: String,
         sharedBinariesConfigFolder: String
-    ) async throws -> [(source: IItem, hash: String?, target: String)] {
+    ) async throws -> [(source: IItem, hashContext: String?, target: String)] {
         try targets.values.reduce(into: []) { result, target in
             guard let product = target.product else { throw Error.targetHasNotProduct(target.name) }
 
@@ -143,13 +143,13 @@ extension BinariesStorage: IBinariesStorage {
         let sharedFolder = try Folder.create(at: sharedPath)
         try createLatestFile(paths: steps.map(\.target), in: sharedFolder)
 
-        try await steps.concurrentForEach { binary, hash, destinationFolderPath in
+        try await steps.concurrentForEach { binary, hashContext, destinationFolderPath in
             try binary.move(to: destinationFolderPath, replace: true)
 
-            if self.keepHashYamls, let hash {
+            if self.keepHashYamls, let hashContext {
                 let destinationFolder = try Folder.at(destinationFolderPath)
                 let fileName = "\(destinationFolder.name).yml"
-                try destinationFolder.createFile(named: fileName, contents: hash)
+                try destinationFolder.createFile(named: fileName, contents: hashContext)
             }
         }
 

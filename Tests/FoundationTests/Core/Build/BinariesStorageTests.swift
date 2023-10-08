@@ -21,7 +21,7 @@ final class BinariesStorageTests: XCTestCase {
         sut = BinariesStorage(
             logger: logger,
             sharedPath: sharedPath,
-            keepHashYamls: false
+            keepHashYamls: true
         )
     }
 
@@ -42,28 +42,44 @@ extension BinariesStorageTests {
         let path = try sut.binaryRelativePath(rugbyTarget, buildOptions: options)
 
         // Assert
-        XCTAssertEqual(path, "Rugby/Debug-iphonesimulator-arm64/36ff0bc")
+        XCTAssertEqual(path, "Rugby/Debug-iphonesimulator-arm64/7108f75")
+    }
+
+    func test_binaryRelativePath_error() throws {
+        let expectedError = BinariesStorageError.targetHasNotProduct("Rugby")
+        let expectedErrorDescription = expectedError.localizedDescription
+        let target = rugbyTarget
+        target.product = nil
+
+        // Act
+        var errorDescription: String?
+        try XCTAssertThrowsError(sut.binaryRelativePath(target, buildOptions: options)) {
+            errorDescription = $0.localizedDescription
+        }
+
+        // Assert
+        XCTAssertEqual(errorDescription, expectedErrorDescription)
     }
 
     func test_finderBinaryFolderPath() throws {
         let path = try sut.finderBinaryFolderPath(rugbyTarget, buildOptions: options)
 
         // Assert
-        XCTAssertEqual(path, sharedPath + "/Rugby/Debug-iphonesimulator-arm64/36ff0bc")
+        XCTAssertEqual(path, sharedPath + "/Rugby/Debug-iphonesimulator-arm64/7108f75")
     }
 
     func test_xcodeBinaryFolderPath() throws {
         let path = try sut.xcodeBinaryFolderPath(rugbyTarget)
 
         // Assert
-        XCTAssertEqual(path, sharedPath + "/Rugby/${CONFIGURATION}${EFFECTIVE_PLATFORM_NAME}-${ARCHS}/36ff0bc")
+        XCTAssertEqual(path, sharedPath + "/Rugby/${CONFIGURATION}${EFFECTIVE_PLATFORM_NAME}-${ARCHS}/7108f75")
     }
 }
 
 extension BinariesStorageTests {
     func test_findBinaries() throws {
         let sharedFolder = try Folder.at(sharedPath)
-        try sharedFolder.createFolder(named: "Rugby/Debug-iphonesimulator-arm64/36ff0bc")
+        try sharedFolder.createFolder(named: "Rugby/Debug-iphonesimulator-arm64/7108f75")
 
         // Act
         let (found, notFound) = try sut.findBinaries(
@@ -85,6 +101,7 @@ extension BinariesStorageTests {
         try buildFolder.createFolder(named: "Debug-iphonesimulator/Rugby/Rugby.framework")
         try buildFolder.createFolder(named: "Debug-iphonesimulator/Fish/Fish.bundle")
         try buildFolder.createFolder(named: "Debug-iphonesimulator/Fish/Fish.framework")
+        try buildFolder.createFolder(named: "Debug-iphonesimulator/Fish/Fish.framework.dSYM")
 
         let xcodeBuildPaths = XcodeBuildPaths(
             project: "project",
@@ -105,9 +122,41 @@ extension BinariesStorageTests {
         )
 
         // Assert
-        XCTAssertTrue(Folder.isExist(at: sharedPath + "/Rugby/Debug-iphonesimulator-arm64/36ff0bc/Rugby.framework"))
-        XCTAssertTrue(Folder.isExist(at: sharedPath + "/Fish/Debug-iphonesimulator-arm64/kf25ac1/Fish.bundle"))
-        XCTAssertTrue(Folder.isExist(at: sharedPath + "/Fish/Debug-iphonesimulator-arm64/j312903/Fish.framework"))
+        XCTAssertTrue(Folder.isExist(at: sharedPath + "/Rugby/Debug-iphonesimulator-arm64/7108f75/Rugby.framework"))
+        XCTAssertTrue(File.isExist(at: sharedPath + "/Rugby/Debug-iphonesimulator-arm64/7108f75/7108f75.yml"))
+        XCTAssertTrue(Folder.isExist(at: sharedPath + "/Fish/Debug-iphonesimulator-arm64/f577d09/Fish.bundle"))
+        XCTAssertTrue(File.isExist(at: sharedPath + "/Fish/Debug-iphonesimulator-arm64/f577d09/f577d09.yml"))
+        XCTAssertTrue(Folder.isExist(at: sharedPath + "/Fish/Debug-iphonesimulator-arm64/3c6ddd5/Fish.framework"))
+        XCTAssertTrue(Folder.isExist(at: sharedPath + "/Fish/Debug-iphonesimulator-arm64/3c6ddd5/Fish.framework.dSYM"))
+        XCTAssertTrue(File.isExist(at: sharedPath + "/Fish/Debug-iphonesimulator-arm64/3c6ddd5/3c6ddd5.yml"))
+    }
+
+    func test_saveBinaries_error() async throws {
+        let expectedError = BinariesStorageError.targetHasNotProduct("Rugby")
+        let expectedErrorDescription = expectedError.localizedDescription
+        let target = rugbyTarget
+        target.product = nil
+        let xcodeBuildPaths = XcodeBuildPaths(
+            project: "project",
+            symroot: "symroot",
+            rawLog: "rawLog",
+            beautifiedLog: "beautifiedLog"
+        )
+
+        // Act
+        var errorDescription: String?
+        do {
+            try await sut.saveBinaries(
+                ofTargets: [target.uuid: target],
+                buildOptions: options,
+                buildPaths: xcodeBuildPaths
+            )
+        } catch {
+            errorDescription = error.localizedDescription
+        }
+
+        // Assert
+        XCTAssertEqual(errorDescription, expectedErrorDescription)
     }
 }
 
@@ -122,7 +171,8 @@ extension BinariesStorageTests {
         let target = IInternalTargetMock()
         target.name = "Rugby"
         target.uuid = "FAEEE7E885B9E4DB1C9624B817351F24"
-        target.hash = "36ff0bc"
+        target.hashContext = "rugby_target_context"
+        target.hash = "7108f75"
         target.product = .init(name: "Rugby", type: .framework, parentFolderName: "Rugby")
         return target
     }
@@ -131,7 +181,8 @@ extension BinariesStorageTests {
         let target = IInternalTargetMock()
         target.name = "Fish"
         target.uuid = "B1C9624B817351F24FAEEE7E885B9E4D"
-        target.hash = "kf25ac1"
+        target.hashContext = "fish_bundle_context"
+        target.hash = "f577d09"
         target.product = .init(name: "Fish", type: .bundle, parentFolderName: "Fish")
         return target
     }
@@ -140,7 +191,8 @@ extension BinariesStorageTests {
         let target = IInternalTargetMock()
         target.name = "Fish"
         target.uuid = "817351F24FAEEE7B1C9624BE885B9E4D"
-        target.hash = "j312903"
+        target.hashContext = "fish_target_context"
+        target.hash = "3c6ddd5"
         target.product = .init(name: "Fish", type: .framework, parentFolderName: "Fish")
         return target
     }
