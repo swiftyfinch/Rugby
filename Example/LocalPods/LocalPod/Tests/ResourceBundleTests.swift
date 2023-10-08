@@ -1,5 +1,5 @@
-import XCTest
 @testable import LocalPod
+import XCTest
 
 final class ResourceBundleTests: XCTestCase {
     func testAccessToResourcesBundle() throws {
@@ -10,7 +10,7 @@ final class ResourceBundleTests: XCTestCase {
         try dummyTest(.testResourcesBundle, expectedValue: "some")
     }
 
-    private func dummyTest(_ bundle: Bundle, expectedValue: String,  file: StaticString = #filePath, line: UInt = #line) throws {
+    private func dummyTest(_ bundle: Bundle, expectedValue: String, file: StaticString = #filePath, line: UInt = #line) throws {
         let path = bundle.path(forResource: "dummy", ofType: "json") ?? ""
         let data = try Data(contentsOf: URL(filePath: path))
         let dummy = try JSONDecoder().decode(Dummy.self, from: data)
