@@ -160,6 +160,160 @@ extension BinariesStorageTests {
     }
 }
 
+extension BinariesStorageTests {
+    func test_saveBinaries_testsResources() async throws {
+        let expectedPath = "/LocalPodTestsResources/Debug-iphonesimulator-arm64/1534311/LocalPodTestsResources.bundle"
+        let buildFolder = try testsFolder.createFolder(named: "build")
+        try buildFolder.createFolder(named: "Debug-iphonesimulator/LocalPodTestsResources.bundle")
+        let target = IInternalTargetMock()
+        target.name = "LocalPod-LocalPodTestsResources"
+        target.uuid = "85AE4DBF351F24EE7E81C9624B817B9E"
+        target.hashContext = "LocalPodTestsResources_context"
+        target.hash = "1534311"
+        target.product = .init(name: "LocalPodTestsResources", moduleName: nil, type: .bundle, parentFolderName: nil)
+
+        let xcodeBuildPaths = XcodeBuildPaths(
+            project: "project",
+            symroot: buildFolder.path,
+            rawLog: "rawLog",
+            beautifiedLog: "beautifiedLog"
+        )
+
+        // Act
+        try await sut.saveBinaries(
+            ofTargets: [target.uuid: target],
+            buildOptions: options,
+            buildPaths: xcodeBuildPaths
+        )
+
+        // Assert
+        XCTAssertTrue(Folder.isExist(at: sharedPath + expectedPath))
+    }
+
+    func test_saveBinaries_library() async throws {
+        let build = try testsFolder.createFolder(named: "build")
+        try build.createFolder(named: "Debug-iphonesimulator/Keyboard+LayoutGuide")
+        try build.createFile(named: "Debug-iphonesimulator/Keyboard+LayoutGuide/Keyboard+LayoutGuide-umbrella.h")
+        try build.createFile(named: "Debug-iphonesimulator/Keyboard+LayoutGuide/KeyboardLayoutGuide.modulemap")
+        try build.createFolder(named: "Debug-iphonesimulator/Keyboard+LayoutGuide/KeyboardLayoutGuide.swiftmodule")
+        try build.createFile(named: "Debug-iphonesimulator/Keyboard+LayoutGuide/libKeyboard+LayoutGuide.a")
+        try build.createFolder(named: "Debug-iphonesimulator/Keyboard+LayoutGuide/Swift Compatibility Header")
+        let target = IInternalTargetMock()
+        target.name = "Keyboard+LayoutGuide"
+        target.uuid = "24B81731C96B9E51F24EE785AE4DBFE8"
+        target.hashContext = "Keyboard+LayoutGuide_context"
+        target.hash = "e4d65a6"
+        target.product = .init(
+            name: "Keyboard+LayoutGuide",
+            moduleName: "KeyboardLayoutGuide",
+            type: .staticLibrary,
+            parentFolderName: "Keyboard+LayoutGuide"
+        )
+
+        let xcodeBuildPaths = XcodeBuildPaths(
+            project: "project",
+            symroot: build.path,
+            rawLog: "rawLog",
+            beautifiedLog: "beautifiedLog"
+        )
+
+        // Act
+        try await sut.saveBinaries(
+            ofTargets: [target.uuid: target],
+            buildOptions: options,
+            buildPaths: xcodeBuildPaths
+        )
+
+        // Assert
+        XCTAssertTrue(File.isExist(
+            at: sharedPath + "/Keyboard+LayoutGuide/Debug-iphonesimulator-arm64/e4d65a6/Keyboard+LayoutGuide-umbrella.h"
+        ))
+        XCTAssertTrue(File.isExist(
+            at: sharedPath + "/Keyboard+LayoutGuide/Debug-iphonesimulator-arm64/e4d65a6/KeyboardLayoutGuide.modulemap"
+        ))
+        XCTAssertTrue(Folder.isExist(
+            at: sharedPath + "/Keyboard+LayoutGuide/Debug-iphonesimulator-arm64/e4d65a6/KeyboardLayoutGuide.swiftmodule"
+        ))
+        XCTAssertTrue(File.isExist(
+            at: sharedPath + "/Keyboard+LayoutGuide/Debug-iphonesimulator-arm64/e4d65a6/libKeyboard+LayoutGuide.a"
+        ))
+        XCTAssertTrue(Folder.isExist(
+            at: sharedPath + "/Keyboard+LayoutGuide/Debug-iphonesimulator-arm64/e4d65a6/Swift Compatibility Header"
+        ))
+        XCTAssertTrue(File.isExist(
+            at: sharedPath + "/Keyboard+LayoutGuide/Debug-iphonesimulator-arm64/e4d65a6/e4d65a6.yml"
+        ))
+    }
+
+    func test_saveBinaries_patchModuleMap() async throws {
+        let build = try testsFolder.createFolder(named: "build")
+        try build.createFolder(named: "Debug-iphonesimulator/Keyboard+LayoutGuide")
+        let productPath = build.subpath("Debug-iphonesimulator/Keyboard+LayoutGuide")
+        try build.createFile(
+            named: "Debug-iphonesimulator/Keyboard+LayoutGuide/KeyboardLayoutGuide.modulemap",
+            contents: """
+            module KeyboardLayoutGuide {
+              umbrella header "Keyboard+LayoutGuide-umbrella.h"
+
+              export *
+              module * { export * }
+            }
+
+            module KeyboardLayoutGuide.Swift {
+              header "\(productPath)/Swift Compatibility Header/KeyboardLayoutGuide-Swift.h"
+              requires objc
+            }
+            """
+        )
+        let target = IInternalTargetMock()
+        target.name = "Keyboard+LayoutGuide"
+        target.uuid = "24B81731C96B9E51F24EE785AE4DBFE8"
+        target.hashContext = "Keyboard+LayoutGuide_context"
+        target.hash = "e4d65a6"
+        target.product = .init(
+            name: "Keyboard+LayoutGuide",
+            moduleName: "KeyboardLayoutGuide",
+            type: .staticLibrary,
+            parentFolderName: "Keyboard+LayoutGuide"
+        )
+
+        let xcodeBuildPaths = XcodeBuildPaths(
+            project: "project",
+            symroot: build.path,
+            rawLog: "rawLog",
+            beautifiedLog: "beautifiedLog"
+        )
+
+        // Act
+        try await sut.saveBinaries(
+            ofTargets: [target.uuid: target],
+            buildOptions: options,
+            buildPaths: xcodeBuildPaths
+        )
+
+        // Assert
+        let moduleMap = try File.at(
+            sharedPath + "/Keyboard+LayoutGuide/Debug-iphonesimulator-arm64/e4d65a6/KeyboardLayoutGuide.modulemap"
+        )
+        XCTAssertEqual(
+            try moduleMap.read(),
+            """
+            module KeyboardLayoutGuide {
+              umbrella header "Keyboard+LayoutGuide-umbrella.h"
+
+              export *
+              module * { export * }
+            }
+
+            module KeyboardLayoutGuide.Swift {
+              header "Swift Compatibility Header/KeyboardLayoutGuide-Swift.h"
+              requires objc
+            }
+            """
+        )
+    }
+}
+
 // MARK: - Stubs
 
 extension BinariesStorageTests {
@@ -173,7 +327,7 @@ extension BinariesStorageTests {
         target.uuid = "FAEEE7E885B9E4DB1C9624B817351F24"
         target.hashContext = "rugby_target_context"
         target.hash = "7108f75"
-        target.product = .init(name: "Rugby", type: .framework, parentFolderName: "Rugby")
+        target.product = .init(name: "Rugby", moduleName: "Rugby", type: .framework, parentFolderName: "Rugby")
         return target
     }
 
@@ -183,7 +337,7 @@ extension BinariesStorageTests {
         target.uuid = "B1C9624B817351F24FAEEE7E885B9E4D"
         target.hashContext = "fish_bundle_context"
         target.hash = "f577d09"
-        target.product = .init(name: "Fish", type: .bundle, parentFolderName: "Fish")
+        target.product = .init(name: "Fish", moduleName: "Fish", type: .bundle, parentFolderName: "Fish")
         return target
     }
 
@@ -193,7 +347,7 @@ extension BinariesStorageTests {
         target.uuid = "817351F24FAEEE7B1C9624BE885B9E4D"
         target.hashContext = "fish_target_context"
         target.hash = "3c6ddd5"
-        target.product = .init(name: "Fish", type: .framework, parentFolderName: "Fish")
+        target.product = .init(name: "Fish", moduleName: "Fish", type: .framework, parentFolderName: "Fish")
         return target
     }
 }
