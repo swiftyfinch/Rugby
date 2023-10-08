@@ -10,6 +10,7 @@ final class BinariesStorageTests: XCTestCase {
     private var sut: IBinariesStorage!
 
     override func setUp() async throws {
+        try await super.setUp()
         let tmp = FileManager.default.temporaryDirectory
         let testsFolderURL = tmp.appendingPathComponent(UUID().uuidString)
         testsFolder = try Folder.create(at: testsFolderURL.path)
@@ -27,6 +28,7 @@ final class BinariesStorageTests: XCTestCase {
 
     override func tearDown() {
         super.tearDown()
+        testsFolder = nil
         sharedPath = nil
         logger = nil
         sut = nil
@@ -103,13 +105,6 @@ extension BinariesStorageTests {
         try buildFolder.createFolder(named: "Debug-iphonesimulator/Fish/Fish.framework")
         try buildFolder.createFolder(named: "Debug-iphonesimulator/Fish/Fish.framework.dSYM")
 
-        let xcodeBuildPaths = XcodeBuildPaths(
-            project: "project",
-            symroot: buildFolder.path,
-            rawLog: "rawLog",
-            beautifiedLog: "beautifiedLog"
-        )
-
         // Act
         try await sut.saveBinaries(
             ofTargets: [
@@ -118,7 +113,7 @@ extension BinariesStorageTests {
                 fishTarget.uuid: fishTarget
             ],
             buildOptions: options,
-            buildPaths: xcodeBuildPaths
+            buildPaths: xcodeBuildPaths(symroot: buildFolder.path)
         )
 
         // Assert
@@ -136,12 +131,6 @@ extension BinariesStorageTests {
         let expectedErrorDescription = expectedError.localizedDescription
         let target = rugbyTarget
         target.product = nil
-        let xcodeBuildPaths = XcodeBuildPaths(
-            project: "project",
-            symroot: "symroot",
-            rawLog: "rawLog",
-            beautifiedLog: "beautifiedLog"
-        )
 
         // Act
         var errorDescription: String?
@@ -149,7 +138,7 @@ extension BinariesStorageTests {
             try await sut.saveBinaries(
                 ofTargets: [target.uuid: target],
                 buildOptions: options,
-                buildPaths: xcodeBuildPaths
+                buildPaths: xcodeBuildPaths()
             )
         } catch {
             errorDescription = error.localizedDescription
@@ -172,18 +161,11 @@ extension BinariesStorageTests {
         target.hash = "1534311"
         target.product = .init(name: "LocalPodTestsResources", moduleName: nil, type: .bundle, parentFolderName: nil)
 
-        let xcodeBuildPaths = XcodeBuildPaths(
-            project: "project",
-            symroot: buildFolder.path,
-            rawLog: "rawLog",
-            beautifiedLog: "beautifiedLog"
-        )
-
         // Act
         try await sut.saveBinaries(
             ofTargets: [target.uuid: target],
             buildOptions: options,
-            buildPaths: xcodeBuildPaths
+            buildPaths: xcodeBuildPaths(symroot: buildFolder.path)
         )
 
         // Assert
@@ -198,30 +180,13 @@ extension BinariesStorageTests {
         try build.createFolder(named: "Debug-iphonesimulator/Keyboard+LayoutGuide/KeyboardLayoutGuide.swiftmodule")
         try build.createFile(named: "Debug-iphonesimulator/Keyboard+LayoutGuide/libKeyboard+LayoutGuide.a")
         try build.createFolder(named: "Debug-iphonesimulator/Keyboard+LayoutGuide/Swift Compatibility Header")
-        let target = IInternalTargetMock()
-        target.name = "Keyboard+LayoutGuide"
-        target.uuid = "24B81731C96B9E51F24EE785AE4DBFE8"
-        target.hashContext = "Keyboard+LayoutGuide_context"
-        target.hash = "e4d65a6"
-        target.product = .init(
-            name: "Keyboard+LayoutGuide",
-            moduleName: "KeyboardLayoutGuide",
-            type: .staticLibrary,
-            parentFolderName: "Keyboard+LayoutGuide"
-        )
-
-        let xcodeBuildPaths = XcodeBuildPaths(
-            project: "project",
-            symroot: build.path,
-            rawLog: "rawLog",
-            beautifiedLog: "beautifiedLog"
-        )
+        let target = keyboardLayoutGuide
 
         // Act
         try await sut.saveBinaries(
             ofTargets: [target.uuid: target],
             buildOptions: options,
-            buildPaths: xcodeBuildPaths
+            buildPaths: xcodeBuildPaths(symroot: build.path)
         )
 
         // Assert
@@ -251,66 +216,22 @@ extension BinariesStorageTests {
         let productPath = build.subpath("Debug-iphonesimulator/Keyboard+LayoutGuide")
         try build.createFile(
             named: "Debug-iphonesimulator/Keyboard+LayoutGuide/KeyboardLayoutGuide.modulemap",
-            contents: """
-            module KeyboardLayoutGuide {
-              umbrella header "Keyboard+LayoutGuide-umbrella.h"
-
-              export *
-              module * { export * }
-            }
-
-            module KeyboardLayoutGuide.Swift {
-              header "\(productPath)/Swift Compatibility Header/KeyboardLayoutGuide-Swift.h"
-              requires objc
-            }
-            """
+            contents: keyboardLayoutGuideModuleMap(path: "\(productPath)/")
         )
-        let target = IInternalTargetMock()
-        target.name = "Keyboard+LayoutGuide"
-        target.uuid = "24B81731C96B9E51F24EE785AE4DBFE8"
-        target.hashContext = "Keyboard+LayoutGuide_context"
-        target.hash = "e4d65a6"
-        target.product = .init(
-            name: "Keyboard+LayoutGuide",
-            moduleName: "KeyboardLayoutGuide",
-            type: .staticLibrary,
-            parentFolderName: "Keyboard+LayoutGuide"
-        )
-
-        let xcodeBuildPaths = XcodeBuildPaths(
-            project: "project",
-            symroot: build.path,
-            rawLog: "rawLog",
-            beautifiedLog: "beautifiedLog"
-        )
+        let target = keyboardLayoutGuide
 
         // Act
         try await sut.saveBinaries(
             ofTargets: [target.uuid: target],
             buildOptions: options,
-            buildPaths: xcodeBuildPaths
+            buildPaths: xcodeBuildPaths(symroot: build.path)
         )
 
         // Assert
         let moduleMap = try File.at(
             sharedPath + "/Keyboard+LayoutGuide/Debug-iphonesimulator-arm64/e4d65a6/KeyboardLayoutGuide.modulemap"
         )
-        XCTAssertEqual(
-            try moduleMap.read(),
-            """
-            module KeyboardLayoutGuide {
-              umbrella header "Keyboard+LayoutGuide-umbrella.h"
-
-              export *
-              module * { export * }
-            }
-
-            module KeyboardLayoutGuide.Swift {
-              header "Swift Compatibility Header/KeyboardLayoutGuide-Swift.h"
-              requires objc
-            }
-            """
-        )
+        XCTAssertEqual(try moduleMap.read(), keyboardLayoutGuideModuleMap())
     }
 }
 
@@ -319,6 +240,15 @@ extension BinariesStorageTests {
 extension BinariesStorageTests {
     private var options: XcodeBuildOptions {
         XcodeBuildOptions(sdk: .sim, config: "Debug", arch: "arm64", xcargs: [])
+    }
+
+    private func xcodeBuildPaths(symroot: String = "symroot") -> XcodeBuildPaths {
+        .init(
+            project: "project",
+            symroot: symroot,
+            rawLog: "rawLog",
+            beautifiedLog: "beautifiedLog"
+        )
     }
 
     private var rugbyTarget: IInternalTargetMock {
@@ -349,5 +279,36 @@ extension BinariesStorageTests {
         target.hash = "3c6ddd5"
         target.product = .init(name: "Fish", moduleName: "Fish", type: .framework, parentFolderName: "Fish")
         return target
+    }
+
+    private var keyboardLayoutGuide: IInternalTargetMock {
+        let target = IInternalTargetMock()
+        target.name = "Keyboard+LayoutGuide"
+        target.uuid = "24B81731C96B9E51F24EE785AE4DBFE8"
+        target.hashContext = "Keyboard+LayoutGuide_context"
+        target.hash = "e4d65a6"
+        target.product = .init(
+            name: "Keyboard+LayoutGuide",
+            moduleName: "KeyboardLayoutGuide",
+            type: .staticLibrary,
+            parentFolderName: "Keyboard+LayoutGuide"
+        )
+        return target
+    }
+
+    private func keyboardLayoutGuideModuleMap(path: String = "") -> String {
+        """
+        module KeyboardLayoutGuide {
+            umbrella header "Keyboard+LayoutGuide-umbrella.h"
+
+            export *
+            module * { export * }
+        }
+
+        module KeyboardLayoutGuide.Swift {
+            header "\(path)Swift Compatibility Header/KeyboardLayoutGuide-Swift.h"
+            requires objc
+        }
+        """
     }
 }
