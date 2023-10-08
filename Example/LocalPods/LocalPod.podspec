@@ -19,8 +19,13 @@ Pod::Spec.new do |s|
 
   s.test_spec 'Tests' do |ts|
     ts.source_files = "#{s.name}/Tests/**/*.swift"
-    ts.resource_bundle = {
-      "#{s.name}TestsResources" => "#{s.name}/Tests/**/*.{json,xcassets}"
-    }
+
+    if ENV['USE_TEST_RESOURCES_BUNDLE'] != nil
+      ts.resource_bundle = {
+        "#{s.name}TestsResources" => "#{s.name}/Tests/**/*.{json,xcassets}"
+      }
+    else
+      ts.resources = "#{s.name}/Tests/**/*.{json,xcassets}"
+    end
   end
 end
