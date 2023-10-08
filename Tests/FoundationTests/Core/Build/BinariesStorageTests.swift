@@ -41,7 +41,7 @@ extension BinariesStorageTests {
     }
 
     func test_binaryRelativePath() throws {
-        let path = try sut.binaryRelativePath(rugbyTarget, buildOptions: options)
+        let path = try sut.binaryRelativePath(Target.rugbyFramework, buildOptions: options)
 
         // Assert
         XCTAssertEqual(path, "Rugby/Debug-iphonesimulator-arm64/7108f75")
@@ -50,7 +50,7 @@ extension BinariesStorageTests {
     func test_binaryRelativePath_error() throws {
         let expectedError = BinariesStorageError.targetHasNotProduct("Rugby")
         let expectedErrorDescription = expectedError.localizedDescription
-        let target = rugbyTarget
+        let target = Target.rugbyFramework
         target.product = nil
 
         // Act
@@ -64,14 +64,14 @@ extension BinariesStorageTests {
     }
 
     func test_finderBinaryFolderPath() throws {
-        let path = try sut.finderBinaryFolderPath(rugbyTarget, buildOptions: options)
+        let path = try sut.finderBinaryFolderPath(Target.rugbyFramework, buildOptions: options)
 
         // Assert
         XCTAssertEqual(path, sharedPath + "/Rugby/Debug-iphonesimulator-arm64/7108f75")
     }
 
     func test_xcodeBinaryFolderPath() throws {
-        let path = try sut.xcodeBinaryFolderPath(rugbyTarget)
+        let path = try sut.xcodeBinaryFolderPath(Target.rugbyFramework)
 
         // Assert
         XCTAssertEqual(path, sharedPath + "/Rugby/${CONFIGURATION}${EFFECTIVE_PLATFORM_NAME}-${ARCHS}/7108f75")
@@ -82,20 +82,22 @@ extension BinariesStorageTests {
     func test_findBinaries() throws {
         let sharedFolder = try Folder.at(sharedPath)
         try sharedFolder.createFolder(named: "Rugby/Debug-iphonesimulator-arm64/7108f75")
+        let rugbyFramework = Target.rugbyFramework
+        let fishBundle = Target.fishBundle
 
         // Act
         let (found, notFound) = try sut.findBinaries(
-            ofTargets: [rugbyTarget.uuid: rugbyTarget, fishBundleTarget.uuid: fishBundleTarget],
+            ofTargets: [rugbyFramework.uuid: rugbyFramework, fishBundle.uuid: fishBundle],
             buildOptions: options
         )
 
         // Assert
         XCTAssertEqual(found.count, 1)
-        XCTAssertEqual(found.first?.key, rugbyTarget.uuid)
-        XCTAssertEqual(found.first?.value.uuid, rugbyTarget.uuid)
+        XCTAssertEqual(found.first?.key, rugbyFramework.uuid)
+        XCTAssertEqual(found.first?.value.uuid, rugbyFramework.uuid)
         XCTAssertEqual(notFound.count, 1)
-        XCTAssertEqual(notFound.first?.key, fishBundleTarget.uuid)
-        XCTAssertEqual(notFound.first?.value.uuid, fishBundleTarget.uuid)
+        XCTAssertEqual(notFound.first?.key, fishBundle.uuid)
+        XCTAssertEqual(notFound.first?.value.uuid, fishBundle.uuid)
     }
 
     func test_saveBinaries() async throws {
@@ -104,13 +106,16 @@ extension BinariesStorageTests {
         try buildFolder.createFolder(named: "Debug-iphonesimulator/Fish/Fish.bundle")
         try buildFolder.createFolder(named: "Debug-iphonesimulator/Fish/Fish.framework")
         try buildFolder.createFolder(named: "Debug-iphonesimulator/Fish/Fish.framework.dSYM")
+        let rugbyFramework = Target.rugbyFramework
+        let fishBundle = Target.fishBundle
+        let fishFramework = Target.fishFramework
 
         // Act
         try await sut.saveBinaries(
             ofTargets: [
-                rugbyTarget.uuid: rugbyTarget,
-                fishBundleTarget.uuid: fishBundleTarget,
-                fishTarget.uuid: fishTarget
+                rugbyFramework.uuid: rugbyFramework,
+                fishBundle.uuid: fishBundle,
+                fishFramework.uuid: fishFramework
             ],
             buildOptions: options,
             buildPaths: xcodeBuildPaths(symroot: buildFolder.path)
@@ -129,14 +134,14 @@ extension BinariesStorageTests {
     func test_saveBinaries_error() async throws {
         let expectedError = BinariesStorageError.targetHasNotProduct("Rugby")
         let expectedErrorDescription = expectedError.localizedDescription
-        let target = rugbyTarget
-        target.product = nil
+        let rugbyFramework = Target.rugbyFramework
+        rugbyFramework.product = nil
 
         // Act
         var errorDescription: String?
         do {
             try await sut.saveBinaries(
-                ofTargets: [target.uuid: target],
+                ofTargets: [rugbyFramework.uuid: rugbyFramework],
                 buildOptions: options,
                 buildPaths: xcodeBuildPaths()
             )
@@ -180,11 +185,11 @@ extension BinariesStorageTests {
         try build.createFolder(named: "Debug-iphonesimulator/Keyboard+LayoutGuide/KeyboardLayoutGuide.swiftmodule")
         try build.createFile(named: "Debug-iphonesimulator/Keyboard+LayoutGuide/libKeyboard+LayoutGuide.a")
         try build.createFolder(named: "Debug-iphonesimulator/Keyboard+LayoutGuide/Swift Compatibility Header")
-        let target = keyboardLayoutGuide
+        let keyboardLayoutGuideLib = Target.keyboardLayoutGuideLib
 
         // Act
         try await sut.saveBinaries(
-            ofTargets: [target.uuid: target],
+            ofTargets: [keyboardLayoutGuideLib.uuid: keyboardLayoutGuideLib],
             buildOptions: options,
             buildPaths: xcodeBuildPaths(symroot: build.path)
         )
@@ -218,11 +223,11 @@ extension BinariesStorageTests {
             named: "Debug-iphonesimulator/Keyboard+LayoutGuide/KeyboardLayoutGuide.modulemap",
             contents: keyboardLayoutGuideModuleMap(path: "\(productPath)/")
         )
-        let target = keyboardLayoutGuide
+        let keyboardLayoutGuideLib = Target.keyboardLayoutGuideLib
 
         // Act
         try await sut.saveBinaries(
-            ofTargets: [target.uuid: target],
+            ofTargets: [keyboardLayoutGuideLib.uuid: keyboardLayoutGuideLib],
             buildOptions: options,
             buildPaths: xcodeBuildPaths(symroot: build.path)
         )
@@ -249,51 +254,6 @@ extension BinariesStorageTests {
             rawLog: "rawLog",
             beautifiedLog: "beautifiedLog"
         )
-    }
-
-    private var rugbyTarget: IInternalTargetMock {
-        let target = IInternalTargetMock()
-        target.name = "Rugby"
-        target.uuid = "FAEEE7E885B9E4DB1C9624B817351F24"
-        target.hashContext = "rugby_target_context"
-        target.hash = "7108f75"
-        target.product = .init(name: "Rugby", moduleName: "Rugby", type: .framework, parentFolderName: "Rugby")
-        return target
-    }
-
-    private var fishBundleTarget: IInternalTargetMock {
-        let target = IInternalTargetMock()
-        target.name = "Fish"
-        target.uuid = "B1C9624B817351F24FAEEE7E885B9E4D"
-        target.hashContext = "fish_bundle_context"
-        target.hash = "f577d09"
-        target.product = .init(name: "Fish", moduleName: "Fish", type: .bundle, parentFolderName: "Fish")
-        return target
-    }
-
-    private var fishTarget: IInternalTargetMock {
-        let target = IInternalTargetMock()
-        target.name = "Fish"
-        target.uuid = "817351F24FAEEE7B1C9624BE885B9E4D"
-        target.hashContext = "fish_target_context"
-        target.hash = "3c6ddd5"
-        target.product = .init(name: "Fish", moduleName: "Fish", type: .framework, parentFolderName: "Fish")
-        return target
-    }
-
-    private var keyboardLayoutGuide: IInternalTargetMock {
-        let target = IInternalTargetMock()
-        target.name = "Keyboard+LayoutGuide"
-        target.uuid = "24B81731C96B9E51F24EE785AE4DBFE8"
-        target.hashContext = "Keyboard+LayoutGuide_context"
-        target.hash = "e4d65a6"
-        target.product = .init(
-            name: "Keyboard+LayoutGuide",
-            moduleName: "KeyboardLayoutGuide",
-            type: .staticLibrary,
-            parentFolderName: "Keyboard+LayoutGuide"
-        )
-        return target
     }
 
     private func keyboardLayoutGuideModuleMap(path: String = "") -> String {

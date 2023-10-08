@@ -50,11 +50,11 @@ final class IInternalTargetMock: IInternalTarget {
     var configurations: [String: Configuration]?
     var buildRules: [BuildRule] = []
     var buildPhases: [RugbyFoundation.BuildPhase] = []
-    var xcconfigPaths: Set<String> {
+    var xcconfigPaths: [String] {
         get { return underlyingXcconfigPaths }
         set(value) { underlyingXcconfigPaths = value }
     }
-    var underlyingXcconfigPaths: Set<String>!
+    var underlyingXcconfigPaths: [String]!
     var frameworksScriptPath: String?
     var resourcesScriptPath: String?
 
