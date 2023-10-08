@@ -19,6 +19,8 @@ Pod::Spec.new do |s|
 
   s.test_spec 'Tests' do |ts|
     ts.source_files = "#{s.name}/Tests/**/*.swift"
-    ts.resources = "#{s.name}/Tests/**/*.{json,xcassets}"
+    ts.resource_bundle = {
+      "#{s.name}TestsResources" => "#{s.name}/Tests/**/*.{json,xcassets}"
+    }
   end
 end
