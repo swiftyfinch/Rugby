@@ -73,7 +73,7 @@ extension UseBinariesManager {
 
         // For all dynamic frameworks we should keep resource bundles which is produced by targets.
         // The easiest way is just find resource bundle targets and exclude them from reusing from binaries.
-        let resourceBundleTargets: [String: IInternalTarget] = try binaryUsers.flatMapValues { target in
+        let resourceBundleTargets: [String: IInternalTarget] = try await binaryUsers.concurrentFlatMapValues { target in
             guard target.product?.type == .framework else { return [:] }
 
             let resourceBundleNames = try target.resourceBundleNames()

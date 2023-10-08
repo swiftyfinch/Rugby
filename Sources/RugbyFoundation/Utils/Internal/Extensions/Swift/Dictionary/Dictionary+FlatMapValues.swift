@@ -5,3 +5,18 @@ extension Dictionary {
         }
     }
 }
+
+extension Dictionary {
+    @inlinable func concurrentFlatMapValues<T>(
+        _ transform: @escaping (Value) throws -> [Key: T]
+    ) async rethrows -> [Key: T] {
+        try await withThrowingTaskGroup(of: [Key: T].self) { group in
+            values.forEach { value in
+                group.addTask { try transform(value) }
+            }
+            return try await group.reduce(into: [:]) { result, dictionary in
+                result.merge(dictionary)
+            }
+        }
+    }
+}
