@@ -12,8 +12,8 @@ final class XcodeProjectSchemesEditor: Loggable {
     }
 
     func deleteSchemes(
-        ofTargets targetsForRemove: [String: IInternalTarget],
-        targets: [String: IInternalTarget]
+        ofTargets targetsForRemove: TargetsMap,
+        targets: TargetsMap
     ) async throws {
         try await deleteSchemes(ofTargets: targetsForRemove,
                                 targets: targets,
@@ -26,8 +26,8 @@ final class XcodeProjectSchemesEditor: Loggable {
         }
     }
 
-    private func deleteSchemes(ofTargets targetsForRemove: [String: IInternalTarget],
-                               targets: [String: IInternalTarget],
+    private func deleteSchemes(ofTargets targetsForRemove: TargetsMap,
+                               targets: TargetsMap,
                                project: Project) async throws {
         let schemes = try await findSchemes(projectPath: project.path)
         let brokenSchemes = try findBrokenSchemes(schemes, ofTargets: targets)
@@ -45,7 +45,7 @@ final class XcodeProjectSchemesEditor: Loggable {
 
     private func findBrokenSchemes(
         _ schemes: Set<Scheme>,
-        ofTargets targets: [String: IInternalTarget]
+        ofTargets targets: TargetsMap
     ) throws -> Set<Scheme> {
         let references = targets.values.map(\.uuid).set()
         return schemes.filter { !$0.isReachable(fromReferences: references) }
@@ -53,7 +53,7 @@ final class XcodeProjectSchemesEditor: Loggable {
 
     private func findSchemes(
         _ schemes: Set<Scheme>,
-        byTargets targets: [String: IInternalTarget]
+        byTargets targets: TargetsMap
     ) throws -> Set<Scheme> {
         let targetNames = targets.values.map(\.name).set()
         return schemes.filter { targetNames.contains($0.name) }

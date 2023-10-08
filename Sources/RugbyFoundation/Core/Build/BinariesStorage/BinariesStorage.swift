@@ -11,15 +11,15 @@ protocol IBinariesStorage: AnyObject {
     func xcodeBinaryFolderPath(_ target: IInternalTarget) throws -> String
 
     func saveBinaries(
-        ofTargets targets: [String: IInternalTarget],
+        ofTargets targets: TargetsMap,
         buildOptions: XcodeBuildOptions,
         buildPaths: XcodeBuildPaths
     ) async throws
 
     func findBinaries(
-        ofTargets targets: [String: IInternalTarget],
+        ofTargets targets: TargetsMap,
         buildOptions: XcodeBuildOptions
-    ) throws -> (found: [String: IInternalTarget], notFound: [String: IInternalTarget])
+    ) throws -> (found: TargetsMap, notFound: TargetsMap)
 }
 
 enum BinariesStorageError: LocalizedError {
@@ -75,7 +75,7 @@ final class BinariesStorage: Loggable {
     }
 
     private func moveBinariesSteps(
-        ofTargets targets: [String: IInternalTarget],
+        ofTargets targets: TargetsMap,
         buildConfigFolder: String,
         sharedBinariesConfigFolder: String
     ) async throws -> [(source: IItem, hash: String?, target: String)] {
@@ -122,7 +122,7 @@ extension BinariesStorage: IBinariesStorage {
     }
 
     func saveBinaries(
-        ofTargets targets: [String: IInternalTarget],
+        ofTargets targets: TargetsMap,
         buildOptions: XcodeBuildOptions,
         buildPaths: XcodeBuildPaths
     ) async throws {
@@ -163,9 +163,9 @@ extension BinariesStorage: IBinariesStorage {
     }
 
     func findBinaries(
-        ofTargets targets: [String: IInternalTarget],
+        ofTargets targets: TargetsMap,
         buildOptions: XcodeBuildOptions
-    ) throws -> (found: [String: IInternalTarget], notFound: [String: IInternalTarget]) {
+    ) throws -> (found: TargetsMap, notFound: TargetsMap) {
         let configFolder = binariesConfigFolder(buildOptions: buildOptions)
         return try targets.partition { _, target in
             let path = try binaryFolderPath(target, configFolder: configFolder)

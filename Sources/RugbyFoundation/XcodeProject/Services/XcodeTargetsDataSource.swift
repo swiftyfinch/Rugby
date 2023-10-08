@@ -15,9 +15,9 @@ enum XcodeTargetsDataSourceError: LocalizedError {
 final class XcodeTargetsDataSource {
     private typealias Error = XcodeTargetsDataSourceError
     private let dataSource: XcodeProjectDataSource
-    private var cachedTargets: [String: IInternalTarget]?
+    private var cachedTargets: TargetsMap?
 
-    var targets: [String: IInternalTarget] {
+    var targets: TargetsMap {
         get async throws {
             if let cachedTargets { return cachedTargets }
             var targets: [String: (target: PBXTarget, project: Project)] = [:]
@@ -36,7 +36,7 @@ final class XcodeTargetsDataSource {
                 }
             }
 
-            var builtTargets: [String: IInternalTarget] = [:]
+            var builtTargets: TargetsMap = [:]
             for target in targets.values.map(\.target) {
                 try await buildTargetsTree(target, targets: targets, builtTargets: &builtTargets)
             }
@@ -62,7 +62,7 @@ final class XcodeTargetsDataSource {
         target.resetDependencies()
     }
 
-    func deleteTargets(_ targets: [String: IInternalTarget]) {
+    func deleteTargets(_ targets: TargetsMap) {
         cachedTargets?.subtract(targets)
         cachedTargets?.values.forEach { $0.resetDependencies() }
     }
@@ -71,7 +71,7 @@ final class XcodeTargetsDataSource {
 
     private func buildTargetsTree(_ target: PBXTarget,
                                   targets: [String: (target: PBXTarget, project: Project)],
-                                  builtTargets: inout [String: IInternalTarget]) async throws {
+                                  builtTargets: inout TargetsMap) async throws {
         guard builtTargets[target.uuid] == nil else { return }
 
         let pbxDependencies = try target.dependencies.compactMap { dependency in
@@ -86,7 +86,7 @@ final class XcodeTargetsDataSource {
             try await buildTargetsTree(target, targets: targets, builtTargets: &builtTargets)
         }
 
-        let dependencies: [String: IInternalTarget] = try await pbxDependencies.reduce(
+        let dependencies: TargetsMap = try await pbxDependencies.reduce(
             into: [:]
         ) { dictionary, dependency in
             let target: IInternalTarget

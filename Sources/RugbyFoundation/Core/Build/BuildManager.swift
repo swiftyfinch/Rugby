@@ -87,7 +87,7 @@ final class BuildManager: Loggable {
         self.targetTreePainter = targetTreePainter
     }
 
-    private func makeBuildTarget(targets: [String: IInternalTarget],
+    private func makeBuildTarget(targets: TargetsMap,
                                  options: XcodeBuildOptions,
                                  ignoreCache: Bool) async throws -> IInternalTarget? {
         guard targets.isNotEmpty else { throw BuildError.cantFindBuildTargets }
@@ -96,7 +96,7 @@ final class BuildManager: Loggable {
         try await log("Checking Binaries Storage", auto: await binariesCleaner.freeSpace())
         try await log("Hashing Targets", auto: await targetsHasher.hash(targets, xcargs: options.xcargs))
 
-        var shared: [String: IInternalTarget] = [:]
+        var shared: TargetsMap = [:]
         var buildTargets = targets
         if !ignoreCache {
             (shared, buildTargets) = try await log(

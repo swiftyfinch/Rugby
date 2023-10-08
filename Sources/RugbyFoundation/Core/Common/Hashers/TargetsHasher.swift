@@ -44,7 +44,7 @@ final class TargetsHasher {
         self.buildRulesHasher = buildRulesHasher
     }
 
-    func hash(_ targets: [String: IInternalTarget], xcargs: [String], rehash: Bool = false) async throws {
+    func hash(_ targets: TargetsMap, xcargs: [String], rehash: Bool = false) async throws {
         targets.modifyIf(rehash) { resetHash($0) }
 
         try await targets.merging(targets.flatMapValues(\.dependencies)).values.concurrentForEach { target in
@@ -94,7 +94,7 @@ final class TargetsHasher {
         ]
     }
 
-    private func resetHash(_ targets: [String: IInternalTarget]) {
+    private func resetHash(_ targets: TargetsMap) {
         targets.merging(targets.flatMapValues(\.dependencies)).values.forEach { target in
             target.hash = nil
             target.hashContext = nil
