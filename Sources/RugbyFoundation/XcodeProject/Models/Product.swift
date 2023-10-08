@@ -34,15 +34,3 @@ final class Product {
         self.parentFolderName = parentFolderName
     }
 }
-
-// MARK: - Hashable
-
-extension Product: Hashable {
-    static func == (lhs: Product, rhs: Product) -> Bool {
-        lhs.nameWithParent == rhs.nameWithParent
-    }
-
-    func hash(into hasher: inout Hasher) {
-        hasher.combine(nameWithParent)
-    }
-}

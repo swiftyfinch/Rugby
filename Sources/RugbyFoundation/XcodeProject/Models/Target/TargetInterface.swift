@@ -26,7 +26,7 @@ protocol IInternalTarget: ITarget {
     var configurations: [String: Configuration]? { get }
     var buildRules: [BuildRule] { get }
     var buildPhases: [BuildPhase] { get }
-    var xcconfigPaths: Set<String> { get }
+    var xcconfigPaths: [String] { get }
 
     var frameworksScriptPath: String? { get }
     var resourcesScriptPath: String? { get }

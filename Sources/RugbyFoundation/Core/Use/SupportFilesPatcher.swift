@@ -1,5 +1,22 @@
 import Foundation
 
+struct FileReplacement {
+    let replacements: [String: String]
+    let filePath: String
+    let regex: NSRegularExpression
+
+    init?(replacements: [String: String], filePath: String, regex: NSRegularExpression) {
+        guard replacements.isNotEmpty else { return nil }
+        self.replacements = replacements
+        self.filePath = filePath
+        self.regex = regex
+    }
+}
+
+protocol ISupportFilesPatcher {
+    func prepareReplacements(forTarget target: IInternalTarget) throws -> [FileReplacement]
+}
+
 final class SupportFilesPatcher {
     private typealias Replacement = (lookup: String, replacement: String)
 
@@ -10,32 +27,8 @@ final class SupportFilesPatcher {
     private let HEADERS = "Headers"
     // swiftlint:enable identifier_name
 
-    struct FileReplacement {
-        let replacements: [String: String]
-        let filePath: String
-        let regex: NSRegularExpression
-
-        init?(replacements: [String: String], filePath: String, regex: NSRegularExpression) {
-            guard replacements.isNotEmpty else { return nil }
-            self.replacements = replacements
-            self.filePath = filePath
-            self.regex = regex
-        }
-    }
-
-    func prepareReplacements(forTarget target: IInternalTarget) throws -> [FileReplacement] {
-        var replacements = try prepareXCConfigReplacements(target: target)
-        if let frameworksReplacements = try prepareFrameworksReplacements(target: target) {
-            replacements.append(frameworksReplacements)
-        }
-        if let resourcesReplacements = try prepareResourcesReplacements(target: target) {
-            replacements.append(resourcesReplacements)
-        }
-        return replacements
-    }
-
     private func prepareXCConfigReplacements(target: IInternalTarget) throws -> [FileReplacement] {
-        let replacementsPairs: [Replacement] = target.binaryProducts.values.reduce(into: []) { result, product in
+        let replacementsPairs: [Replacement] = target.binaryProducts.reduce(into: []) { result, product in
             guard product.type != .bundle, let binaryFolderPath = product.binaryPath else { return }
             result.append(("\(product.nameWithParent)/\(HEADERS)",
                            replacement: "\(binaryFolderPath)/\(product.fileName)/\(HEADERS)"))
@@ -66,7 +59,7 @@ final class SupportFilesPatcher {
         guard target.isTests || target.isPodsUmbrella,
               let filePath = target.frameworksScriptPath else { return nil }
 
-        let replacementsPairs: [Replacement] = target.binaryProducts.values.compactMap { product in
+        let replacementsPairs: [Replacement] = target.binaryProducts.compactMap { product in
             guard product.type != .bundle, let binaryFolderPath = product.binaryPath else { return nil }
             return (product.nameWithParent, replacement: "\(binaryFolderPath)/\(product.fileName)")
         }
@@ -86,11 +79,11 @@ final class SupportFilesPatcher {
         guard target.isTests || target.isPodsUmbrella,
               let filePath = target.resourcesScriptPath else { return nil }
 
-        let bundlesReplacementsPairs: [Replacement] = target.binaryProducts.values.compactMap { product in
+        let bundlesReplacementsPairs: [Replacement] = target.binaryProducts.compactMap { product in
             guard product.type == .bundle, let binaryFolderPath = product.binaryPath else { return nil }
             return (product.nameWithParent, replacement: "\(binaryFolderPath)/\(product.fileName)")
         }
-        let frameworksReplacementsPairs: [Replacement] = target.binaryProducts.values.compactMap { product in
+        let frameworksReplacementsPairs: [Replacement] = target.binaryProducts.compactMap { product in
             guard product.type != .bundle, let binaryFolderPath = product.binaryPath else { return nil }
             return ("\(product.nameWithParent)/", replacement: "\(binaryFolderPath)/\(product.fileName)/")
         }
@@ -131,5 +124,18 @@ final class SupportFilesPatcher {
         let replacements = replacements.lazy.map(\.lookup).map(NSRegularExpression.escapedPattern(for:))
         let replacementsJoined = replacements.joined(separator: "|")
         return "\(prefix)(\(replacementsJoined))\(suffix)"
+    }
+}
+
+extension SupportFilesPatcher: ISupportFilesPatcher {
+    func prepareReplacements(forTarget target: IInternalTarget) throws -> [FileReplacement] {
+        var replacements = try prepareXCConfigReplacements(target: target)
+        if let frameworksReplacements = try prepareFrameworksReplacements(target: target) {
+            replacements.append(frameworksReplacements)
+        }
+        if let resourcesReplacements = try prepareResourcesReplacements(target: target) {
+            replacements.append(resourcesReplacements)
+        }
+        return replacements
     }
 }
