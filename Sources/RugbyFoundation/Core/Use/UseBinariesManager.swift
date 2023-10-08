@@ -34,7 +34,7 @@ final class UseBinariesManager: Loggable {
     private let backupManager: IBackupManager
     private let binariesManager: IBinariesStorage
     private let targetsHasher: TargetsHasher
-    private let supportFilesPatcher: SupportFilesPatcher
+    private let supportFilesPatcher: ISupportFilesPatcher
     private let fileContentEditor: FileContentEditor
 
     init(logger: ILogger,
@@ -44,7 +44,7 @@ final class UseBinariesManager: Loggable {
          backupManager: IBackupManager,
          binariesManager: IBinariesStorage,
          targetsHasher: TargetsHasher,
-         supportFilesPatcher: SupportFilesPatcher,
+         supportFilesPatcher: ISupportFilesPatcher,
          fileContentEditor: FileContentEditor) {
         self.logger = logger
         self.buildTargetsManager = buildTargetsManager
@@ -64,7 +64,7 @@ extension UseBinariesManager {
     private func patchProductFiles(binaryTargets: TargetsMap) async throws -> TargetsMap {
         let binaryUsers = try await findBinaryUsers(binaryTargets)
         try binaryUsers.values.forEach { target in
-            target.binaryProducts = try target.binaryDependencies.compactMapValues { target in
+            target.binaryProducts = try target.binaryDependencies.values.compactMap { target in
                 guard let product = target.product else { return nil }
                 product.binaryPath = try binariesManager.xcodeBinaryFolderPath(target)
                 return product
@@ -106,8 +106,8 @@ extension UseBinariesManager {
 // MARK: - Context Properties
 
 extension IInternalTarget {
-    var binaryProducts: [String: Product] {
-        get { (context[String.binaryProductsKey] as? [String: Product]) ?? [:] }
+    var binaryProducts: [Product] {
+        get { (context[String.binaryProductsKey] as? [Product]) ?? [] }
         set { context[String.binaryProductsKey] = newValue }
     }
 }
