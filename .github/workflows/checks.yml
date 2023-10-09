@@ -9,18 +9,21 @@ on:
 
 jobs:
   swiftformat:
+    name: SwiftFormat
     runs-on: macos-latest
     steps:
     - uses: actions/checkout@v3
     - run: swiftformat . --lint --quiet --reporter github-actions-log
-  
+
   swiftlint:
+    name: SwiftLint
     runs-on: macos-latest
     steps:
     - uses: actions/checkout@v3
     - run: swiftlint --strict --quiet --reporter github-actions-logging
 
   install:
+    name: Install Script
     runs-on: macos-latest
     steps:
     - uses: actions/checkout@v3
@@ -30,7 +33,21 @@ jobs:
         chmod +x ~/.rugby/clt/rugby && echo ~/.rugby/clt >> $GITHUB_PATH
     - run: rugby -h
 
+  release:
+    name: Build Binary
+    runs-on: macos-latest
+    steps:
+    - uses: actions/checkout@v3
+    - uses: actions/cache@v3
+      with:
+        path: .build
+        key: ${{ runner.os }}-spm-${{ hashFiles('Package.resolved') }}
+        restore-keys: ${{ runner.os }}-spm-
+    - name: Build
+      run: swift build -c release
+
   tests:
+    name: Unit Tests
     runs-on: macos-latest
     env:
       LCOV_PATH: .build/artifacts/info.lcov
@@ -45,6 +62,7 @@ jobs:
         path: .build
         key: ${{ runner.os }}-spm-${{ hashFiles('Package.resolved') }}
         restore-keys: ${{ runner.os }}-spm-
+
     - name: Test
       run: set -o pipefail && swift test --enable-code-coverage 2>&1 | xcbeautify
     - name: Prepare coverage to upload
@@ -59,28 +77,19 @@ jobs:
       env:
         CODECOV_TOKEN: ${{ secrets.CODECOV_TOKEN }}
 
-  bin:
-    runs-on: macos-latest
-    steps:
-    - uses: actions/checkout@v3
-    - uses: actions/cache@v3
-      with:
-        path: .build
-        key: ${{ runner.os }}-spm-${{ hashFiles('Package.resolved') }}
-        restore-keys: ${{ runner.os }}-spm-
-    - name: Build
+    - name: Prepare binary artifact
       run: |
-        swift build -c release
-        path=`swift build -c release --show-bin-path`
-        echo "rugby_path=$path/rugby" >> $GITHUB_ENV
-        swift run rugby --version
+        RUGBY_PATH=`swift build --show-bin-path`/rugby
+        strip -rSTx $RUGBY_PATH
+        echo "RUGBY_PATH=$RUGBY_PATH" >> $GITHUB_ENV
     - uses: actions/upload-artifact@v3
       with:
         name: rugby
-        path: ${{ env.rugby_path }}
+        path: ${{ env.RUGBY_PATH }}
 
-  smoke:
-    needs: bin
+  smoke-frameworks:
+    name: Smoke (Frameworks)
+    needs: tests
     runs-on: macos-latest
     steps:
     - uses: actions/checkout@v3
@@ -102,8 +111,7 @@ jobs:
       working-directory: ./Example
       run: |
         rugby build -t Pods-ExampleFrameworks --output multiline
-        rugby build -t Pods-ExampleLibs --output multiline
-        rugby use -t Pods-ExampleFrameworks Pods-ExampleLibs --output multiline
+        rugby use -t Pods-ExampleFrameworks --output multiline
 
     - run: brew install xcbeautify
     - name: XcodeBuild Test
@@ -119,6 +127,36 @@ jobs:
           SWIFT_COMPILATION_MODE=wholemodule \
           | xcbeautify
 
+  smoke-libs:
+    name: Smoke (Libraries)
+    needs: tests
+    runs-on: macos-latest
+    steps:
+    - uses: actions/checkout@v3
+    - uses: actions/download-artifact@v3
+      with: { name: rugby }
+    - run: chmod +x rugby && echo `pwd` >> $GITHUB_PATH
+    - run: rugby --version
+    
+    - uses: actions/cache@v3
+      with:
+        path: Example/Pods
+        key: ${{ runner.os }}-pods-${{ hashFiles('Example/Podfile.lock') }}
+        restore-keys: ${{ runner.os }}-pods-
+    - name: CocoaPods
+      working-directory: ./Example
+      run: pod install --repo-update
+
+    - name: Rugby
+      working-directory: ./Example
+      run: |
+        rugby build -t Pods-ExampleLibs --output multiline
+        rugby use -t Pods-ExampleLibs --output multiline
+
+    - run: brew install xcbeautify
+    - name: XcodeBuild Test
+      working-directory: ./Example
+      run: |
         set -o pipefail && env NSUnbufferedIO=YES xcodebuild test \
           -workspace Example.xcworkspace \
           -scheme ExampleLibs \
