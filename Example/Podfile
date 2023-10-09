@@ -1,21 +1,31 @@
 platform :ios, '16.0'
 project 'Example/Example.xcodeproj'
 
-target 'Example' do
-  if ENV['USE_STATIC_LIBRARIES'] != nil
-    use_modular_headers!
-  else
-    use_frameworks!
-  end
+target 'ExampleFrameworks' do
+  use_frameworks!
 
   pod 'SnapKit'
   pod 'Keyboard+LayoutGuide'
   pod 'Moya/Core'
   pod 'Kingfisher'
-  pod 'LocalPod', :path => 'LocalPods',
-                  :testspecs => ['Tests', 'ResourceBundleTests']
+  pod 'LocalPod', :path => 'LocalPods', :testspecs => ['Tests', 'ResourceBundleTests']
 
-  target 'ExampleTests' do
+  target 'ExampleFrameworksTests' do
+    inherit! :search_paths
+    pod 'AutoMate'
+  end
+end
+
+target 'ExampleLibs' do
+  use_modular_headers!
+
+  pod 'SnapKit'
+  pod 'Keyboard+LayoutGuide'
+  pod 'Moya/Core'
+  pod 'Kingfisher'
+  pod 'LocalPod', :path => 'LocalPods', :testspecs => ['Tests', 'ResourceBundleTests']
+
+  target 'ExampleLibsTests' do
     inherit! :search_paths
     pod 'AutoMate'
   end

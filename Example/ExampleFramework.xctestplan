@@ -1,0 +1,46 @@
+{
+  "configurations" : [
+    {
+      "id" : "30DD38ED-9F3D-47C6-B30E-3ED2DE294EE1",
+      "name" : "Test Scheme Action",
+      "options" : {
+
+      }
+    }
+  ],
+  "defaultOptions" : {
+    "codeCoverage" : false,
+    "targetForVariableExpansion" : {
+      "containerPath" : "container:Example.xcodeproj",
+      "identifier" : "230878162A8D3D6900AEB6A7",
+      "name" : "ExampleFrameworks"
+    }
+  },
+  "testTargets" : [
+    {
+      "parallelizable" : true,
+      "target" : {
+        "containerPath" : "container:Example.xcodeproj",
+        "identifier" : "2308782B2A8D3E3A00AEB6A7",
+        "name" : "ExampleFrameworksTests"
+      }
+    },
+    {
+      "parallelizable" : true,
+      "target" : {
+        "containerPath" : "container:..\/Pods\/Pods.xcodeproj",
+        "identifier" : "9FC54710DA1E4DFE1328C2E13F374466",
+        "name" : "LocalPod-framework-Unit-ResourceBundleTests"
+      }
+    },
+    {
+      "parallelizable" : true,
+      "target" : {
+        "containerPath" : "container:..\/Pods\/Pods.xcodeproj",
+        "identifier" : "6DE522075EFDB1984E48E6FC929F0DC0",
+        "name" : "LocalPod-framework-Unit-Tests"
+      }
+    }
+  ],
+  "version" : 1
+}
