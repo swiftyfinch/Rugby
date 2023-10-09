@@ -40,23 +40,22 @@
             </BuildableReference>
          </TestableReference>
          <TestableReference
-            skipped = "NO"
-            parallelizable = "YES">
-            <BuildableReference
-               BuildableIdentifier = "primary"
-               BlueprintIdentifier = "230878382A8D3E4000AEB6A7"
-               BuildableName = "ExampleUITests.xctest"
-               BlueprintName = "ExampleUITests"
-               ReferencedContainer = "container:Example.xcodeproj">
-            </BuildableReference>
-         </TestableReference>
-         <TestableReference
             skipped = "NO">
             <BuildableReference
                BuildableIdentifier = "primary"
                BlueprintIdentifier = "295D73FA0B835E91656227FB28341AFC"
                BuildableName = "LocalPod-Unit-Tests.xctest"
                BlueprintName = "LocalPod-Unit-Tests"
+               ReferencedContainer = "container:../Pods/Pods.xcodeproj">
+            </BuildableReference>
+         </TestableReference>
+         <TestableReference
+            skipped = "NO">
+            <BuildableReference
+               BuildableIdentifier = "primary"
+               BlueprintIdentifier = "445379DA3A378AA7458E2D43B4EC0DFD"
+               BuildableName = "LocalPod-Unit-ResourceBundleTests.xctest"
+               BlueprintName = "LocalPod-Unit-ResourceBundleTests"
                ReferencedContainer = "container:../Pods/Pods.xcodeproj">
             </BuildableReference>
          </TestableReference>

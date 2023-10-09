@@ -1,13 +1,13 @@
 @testable import LocalPod
 import XCTest
 
-final class ResourcesBundleTests: XCTestCase {
+final class ResourceBundleTests: XCTestCase {
     func testAccessToResourcesBundle() throws {
         try XCTAssertEqual(readId(from: .resourcesBundle), "LocalPod")
     }
 
     func testAccessToTestResourcesBundle() throws {
-        try XCTAssertEqual(readId(from: .testResourcesBundle), "Tests")
+        try XCTAssertEqual(readId(from: .testResourcesBundle), "ResourceBundleTests")
     }
 
     // MARK: - Private
