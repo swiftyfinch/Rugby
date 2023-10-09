@@ -100,15 +100,28 @@ jobs:
 
     - name: Rugby
       working-directory: ./Example
-      run: rugby cache --output multiline
+      run: |
+        rugby build -t Pods-ExampleFrameworks --output multiline
+        rugby build -t Pods-ExampleLibs --output multiline
+        rugby use -t Pods-ExampleFrameworks Pods-ExampleLibs --output multiline
 
     - run: brew install xcbeautify
     - name: XcodeBuild Test
       working-directory: ./Example
       run: |
-        set -o pipefail && env NSUnbufferedIO=YES xcodebuild clean test \
+        set -o pipefail && env NSUnbufferedIO=YES xcodebuild test \
           -workspace Example.xcworkspace \
-          -scheme Example \
+          -scheme ExampleFrameworks \
+          -configuration Debug \
+          -destination 'platform=iOS Simulator,name=iPhone 14' \
+          -derivedDataPath build \
+          COMPILER_INDEX_STORE_ENABLE=NO \
+          SWIFT_COMPILATION_MODE=wholemodule \
+          | xcbeautify
+
+        set -o pipefail && env NSUnbufferedIO=YES xcodebuild test \
+          -workspace Example.xcworkspace \
+          -scheme ExampleLibs \
           -configuration Debug \
           -destination 'platform=iOS Simulator,name=iPhone 14' \
           -derivedDataPath build \
