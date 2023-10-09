@@ -13,7 +13,7 @@ target 'Example' do
   pod 'Moya/Core'
   pod 'Kingfisher'
   pod 'LocalPod', :path => 'LocalPods',
-                  :testspecs => ['Tests']
+                  :testspecs => ['Tests', 'ResourceBundleTests']
 
   target 'ExampleTests' do
     inherit! :search_paths
