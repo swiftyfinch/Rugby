@@ -126,7 +126,7 @@ For advanced usage, please read the documentation below.
 
 ## 🤝 Contribution
 
-Feel free to open a pull request / an issue or a discussion.
+Feel free [to open a pull request](https://github.com/swiftyfinch/rugby/contribute) / an issue or a discussion.
 
 ## 📮 Support
 
