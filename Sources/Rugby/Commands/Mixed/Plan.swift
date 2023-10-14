@@ -22,6 +22,14 @@ struct Plan: AsyncParsableCommand {
     var commonOptions: CommonOptions
 
     func run() async throws {
+        // It's a hidden subcommand
+        if let name, name == .plansList {
+            // Prints raw plans list for autocompletion
+            let plans = (try? dependencies.plansParser.plans(atPath: path)) ?? []
+            plans.forEach { print($0.name) }
+            return
+        }
+
         try await run(body,
                       outputType: commonOptions.output,
                       logLevel: commonOptions.verbose)
@@ -94,6 +102,7 @@ extension Plan: RunnableCommand {
 }
 
 private extension String {
+    static let plansList = "list"
     static let pathLongKey = "--path"
     static let outputLongKey = "--output"
     static let outputShortKey = "-o"
