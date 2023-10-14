@@ -138,4 +138,4 @@ If you want to support this project, you can do some of these:\
 Let's Roll-oll 🏈
 <br>
 
-![visitors](https://visitor-badge.laobi.icu/badge?page_id=swiftyfinch.rugby&left_text=Views)
+![visitors](https://visitor-badge.laobi.icu/badge?page_id=swiftyfinch.rugby&left_text=Views&format=true)
