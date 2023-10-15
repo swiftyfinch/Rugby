@@ -35,7 +35,7 @@ final class XcodeBuildExecutor {
             try log.append("\(formattedLine)\n")
         }
 
-        let rawLog = try open(rawLogPath)
+        let rawLog = try shellExecutor.open(rawLogPath)
         for line in rawLog.lines() {
             try logFormatter.format(line: line, output: output)
         }
