@@ -4,11 +4,11 @@ import XCTest
 
 final class PlansParserTests: XCTestCase {
     private var sut: IPlansParser!
-    private var fishSharedStorage: IFilesManagerMockMock!
+    private var fishSharedStorage: IFilesManagerMock!
 
     override func setUp() {
         super.setUp()
-        fishSharedStorage = IFilesManagerMockMock()
+        fishSharedStorage = IFilesManagerMock()
         Fish.sharedStorage = fishSharedStorage
         sut = PlansParser()
     }
