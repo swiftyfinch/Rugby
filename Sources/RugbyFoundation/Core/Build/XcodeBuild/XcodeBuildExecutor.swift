@@ -16,7 +16,7 @@ final class XcodeBuildExecutor {
         self.workingDirectory = workingDirectory
     }
 
-    func run(_ command: String, rawLogPath: String, logPath: String, args: Any ...) throws {
+    func run(_ command: String, rawLogPath: String, logPath: String, args: Any...) throws {
         try shellExecutor.throwingShell(command, args: args, "| tee '\(rawLogPath)'")
         if let errors = try? beautifyLog(rawLogPath: rawLogPath, logPath: logPath), errors.isNotEmpty {
             throw BuildError.buildFailed(errors: errors, buildLogPath: logPath, rawBuildLogPath: rawLogPath)
