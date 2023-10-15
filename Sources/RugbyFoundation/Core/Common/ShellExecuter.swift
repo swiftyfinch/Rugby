@@ -10,20 +10,20 @@ public protocol IShellExecutor {
     ///   - command: A commad to run.
     ///   - args: Command arguments.
     @discardableResult
-    func shell(_ command: String, args: Any ...) -> (String?, Error?)
+    func shell(_ command: String, args: Any...) -> (String?, Error?)
 
     /// Runs shell command and returns output.
     /// - Parameters:
     ///   - command: A commad to run.
     ///   - args: Command arguments.
     @discardableResult
-    func throwingShell(_ command: String, args: Any ...) throws -> String?
+    func throwingShell(_ command: String, args: Any...) throws -> String?
 
     /// Runs shell command and prints output.
     /// - Parameters:
     ///   - command: A commad to run.
     ///   - args: Command arguments.
-    func printShell(_ command: String, args: Any ...) throws
+    func printShell(_ command: String, args: Any...) throws
 }
 
 enum ShellError: LocalizedError {
@@ -53,7 +53,7 @@ final class ShellExecutor {
 }
 
 private extension ShellExecutor {
-    func runAndPrint(_ command: String, args: Any ...) throws {
+    func runAndPrint(_ command: String, args: Any...) throws {
         let commandWithArgs = combine(command: command, args: args)
         let currentShell = try getCurrentShell()
         let asyncCommand = SwiftShell.runAsyncAndPrint(currentShell, "-c", commandWithArgs)
@@ -65,7 +65,7 @@ private extension ShellExecutor {
         }
     }
 
-    func run(_ command: String, args: Any ...) -> (String?, Error?) {
+    func run(_ command: String, args: Any...) -> (String?, Error?) {
         var stdout: String?
         var stderror: String?
         do {
@@ -112,7 +112,7 @@ private extension ShellExecutor {
         return shell
     }
 
-    func combine(command: String, args: Any ...) -> String {
+    func combine(command: String, args: Any...) -> String {
         let stringArgs = args.flatten().map(String.init(describing:))
         return command + " " + stringArgs.joined(separator: " ")
     }
@@ -122,18 +122,18 @@ private extension ShellExecutor {
 
 extension ShellExecutor: IShellExecutor {
     @discardableResult
-    public func shell(_ command: String, args: Any ...) -> (String?, Error?) {
+    public func shell(_ command: String, args: Any...) -> (String?, Error?) {
         run(command, args: args)
     }
 
     @discardableResult
-    public func throwingShell(_ command: String, args: Any ...) throws -> String? {
+    public func throwingShell(_ command: String, args: Any...) throws -> String? {
         let (output, error) = run(command, args: args)
         if let error { throw error }
         return output
     }
 
-    public func printShell(_ command: String, args: Any ...) throws {
+    public func printShell(_ command: String, args: Any...) throws {
         try runAndPrint(command, args: args)
     }
 }
