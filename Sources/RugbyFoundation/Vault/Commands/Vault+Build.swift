@@ -5,11 +5,11 @@ public extension Vault {
     /// The manager to build CocoaPods project.
     /// - Parameter workingDirectory: A directory with Pods folder.
     func buildManager(workingDirectory: IFolder) -> IBuildManager {
-        let logFormatter = BuildLogFormatter(colored: Rainbow.enabled)
+        let logFormatter = BuildLogFormatter(workingDirectory: workingDirectory,
+                                             colored: Rainbow.enabled)
         let xcodeBuildExecutor = XcodeBuildExecutor(
             shellExecutor: shellExecutor,
-            logFormatter: logFormatter,
-            workingDirectory: workingDirectory
+            logFormatter: logFormatter
         )
         let xcodeProject = xcode.project(projectPath: router.paths(relativeTo: workingDirectory).podsProject)
         let buildTargetsManager = BuildTargetsManager(xcodeProject: xcodeProject)
