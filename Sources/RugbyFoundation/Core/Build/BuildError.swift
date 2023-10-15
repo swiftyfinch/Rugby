@@ -1,6 +1,6 @@
 import Foundation
 
-enum BuildError: LocalizedError {
+enum BuildError: LocalizedError, Equatable {
     case buildFailed(errors: [String], buildLogPath: String, rawBuildLogPath: String)
     case cantFindBuildTargets
 
