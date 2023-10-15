@@ -21,3 +21,9 @@ extension ILogger {}
 
 //// sourcery: AutoMockable, imports = ["Fish"]
 // protocol IFilesManagerMock: IFilesManager {}
+
+//// sourcery: AutoMockable, imports = ["Fish"]
+extension IFolder {}
+
+// sourcery: AutoMockable, imports = ["Fish"]
+extension IFile {}
