@@ -24,6 +24,10 @@ public protocol IShellExecutor {
     ///   - command: A commad to run.
     ///   - args: Command arguments.
     func printShell(_ command: String, args: Any...) throws
+
+    /// Opens a file for reading, throws if an error occurs.
+    /// - Parameter path: A file path to open.
+    func open(_ path: String) throws -> ReadableStream
 }
 
 enum ShellError: LocalizedError {
@@ -135,5 +139,9 @@ extension ShellExecutor: IShellExecutor {
 
     public func printShell(_ command: String, args: Any...) throws {
         try runAndPrint(command, args: args)
+    }
+
+    public func open(_ path: String) throws -> ReadableStream {
+        try SwiftShell.open(path, encoding: .utf8)
     }
 }

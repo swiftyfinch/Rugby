@@ -5,6 +5,7 @@
 
 import Foundation
 import RugbyFoundation
+import SwiftShell
 
 public final class IShellExecutorMock: IShellExecutor {
 
@@ -73,6 +74,30 @@ public final class IShellExecutorMock: IShellExecutor {
         printShellArgsReceivedArguments = (command: command, args: args)
         printShellArgsReceivedInvocations.append((command: command, args: args))
         try printShellArgsClosure?(command, args)
+    }
+
+    // MARK: - open
+
+    public var openThrowableError: Error?
+    public var openCallsCount = 0
+    public var openCalled: Bool { openCallsCount > 0 }
+    public var openReceivedPath: String?
+    public var openReceivedInvocations: [String] = []
+    public var openReturnValue: ReadableStream!
+    public var openClosure: ((String) throws -> ReadableStream)?
+
+    public func open(_ path: String) throws -> ReadableStream {
+        if let error = openThrowableError {
+            throw error
+        }
+        openCallsCount += 1
+        openReceivedPath = path
+        openReceivedInvocations.append(path)
+        if let openClosure = openClosure {
+            return try openClosure(path)
+        } else {
+            return openReturnValue
+        }
     }
 }
 

@@ -8,8 +8,9 @@
 
 import Fish
 @testable import RugbyFoundation
+import SwiftShell
 
-// sourcery: AutoMockable, imports = ["RugbyFoundation"]
+// sourcery: AutoMockable, imports = ["RugbyFoundation", "SwiftShell"]
 extension IShellExecutor {}
 
 //// sourcery: AutoMockable, imports = ["RugbyFoundation", "XcodeProj"]
