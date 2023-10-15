@@ -19,4 +19,4 @@ extension IInternalTarget {}
 extension ILogger {}
 
 //// sourcery: AutoMockable, imports = ["Fish"]
-protocol IFilesManagerMock: IFilesManager {}
+// protocol IFilesManagerMock: IFilesManager {}

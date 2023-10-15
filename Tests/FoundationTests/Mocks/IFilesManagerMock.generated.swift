@@ -6,7 +6,7 @@
 import Foundation
 import Fish
 
-final class IFilesManagerMockMock: IFilesManagerMock {
+final class IFilesManagerMock: IFilesManager {
 
     // MARK: - file
 
