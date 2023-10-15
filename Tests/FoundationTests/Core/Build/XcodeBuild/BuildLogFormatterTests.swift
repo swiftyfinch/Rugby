@@ -5,6 +5,7 @@ import XCTest
 
 // swiftlint:disable line_length
 // swiftlint:disable function_body_length
+// swiftlint:disable file_length
 
 final class BuildLogFormatterTests: XCTestCase {
     private var workingDirectory: IFolderMock!
@@ -13,6 +14,7 @@ final class BuildLogFormatterTests: XCTestCase {
         super.setUp()
         workingDirectory = IFolderMock()
         workingDirectory.underlyingPath = "/Users/swiftyfinch/Developer/Git/Rugby/Example"
+        Rainbow.outputTarget = .console
     }
 
     override func tearDown() {
@@ -21,7 +23,8 @@ final class BuildLogFormatterTests: XCTestCase {
     }
 
     private func makeSut(colored: Bool) -> IBuildLogFormatter {
-        BuildLogFormatter(workingDirectory: workingDirectory, colored: colored)
+        Rainbow.enabled = colored
+        return BuildLogFormatter(workingDirectory: workingDirectory, colored: Rainbow.enabled)
     }
 
     private func act(sut: IBuildLogFormatter, input: String) throws -> [(text: String, type: OutputType)] {
@@ -39,7 +42,6 @@ final class BuildLogFormatterTests: XCTestCase {
 
 extension BuildLogFormatterTests {
     func test_formatStandardError() throws {
-        Rainbow.enabled = false
         let sut = makeSut(colored: false)
         let input = """
         /Users/swiftyfinch/Developer/Git/Rugby/Example/Pods/Alamofire/Source/Request.swift:1528:33: error: 'some' cannot appear in parameter position in parameter type 'DataStreamRequest.Handler<some Any, some Any>' (aka '(DataStreamRequest.Stream<some Any, some Any>) throws -> ()')
@@ -64,7 +66,6 @@ extension BuildLogFormatterTests {
 
     func test_formatStandardErrors() throws {
         let sut = makeSut(colored: false)
-        Rainbow.enabled = false
         let input = """
         /Users/swiftyfinch/Developer/Git/Rugby/Example/Pods/Alamofire/Source/Request.swift:1528:33: error: 'some' cannot appear in parameter position in parameter type 'DataStreamRequest.Handler<some Any, some Any>' (aka '(DataStreamRequest.Stream<some Any, some Any>) throws -> ()')
                                         stream: @escaping Handler<some Any, some Any>) {
@@ -99,7 +100,6 @@ extension BuildLogFormatterTests {
 
     func test_formatManyStandardErrors() throws {
         let sut = makeSut(colored: false)
-        Rainbow.enabled = false
         let input = """
         /Users/swiftyfinch/Developer/Git/Rugby/Example/LocalPods/LocalPod/Sources/Bundle+Resources.swift:5:1: error: expressions are not allowed at the top level
         exension Bundle {
@@ -180,7 +180,6 @@ extension BuildLogFormatterTests {
 
     func test_formatMultipleCommandsProduceError() throws {
         let sut = makeSut(colored: false)
-        Rainbow.enabled = false
         let input = """
         error: Multiple commands produce '/Users/swiftyfinch/Developer/Git/Rugby/Example/.rugby/build/Debug-iphonesimulator/LocalPodResourceBundleTestsResources.bundle/dummy.json'
             note: Target 'LocalPod-framework-LocalPodResourceBundleTestsResources' (project 'Pods') has copy command from '/Users/swiftyfinch/Developer/Git/Rugby/Example/LocalPods/LocalPod/ResourceBundleTests/dummy.json' to '/Users/swiftyfinch/Developer/Git/Rugby/Example/.rugby/build/Debug-iphonesimulator/LocalPodResourceBundleTestsResources.bundle/dummy.json'
@@ -200,7 +199,6 @@ extension BuildLogFormatterTests {
 
     func test_formatUnableToLoadContentsError() throws {
         let sut = makeSut(colored: false)
-        Rainbow.enabled = false
         let input = """
         error: Unable to load contents of file list: '/Target Support Files/SnapKit-framework/SnapKit-framework-xcframeworks-input-files.xcfilelist' (in target 'SnapKit-framework' from project 'Pods')
         """
@@ -219,7 +217,6 @@ extension BuildLogFormatterTests {
 
     func test_formatBuildInputFileCannotBeFoundError() throws {
         let sut = makeSut(colored: false)
-        Rainbow.enabled = false
         let input = """
         error: Build input file cannot be found: '/Users/swiftyfinch/Developer/Git/Rugby/Example/.rugby/build/Debug-iphonesimulator/SnapKit/SnapKit.framework/SnapKit'. Did you forget to declare this file as an output of a script phase or custom build rule which produces it? (in target 'SnapKit' from project 'Pods')
         """
@@ -241,7 +238,6 @@ extension BuildLogFormatterTests {
 
 extension BuildLogFormatterTests {
     func test_formatStandardError_colored() throws {
-        Rainbow.enabled = true
         let sut = makeSut(colored: true)
         let input = """
         /Users/swiftyfinch/Developer/Git/Rugby/Example/Pods/Alamofire/Source/Request.swift:1528:33: error: 'some' cannot appear in parameter position in parameter type 'DataStreamRequest.Handler<some Any, some Any>' (aka '(DataStreamRequest.Stream<some Any, some Any>) throws -> ()')
@@ -265,7 +261,6 @@ extension BuildLogFormatterTests {
     }
 
     func test_formatStandardErrors_colored() throws {
-        Rainbow.enabled = true
         let sut = makeSut(colored: true)
         let input = """
         /Users/swiftyfinch/Developer/Git/Rugby/Example/Pods/Alamofire/Source/Request.swift:1528:33: error: 'some' cannot appear in parameter position in parameter type 'DataStreamRequest.Handler<some Any, some Any>' (aka '(DataStreamRequest.Stream<some Any, some Any>) throws -> ()')
@@ -300,7 +295,6 @@ extension BuildLogFormatterTests {
     }
 
     func test_formatManyStandardErrors_colored() throws {
-        Rainbow.enabled = true
         let sut = makeSut(colored: true)
         let input = """
         /Users/swiftyfinch/Developer/Git/Rugby/Example/LocalPods/LocalPod/Sources/Bundle+Resources.swift:5:1: error: expressions are not allowed at the top level
@@ -381,7 +375,6 @@ extension BuildLogFormatterTests {
     }
 
     func test_formatMultipleCommandsProduceError_colored() throws {
-        Rainbow.enabled = true
         let sut = makeSut(colored: true)
         let input = """
         error: Multiple commands produce '/Users/swiftyfinch/Developer/Git/Rugby/Example/.rugby/build/Debug-iphonesimulator/LocalPodResourceBundleTestsResources.bundle/dummy.json'
@@ -401,7 +394,6 @@ extension BuildLogFormatterTests {
     }
 
     func test_formatUnableToLoadContentsError_colored() throws {
-        Rainbow.enabled = true
         let sut = makeSut(colored: true)
         let input = """
         error: Unable to load contents of file list: '/Target Support Files/SnapKit-framework/SnapKit-framework-xcframeworks-input-files.xcfilelist' (in target 'SnapKit-framework' from project 'Pods')
@@ -420,7 +412,6 @@ extension BuildLogFormatterTests {
     }
 
     func test_formatBuildInputFileCannotBeFoundError_colored() throws {
-        Rainbow.enabled = true
         let sut = makeSut(colored: true)
         let input = """
         error: Build input file cannot be found: '/Users/swiftyfinch/Developer/Git/Rugby/Example/.rugby/build/Debug-iphonesimulator/SnapKit/SnapKit.framework/SnapKit'. Did you forget to declare this file as an output of a script phase or custom build rule which produces it? (in target 'SnapKit' from project 'Pods')
@@ -441,3 +432,4 @@ extension BuildLogFormatterTests {
 
 // swiftlint:enable line_length
 // swiftlint:enable function_body_length
+// swiftlint:enable file_length
