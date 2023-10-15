@@ -32,7 +32,7 @@ final class XcodeBuildExecutor {
         }
 
         let rawLog = try shellExecutor.open(rawLogPath)
-        for line in rawLog.lines() {
+        for line in rawLog.lines() where !line.isEmpty {
             try logFormatter.format(line: line, output: output)
         }
         try logFormatter.finish(output: output)

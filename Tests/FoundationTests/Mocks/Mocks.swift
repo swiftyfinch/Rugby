@@ -13,6 +13,12 @@ import SwiftShell
 // sourcery: AutoMockable, imports = ["RugbyFoundation", "SwiftShell"]
 extension IShellExecutor {}
 
+// sourcery: AutoMockable, imports = ["SwiftShell"]
+extension ReadableStream {}
+
+//// sourcery: AutoMockable, imports = ["RugbyFoundation", "XcbeautifyLib"]
+extension IBuildLogFormatter {}
+
 //// sourcery: AutoMockable, imports = ["RugbyFoundation", "XcodeProj"]
 extension IInternalTarget {}
 
