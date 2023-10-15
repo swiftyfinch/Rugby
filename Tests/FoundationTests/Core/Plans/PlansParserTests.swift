@@ -9,7 +9,11 @@ final class PlansParserTests: XCTestCase {
     override func setUp() {
         super.setUp()
         fishSharedStorage = IFilesManagerMock()
+        let backupFishSharedStorage = Fish.sharedStorage
         Fish.sharedStorage = fishSharedStorage
+        addTeardownBlock {
+            Fish.sharedStorage = backupFishSharedStorage
+        }
         sut = PlansParser()
     }
 
