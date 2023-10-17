@@ -25,11 +25,8 @@ struct BuildPhase {
 
 extension BuildPhase {
     init?(_ pbxPhase: PBXBuildPhase) {
-        guard
-            let name = pbxPhase.name(),
-            let type = Kind(pbxPhase.buildPhase),
-            let files = pbxPhase.files?.compactMap(\.file?.fullPath)
-        else { return nil }
+        guard let name = pbxPhase.name(),
+              let type = Kind(pbxPhase.buildPhase) else { return nil }
 
         self.name = name
         self.type = type
@@ -37,11 +34,24 @@ extension BuildPhase {
         runOnlyForDeploymentPostprocessing = pbxPhase.runOnlyForDeploymentPostprocessing
         inputFileListPaths = pbxPhase.inputFileListPaths ?? []
         outputFileListPaths = pbxPhase.outputFileListPaths ?? []
-        self.files = files
+        files = pbxPhase.filePaths()
     }
 }
 
-extension BuildPhase.Kind {
+private extension PBXBuildPhase {
+    func filePaths() -> [String] {
+        guard let files else { return [] }
+        return files.compactMap {
+            guard let displayName = $0.file?.displayName,
+                  let fullPath = $0.file?.fullPath else { return nil }
+            // Skipping files with a broken reference.
+            // If the reference is broken, the name is non-relative to a full path.
+            return fullPath.hasSuffix(displayName) ? fullPath : nil
+        }
+    }
+}
+
+private extension BuildPhase.Kind {
     init?(_ phase: XcodeProj.BuildPhase) {
         switch phase {
         case .sources:
