@@ -16,7 +16,8 @@ struct CommonOptions: ParsableCommand {
 enum OutputType: String, ExpressibleByArgument {
     case fold
     case multiline
-    case quiet
+    case raw
+    case silence
 
     init?(rawValue: String) {
         switch rawValue {
@@ -24,8 +25,10 @@ enum OutputType: String, ExpressibleByArgument {
             self = .fold
         case "multiline", "m":
             self = .multiline
-        case "quiet", "q":
-            self = .quiet
+        case "raw", "r":
+            self = .raw
+        case "silence", "s", "quiet", "q":
+            self = .silence
         default:
             return nil
         }
