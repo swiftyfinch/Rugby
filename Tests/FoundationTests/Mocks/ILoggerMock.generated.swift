@@ -88,6 +88,21 @@ public final class ILoggerMock: ILogger {
         logPlainLevelOutputReceivedInvocations.append((text: text, level: level, output: output))
         await logPlainLevelOutputClosure?(text, level, output)
     }
+
+    // MARK: - logList
+
+    public var logListLevelOutputCallsCount = 0
+    public var logListLevelOutputCalled: Bool { logListLevelOutputCallsCount > 0 }
+    public var logListLevelOutputReceivedArguments: (list: [String], level: LogLevel, output: LoggerOutput)?
+    public var logListLevelOutputReceivedInvocations: [(list: [String], level: LogLevel, output: LoggerOutput)] = []
+    public var logListLevelOutputClosure: (([String], LogLevel, LoggerOutput) async -> Void)?
+
+    public func logList(_ list: [String], level: LogLevel, output: LoggerOutput) async {
+        logListLevelOutputCallsCount += 1
+        logListLevelOutputReceivedArguments = (list: list, level: level, output: output)
+        logListLevelOutputReceivedInvocations.append((list: list, level: level, output: output))
+        await logListLevelOutputClosure?(list, level, output)
+    }
 }
 
 // swiftlint:enable all

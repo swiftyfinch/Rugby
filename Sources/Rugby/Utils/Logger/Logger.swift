@@ -218,4 +218,19 @@ extension Logger: ILogger {
             )
         }
     }
+
+    func logList(
+        _ list: [String],
+        level: LogLevel,
+        output: LoggerOutput
+    ) async {
+        for line in list {
+            await logToPrinters(
+                line,
+                level: level,
+                shifts: [.right, .left],
+                output: output
+            )
+        }
+    }
 }

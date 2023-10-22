@@ -70,6 +70,17 @@ public protocol ILogger: AnyObject {
         level: LogLevel,
         output: LoggerOutput
     ) async
+
+    /// Logs list of lines.
+    /// - Parameters:
+    ///   - list: A list of lines to log.
+    ///   - level: A level of logging.
+    ///   - output: An output type.
+    func logList(
+        _ list: [String],
+        level: LogLevel,
+        output: LoggerOutput
+    ) async
 }
 
 /// Log level.
