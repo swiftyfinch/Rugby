@@ -12,6 +12,12 @@ lint:
 	swiftlint --fix --quiet
 	swiftlint --strict --quiet
 
+.PHONY: install
+install:
+	swift build --arch arm64 -c release
+	cp -f `swift build --arch arm64 -c release --show-bin-path`/rugby ~/.rugby/clt/rugby
+	strip -rSTx ~/.rugby/clt/rugby
+
 .PHONY: release
 release:
 	rm -rf Release
