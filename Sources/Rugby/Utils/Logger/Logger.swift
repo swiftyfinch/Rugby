@@ -11,8 +11,8 @@ final actor Logger {
         static let right = Shift(rawValue: 1 << 1)
     }
 
-    private let clock = "⚑".yellow
-    private let done = "✓".green
+    private let beginIcon = "⚑".yellow
+    private let doneIcon = "✓".green
 
     private var lastEnter: String?
 
@@ -88,7 +88,7 @@ final actor Logger {
     ) async {
         await logToPrinters(
             title,
-            icon: clock,
+            icon: beginIcon,
             level: level,
             shifts: .right,
             output: output
@@ -107,7 +107,7 @@ final actor Logger {
     ) async {
         await logToPrinters(
             title,
-            icon: done,
+            icon: doneIcon,
             duration: duration,
             level: level,
             updateLine: updateLine,
@@ -197,7 +197,7 @@ extension Logger: ILogger {
     ) async {
         await logToPrinters(
             text,
-            icon: done,
+            icon: doneIcon,
             level: level,
             shifts: [.right, .left],
             output: output
