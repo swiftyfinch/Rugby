@@ -38,7 +38,7 @@ extension RunnableCommand {
                       footer: name.green,
                       metricKey: name,
                       auto: await handle(block))
-        await log("\("⚑".yellow) Let's Roll-oll 🏈".green)
+        await logPlain("\("⚑".yellow) Let's Roll-oll 🏈".green)
     }
 }
 
