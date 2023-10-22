@@ -16,7 +16,7 @@ protocol RunnableCommand: AsyncParsableCommand, Loggable {
 extension RunnableCommand {
     func run(_ block: () async throws -> Void,
              outputType: OutputType,
-             logLevel: Int = 0,
+             logLevel: LogLevel,
              muteSound: Bool = false) async throws {
         defer {
             fflush(stdout) // We need to flush print buffer here before printing errors
@@ -87,7 +87,7 @@ extension RunnableCommand {
 extension RunnableCommand {
     var logger: ILogger { dependencies.logger }
 
-    private func prepareLogger(outputType: OutputType, logLevel: Int) async throws {
+    private func prepareLogger(outputType: OutputType, logLevel: LogLevel) async throws {
         let logFolder = try dependencies.logsRotator.currentLogFolder()
         let logFile = try logFolder.createFile(named: "rugby.log")
         let filePrinter = FilePrinter(file: logFile)

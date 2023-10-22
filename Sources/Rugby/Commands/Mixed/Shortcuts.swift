@@ -84,7 +84,7 @@ extension Shortcuts {
         func run() async throws {
             try await run(body,
                           outputType: commonOptions.output,
-                          logLevel: commonOptions.verbose)
+                          logLevel: commonOptions.logLevel)
         }
     }
 }

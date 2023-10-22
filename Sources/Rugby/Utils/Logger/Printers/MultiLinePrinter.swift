@@ -3,9 +3,9 @@ import RugbyFoundation
 // MARK: - Implementation
 
 final class MultiLinePrinter {
-    private let maxLevel: Int
+    private let maxLevel: LogLevel
 
-    init(maxLevel: Int) {
+    init(maxLevel: LogLevel) {
         self.maxLevel = maxLevel
     }
 }
@@ -13,9 +13,9 @@ final class MultiLinePrinter {
 // MARK: - Printer
 
 extension MultiLinePrinter: Printer {
-    func canPrint(level: Int) -> Bool { level <= maxLevel }
+    func canPrint(level: LogLevel) -> Bool { level <= maxLevel }
 
-    func print(_ text: String, level: Int, updateLine _: Bool) {
+    func print(_ text: String, level: LogLevel, updateLine _: Bool) {
         guard canPrint(level: level) else { return }
         Swift.print(text)
     }

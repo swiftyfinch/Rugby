@@ -19,7 +19,7 @@ struct Clear: AsyncParsableCommand {
     func run() async throws {
         try await run(body,
                       outputType: commonOptions.output,
-                      logLevel: commonOptions.verbose,
+                      logLevel: commonOptions.logLevel,
                       muteSound: true)
     }
 }
@@ -59,7 +59,7 @@ extension Clear {
         func run() async throws {
             try await run(body,
                           outputType: commonOptions.output,
-                          logLevel: commonOptions.verbose,
+                          logLevel: commonOptions.logLevel,
                           muteSound: true)
         }
 
@@ -86,7 +86,7 @@ extension Clear {
         func run() async throws {
             try await run(body,
                           outputType: commonOptions.output,
-                          logLevel: commonOptions.verbose,
+                          logLevel: commonOptions.logLevel,
                           muteSound: true)
         }
 

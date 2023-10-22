@@ -20,7 +20,7 @@ final actor Logger {
 
     private func logToPrinters(
         _ text: String,
-        level: Int,
+        level: LogLevel,
         updateLine: Bool = false,
         output: LoggerOutput
     ) async {
@@ -50,7 +50,7 @@ final actor Logger {
         output: LoggerOutput
     ) async {
         shift += 1
-        await logToPrinters("\(prefixOpen())\(title)", level: level.rawValue, output: output)
+        await logToPrinters("\(prefixOpen())\(title)", level: level, output: output)
         lastEnter = title
     }
 
@@ -63,7 +63,7 @@ final actor Logger {
     ) async {
         let formattedTime = time.map { "[\($0.format())] ".yellow } ?? ""
         let text = "\(prefixClose())\(formattedTime)\(title)"
-        await logToPrinters(text, level: level.rawValue, updateLine: updateLine, output: output)
+        await logToPrinters(text, level: level, updateLine: updateLine, output: output)
         shift -= 1
     }
 
@@ -151,7 +151,7 @@ extension Logger: ILogger {
         shift += 1
         await logToPrinters(
             "\(prefixClose())\(text)",
-            level: level.rawValue,
+            level: level,
             output: output
         )
         shift -= 1
@@ -166,7 +166,7 @@ extension Logger: ILogger {
         for line in text.components(separatedBy: .newlines) {
             await logToPrinters(
                 "\(prefix())\(line)",
-                level: level.rawValue,
+                level: level,
                 output: output
             )
         }

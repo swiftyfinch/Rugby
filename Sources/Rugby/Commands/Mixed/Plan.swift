@@ -32,7 +32,7 @@ struct Plan: AsyncParsableCommand {
 
         try await run(body,
                       outputType: commonOptions.output,
-                      logLevel: commonOptions.verbose)
+                      logLevel: commonOptions.logLevel)
     }
 }
 
