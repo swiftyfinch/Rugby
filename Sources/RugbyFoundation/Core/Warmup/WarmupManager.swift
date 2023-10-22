@@ -68,7 +68,8 @@ final class WarmupManager: Loggable {
 
     private func findLocalBinaries(targetsRegex: NSRegularExpression?,
                                    exceptTargetsRegex: NSRegularExpression?,
-                                   options: XcodeBuildOptions) async throws -> TargetsMap {
+                                   options: XcodeBuildOptions,
+                                   dryRun: Bool) async throws -> TargetsMap {
         let targets = try await log(
             "Finding Build Targets",
             auto: await buildTargetsManager.findTargets(targetsRegex, exceptTargets: exceptTargetsRegex)
@@ -86,7 +87,7 @@ final class WarmupManager: Loggable {
                 .map { try "- \(binariesManager.finderBinaryFolderPath($0, buildOptions: options))" }
                 .caseInsensitiveSorted()
             await log("Not Found:", level: .compact)
-            await logList(notFoundPaths, level: .result)
+            await logList(notFoundPaths, level: dryRun ? .result : .info)
         }
 
         let notFoundPercent = notFound.count.percent(total: targets.count)
@@ -212,7 +213,8 @@ extension WarmupManager: IWarmupManager {
         let notFoundTargets = try await findLocalBinaries(
             targetsRegex: targetsRegex,
             exceptTargetsRegex: exceptTargetsRegex,
-            options: options
+            options: options,
+            dryRun: mode.dryRun
         )
 
         guard let endpointURL else { return }
