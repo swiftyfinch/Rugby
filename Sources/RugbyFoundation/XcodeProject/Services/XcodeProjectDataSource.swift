@@ -11,7 +11,7 @@ final class XcodeProjectDataSource: Loggable {
     var rootProject: Project {
         get async throws {
             if let cachedRootProject { return cachedRootProject }
-            let project = try await log("Reading Project", auto: Project(path: .string(projectPath)))
+            let project = try await log("Reading Project", level: .info, auto: Project(path: .string(projectPath)))
             cachedRootProject = project
             return project
         }
