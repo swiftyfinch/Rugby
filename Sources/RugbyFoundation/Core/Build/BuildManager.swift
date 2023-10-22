@@ -84,7 +84,7 @@ final class BuildManager: Loggable {
             )
         }
         guard buildTargets.isNotEmpty else {
-            await log("Found 100% Binaries (\(targets.count))")
+            await log("Found 100% Binaries (\(targets.count))", level: .result)
             return nil
         }
 
@@ -97,7 +97,7 @@ final class BuildManager: Loggable {
 
         if shared.isNotEmpty {
             let percent = shared.count.percent(total: targets.count)
-            await log("Found \(percent)% Binaries (\(shared.count)/\(targets.count))")
+            await log("Found \(percent)% Binaries (\(shared.count)/\(targets.count))", level: .result)
 
             await log("Reusing Binaries: \n\(shared.values.map { "* \($0.name)" }.sorted().joined(separator: "\n"))",
                       level: .info)
@@ -121,7 +121,7 @@ final class BuildManager: Loggable {
             level: .info
         )
 
-        try await log(title, metricKey: "xcodebuild", block: { [weak self] in
+        try await log(title, metricKey: "xcodebuild", level: .result, block: { [weak self] in
             guard let self else { return }
 
             let cleanup = {
@@ -161,6 +161,7 @@ extension BuildManager: IBuildManager {
 
         try await log(
             "Saving binaries (\(buildTarget.explicitDependencies.count))",
+            level: .result,
             auto: await binariesManager.saveBinaries(ofTargets: buildTarget.explicitDependencies,
                                                      buildOptions: options,
                                                      buildPaths: paths)
