@@ -76,6 +76,23 @@ public extension Loggable {
         )
     }
 
+    /// Logs list of lines.
+    /// - Parameters:
+    ///   - list: A list of lines to log.
+    ///   - level: A level of logging.
+    ///   - output: An output type.
+    func logList(
+        _ list: [String],
+        level: LogLevel = .compact,
+        output: LoggerOutput = .all
+    ) async {
+        await logger.logList(
+            list.map(\.green),
+            level: level,
+            output: output
+        )
+    }
+
     /// Logs plain text.
     /// - Parameters:
     ///   - text: A text to log.
