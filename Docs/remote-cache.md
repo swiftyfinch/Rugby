@@ -75,7 +75,7 @@ default:
 If you have a more complex workflow with your remote storage, you can use the command [`rugby warmup --analyse`](commands-help/warmup.md).\
 The command with this flag analyses local binaries and then you can grep it like so:
 ```shell
-rugby warmup --analyse --verbose --output multiline | grep "^-\s"
+rugby warmup --analyse --quiet --output raw | grep "^-\s"
 ```
 
 You will get output in such way:

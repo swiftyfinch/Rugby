@@ -3,7 +3,7 @@ import RugbyFoundation
 
 struct CommonOptions: ParsableCommand {
     @Option(name: .shortAndLong,
-            help: "Output mode: fold, multiline, quiet.")
+            help: "Output mode: fold, multiline, silent, raw.")
     var output: OutputType = .fold
 
     @Flag(name: .shortAndLong, help: "Increase verbosity level.")

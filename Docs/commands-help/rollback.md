@@ -11,14 +11,15 @@
  > Restore projects state before the last Rugby usage.
 
  Options:
-╭──────────────────────────────────────────────────────╮
-│ -o, --output  * Output mode: fold, multiline, quiet. │
-╰──────────────────────────────────────────────────────╯
+╭────────────────────────────────────────────────────────────╮
+│ -o, --output  * Output mode: fold, multiline, silent, raw. │
+╰────────────────────────────────────────────────────────────╯
  Flags:
-╭────────────────────────────────────────────╮
-│ -v, --verbose []  * Log level.             │
-│ -h, --help        * Show help information. │
-╰────────────────────────────────────────────╯
+╭───────────────────────────────────────────────╮
+│ -v, --verbose []  * Increase verbosity level. │
+│ -q, --quiet []    * Decrease verbosity level. │
+│ -h, --help        * Show help information.    │
+╰───────────────────────────────────────────────╯
 ```
 
 ## Discussion
