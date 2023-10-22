@@ -83,11 +83,12 @@ final class WarmupManager: Loggable {
         )
 
         if notFound.values.isNotEmpty {
+            let logLevel: LogLevel = dryRun ? .result : .info
             let notFoundPaths = try notFound.values
                 .map { try "- \(binariesManager.finderBinaryFolderPath($0, buildOptions: options))" }
                 .caseInsensitiveSorted()
-            await log("Not Found:", level: .compact)
-            await logList(notFoundPaths, level: dryRun ? .result : .info)
+            await log("Not Found:", level: logLevel)
+            await logList(notFoundPaths, level: logLevel)
         }
 
         let notFoundPercent = notFound.count.percent(total: targets.count)
