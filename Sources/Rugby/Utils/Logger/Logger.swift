@@ -34,6 +34,15 @@ final actor Logger {
     ) async {
         if output.contains(.screen), let screenPrinter, screenPrinter.canPrint(level: level) {
             await progressPrinter?.cancel()
+            if let lastEnter {
+                await logToPrinter(
+                    screenPrinter,
+                    text: lastEnter,
+                    icon: beginIcon,
+                    level: level,
+                    updateLine: true
+                )
+            }
             lastEnter = nil
         }
         if output.contains(.file), let filePrinter {
