@@ -81,16 +81,16 @@ final class WarmupManager: Loggable {
             auto: binariesManager.findBinaries(ofTargets: targets, buildOptions: options)
         )
 
-        let notFoundPaths = try notFound.values.compactMap {
-            try "- \(binariesManager.finderBinaryFolderPath($0, buildOptions: options))"
-        }
-        if notFoundPaths.isNotEmpty {
-            let list = notFoundPaths.caseInsensitiveSorted().joined(separator: "\n")
-            await log("Not Found:\n\(list)", level: .info)
+        if notFound.values.isNotEmpty {
+            let notFoundPaths = try notFound.values
+                .map { try "- \(binariesManager.finderBinaryFolderPath($0, buildOptions: options))" }
+                .caseInsensitiveSorted()
+            await log("Not Found:", level: .result)
+            await logList(notFoundPaths, level: .result)
         }
 
         let notFoundPercent = notFound.count.percent(total: targets.count)
-        await log("Not Found Locally \(notFoundPercent)% Binaries (\(notFound.count)/\(targets.count))")
+        await log("Not Found Locally \(notFoundPercent)% Binaries (\(notFound.count)/\(targets.count))", level: .result)
 
         return notFound
     }
