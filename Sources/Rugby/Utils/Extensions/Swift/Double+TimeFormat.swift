@@ -20,7 +20,7 @@ extension Double {
         let correctedSum = seconds + Double(milliseconds / 10)
         guard let string = Self.formatter.string(from: correctedSum) else { return "NaN" }
 
-        guard withMilliseconds else { return string }
+        guard withMilliseconds, milliseconds != 0 else { return string }
 
         // Add mileseconds: 1s -> 1.9s
         var timeComponents = string.components(separatedBy: " ")
