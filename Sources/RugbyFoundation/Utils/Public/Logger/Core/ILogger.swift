@@ -85,6 +85,7 @@ public protocol ILogger: AnyObject {
 
 /// Log level.
 public enum LogLevel: Int, Comparable, CaseIterable {
+    case result = -1
     case compact
     case info
 
