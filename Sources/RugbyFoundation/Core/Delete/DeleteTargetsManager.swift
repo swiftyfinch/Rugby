@@ -43,7 +43,7 @@ extension DeleteTargetsManager: IDeleteTargetsManager {
             "Finding Targets",
             auto: await xcodeProject.findTargets(by: targetsRegex, except: exceptTargetsRegex)
         )
-        try await log("Keeping Excepted Targets Dependencies", block: {
+        try await log("Keeping Excepted Targets Dependencies", level: .info, block: {
             if keepExceptedTargetsDependencies {
                 try await xcodeProject.findTargets().subtracting(shouldBeRemoved).values.forEach {
                     let intersection = $0.dependencies.keysIntersection(shouldBeRemoved)
