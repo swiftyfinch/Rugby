@@ -176,12 +176,13 @@ extension Logger: ILogger {
         block: () async throws -> Result
     ) async rethrows -> Result {
         await enterBlock(header, level: level, output: output)
-        let (result, time) = try await measure(header, level: level, job: block)
-        if time >= 0.1 { metricsLogger?.add(time, name: metricKey ?? header) }
+        let (result, duration) = try await measure(header, level: level, job: block)
+        let notZeroDuration = (duration >= 0.1)
+        if notZeroDuration { metricsLogger?.add(duration, name: metricKey ?? header) }
         let updateLine = (lastEnter == header)
         await leaveBlock(
             updateLine ? header : footer ?? header,
-            time >= 0.1 ? time : nil,
+            notZeroDuration ? duration : nil,
             updateLine: updateLine,
             level: level,
             output: output
