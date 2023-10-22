@@ -7,7 +7,21 @@ public protocol Printer {
     /// Prints text.
     /// - Parameters:
     ///   - text: A text to print.
+    ///   - icon: An icon to print with text. For example, a checkmark.
+    ///   - duration: A duration of command to print with text. For example, [1.3s].
     ///   - level: A level for deciding if text should be printed.
     ///   - updateLine: An indicator to rewrite the previous line.
-    func print(_ text: String, level: LogLevel, updateLine: Bool)
+    func print(
+        _ text: String,
+        icon: String?,
+        duration: Double?,
+        level: LogLevel,
+        updateLine: Bool
+    )
+
+    /// Shifts the beginning of line to the right.
+    func shift()
+
+    /// Shifts the beginning of line to the left.
+    func unshift()
 }

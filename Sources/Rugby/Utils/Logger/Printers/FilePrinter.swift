@@ -6,6 +6,7 @@ import RugbyFoundation
 
 final class FilePrinter {
     private let file: IFile
+    private var shiftValue = 0
 
     private lazy var timeFormatter: DateFormatter = {
         let formatter = DateFormatter()
@@ -23,9 +24,21 @@ final class FilePrinter {
 extension FilePrinter: Printer {
     func canPrint(level _: LogLevel) -> Bool { true }
 
-    func print(_ text: String, level _: LogLevel, updateLine _: Bool) {
+    func shift() { shiftValue += 1 }
+    func unshift() { shiftValue -= 1 }
+
+    func print(
+        _ text: String,
+        icon: String?,
+        duration: Double?,
+        level _: LogLevel,
+        updateLine _: Bool
+    ) {
         let time = timeFormatter.string(from: Date())
-        let text = "[\(time)]: \(text)\n".raw
+        let prefix = String(repeating: "  ", count: max(0, shiftValue - 1))
+        let icon = icon.map { "\($0) " } ?? ""
+        let duration = duration.map { "[\($0.format())] " } ?? ""
+        let text = "[\(time)]: \(prefix)\(icon)\(duration)\(text)\n".raw
         try? file.append(text)
     }
 }

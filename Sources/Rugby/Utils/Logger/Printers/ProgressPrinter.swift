@@ -35,7 +35,7 @@ final actor ProgressPrinter {
 
     // MARK: - Private
 
-    private func drawFrame(format: @escaping (String) -> String) -> (() -> Void) {
+    private func drawFrame(text: String, level: LogLevel) -> (() -> Void) {
         var frameIndex = -1
         let begin = ProcessInfo.processInfo.systemUptime
         return { [weak self] in
@@ -43,12 +43,8 @@ final actor ProgressPrinter {
 
             frameIndex = (frameIndex + 1) % self.frames.count
             let frame = self.frames[frameIndex]
-
-            let time = ProcessInfo.processInfo.systemUptime - begin
-            let formattedTime = "[\(time.format(withMilliseconds: false))]".yellow
-
-            let output = format("\(frame) \(formattedTime)")
-            self.printer.print(output, level: .compact, updateLine: true)
+            let time = (ProcessInfo.processInfo.systemUptime - begin).rounded(.down)
+            self.printer.print(text, icon: frame, duration: time, level: level, updateLine: true)
         }
     }
 }
@@ -56,12 +52,13 @@ final actor ProgressPrinter {
 // MARK: - IProgressPrinter
 
 extension ProgressPrinter: IProgressPrinter {
-    func show<Result>(format: @escaping (String) -> String,
+    func show<Result>(text: String,
+                      level: LogLevel,
                       job: () async throws -> Result) async rethrows -> Result {
         guard !stopped else { return try await job() }
 
         cancel()
-        let drawFrame = drawFrame(format: format)
+        let drawFrame = drawFrame(text: text, level: level)
         timerTask = TimerTask(interval: timeInterval, task: drawFrame)
 
         defer { cancel() }
