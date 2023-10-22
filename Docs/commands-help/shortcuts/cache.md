@@ -19,7 +19,7 @@
 │ -g, --targets-as-regex []  * Targets for building as a RegEx pattern.          │
 │ -e, --except []            * Exclude targets from building.                    │
 │ -x, --except-as-regex []   * Exclude targets from building as a RegEx pattern. │
-│ -o, --output               * Output mode: fold, multiline, quiet.              │
+│ -o, --output               * Output mode: fold, multiline, silent, raw.        │
 │ --warmup                   * Warmup cache with this endpoint.                  │
 ╰────────────────────────────────────────────────────────────────────────────────╯
  Flags:
@@ -28,7 +28,8 @@
 │ --delete-sources  * Delete target groups from project.                  │
 │ -r, --rollback    * Restore projects state before the last Rugby usage. │
 │ --strip           * Build without debug symbols.                        │
-│ -v, --verbose []  * Log level.                                          │
+│ -v, --verbose []  * Increase verbosity level.                           │
+│ -q, --quiet []    * Decrease verbosity level.                           │
 │ -h, --help        * Show help information.                              │
 ╰─────────────────────────────────────────────────────────────────────────╯
 ```

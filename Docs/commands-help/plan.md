@@ -15,14 +15,15 @@
 │ name  * Name of plan to run. │
 ╰──────────────────────────────╯
  Options:
-╭────────────────────────────────────────────────────────╮
-│ -p, --path    * Path to plans yaml. (.rugby/plans.yml) │
-│ -o, --output  * Output mode: fold, multiline, quiet.   │
-╰────────────────────────────────────────────────────────╯
+╭────────────────────────────────────────────────────────────╮
+│ -p, --path    * Path to plans yaml. (.rugby/plans.yml)     │
+│ -o, --output  * Output mode: fold, multiline, silent, raw. │
+╰────────────────────────────────────────────────────────────╯
  Flags:
 ╭─────────────────────────────────────────────────────────────────────────╮
 │ -r, --rollback    * Restore projects state before the last Rugby usage. │
-│ -v, --verbose []  * Log level.                                          │
+│ -v, --verbose []  * Increase verbosity level.                           │
+│ -q, --quiet []    * Decrease verbosity level.                           │
 │ -h, --help        * Show help information.                              │
 ╰─────────────────────────────────────────────────────────────────────────╯
 ```
