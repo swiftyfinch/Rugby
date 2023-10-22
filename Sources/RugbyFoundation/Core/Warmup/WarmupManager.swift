@@ -217,7 +217,7 @@ extension WarmupManager: IWarmupManager {
             dryRun: mode.dryRun
         )
 
-        guard let endpointURL else { return }
+        guard let endpointURL, notFoundTargets.isNotEmpty else { return }
         try await downloadRemoteBinaries(
             targets: notFoundTargets,
             endpointURL: endpointURL,
