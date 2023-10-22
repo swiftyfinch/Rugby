@@ -51,7 +51,7 @@ extension DeleteTargetsManager: IDeleteTargetsManager {
                 }
             }
         })
-        try await log("Backuping", auto: await backupManager.backup(xcodeProject, kind: .original))
+        try await log("Backuping", level: .info, auto: await backupManager.backup(xcodeProject, kind: .original))
         try await log("Deleting Targets (\(shouldBeRemoved.count))",
                       auto: await xcodeProject.deleteTargets(shouldBeRemoved, keepGroups: !deleteSources))
         try await log("Saving Project", auto: await xcodeProject.save())
