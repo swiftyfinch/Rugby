@@ -61,7 +61,7 @@ extension RunnableCommand {
         switch outputType {
         case .fold, .multiline:
             dependencies.soundPlayer.playBell()
-        case .quiet:
+        case .raw, .silence:
             break
         }
     }
@@ -111,7 +111,10 @@ extension RunnableCommand {
         case .multiline:
             screenPrinter = MultiLinePrinter(maxLevel: logLevel)
             progressPrinter = nil
-        case .quiet:
+        case .raw:
+            screenPrinter = RawPrinter(maxLevel: logLevel)
+            progressPrinter = nil
+        case .silence:
             screenPrinter = nil
             progressPrinter = nil
         }

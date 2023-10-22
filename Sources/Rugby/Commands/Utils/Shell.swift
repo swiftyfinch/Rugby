@@ -28,7 +28,9 @@ struct Shell: RunnableCommand {
             await logPlain(output, level: .info, output: .screen)
         case .multiline:
             try dependencies.shellExecutor.printShell(command)
-        case .quiet:
+        case .raw:
+            try dependencies.shellExecutor.printShell(command)
+        case .silence:
             try dependencies.shellExecutor.throwingShell(command)
         }
         dependencies.xcode.resetProjectsCache()
