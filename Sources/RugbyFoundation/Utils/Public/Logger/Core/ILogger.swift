@@ -73,9 +73,13 @@ public protocol ILogger: AnyObject {
 }
 
 /// Log level.
-public enum LogLevel: Int, CaseIterable {
+public enum LogLevel: Int, Comparable, CaseIterable {
     case compact
     case info
+
+    public static func < (lhs: LogLevel, rhs: LogLevel) -> Bool {
+        lhs.rawValue < rhs.rawValue
+    }
 }
 
 /// Log output type.

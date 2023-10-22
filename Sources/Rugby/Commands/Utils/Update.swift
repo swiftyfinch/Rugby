@@ -30,7 +30,7 @@ struct Update: AsyncParsableCommand {
     func run() async throws {
         try await run(body,
                       outputType: commonOptions.output,
-                      logLevel: commonOptions.verbose)
+                      logLevel: commonOptions.logLevel)
     }
 }
 
@@ -50,7 +50,7 @@ extension Update {
         func run() async throws {
             try await run(body,
                           outputType: commonOptions.output,
-                          logLevel: commonOptions.verbose)
+                          logLevel: commonOptions.logLevel)
         }
 
         func body() async throws {

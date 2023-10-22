@@ -21,9 +21,9 @@ final class FilePrinter {
 // MARK: - Printer
 
 extension FilePrinter: Printer {
-    func canPrint(level _: Int) -> Bool { true }
+    func canPrint(level _: LogLevel) -> Bool { true }
 
-    func print(_ text: String, level _: Int, updateLine _: Bool) {
+    func print(_ text: String, level _: LogLevel, updateLine _: Bool) {
         let time = timeFormatter.string(from: Date())
         let text = "[\(time)]: \(text)\n".raw
         try? file.append(text)

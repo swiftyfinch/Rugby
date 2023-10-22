@@ -48,7 +48,7 @@ final actor ProgressPrinter {
             let formattedTime = "[\(time.format(withMilliseconds: false))]".yellow
 
             let output = format("\(frame) \(formattedTime)")
-            self.printer.print(output, level: 0, updateLine: true)
+            self.printer.print(output, level: .compact, updateLine: true)
         }
     }
 }
