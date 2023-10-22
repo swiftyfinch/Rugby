@@ -85,7 +85,7 @@ final class WarmupManager: Loggable {
             let notFoundPaths = try notFound.values
                 .map { try "- \(binariesManager.finderBinaryFolderPath($0, buildOptions: options))" }
                 .caseInsensitiveSorted()
-            await log("Not Found:", level: .result)
+            await log("Not Found:", level: .compact)
             await logList(notFoundPaths, level: .result)
         }
 
