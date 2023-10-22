@@ -145,7 +145,7 @@ extension UseBinariesManager: IUseBinariesManager {
             auto: await buildTargetsManager.findTargets(targetsRegex, exceptTargets: exceptTargetsRegex)
         )
         try await log("Hashing Targets", auto: await targetsHasher.hash(binaryTargets, xcargs: xcargs))
-        try await log("Backuping", auto: await backupManager.backup(xcodeProject, kind: .original))
+        try await log("Backuping", level: .info, auto: await backupManager.backup(xcodeProject, kind: .original))
         try await use(targets: binaryTargets, keepGroups: !deleteSources)
         try await rugbyXcodeProject.markAsUsingRugby()
         try await log("Saving Project", auto: await xcodeProject.save())

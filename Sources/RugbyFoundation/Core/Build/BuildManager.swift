@@ -71,7 +71,7 @@ final class BuildManager: Loggable {
                                  ignoreCache: Bool) async throws -> IInternalTarget? {
         guard targets.isNotEmpty else { throw BuildError.cantFindBuildTargets }
 
-        try await log("Backuping", auto: await backupManager.backup(xcodeProject, kind: .tmp))
+        try await log("Backuping", level: .info, auto: await backupManager.backup(xcodeProject, kind: .tmp))
         try await log("Checking Binaries Storage", auto: await binariesCleaner.freeSpace())
         try await log("Hashing Targets", auto: await targetsHasher.hash(targets, xcargs: options.xcargs))
 
