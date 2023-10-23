@@ -7,6 +7,7 @@ import RugbyFoundation
 final class FilePrinter {
     private let file: IFile
     private var shiftValue = 0
+    private var dateProvider: () -> Date
 
     private lazy var timeFormatter: DateFormatter = {
         let formatter = DateFormatter()
@@ -14,8 +15,9 @@ final class FilePrinter {
         return formatter
     }()
 
-    init(file: IFile) {
+    init(file: IFile, dateProvider: @escaping () -> Date = Date.init) {
         self.file = file
+        self.dateProvider = dateProvider
     }
 }
 
@@ -34,7 +36,7 @@ extension FilePrinter: Printer {
         level _: LogLevel,
         updateLine _: Bool
     ) {
-        let time = timeFormatter.string(from: Date())
+        let time = timeFormatter.string(from: dateProvider())
         let prefix = String(repeating: "  ", count: max(0, shiftValue - 1))
         let icon = icon.map { "\($0) " } ?? ""
         let duration = duration.map { "[\($0.format())] " } ?? ""
