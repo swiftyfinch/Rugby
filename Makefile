@@ -42,6 +42,11 @@ mocks:
 			 --sources Tests/FoundationTests \
 			 --templates Tests/Sourcery/AutoMockable.stencil \
 			 --output Tests/FoundationTests
+	sourcery --sources Sources/RugbyFoundation \
+			 --sources Sources/Rugby \
+			 --sources Tests/RugbyTests \
+			 --templates Tests/Sourcery/AutoMockable.stencil \
+			 --output Tests/RugbyTests
 
 .PHONY: test
 test:
