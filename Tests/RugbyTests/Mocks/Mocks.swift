@@ -14,5 +14,11 @@ extension IMetricsLogger {}
 // sourcery: AutoMockable, imports = ["Fish"]
 extension IFile {}
 
-// sourcery: AutoMockable, imports = ["Rugby"]
+//// sourcery: AutoMockable, imports = ["Rugby"]
 extension IStandardOutput {}
+
+//// sourcery: AutoMockable, imports = ["Rugby"]
+extension ITimerTaskFactory {}
+
+//// sourcery: AutoMockable, imports = ["Rugby"]
+extension ITimerTask {}

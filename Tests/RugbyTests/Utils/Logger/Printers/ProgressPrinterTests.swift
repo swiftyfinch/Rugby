@@ -1,14 +1,19 @@
+import Rainbow
 @testable import Rugby
 import XCTest
 
 final class ProgressPrinterTests: XCTestCase {
     private var sut: ProgressPrinter!
     private var printer: PrinterMock!
+    private var timerTaskFactory: ITimerTaskFactoryMock!
 
     override func setUp() {
         super.setUp()
+        Rainbow.outputTarget = .console
+        Rainbow.enabled = true
         printer = PrinterMock()
-        sut = ProgressPrinter(printer: printer)
+        timerTaskFactory = ITimerTaskFactoryMock()
+        sut = ProgressPrinter(printer: printer, timerTaskFactory: timerTaskFactory)
     }
 
     override func tearDown() {
@@ -20,8 +25,9 @@ final class ProgressPrinterTests: XCTestCase {
 
 extension ProgressPrinterTests {
     func test_show() async {
+        timerTaskFactory.makeTaskIntervalTaskReturnValue = ITimerTaskMock()
         let result = await sut.show(text: "test_text", level: .compact) {
-            usleep(140_000)
+            timerTaskFactory.makeTaskIntervalTaskReceivedArguments?.task()
             return "test_result"
         }
 
@@ -36,9 +42,12 @@ extension ProgressPrinterTests {
         XCTAssertTrue(invocations[0].updateLine)
     }
 
-    func test_showTwice() async {
+    func test_showTriple() async {
+        timerTaskFactory.makeTaskIntervalTaskReturnValue = ITimerTaskMock()
         let result = await sut.show(text: "test_text", level: .compact) {
-            usleep(400_000)
+            timerTaskFactory.makeTaskIntervalTaskReceivedArguments?.task()
+            timerTaskFactory.makeTaskIntervalTaskReceivedArguments?.task()
+            timerTaskFactory.makeTaskIntervalTaskReceivedArguments?.task()
             return "test_result"
         }
 
@@ -66,15 +75,17 @@ extension ProgressPrinterTests {
     }
 
     func test_showCancel() async {
+        let timerTask = ITimerTaskMock()
+        timerTaskFactory.makeTaskIntervalTaskReturnValue = timerTask
         let result = await sut.show(text: "test_text", level: .compact) {
-            usleep(140_000)
+            timerTaskFactory.makeTaskIntervalTaskReceivedArguments?.task()
             await sut.cancel()
-            usleep(140_000)
             return "test_result"
         }
 
         // Assert
         XCTAssertEqual(result, "test_result")
+        XCTAssertTrue(timerTask.cancelCalled)
         let invocations = printer.printIconDurationLevelUpdateLineReceivedInvocations
         XCTAssertEqual(invocations.count, 1)
         XCTAssertEqual(invocations[0].text, "test_text")
@@ -85,15 +96,17 @@ extension ProgressPrinterTests {
     }
 
     func test_showStop() async {
+        let timerTask = ITimerTaskMock()
+        timerTaskFactory.makeTaskIntervalTaskReturnValue = timerTask
         let result = await sut.show(text: "test_text", level: .compact) {
-            usleep(140_000)
+            timerTaskFactory.makeTaskIntervalTaskReceivedArguments?.task()
             await sut.stop()
-            usleep(140_000)
             return "test_result"
         }
 
         // Assert
         XCTAssertEqual(result, "test_result")
+        XCTAssertTrue(timerTask.cancelCalled)
         let invocations = printer.printIconDurationLevelUpdateLineReceivedInvocations
         XCTAssertEqual(invocations.count, 1)
         XCTAssertEqual(invocations[0].text, "test_text")
