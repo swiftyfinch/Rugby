@@ -3,9 +3,12 @@ import RugbyFoundation
 // MARK: - Implementation
 
 final class RawPrinter {
+    private let standardOutput: IStandardOutput
     private let maxLevel: LogLevel
 
-    init(maxLevel: LogLevel) {
+    init(standardOutput: IStandardOutput,
+         maxLevel: LogLevel) {
+        self.standardOutput = standardOutput
         self.maxLevel = maxLevel
     }
 }
@@ -26,6 +29,6 @@ extension RawPrinter: Printer {
         updateLine _: Bool
     ) {
         guard canPrint(level: level) else { return }
-        Swift.print(text.raw)
+        standardOutput.print(text.raw)
     }
 }

@@ -3,10 +3,13 @@ import RugbyFoundation
 // MARK: - Implementation
 
 final class MultiLinePrinter {
+    private let standardOutput: IStandardOutput
     private let maxLevel: LogLevel
     private var shiftValue = 0
 
-    init(maxLevel: LogLevel) {
+    init(standardOutput: IStandardOutput,
+         maxLevel: LogLevel) {
+        self.standardOutput = standardOutput
         self.maxLevel = maxLevel
     }
 }
@@ -30,6 +33,6 @@ extension MultiLinePrinter: Printer {
         let prefix = String(repeating: "  ", count: max(0, shiftValue - 1))
         let icon = icon.map { "\($0) " } ?? ""
         let duration = duration.map { "[\($0.format())] ".yellow } ?? ""
-        Swift.print("\(prefix)\(icon)\(duration)\(text)")
+        standardOutput.print("\(prefix)\(icon)\(duration)\(text)")
     }
 }

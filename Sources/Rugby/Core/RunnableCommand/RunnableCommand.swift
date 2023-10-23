@@ -102,17 +102,27 @@ extension RunnableCommand {
         switch outputType {
         case .fold:
             let columns = Debugger().isAttached() ? Int.max : (Terminal.columns() ?? Int.max)
-            let printer = OneLinePrinter(maxLevel: logLevel, columns: columns)
+            let printer = OneLinePrinter(
+                standardOutput: dependencies.standardOutput,
+                maxLevel: logLevel,
+                columns: columns
+            )
             screenPrinter = printer
             progressPrinter = ProgressPrinter(printer: printer)
             dependencies.processMonitor.runOnInterruption {
                 Task { [weak progressPrinter] in await progressPrinter?.stop() }
             }
         case .multiline:
-            screenPrinter = MultiLinePrinter(maxLevel: logLevel)
+            screenPrinter = MultiLinePrinter(
+                standardOutput: dependencies.standardOutput,
+                maxLevel: logLevel
+            )
             progressPrinter = nil
         case .raw:
-            screenPrinter = RawPrinter(maxLevel: logLevel)
+            screenPrinter = RawPrinter(
+                standardOutput: dependencies.standardOutput,
+                maxLevel: logLevel
+            )
             progressPrinter = nil
         case .silence:
             screenPrinter = nil
