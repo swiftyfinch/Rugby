@@ -3,11 +3,15 @@ import RugbyFoundation
 // MARK: - Implementation
 
 final class OneLinePrinter {
+    private let standardOutput: IStandardOutput
     private let maxLevel: LogLevel
     private let columns: Int
     private var shiftValue = 0
 
-    init(maxLevel: LogLevel, columns: Int) {
+    init(standardOutput: IStandardOutput,
+         maxLevel: LogLevel,
+         columns: Int) {
+        self.standardOutput = standardOutput
         self.maxLevel = maxLevel
         self.columns = columns
     }
@@ -34,6 +38,6 @@ extension OneLinePrinter: Printer {
         let duration = duration.map { "[\($0.format())] ".yellow } ?? ""
         let text = "\(prefix)\(icon)\(duration)\(text)"
         let choppedText = text.rainbowWidth(columns)
-        Swift.print(updateLine ? "\u{1B}[1A\u{1B}[K\(choppedText)" : choppedText)
+        standardOutput.print(updateLine ? "\u{1B}[1A\u{1B}[K\(choppedText)" : choppedText)
     }
 }
