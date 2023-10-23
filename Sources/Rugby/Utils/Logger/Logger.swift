@@ -32,8 +32,8 @@ final actor Logger {
         shifts: Shift = [],
         output: LoggerOutput
     ) async {
-        if output.contains(.screen), let screenPrinter, screenPrinter.canPrint(level: level) {
-            await progressPrinter?.cancel()
+        if output.contains(.screen), let progressPrinter, let screenPrinter, screenPrinter.canPrint(level: level) {
+            await progressPrinter.cancel()
             if let lastEnter {
                 await logToPrinter(
                     screenPrinter,
