@@ -108,7 +108,10 @@ extension RunnableCommand {
                 columns: columns
             )
             screenPrinter = printer
-            progressPrinter = ProgressPrinter(printer: printer)
+            progressPrinter = ProgressPrinter(
+                printer: printer,
+                timerTaskFactory: dependencies.timerTaskFactory
+            )
             dependencies.processMonitor.runOnInterruption {
                 Task { [weak progressPrinter] in await progressPrinter?.stop() }
             }

@@ -19,13 +19,15 @@ final actor ProgressPrinter {
 
     // Dependencies
     private let printer: Printer
+    private let timerTaskFactory: ITimerTaskFactory
 
     // Variables
-    private var timerTask: TimerTask?
+    private var timerTask: ITimerTask?
     private var stopped = false
 
-    init(printer: Printer) {
+    init(printer: Printer, timerTaskFactory: ITimerTaskFactory) {
         self.printer = printer
+        self.timerTaskFactory = timerTaskFactory
     }
 
     func stop() {
@@ -59,7 +61,7 @@ extension ProgressPrinter: IProgressPrinter {
 
         cancel()
         let drawFrame = drawFrame(text: text, level: level)
-        timerTask = TimerTask(interval: timeInterval, task: drawFrame)
+        timerTask = timerTaskFactory.makeTask(interval: timeInterval, task: drawFrame)
 
         defer { cancel() }
         return try await job()

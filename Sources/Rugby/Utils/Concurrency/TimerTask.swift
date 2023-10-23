@@ -1,6 +1,14 @@
 import Foundation
 
-final class TimerTask {
+// MARK: - Interface
+
+protocol ITimerTask: AnyObject {
+    func cancel()
+}
+
+// MARK: - Implementation
+
+final class TimerTask: ITimerTask {
     private let interval: TimeInterval
     private let timer: Timer
 
