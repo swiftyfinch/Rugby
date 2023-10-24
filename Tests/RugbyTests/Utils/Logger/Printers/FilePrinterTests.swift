@@ -6,12 +6,19 @@ import XCTest
 final class FilePrinterTests: XCTestCase {
     private var sut: FilePrinter!
     private var file: IFileMock!
+    private var date: Date!
+    private var time: String { timeFormatter.string(from: date) }
+    private let timeFormatter: DateFormatter = {
+        let formatter = DateFormatter()
+        formatter.dateFormat = "HH:mm:ss"
+        return formatter
+    }()
 
-    override func setUp() async throws {
-        try await super.setUp()
+    override func setUp() {
+        super.setUp()
         file = IFileMock()
-        let date = Date(timeIntervalSinceReferenceDate: 687_312_329)
-        sut = FilePrinter(file: file, dateProvider: { date })
+        date = Date(timeIntervalSinceReferenceDate: 687_312_329)
+        sut = FilePrinter(file: file, dateProvider: { self.date })
     }
 
     override func tearDown() {
@@ -35,28 +42,28 @@ extension FilePrinterTests {
         }
 
         // Assert
-        XCTAssertTrue(file.appendReceivedInvocations.allSatisfy { $0 == "[05:05:29]: ⚑ [5m 29s] test_text\n" })
+        XCTAssertTrue(file.appendReceivedInvocations.allSatisfy { $0 == "[\(time)]: ⚑ [5m 29s] test_text\n" })
     }
 
     func test_withoutIcon() {
         sut.print("test_text", icon: nil, duration: 6, level: .compact, updateLine: true)
 
         // Assert
-        XCTAssertEqual(file.appendReceivedInvocations, ["[05:05:29]: [6s] test_text\n"])
+        XCTAssertEqual(file.appendReceivedInvocations, ["[\(time)]: [6s] test_text\n"])
     }
 
     func test_withoutIconAndDuration() {
         sut.print("test_text", icon: nil, duration: nil, level: .compact, updateLine: true)
 
         // Assert
-        XCTAssertEqual(file.appendReceivedInvocations, ["[05:05:29]: test_text\n"])
+        XCTAssertEqual(file.appendReceivedInvocations, ["[\(time)]: test_text\n"])
     }
 
     func test_withoutIconAndDurationUpdateLineFalse() {
         sut.print("test_text", icon: nil, duration: nil, level: .compact, updateLine: false)
 
         // Assert
-        XCTAssertEqual(file.appendReceivedInvocations, ["[05:05:29]: test_text\n"])
+        XCTAssertEqual(file.appendReceivedInvocations, ["[\(time)]: test_text\n"])
     }
 
     func test_shift() {
@@ -65,7 +72,7 @@ extension FilePrinterTests {
         sut.print("test_text", icon: "⚑", duration: 329, level: .compact, updateLine: true)
 
         // Assert
-        XCTAssertEqual(file.appendReceivedInvocations, ["[05:05:29]:   ⚑ [5m 29s] test_text\n"])
+        XCTAssertEqual(file.appendReceivedInvocations, ["[\(time)]:   ⚑ [5m 29s] test_text\n"])
     }
 
     func test_shiftAndUnshift() {
@@ -79,9 +86,9 @@ extension FilePrinterTests {
 
         // Assert
         XCTAssertEqual(file.appendReceivedInvocations, [
-            "[05:05:29]:   ⚑ [29s] test_text0\n",
-            "[05:05:29]:     ⚑ [17m 9s] test_text1\n",
-            "[05:05:29]:   ⚑ test_text2\n"
+            "[\(time)]:   ⚑ [29s] test_text0\n",
+            "[\(time)]:     ⚑ [17m 9s] test_text1\n",
+            "[\(time)]:   ⚑ test_text2\n"
         ])
     }
 }
