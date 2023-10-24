@@ -22,3 +22,6 @@ extension ITimerTaskFactory {}
 
 //// sourcery: AutoMockable, imports = ["Rugby"]
 extension ITimerTask {}
+
+//// sourcery: AutoMockable, imports = ["Rugby"]
+extension IClock {}

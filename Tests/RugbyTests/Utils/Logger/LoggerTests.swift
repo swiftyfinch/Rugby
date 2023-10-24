@@ -5,6 +5,7 @@ import XCTest
 
 final class LoggerTests: XCTestCase {
     private var sut: ILogger!
+    private var clock: IClockMock!
     private var screenPrinter: PrinterMock!
     private var filePrinter: PrinterMock!
     private var progressPrinter: IProgressPrinterMock!
@@ -14,7 +15,10 @@ final class LoggerTests: XCTestCase {
         super.setUp()
         Rainbow.outputTarget = .console
         Rainbow.enabled = true
-        sut = Logger()
+        clock = IClockMock()
+        clock.underlyingSystemUptime = 0
+        clock.timeSinceSystemUptimeReturnValue = 0
+        sut = Logger(clock: clock)
         screenPrinter = PrinterMock()
         filePrinter = PrinterMock()
         progressPrinter = IProgressPrinterMock()
@@ -24,6 +28,7 @@ final class LoggerTests: XCTestCase {
     override func tearDown() {
         super.tearDown()
         sut = nil
+        clock = nil
         screenPrinter = nil
         filePrinter = nil
         progressPrinter = nil
@@ -108,6 +113,8 @@ extension LoggerTests {
     }
 
     func test_logMeticKey() async {
+        clock.underlyingSystemUptime = 0.1
+        clock.timeSinceSystemUptimeReturnValue = 0.11
         screenPrinter.canPrintLevelClosure = { _ in true }
         await sut.configure(
             screenPrinter: screenPrinter,
@@ -123,11 +130,12 @@ extension LoggerTests {
             metricKey: "xcodebuild",
             level: .info,
             output: .screen,
-            block: { usleep(110_000) }
+            block: {}
         )
 
         // Assert
         let invocations = screenPrinter.printIconDurationLevelUpdateLineReceivedInvocations
+        XCTAssertEqual(clock.timeSinceSystemUptimeReceivedSinceSystemUptime, 0.1)
         XCTAssertEqual(invocations.count, 2)
         XCTAssertEqual(invocations[0].text, "Build")
         XCTAssertEqual(invocations[0].icon, "\u{1B}[33m⚑\u{1B}[0m")
@@ -136,12 +144,12 @@ extension LoggerTests {
         XCTAssertEqual(invocations[0].updateLine, false)
         XCTAssertEqual(invocations[1].text, "Build")
         XCTAssertEqual(invocations[1].icon, "\u{1B}[32m✓\u{1B}[0m")
-        XCTAssertEqual(invocations[1].duration?.description.prefix(4), "0.11")
+        XCTAssertEqual(invocations[1].duration?.description, "0.11")
         XCTAssertEqual(invocations[1].level, .info)
         XCTAssertEqual(invocations[1].updateLine, true)
         XCTAssertEqual(metricsLogger.addNameReceivedInvocations.count, 1)
         XCTAssertEqual(metricsLogger.addNameReceivedInvocations[0].name, "xcodebuild")
-        XCTAssertEqual(metricsLogger.addNameReceivedInvocations[0].metric.description.prefix(4), "0.11")
+        XCTAssertEqual(metricsLogger.addNameReceivedInvocations[0].metric.description, "0.11")
         XCTAssertTrue(metricsLogger.logNameReceivedInvocations.isEmpty)
     }
 

@@ -11,15 +11,25 @@ final actor Logger {
         static let right = Shift(rawValue: 1 << 1)
     }
 
+    // Constants
     private let beginIcon = "⚑".yellow
     private let doneIcon = "✓".green
 
+    // Variables
     private var lastEnter: String?
 
+    // Dependencies
+    private let clock: IClock
     private var screenPrinter: Printer?
     private var filePrinter: Printer?
     private var progressPrinter: IProgressPrinter?
     private var metricsLogger: IMetricsLogger?
+
+    // MARK: - Init
+
+    init(clock: IClock) {
+        self.clock = clock
+    }
 
     // MARK: - Log
 
@@ -132,14 +142,14 @@ final actor Logger {
         level: LogLevel,
         job: () async throws -> Result
     ) async rethrows -> (result: Result, time: Double) {
-        let begin = ProcessInfo.processInfo.systemUptime
+        let begin = clock.systemUptime
         let result: Result
         if let progressPrinter, let screenPrinter, screenPrinter.canPrint(level: level) {
             result = try await progressPrinter.show(text: text, level: level, job: job)
         } else {
             result = try await job()
         }
-        return (result, ProcessInfo.processInfo.systemUptime - begin)
+        return (result, clock.time(sinceSystemUptime: begin))
     }
 }
 
