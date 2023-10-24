@@ -71,7 +71,7 @@ struct Rugby: AsyncParsableCommand {
     private static func prepareDependencies() {
         Vault.setupShared(
             featureToggles: FeatureToggles(),
-            logger: Logger()
+            logger: Logger(clock: Clock())
         )
     }
 

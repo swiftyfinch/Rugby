@@ -6,6 +6,7 @@ final class ProgressPrinterTests: XCTestCase {
     private var sut: ProgressPrinter!
     private var printer: PrinterMock!
     private var timerTaskFactory: ITimerTaskFactoryMock!
+    private var clock: IClockMock!
 
     override func setUp() {
         super.setUp()
@@ -13,18 +14,29 @@ final class ProgressPrinterTests: XCTestCase {
         Rainbow.enabled = true
         printer = PrinterMock()
         timerTaskFactory = ITimerTaskFactoryMock()
-        sut = ProgressPrinter(printer: printer, timerTaskFactory: timerTaskFactory)
+        clock = IClockMock()
+        clock.underlyingSystemUptime = 0
+        clock.timeSinceSystemUptimeReturnValue = 0
+        sut = ProgressPrinter(
+            printer: printer,
+            timerTaskFactory: timerTaskFactory,
+            clock: clock
+        )
     }
 
     override func tearDown() {
         super.tearDown()
-        printer = nil
         sut = nil
+        printer = nil
+        timerTaskFactory = nil
+        clock = nil
     }
 }
 
 extension ProgressPrinterTests {
     func test_show() async {
+        clock.underlyingSystemUptime = 0.1
+        clock.timeSinceSystemUptimeReturnValue = 0.11
         timerTaskFactory.makeTaskIntervalTaskReturnValue = ITimerTaskMock()
         let result = await sut.show(text: "test_text", level: .compact) {
             timerTaskFactory.makeTaskIntervalTaskReceivedArguments?.task()
@@ -32,6 +44,7 @@ extension ProgressPrinterTests {
         }
 
         // Assert
+        XCTAssertEqual(clock.timeSinceSystemUptimeReceivedSinceSystemUptime, 0.1)
         XCTAssertEqual(result, "test_result")
         let invocations = printer.printIconDurationLevelUpdateLineReceivedInvocations
         XCTAssertEqual(invocations.count, 1)
