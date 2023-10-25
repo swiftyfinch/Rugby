@@ -18,7 +18,7 @@ final class FileContentHasher {
 
     private func hashContext(path: String) throws -> String {
         let file = try File.at(path)
-        return try "\(file.relativePath(to: workingDirectory)): \(hash(file))"
+        return try "\(relativePath(of: file)): \(hash(file))"
     }
 
     private func hash(_ file: IFile) throws -> String {
@@ -37,5 +37,14 @@ final class FileContentHasher {
                 paths.insert(path)
             }
         }
+    }
+
+    private func relativePath(of file: IFile) -> String {
+        let relativePath = file.relativePath(to: workingDirectory)
+        // Sometimes modules can be outside of working directory (React Native).
+        if relativePath.hasPrefix("/"), let parent = workingDirectory.parent {
+            return file.relativePath(to: parent)
+        }
+        return relativePath
     }
 }
