@@ -86,7 +86,7 @@ final class XcodeBuild {
                paths: XcodeBuildPaths) throws {
         let command = "NSUnbufferedIO=YES xcodebuild"
         let arguments = [
-            "-project \(paths.project)",
+            "-project \(paths.project.shellFriendly)",
             "-scheme \(target)",
             "-sdk \(options.sdk.xcodebuild)",
             "-config \(options.config.shellFriendly)",
