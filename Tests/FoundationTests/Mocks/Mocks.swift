@@ -33,3 +33,6 @@ extension IFolder {}
 
 // sourcery: AutoMockable, imports = ["Fish"]
 extension IFile {}
+
+// sourcery: AutoMockable, imports = ["RugbyFoundation"]
+extension IXcodeBuildExecutor {}
