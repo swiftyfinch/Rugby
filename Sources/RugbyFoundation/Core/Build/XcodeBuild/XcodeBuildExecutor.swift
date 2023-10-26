@@ -3,7 +3,20 @@ import Foundation
 import SwiftShell
 import XcbeautifyLib
 
-final class XcodeBuildExecutor {
+// MARK: - Interface
+
+protocol IXcodeBuildExecutor {
+    func run(
+        _ command: String,
+        rawLogPath: String,
+        logPath: String,
+        args: Any...
+    ) throws
+}
+
+// MARK: - Implementation
+
+final class XcodeBuildExecutor: IXcodeBuildExecutor {
     private let shellExecutor: IShellExecutor
     private let logFormatter: IBuildLogFormatter
 

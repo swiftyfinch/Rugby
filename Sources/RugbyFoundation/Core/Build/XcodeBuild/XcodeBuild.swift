@@ -75,9 +75,9 @@ public struct XcodeBuildPaths {
 // MARK: - Implementation
 
 final class XcodeBuild {
-    private let xcodeBuildExecutor: XcodeBuildExecutor
+    private let xcodeBuildExecutor: IXcodeBuildExecutor
 
-    init(xcodeBuildExecutor: XcodeBuildExecutor) {
+    init(xcodeBuildExecutor: IXcodeBuildExecutor) {
         self.xcodeBuildExecutor = xcodeBuildExecutor
     }
 
