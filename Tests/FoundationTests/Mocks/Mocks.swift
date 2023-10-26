@@ -36,3 +36,6 @@ extension IFile {}
 
 // sourcery: AutoMockable, imports = ["RugbyFoundation"]
 extension IXcodeBuildExecutor {}
+
+// sourcery: AutoMockable, imports = ["RugbyFoundation"]
+extension FoundationHasher {}
