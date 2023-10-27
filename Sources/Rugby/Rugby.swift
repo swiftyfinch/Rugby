@@ -2,12 +2,12 @@ import ArgumentParser
 import RugbyFoundation
 
 extension String {
-    static let version = "2.1.2"
+    static let version = "2.2.0"
     // ╭────────────────────────────────╮
     // │                                │
     // │       █▀█ █ █ █▀▀ █▄▄ █▄█      │
     // │     > █▀▄ █▄█ █▄█ █▄█  █       │
-    // │                 v.2.1.2        │
+    // │                 v.2.2.0        │
     // │ Cache Cocoa 🌱 pods            │
     // │             for faster rebuild │
     // │   and indexing Xcode project   │
