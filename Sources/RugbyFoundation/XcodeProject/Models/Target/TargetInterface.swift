@@ -23,10 +23,12 @@ protocol IInternalTarget: ITarget {
     var dependencies: TargetsMap { get }
 
     var product: Product? { get }
-    var configurations: [String: Configuration]? { get }
     var buildRules: [BuildRule] { get }
     var buildPhases: [BuildPhase] { get }
     var xcconfigPaths: [String] { get }
+
+    var configurations: [String: Configuration]? { get }
+    func updateConfigurations()
 
     var frameworksScriptPath: String? { get }
     var resourcesScriptPath: String? { get }

@@ -20,7 +20,7 @@ final class Target: IInternalTarget {
     private(set) lazy var products = collectProducts()
 
     private(set) lazy var product = try? pbxTarget.constructProduct(configurations?.first?.value.buildSettings)
-    private(set) lazy var configurations = try? pbxTarget.constructConfigurations(projectBuildConfigurations)
+    private(set) lazy var configurations = constructConfigurations()
     private(set) lazy var buildRules = pbxTarget.constructBuildRules()
     private(set) lazy var buildPhases = pbxTarget.constructBuildPhases()
     private(set) lazy var xcconfigPaths = pbxTarget.xcconfigPaths()
@@ -43,6 +43,14 @@ final class Target: IInternalTarget {
     }
 
     // MARK: - Methods
+
+    func updateConfigurations() {
+        configurations = constructConfigurations()
+    }
+
+    private func constructConfigurations() -> [String: Configuration]? {
+        try? pbxTarget.constructConfigurations(projectBuildConfigurations)
+    }
 
     private func collectDependencies() -> TargetsMap {
         explicitDependencies.reduce(into: explicitDependencies) { collection, dependency in

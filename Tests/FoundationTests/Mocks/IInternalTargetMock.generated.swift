@@ -13,13 +13,13 @@ final class IInternalTargetMock: IInternalTarget {
         set(value) { underlyingName = value }
     }
     var underlyingName: String!
-    var uuid: String {
+    var uuid: TargetId {
         get { return underlyingUuid }
         set(value) { underlyingUuid = value }
     }
-    var underlyingUuid: String!
+    var underlyingUuid: TargetId!
     var context: [AnyHashable: Any] = [:]
-    var explicitDependencies: [String: IInternalTarget] = [:]
+    var explicitDependencies: TargetsMap = [:]
     var pbxTarget: PBXTarget {
         get { return underlyingPbxTarget }
         set(value) { underlyingPbxTarget = value }
@@ -45,18 +45,25 @@ final class IInternalTargetMock: IInternalTarget {
         set(value) { underlyingIsTests = value }
     }
     var underlyingIsTests: Bool!
-    var dependencies: [String: IInternalTarget] = [:]
+    var dependencies: TargetsMap = [:]
     var product: Product?
-    var configurations: [String: Configuration]?
     var buildRules: [BuildRule] = []
     var buildPhases: [RugbyFoundation.BuildPhase] = []
-    var xcconfigPaths: [String] {
-        get { return underlyingXcconfigPaths }
-        set(value) { underlyingXcconfigPaths = value }
-    }
-    var underlyingXcconfigPaths: [String]!
+    var xcconfigPaths: [String] = []
+    var configurations: [String: Configuration]?
     var frameworksScriptPath: String?
     var resourcesScriptPath: String?
+
+    // MARK: - updateConfigurations
+
+    var updateConfigurationsCallsCount = 0
+    var updateConfigurationsCalled: Bool { updateConfigurationsCallsCount > 0 }
+    var updateConfigurationsClosure: (() -> Void)?
+
+    func updateConfigurations() {
+        updateConfigurationsCallsCount += 1
+        updateConfigurationsClosure?()
+    }
 
     // MARK: - resourceBundleNames
 
@@ -82,11 +89,11 @@ final class IInternalTargetMock: IInternalTarget {
 
     var addDependenciesCallsCount = 0
     var addDependenciesCalled: Bool { addDependenciesCallsCount > 0 }
-    var addDependenciesReceivedOther: [String: IInternalTarget]?
-    var addDependenciesReceivedInvocations: [[String: IInternalTarget]] = []
-    var addDependenciesClosure: (([String: IInternalTarget]) -> Void)?
+    var addDependenciesReceivedOther: TargetsMap?
+    var addDependenciesReceivedInvocations: [TargetsMap] = []
+    var addDependenciesClosure: ((TargetsMap) -> Void)?
 
-    func addDependencies(_ other: [String: IInternalTarget]) {
+    func addDependencies(_ other: TargetsMap) {
         addDependenciesCallsCount += 1
         addDependenciesReceivedOther = other
         addDependenciesReceivedInvocations.append(other)
@@ -97,11 +104,11 @@ final class IInternalTargetMock: IInternalTarget {
 
     var deleteDependenciesCallsCount = 0
     var deleteDependenciesCalled: Bool { deleteDependenciesCallsCount > 0 }
-    var deleteDependenciesReceivedOther: [String: IInternalTarget]?
-    var deleteDependenciesReceivedInvocations: [[String: IInternalTarget]] = []
-    var deleteDependenciesClosure: (([String: IInternalTarget]) -> Void)?
+    var deleteDependenciesReceivedOther: TargetsMap?
+    var deleteDependenciesReceivedInvocations: [TargetsMap] = []
+    var deleteDependenciesClosure: ((TargetsMap) -> Void)?
 
-    func deleteDependencies(_ other: [String: IInternalTarget]) {
+    func deleteDependencies(_ other: TargetsMap) {
         deleteDependenciesCallsCount += 1
         deleteDependenciesReceivedOther = other
         deleteDependenciesReceivedInvocations.append(other)
