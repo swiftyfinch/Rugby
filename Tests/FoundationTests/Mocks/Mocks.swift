@@ -19,7 +19,7 @@ extension ReadableStream {}
 //// sourcery: AutoMockable, imports = ["RugbyFoundation", "XcbeautifyLib"]
 extension IBuildLogFormatter {}
 
-//// sourcery: AutoMockable, imports = ["RugbyFoundation", "XcodeProj"]
+// sourcery: AutoMockable, imports = ["RugbyFoundation", "XcodeProj"]
 extension IInternalTarget {}
 
 //// sourcery: AutoMockable, imports = ["RugbyFoundation"]
@@ -37,5 +37,5 @@ extension IFile {}
 // sourcery: AutoMockable, imports = ["RugbyFoundation"]
 extension IXcodeBuildExecutor {}
 
-// sourcery: AutoMockable, imports = ["RugbyFoundation"]
+//// sourcery: AutoMockable, imports = ["RugbyFoundation"]
 extension FoundationHasher {}

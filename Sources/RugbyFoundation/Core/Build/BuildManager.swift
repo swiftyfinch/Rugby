@@ -23,6 +23,7 @@ public protocol IBuildManager {
 final class BuildManager: Loggable {
     let logger: ILogger
     private let buildTargetsManager: BuildTargetsManager
+    private let librariesPatcher: ILibrariesPatcher
     private let xcodeProject: XcodeProject
     private let rugbyXcodeProject: RugbyXcodeProject
     private let backupManager: IBackupManager
@@ -38,6 +39,7 @@ final class BuildManager: Loggable {
 
     init(logger: ILogger,
          buildTargetsManager: BuildTargetsManager,
+         librariesPatcher: ILibrariesPatcher,
          xcodeProject: XcodeProject,
          rugbyXcodeProject: RugbyXcodeProject,
          backupManager: IBackupManager,
@@ -52,6 +54,7 @@ final class BuildManager: Loggable {
          targetTreePainter: ITargetTreePainter) {
         self.logger = logger
         self.buildTargetsManager = buildTargetsManager
+        self.librariesPatcher = librariesPatcher
         self.xcodeProject = xcodeProject
         self.rugbyXcodeProject = rugbyXcodeProject
         self.backupManager = backupManager
@@ -73,6 +76,7 @@ final class BuildManager: Loggable {
 
         try await log("Backuping", level: .info, auto: await backupManager.backup(xcodeProject, kind: .tmp))
         try await log("Checking Binaries Storage", auto: await binariesCleaner.freeSpace())
+        try await librariesPatcher.patch(targets)
         try await log("Hashing Targets", auto: await targetsHasher.hash(targets, xcargs: options.xcargs))
 
         var shared: TargetsMap = [:]

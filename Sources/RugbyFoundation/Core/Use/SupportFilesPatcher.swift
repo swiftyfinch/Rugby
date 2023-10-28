@@ -24,30 +24,43 @@ final class SupportFilesPatcher {
     private let QUOTE = "\""
     private let BUILT_PRODUCTS_DIR = "${BUILT_PRODUCTS_DIR}/"
     private let PODS_CONFIGURATION_BUILD_DIR = "${PODS_CONFIGURATION_BUILD_DIR}/"
+    private let PODS_XCFRAMEWORKS_BUILD_DIR = "${PODS_XCFRAMEWORKS_BUILD_DIR}/"
     private let HEADERS = "Headers"
     // swiftlint:enable identifier_name
 
     private func prepareXCConfigReplacements(target: IInternalTarget) throws -> [FileReplacement] {
         let replacementsPairs: [Replacement] = target.binaryProducts.reduce(into: []) { result, product in
             guard product.type != .bundle, let binaryFolderPath = product.binaryPath else { return }
-            result.append(("\(product.nameWithParent)/\(HEADERS)",
+            result.append(("\(PODS_CONFIGURATION_BUILD_DIR)\(product.nameWithParent)/\(HEADERS)",
                            replacement: "\(binaryFolderPath)/\(product.fileName)/\(HEADERS)"))
 
             guard let parentFolderName = product.parentFolderName else { return }
-            result.append((parentFolderName, replacement: binaryFolderPath))
+            result.append(("\(PODS_CONFIGURATION_BUILD_DIR)\(parentFolderName)",
+                           replacement: binaryFolderPath))
 
             guard let moduleName = product.moduleName else { return }
             let moduleMap = "\(moduleName).modulemap"
-            result.append(("\(parentFolderName)/\(moduleMap)",
+            result.append(("\(PODS_CONFIGURATION_BUILD_DIR)\(parentFolderName)/\(moduleMap)",
                            replacement: "\(binaryFolderPath)/\(moduleMap)"))
+
+            if product.type == .staticLibrary {
+                result.append((
+                    "\(PODS_XCFRAMEWORKS_BUILD_DIR)\(moduleName)/\(HEADERS)",
+                    replacement: "\(binaryFolderPath)/\(moduleName)/\(HEADERS)"
+                ))
+                result.append((
+                    "\(PODS_XCFRAMEWORKS_BUILD_DIR)\(moduleName)",
+                    replacement: "\(binaryFolderPath)/\(moduleName)"
+                ))
+            }
         }
 
         let replacements = buildMap(from: replacementsPairs,
-                                    modifyKey: { "\(PODS_CONFIGURATION_BUILD_DIR)\($0)".quoted },
+                                    modifyKey: \.quoted,
                                     modifyValue: \.quoted)
 
         let regex = try buildRegexPattern(from: replacementsPairs,
-                                          prefix: "\(QUOTE)\(PODS_CONFIGURATION_BUILD_DIR)",
+                                          prefix: QUOTE,
                                           suffix: QUOTE).regex()
 
         return target.xcconfigPaths.compactMap {
