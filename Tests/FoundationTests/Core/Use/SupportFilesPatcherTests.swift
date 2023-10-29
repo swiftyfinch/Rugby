@@ -60,8 +60,14 @@ extension SupportFilesPatcherTests {
 
     func test_prepareReplacements_umbrella() throws {
         let target = Target.podsExample
-        let xcconfigReplacements = localPodXCConfigReplacements
-        let xcconfigRegexPattern = localPodXCConfigRegexPattern
+        // swiftlint:disable line_length
+        let xcconfigReplacements = ["\"${PODS_CONFIGURATION_BUILD_DIR}/Realm-library\"": "\"${HOME}/.rugby/bin/Realm-library/${CONFIGURATION}${EFFECTIVE_PLATFORM_NAME}-${ARCHS}/d2d48c5\"", "\"${PODS_CONFIGURATION_BUILD_DIR}/Realm-library/Realm.modulemap\"": "\"${HOME}/.rugby/bin/Realm-library/${CONFIGURATION}${EFFECTIVE_PLATFORM_NAME}-${ARCHS}/d2d48c5/Realm.modulemap\"", "\"${PODS_CONFIGURATION_BUILD_DIR}/Alamofire\"": "\"${HOME}/.rugby/bin/Alamofire/${CONFIGURATION}${EFFECTIVE_PLATFORM_NAME}-${ARCHS}/36ff0bc\"", "\"${PODS_CONFIGURATION_BUILD_DIR}/Moya/Moya.modulemap\"": "\"${HOME}/.rugby/bin/Moya/${CONFIGURATION}${EFFECTIVE_PLATFORM_NAME}-${ARCHS}/badaa58/Moya.modulemap\"", "\"${PODS_CONFIGURATION_BUILD_DIR}/Moya\"": "\"${HOME}/.rugby/bin/Moya/${CONFIGURATION}${EFFECTIVE_PLATFORM_NAME}-${ARCHS}/badaa58\"", "\"${PODS_CONFIGURATION_BUILD_DIR}/Realm-library/libRealm-library.a/Headers\"": "\"${HOME}/.rugby/bin/Realm-library/${CONFIGURATION}${EFFECTIVE_PLATFORM_NAME}-${ARCHS}/d2d48c5/libRealm-library.a/Headers\"", "\"${PODS_CONFIGURATION_BUILD_DIR}/Alamofire/Alamofire.modulemap\"": "\"${HOME}/.rugby/bin/Alamofire/${CONFIGURATION}${EFFECTIVE_PLATFORM_NAME}-${ARCHS}/36ff0bc/Alamofire.modulemap\"", "\"${PODS_XCFRAMEWORKS_BUILD_DIR}/Realm\"": "\"${HOME}/.rugby/bin/Realm-library/${CONFIGURATION}${EFFECTIVE_PLATFORM_NAME}-${ARCHS}/d2d48c5/Realm\"", "\"${PODS_CONFIGURATION_BUILD_DIR}/Moya/Moya.framework/Headers\"": "\"${HOME}/.rugby/bin/Moya/${CONFIGURATION}${EFFECTIVE_PLATFORM_NAME}-${ARCHS}/badaa58/Moya.framework/Headers\"", "\"${PODS_CONFIGURATION_BUILD_DIR}/Alamofire/Alamofire.framework/Headers\"": "\"${HOME}/.rugby/bin/Alamofire/${CONFIGURATION}${EFFECTIVE_PLATFORM_NAME}-${ARCHS}/36ff0bc/Alamofire.framework/Headers\"", "\"${PODS_XCFRAMEWORKS_BUILD_DIR}/Realm/Headers\"": "\"${HOME}/.rugby/bin/Realm-library/${CONFIGURATION}${EFFECTIVE_PLATFORM_NAME}-${ARCHS}/d2d48c5/Realm/Headers\""]
+        let xcconfigRegexPattern = #""(\$\{PODS_CONFIGURATION_BUILD_DIR\}\/Moya\/Moya\.framework\/Headers|\$\{PODS_CONFIGURATION_BUILD_DIR\}\/Moya|\$\{PODS_CONFIGURATION_BUILD_DIR\}\/Moya\/Moya\.modulemap|\$\{PODS_CONFIGURATION_BUILD_DIR\}\/Alamofire\/Alamofire\.framework\/Headers|\$\{PODS_CONFIGURATION_BUILD_DIR\}\/Alamofire|\$\{PODS_CONFIGURATION_BUILD_DIR\}\/Alamofire\/Alamofire\.modulemap|\$\{PODS_CONFIGURATION_BUILD_DIR\}\/Realm-library\/libRealm-library\.a\/Headers|\$\{PODS_CONFIGURATION_BUILD_DIR\}\/Realm-library|\$\{PODS_CONFIGURATION_BUILD_DIR\}\/Realm-library\/Realm\.modulemap|\$\{PODS_XCFRAMEWORKS_BUILD_DIR\}\/Realm\/Headers|\$\{PODS_XCFRAMEWORKS_BUILD_DIR\}\/Realm)""#
+        let frameworkReplacements = ["\"${BUILT_PRODUCTS_DIR}/Moya/Moya.framework\"": "\"${HOME}/.rugby/bin/Moya/${CONFIGURATION}${EFFECTIVE_PLATFORM_NAME}-${ARCHS}/badaa58/Moya.framework\"", "\"${BUILT_PRODUCTS_DIR}/Realm-library/libRealm-library.a\"": "\"${HOME}/.rugby/bin/Realm-library/${CONFIGURATION}${EFFECTIVE_PLATFORM_NAME}-${ARCHS}/d2d48c5/libRealm-library.a\"", "\"${BUILT_PRODUCTS_DIR}/Alamofire/Alamofire.framework\"": "\"${HOME}/.rugby/bin/Alamofire/${CONFIGURATION}${EFFECTIVE_PLATFORM_NAME}-${ARCHS}/36ff0bc/Alamofire.framework\""]
+        let frameworksRegexPattern = #""\$\{BUILT_PRODUCTS_DIR\}\/(Moya\/Moya\.framework|Alamofire\/Alamofire\.framework|Realm-library\/libRealm-library\.a)""#
+        let resourcesReplacements = ["${BUILT_PRODUCTS_DIR}/Realm-library/libRealm-library.a/": "${HOME}/.rugby/bin/Realm-library/${CONFIGURATION}${EFFECTIVE_PLATFORM_NAME}-${ARCHS}/d2d48c5/libRealm-library.a/", "${BUILT_PRODUCTS_DIR}/Moya/Moya.framework/": "${HOME}/.rugby/bin/Moya/${CONFIGURATION}${EFFECTIVE_PLATFORM_NAME}-${ARCHS}/badaa58/Moya.framework/", "\"${PODS_CONFIGURATION_BUILD_DIR}/LocalPod/LocalPodResources.bundle\"": "\"${HOME}/.rugby/bin/LocalPodResources/${CONFIGURATION}${EFFECTIVE_PLATFORM_NAME}-${ARCHS}/17da84b/LocalPodResources.bundle\"", "${BUILT_PRODUCTS_DIR}/Alamofire/Alamofire.framework/": "${HOME}/.rugby/bin/Alamofire/${CONFIGURATION}${EFFECTIVE_PLATFORM_NAME}-${ARCHS}/36ff0bc/Alamofire.framework/"]
+        let resourcesRegexPattern = #"("\$\{PODS_CONFIGURATION_BUILD_DIR\}\/(LocalPod\/LocalPodResources\.bundle)"|\$\{BUILT_PRODUCTS_DIR\}\/(Moya\/Moya\.framework\/|Alamofire\/Alamofire\.framework\/|Realm-library\/libRealm-library\.a\/))"#
+        // swiftlint:enable line_length
 
         // Act
         let result = try sut.prepareReplacements(forTarget: target)
@@ -106,7 +112,7 @@ private extension SupportFilesPatcherTests {
 
     private var localPodXCConfigRegexPattern: String {
         // swiftlint:disable:next line_length
-        #""\$\{PODS_CONFIGURATION_BUILD_DIR\}\/(Moya\/Moya\.framework\/Headers|Moya|Moya\/Moya\.modulemap|Alamofire\/Alamofire\.framework\/Headers|Alamofire|Alamofire\/Alamofire\.modulemap)""#
+        #""(\$\{PODS_CONFIGURATION_BUILD_DIR\}\/Moya\/Moya\.framework\/Headers|\$\{PODS_CONFIGURATION_BUILD_DIR\}\/Moya|\$\{PODS_CONFIGURATION_BUILD_DIR\}\/Moya\/Moya\.modulemap|\$\{PODS_CONFIGURATION_BUILD_DIR\}\/Alamofire\/Alamofire\.framework\/Headers|\$\{PODS_CONFIGURATION_BUILD_DIR\}\/Alamofire|\$\{PODS_CONFIGURATION_BUILD_DIR\}\/Alamofire\/Alamofire\.modulemap)""#
     }
 
     private var frameworkReplacements: [String: String] {
@@ -153,7 +159,8 @@ private extension Target {
         umbrella.binaryProducts = [
             moyaFramework.product,
             alamofireFramework.product,
-            localPodResourcesBundle.product
+            localPodResourcesBundle.product,
+            realmLibrary.product
         ].compactMap()
         let prefixPath = "~/Developer/Rugby/Example/Pods/Target Support Files/Pods-Example"
         umbrella.xcconfigPaths = [
@@ -244,5 +251,20 @@ private extension Target {
         product.binaryPath = "${HOME}/.rugby/bin/Alamofire/${CONFIGURATION}${EFFECTIVE_PLATFORM_NAME}-${ARCHS}/36ff0bc"
         alamofire.product = product
         return alamofire
+    }
+
+    static var realmLibrary: IInternalTargetMock {
+        let realm = IInternalTargetMock()
+        realm.name = "Realm-library"
+        let product = Product(
+            name: "Realm-library",
+            moduleName: "Realm",
+            type: .staticLibrary,
+            parentFolderName: "Realm-library"
+        )
+        // swiftlint:disable:next line_length
+        product.binaryPath = "${HOME}/.rugby/bin/Realm-library/${CONFIGURATION}${EFFECTIVE_PLATFORM_NAME}-${ARCHS}/d2d48c5"
+        realm.product = product
+        return realm
     }
 }
