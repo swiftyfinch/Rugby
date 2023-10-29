@@ -29,6 +29,7 @@ final class UseBinariesManager: Loggable {
     let logger: ILogger
 
     private let buildTargetsManager: BuildTargetsManager
+    private let librariesPatcher: ILibrariesPatcher
     private let xcodeProject: XcodeProject
     private let rugbyXcodeProject: RugbyXcodeProject
     private let backupManager: IBackupManager
@@ -39,6 +40,7 @@ final class UseBinariesManager: Loggable {
 
     init(logger: ILogger,
          buildTargetsManager: BuildTargetsManager,
+         librariesPatcher: ILibrariesPatcher,
          xcodeProject: XcodeProject,
          rugbyXcodeProject: RugbyXcodeProject,
          backupManager: IBackupManager,
@@ -48,6 +50,7 @@ final class UseBinariesManager: Loggable {
          fileContentEditor: FileContentEditor) {
         self.logger = logger
         self.buildTargetsManager = buildTargetsManager
+        self.librariesPatcher = librariesPatcher
         self.xcodeProject = xcodeProject
         self.rugbyXcodeProject = rugbyXcodeProject
         self.backupManager = backupManager
@@ -144,8 +147,9 @@ extension UseBinariesManager: IUseBinariesManager {
             "Finding Build Targets",
             auto: await buildTargetsManager.findTargets(targetsRegex, exceptTargets: exceptTargetsRegex)
         )
-        try await log("Hashing Targets", auto: await targetsHasher.hash(binaryTargets, xcargs: xcargs))
         try await log("Backuping", level: .info, auto: await backupManager.backup(xcodeProject, kind: .original))
+        try await librariesPatcher.patch(binaryTargets)
+        try await log("Hashing Targets", auto: await targetsHasher.hash(binaryTargets, xcargs: xcargs))
         try await use(targets: binaryTargets, keepGroups: !deleteSources)
         try await rugbyXcodeProject.markAsUsingRugby()
         try await log("Saving Project", auto: await xcodeProject.save())
