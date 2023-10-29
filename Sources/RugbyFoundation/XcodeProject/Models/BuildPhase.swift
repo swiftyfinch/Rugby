@@ -19,6 +19,24 @@ struct BuildPhase {
     let inputFileListPaths: [String]
     let outputFileListPaths: [String]
     let files: [String]
+
+    init(
+        name: String,
+        type: Kind,
+        buildActionMask: UInt = PBXBuildPhase.defaultBuildActionMask,
+        runOnlyForDeploymentPostprocessing: Bool = false,
+        inputFileListPaths: [String] = [],
+        outputFileListPaths: [String] = [],
+        files: [String] = []
+    ) {
+        self.name = name
+        self.type = type
+        self.buildActionMask = buildActionMask
+        self.runOnlyForDeploymentPostprocessing = runOnlyForDeploymentPostprocessing
+        self.inputFileListPaths = inputFileListPaths
+        self.outputFileListPaths = outputFileListPaths
+        self.files = files
+    }
 }
 
 // MARK: - Conversions
