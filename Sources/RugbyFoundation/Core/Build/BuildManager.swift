@@ -76,7 +76,7 @@ final class BuildManager: Loggable {
 
         try await log("Backuping", level: .info, auto: await backupManager.backup(xcodeProject, kind: .tmp))
         try await log("Checking Binaries Storage", auto: await binariesCleaner.freeSpace())
-        try await librariesPatcher.patch(targets)
+        try await log("Patching Libraries", level: .info, auto: await librariesPatcher.patch(targets))
         try await log("Hashing Targets", auto: await targetsHasher.hash(targets, xcargs: options.xcargs))
 
         var shared: TargetsMap = [:]

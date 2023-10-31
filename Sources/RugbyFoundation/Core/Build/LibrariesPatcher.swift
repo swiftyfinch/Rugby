@@ -8,7 +8,13 @@ protocol ILibrariesPatcher: AnyObject {
 
 // MARK: - Implementation
 
-final class LibrariesPatcher {}
+final class LibrariesPatcher: Loggable {
+    let logger: ILogger
+
+    init(logger: ILogger) {
+        self.logger = logger
+    }
+}
 
 extension LibrariesPatcher: ILibrariesPatcher {
     func patch(_ targets: TargetsMap) async throws {
@@ -16,7 +22,11 @@ extension LibrariesPatcher: ILibrariesPatcher {
             guard target.product?.type == .staticLibrary,
                   target.buildPhases.contains(where: { $0.name == .copyXCFrameworks }) else { return }
 
-            // Overriding $PODS_XCFRAMEWORKS_BUILD_DIR variable
+            await self.log(
+                "Overriding $PODS_XCFRAMEWORKS_BUILD_DIR variable in \(target.name)",
+                level: .info,
+                output: .file
+            )
             try await target.xcconfigPaths.concurrentForEach { path in
                 let xcconfig = try File.at(path)
                 try xcconfig.replaceOccurrences(
