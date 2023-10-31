@@ -45,12 +45,12 @@ final class SupportFilesPatcher {
 
             if product.type == .staticLibrary {
                 result.append((
-                    "\(PODS_XCFRAMEWORKS_BUILD_DIR)\(moduleName)/\(HEADERS)",
-                    replacement: "\(binaryFolderPath)/\(moduleName)/\(HEADERS)"
+                    "\(PODS_XCFRAMEWORKS_BUILD_DIR)\(product.name)/\(HEADERS)",
+                    replacement: "\(binaryFolderPath)/\(product.name)/\(HEADERS)"
                 ))
                 result.append((
-                    "\(PODS_XCFRAMEWORKS_BUILD_DIR)\(moduleName)",
-                    replacement: "\(binaryFolderPath)/\(moduleName)"
+                    "\(PODS_XCFRAMEWORKS_BUILD_DIR)\(product.name)",
+                    replacement: "\(binaryFolderPath)/\(product.name)"
                 ))
             }
         }
