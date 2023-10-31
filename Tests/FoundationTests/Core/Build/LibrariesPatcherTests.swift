@@ -4,11 +4,13 @@ import XCTest
 
 final class LibrariesPatcherTests: XCTestCase {
     private var sut: LibrariesPatcher!
+    private var logger: ILoggerMock!
     private var fishSharedStorage: IFilesManagerMock!
 
     override func setUp() {
         super.setUp()
-        sut = LibrariesPatcher()
+        logger = ILoggerMock()
+        sut = LibrariesPatcher(logger: logger)
         fishSharedStorage = IFilesManagerMock()
         let backupFishSharedStorage = Fish.sharedStorage
         Fish.sharedStorage = fishSharedStorage
@@ -19,6 +21,7 @@ final class LibrariesPatcherTests: XCTestCase {
 
     override func tearDown() {
         super.tearDown()
+        logger = nil
         sut = nil
         fishSharedStorage = nil
     }
@@ -37,6 +40,7 @@ extension LibrariesPatcherTests {
         fishSharedStorage.fileAtReturnValue = fileMock
 
         let library = IInternalTargetMock()
+        library.name = "Library"
         library.underlyingUuid = "test_library_id"
         library.product = Product(
             name: "Library",
@@ -55,6 +59,7 @@ extension LibrariesPatcherTests {
             "/Users/swiftyfinch/Developer/Repos/Rugby/Example/Pods/Target Support Files/Realm-library/Realm-library.debug.xcconfig"
         ]
         let framework = IInternalTargetMock()
+        framework.name = "Framework"
         framework.underlyingUuid = "test_framework_id"
         framework.product = Product(
             name: "Framework",
@@ -63,6 +68,7 @@ extension LibrariesPatcherTests {
             parentFolderName: nil
         )
         let libraryWithoutPhase = IInternalTargetMock()
+        libraryWithoutPhase.name = "LibraryWithoutPhase"
         libraryWithoutPhase.underlyingUuid = "test_libraryWithoutPhase_id"
         libraryWithoutPhase.product = Product(
             name: "LibraryWithoutPhase",

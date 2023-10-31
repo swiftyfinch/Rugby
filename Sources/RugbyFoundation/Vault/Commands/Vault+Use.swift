@@ -15,7 +15,7 @@ extension Vault {
                             buildTargetsManager: BuildTargetsManager) -> IUseBinariesManager {
         UseBinariesManager(logger: logger,
                            buildTargetsManager: buildTargetsManager,
-                           librariesPatcher: LibrariesPatcher(),
+                           librariesPatcher: LibrariesPatcher(logger: logger),
                            xcodeProject: xcodeProject,
                            rugbyXcodeProject: RugbyXcodeProject(xcodeProject: xcodeProject),
                            backupManager: backupManager(workingDirectory: workingDirectory),
