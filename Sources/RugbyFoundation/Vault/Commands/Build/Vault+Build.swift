@@ -1,10 +1,16 @@
 import Fish
 import Rainbow
 
-public extension Vault {
+extension Vault {
     /// The manager to build CocoaPods project.
     /// - Parameter workingDirectory: A directory with Pods folder.
-    func buildManager(workingDirectory: IFolder) -> IBuildManager {
+    public func buildManager(workingDirectory: IFolder) -> IBuildManager {
+        internalBuildManager(workingDirectory: workingDirectory)
+    }
+
+    // MARK: - Internal
+
+    func internalBuildManager(workingDirectory: IFolder) -> IInternalBuildManager {
         let logFormatter = BuildLogFormatter(workingDirectory: workingDirectory,
                                              colored: Rainbow.enabled)
         let xcodeBuildExecutor = XcodeBuildExecutor(
@@ -24,6 +30,7 @@ public extension Vault {
             localRugbyFolderPath: router.paths(relativeTo: workingDirectory).rugby,
             buildFolderPath: router.paths(relativeTo: workingDirectory).build
         )
+        let xcodeBuild = XcodeBuild(xcodeBuildExecutor: xcodeBuildExecutor)
         return BuildManager(logger: logger,
                             buildTargetsManager: buildTargetsManager,
                             librariesPatcher: LibrariesPatcher(logger: logger),
@@ -31,7 +38,7 @@ public extension Vault {
                             rugbyXcodeProject: RugbyXcodeProject(xcodeProject: xcodeProject),
                             backupManager: backupManager(workingDirectory: workingDirectory),
                             processMonitor: processMonitor,
-                            xcodeBuild: XcodeBuild(xcodeBuildExecutor: xcodeBuildExecutor),
+                            xcodeBuild: xcodeBuild,
                             binariesManager: binariesManager,
                             targetsHasher: targetsHasher(workingDirectory: workingDirectory),
                             useBinariesManager: useBinariesManager,
