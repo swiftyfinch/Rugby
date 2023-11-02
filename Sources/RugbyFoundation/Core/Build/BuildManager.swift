@@ -3,7 +3,7 @@ import Foundation
 // MARK: - Interface
 
 /// The protocol describing a manager to build CocoaPods project.
-public protocol IBuildManager {
+public protocol IBuildManager: AnyObject {
     /// Builds CocoaPods project and keeps binaries.
     /// - Parameters:
     ///   - targetsRegex: A RegEx to select targets.
@@ -16,6 +16,15 @@ public protocol IBuildManager {
                options: XcodeBuildOptions,
                paths: XcodeBuildPaths,
                ignoreCache: Bool) async throws
+}
+
+protocol IInternalBuildManager: IBuildManager {
+    func prepare(targetsRegex: NSRegularExpression?,
+                 exceptTargetsRegex: NSRegularExpression?,
+                 freeSpaceIfNeeded: Bool,
+                 patchLibraries: Bool) async throws -> TargetsMap
+    func makeBuildTarget(_ targets: TargetsMap) async throws -> IInternalTarget
+    func build(_ target: IInternalTarget, options: XcodeBuildOptions, paths: XcodeBuildPaths) async throws
 }
 
 // MARK: - Implementation
@@ -69,14 +78,12 @@ final class BuildManager: Loggable {
         self.targetTreePainter = targetTreePainter
     }
 
-    private func makeBuildTarget(targets: TargetsMap,
-                                 options: XcodeBuildOptions,
-                                 ignoreCache: Bool) async throws -> IInternalTarget? {
-        guard targets.isNotEmpty else { throw BuildError.cantFindBuildTargets }
-
-        try await log("Backuping", level: .info, auto: await backupManager.backup(xcodeProject, kind: .tmp))
-        try await log("Checking Binaries Storage", auto: await binariesCleaner.freeSpace())
-        try await log("Patching Libraries", level: .info, auto: await librariesPatcher.patch(targets))
+    private func reuseTargets(
+        targets: TargetsMap,
+        options: XcodeBuildOptions,
+        paths _: XcodeBuildPaths,
+        ignoreCache: Bool
+    ) async throws -> TargetsMap? {
         try await log("Hashing Targets", auto: await targetsHasher.hash(targets, xcargs: options.xcargs))
 
         var shared: TargetsMap = [:]
@@ -110,15 +117,42 @@ final class BuildManager: Loggable {
             try await log("Saving Project", auto: await xcodeProject.save())
             xcodeProject.resetCache()
         }
+        return buildTargets
+    }
+}
 
+extension BuildManager: IInternalBuildManager {
+    func prepare(targetsRegex: NSRegularExpression?,
+                 exceptTargetsRegex: NSRegularExpression?,
+                 freeSpaceIfNeeded: Bool,
+                 patchLibraries: Bool) async throws -> TargetsMap {
+        try await environmentCollector.logXcodeVersion()
+        guard try await !rugbyXcodeProject.isAlreadyUsingRugby() else { throw RugbyError.alreadyUseRugby }
+
+        let targets = try await log(
+            "Finding Build Targets",
+            auto: await buildTargetsManager.findTargets(targetsRegex, exceptTargets: exceptTargetsRegex)
+        )
+        guard targets.isNotEmpty else { throw BuildError.cantFindBuildTargets }
+
+        try await log("Backuping", level: .info, auto: await backupManager.backup(xcodeProject, kind: .tmp))
+        if freeSpaceIfNeeded {
+            try await log("Checking Binaries Storage", auto: await binariesCleaner.freeSpace())
+        }
+        if patchLibraries {
+            try await log("Patching Libraries", level: .info, auto: await librariesPatcher.patch(targets))
+        }
+        return targets
+    }
+
+    func makeBuildTarget(_ targets: TargetsMap) async throws -> IInternalTarget {
         let buildTarget = try await log("Creating Build Target",
-                                        auto: await buildTargetsManager.createTarget(dependencies: buildTargets))
+                                        auto: await buildTargetsManager.createTarget(dependencies: targets))
         try await log("Saving Project", auto: await xcodeProject.save())
-
         return buildTarget
     }
 
-    private func build(_ target: IInternalTarget, options: XcodeBuildOptions, paths: XcodeBuildPaths) async throws {
+    func build(_ target: IInternalTarget, options: XcodeBuildOptions, paths: XcodeBuildPaths) async throws {
         let title = "\(options.config): \(options.sdk.string)-\(options.arch) (\(target.explicitDependencies.count))"
         await log(
             "\(title)\n\(target.explicitDependencies.values.map { "* \($0.name)" }.sorted().joined(separator: "\n"))",
@@ -151,16 +185,18 @@ extension BuildManager: IBuildManager {
                       options: XcodeBuildOptions,
                       paths: XcodeBuildPaths,
                       ignoreCache: Bool) async throws {
-        try await environmentCollector.logXcodeVersion()
-        guard try await !rugbyXcodeProject.isAlreadyUsingRugby() else { throw RugbyError.alreadyUseRugby }
-        let targets = try await log(
-            "Finding Build Targets",
-            auto: await buildTargetsManager.findTargets(targetsRegex, exceptTargets: exceptTargetsRegex)
-        )
-        let buildTarget = try await makeBuildTarget(targets: targets,
-                                                    options: options,
-                                                    ignoreCache: ignoreCache)
-        guard let buildTarget else { return }
+        let targets = try await prepare(targetsRegex: targetsRegex,
+                                        exceptTargetsRegex: exceptTargetsRegex,
+                                        freeSpaceIfNeeded: true,
+                                        patchLibraries: true)
+        guard let buildTargets = try await reuseTargets(
+            targets: targets,
+            options: options,
+            paths: paths,
+            ignoreCache: ignoreCache
+        ) else { return }
+
+        let buildTarget = try await makeBuildTarget(buildTargets)
         try await build(buildTarget, options: options, paths: paths)
 
         try await log(
