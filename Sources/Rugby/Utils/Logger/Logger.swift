@@ -12,8 +12,8 @@ final actor Logger {
     }
 
     // Constants
-    private let beginIcon = "⚑".yellow
-    private let doneIcon = "✓".green
+    private var beginIcon: String { "⚑".yellow }
+    private var doneIcon: String { "✓".green }
 
     // Variables
     private var lastEnter: String?
