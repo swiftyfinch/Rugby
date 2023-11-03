@@ -81,6 +81,9 @@ extension Shortcuts {
         @Option(help: "Warmup cache with this endpoint.")
         var warmup: String?
 
+        @Flag(name: .long, help: "Prebuild targets ignoring sources.")
+        var prebuild = false
+
         func run() async throws {
             try await run(body,
                           outputType: commonOptions.output,
@@ -97,6 +100,13 @@ extension Shortcuts.Cache: RunnableCommand {
             var rollback = Rollback()
             rollback.commonOptions = commonOptions
             runnableCommands.append(("Rollback", rollback))
+        }
+
+        if prebuild {
+            var prebuild = Build.Pre()
+            prebuild.buildOptions = buildOptions
+            prebuild.commonOptions = commonOptions
+            runnableCommands.append(("Prebuild", prebuild))
         }
 
         if let endpoint = warmup {
