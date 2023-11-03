@@ -110,7 +110,7 @@ extension Shortcuts.Cache: RunnableCommand {
             runnableCommands.append(("Warmup", warmup))
         }
 
-        var build = Build()
+        var build = Build.Full()
         build.buildOptions = buildOptions
         build.ignoreCache = ignoreCache
         build.commonOptions = commonOptions
