@@ -49,7 +49,8 @@ extension PrebuildManager: IPrebuildManager {
                                                      exceptTargetsRegex: exceptTargetsRegex,
                                                      freeSpaceIfNeeded: false,
                                                      patchLibraries: false)
-        await log("Removing Build Phases", auto: await xcodePhaseEditor.keepOnlyPreSourcePhases(from: targets))
+        let targetsTree = targets.merging(targets.flatMapValues(\.dependencies))
+        await log("Removing Build Phases", auto: await xcodePhaseEditor.keepOnlyPreSourcePhases(from: targetsTree))
         let buildTarget = try await buildManager.makeBuildTarget(targets)
         try await buildManager.build(buildTarget, options: options, paths: paths)
     }
