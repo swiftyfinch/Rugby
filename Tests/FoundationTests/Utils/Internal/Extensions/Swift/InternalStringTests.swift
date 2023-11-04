@@ -4,16 +4,6 @@ import XCTest
 final class InternalStringTests: XCTestCase {}
 
 extension InternalStringTests {
-    func test_uppercasedFirstLetter() {
-        XCTAssertEqual("Some".uppercasedFirstLetter(), "Some")
-        XCTAssertEqual("some".uppercasedFirstLetter(), "Some")
-        XCTAssertEqual("1ome".uppercasedFirstLetter(), "1ome")
-        XCTAssertEqual(".ome".uppercasedFirstLetter(), ".ome")
-        XCTAssertEqual(" some".uppercasedFirstLetter(), " some")
-        XCTAssertEqual("some tests".uppercasedFirstLetter(), "Some tests")
-        XCTAssertEqual("some-tests here".uppercasedFirstLetter(), "Some-tests here")
-    }
-
     func test_removing() {
         XCTAssertEqual("   Some".removing(3), "Some")
         XCTAssertEqual("sssSome".removing(3), "Some")

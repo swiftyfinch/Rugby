@@ -52,7 +52,7 @@ final class BuildLogFormatter {
             guard firstLineComponents.count == 2 else { return formattedError }
 
             let path = firstLineComponents[0]
-            let formattedTail = "\(firstLineComponents[1].raw.uppercasedFirstLetter())"
+            let formattedTail = "\(firstLineComponents[1].raw.uppercasedFirstLetter)"
             let prefixCount = lines[1].raw.prefixCount()
             let formattedLines = [
                 "\(formattedTail.trimmingCharacters(in: .whitespaces)).".red,
