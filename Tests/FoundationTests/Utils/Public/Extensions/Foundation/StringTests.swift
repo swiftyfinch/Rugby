@@ -2,7 +2,6 @@
 import XCTest
 
 final class StringTests: XCTestCase {
-
     // MARK: - homeFinderRelativePath
 
     func test_homeFinderRelativePath_success() {
