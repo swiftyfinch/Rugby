@@ -62,12 +62,12 @@ extension Plan: RunnableCommand {
 
         let overriddenCommands = commands.map(overrideCommand)
         let runnableCommands = try overriddenCommands.map { command in
-            let commandWithArgs = ([command.name.capitalized.green] + command.args).joined(separator: " ")
+            let commandWithArgs = ([command.name.uppercasedFirstLetter.green] + command.args).joined(separator: " ")
             return try (command.name, commandWithArgs, convertToRunnable(command))
         }
         for (commandName, commandWithArgs, runnableCommand) in runnableCommands {
-            let header = commonOptions.logLevel > .compact ? commandWithArgs : commandName.capitalized.green
-            try await log(header, footer: commandName.capitalized.green, metricKey: commandName) {
+            let header = commonOptions.logLevel > .compact ? commandWithArgs : commandName.uppercasedFirstLetter.green
+            try await log(header, footer: commandName.uppercasedFirstLetter.green, metricKey: commandName) {
                 await dependencies.environmentCollector.logCommandDump(command: runnableCommand)
                 try await runnableCommand.body()
             }
