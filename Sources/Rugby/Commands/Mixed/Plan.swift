@@ -94,7 +94,8 @@ extension Plan: RunnableCommand {
 
     private func convertToRunnable(_ command: RugbyFoundation.Plan.Command) throws -> RunnableCommand {
         do {
-            let parsedCommand = try Rugby.parseCommand([command.name] + command.args)
+            let splittedCommandName = command.name.components(separatedBy: .whitespaces)
+            let parsedCommand = try Rugby.parseCommand(splittedCommandName + command.args)
             return try parsedCommand.toRunnable()
         } catch {
             Rugby.exit(withError: error)
