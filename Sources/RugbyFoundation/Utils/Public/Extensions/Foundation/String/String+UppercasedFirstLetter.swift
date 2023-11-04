@@ -1,5 +1,5 @@
 extension String {
-    func uppercasedFirstLetter() -> String {
+    public var uppercasedFirstLetter: String {
         guard !isEmpty else { return self }
         var copy = self
         let first = copy.removeFirst()
