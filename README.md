@@ -122,7 +122,7 @@ For advanced usage, please read the documentation below.
 - [x] GitHub Actions (On staging)
 - [x] Minimal Code Docs
 - [x] Open Source
-- [ ] More Tests
+- [ ] More Tests [#236](https://github.com/swiftyfinch/Rugby/issues/236)
 
 ## 🤝 Contribution
 
