@@ -7,7 +7,8 @@ public extension Vault {
         PrebuildManager(
             logger: logger,
             xcodePhaseEditor: XcodePhaseEditor(),
-            buildManager: internalBuildManager(workingDirectory: workingDirectory)
+            buildManager: internalBuildManager(workingDirectory: workingDirectory),
+            xcodeProject: xcode.project(projectPath: router.paths(relativeTo: workingDirectory).podsProject)
         )
     }
 }
