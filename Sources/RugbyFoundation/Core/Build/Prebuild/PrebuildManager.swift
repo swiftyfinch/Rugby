@@ -57,7 +57,7 @@ extension PrebuildManager: IPrebuildManager {
             await xcodePhaseEditor.deleteCopyXCFrameworksPhase(in: targetsTree)
         }
         let targetsWithoutPhases = targetsTree.filter(\.value.buildPhases.isEmpty)
-        try await xcodeProject.deleteTargets(targetsWithoutPhases)
+        try await log("Deleting Targets", auto: try await xcodeProject.deleteTargets(targetsWithoutPhases))
 
         let targetsToBuild = targetsTree.subtracting(targetsWithoutPhases)
         let buildTarget = try await buildManager.makeBuildTarget(targetsToBuild)
