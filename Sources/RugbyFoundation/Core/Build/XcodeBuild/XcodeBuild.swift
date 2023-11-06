@@ -87,11 +87,12 @@ final class XcodeBuild {
         let command = "NSUnbufferedIO=YES xcodebuild"
         let arguments = [
             "-project \(paths.project.shellFriendly)",
-            "-scheme \(target)",
+            "-target \(target)",
             "-sdk \(options.sdk.xcodebuild)",
             "-config \(options.config.shellFriendly)",
             "ARCHS=\(options.arch)",
-            "SYMROOT=\(paths.symroot.shellFriendly)"
+            "SYMROOT=\(paths.symroot.shellFriendly)",
+            "-parallelizeTargets"
         ] + options.xcargs
 
         try Folder.create(at: paths.symroot)
