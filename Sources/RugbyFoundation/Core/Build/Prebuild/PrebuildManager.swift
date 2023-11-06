@@ -35,6 +35,7 @@ final class PrebuildManager: Loggable {
         self.logger = logger
         self.xcodePhaseEditor = xcodePhaseEditor
         self.buildManager = buildManager
+        self.xcodeProject = xcodeProject
     }
 }
 
@@ -50,8 +51,15 @@ extension PrebuildManager: IPrebuildManager {
                                                      freeSpaceIfNeeded: false,
                                                      patchLibraries: false)
         let targetsTree = targets.merging(targets.flatMapValues(\.dependencies))
-        await log("Removing Build Phases", auto: await xcodePhaseEditor.keepOnlyPreSourcePhases(from: targetsTree))
-        let buildTarget = try await buildManager.makeBuildTarget(targets)
+
+        await log("Removing Build Phases") {
+            await xcodePhaseEditor.keepOnlyPreSourceScriptPhases(in: targetsTree)
+        }
+        let targetsWithoutPhases = targetsTree.filter(\.value.buildPhases.isEmpty)
+        try await xcodeProject.deleteTargets(targetsWithoutPhases)
+
+        let targetsToBuild = targetsTree.subtracting(targetsWithoutPhases)
+        let buildTarget = try await buildManager.makeBuildTarget(targetsToBuild)
         try await buildManager.build(buildTarget, options: options, paths: paths)
     }
 }
