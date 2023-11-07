@@ -49,7 +49,10 @@ extension Build {
                     exactMatches: buildOptions.targetsOptions.exceptTargets
                 ),
                 options: buildOptions.xcodeBuildOptions(),
-                paths: dependencies.xcode.paths(workingDirectory: Folder.current),
+                paths: dependencies.xcode.paths(
+                    workingDirectory: Folder.current,
+                    logsFolder: try dependencies.logsRotator.currentLogFolder()
+                ),
                 ignoreCache: ignoreCache
             )
         }
@@ -80,6 +83,7 @@ extension Build {
 
         func body() async throws {
             dependencies.processMonitor.monitor()
+            let logFolder = try dependencies.logsRotator.currentLogFolder().createFolder(named: "prebuild")
             let prebuildManager = dependencies.prebuildManager(workingDirectory: Folder.current)
             try await prebuildManager.prebuild(
                 targetsRegex: regex(
@@ -91,7 +95,7 @@ extension Build {
                     exactMatches: buildOptions.targetsOptions.exceptTargets
                 ),
                 options: buildOptions.xcodeBuildOptions(),
-                paths: dependencies.xcode.paths(workingDirectory: Folder.current)
+                paths: dependencies.xcode.paths(workingDirectory: Folder.current, logsFolder: logFolder)
             )
         }
     }
