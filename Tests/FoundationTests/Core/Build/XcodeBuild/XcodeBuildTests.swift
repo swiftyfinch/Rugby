@@ -61,11 +61,12 @@ extension XcodeBuildTests {
             arguments.args as? [[String]],
             [[
                 "-project /Users/swiftyfinch/Developer/Repos/Rugby/Example/Pods/Pods.xcodeproj",
-                "-scheme Rugby",
+                "-target Rugby",
                 "-sdk iphoneos",
                 "-config Debug",
                 "ARCHS=x86_64",
                 "SYMROOT=/Users/swiftyfinch/Developer/Repos/Rugby/Example/.rugby/build",
+                "-parallelizeTargets",
                 "COMPILER_INDEX_STORE_ENABLE=NO",
                 "SWIFT_COMPILATION_MODE=wholemodule",
                 "GCC_GENERATE_DEBUGGING_SYMBOLS=NO",
@@ -108,11 +109,12 @@ extension XcodeBuildTests {
             arguments.args as? [[String]],
             [[
                 "-project /Users/swiftyfinch/Developer/Repos/Rugby/Exa\\ mple/Pods/Pods.xcodeproj",
-                "-scheme RugbyPods",
+                "-target RugbyPods",
                 "-sdk iphonesimulator",
                 "-config QA\\ Release",
                 "ARCHS=arm64",
                 "SYMROOT=/Users/swiftyfinch/Developer/Repos/Rugby/Exa\\ mple/.rugby/build",
+                "-parallelizeTargets",
                 "COMPILER_INDEX_STORE_ENABLE=NO",
                 "SWIFT_COMPILATION_MODE=wholemodule"
             ]]
