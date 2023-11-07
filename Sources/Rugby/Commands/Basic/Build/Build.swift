@@ -51,7 +51,7 @@ extension Build {
                 options: buildOptions.xcodeBuildOptions(),
                 paths: dependencies.xcode.paths(
                     workingDirectory: Folder.current,
-                    logsFolder: try dependencies.logsRotator.currentLogFolder()
+                    logsFolder: dependencies.logsRotator.currentLogFolder()
                 ),
                 ignoreCache: ignoreCache
             )
