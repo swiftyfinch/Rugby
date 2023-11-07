@@ -40,7 +40,6 @@ final class XcodeBuildExecutor: IXcodeBuildExecutor {
         let log = try File.create(at: logPath)
         let output: (String, OutputType) throws -> Void = { formattedLine, type in
             if type == .error { errors.append(formattedLine) }
-            guard (type == .task && formattedLine.contains("Touching")) || type == .error else { return }
             try log.append("\(formattedLine)\n")
         }
 
