@@ -27,9 +27,9 @@ public final class XcodeVault {
 
     /// Returns the collection of Xcode paths relative to the working directory.
     /// - Parameter workingDirectory: A directory with Pods folder.
-    public func paths(workingDirectory: IFolder) throws -> XcodeBuildPaths {
-        let logsFolder = try logsRotator.currentLogFolder()
-        return XcodeBuildPaths(
+    /// - Parameter logsFolder: A directory to keep logs.
+    public func paths(workingDirectory: IFolder, logsFolder: IFolder) throws -> XcodeBuildPaths {
+        XcodeBuildPaths(
             project: router.paths(relativeTo: workingDirectory).podsProject,
             symroot: router.paths(relativeTo: workingDirectory).build,
             rawLog: router.paths(relativeTo: logsFolder).rawLog,
