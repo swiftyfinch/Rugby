@@ -33,7 +33,7 @@ final class BuildManager: Loggable {
     let logger: ILogger
     private let buildTargetsManager: BuildTargetsManager
     private let librariesPatcher: ILibrariesPatcher
-    private let xcodeProject: XcodeProject
+    private let xcodeProject: IInternalXcodeProject
     private let rugbyXcodeProject: RugbyXcodeProject
     private let backupManager: IBackupManager
     private let processMonitor: IProcessMonitor
@@ -49,7 +49,7 @@ final class BuildManager: Loggable {
     init(logger: ILogger,
          buildTargetsManager: BuildTargetsManager,
          librariesPatcher: ILibrariesPatcher,
-         xcodeProject: XcodeProject,
+         xcodeProject: IInternalXcodeProject,
          rugbyXcodeProject: RugbyXcodeProject,
          backupManager: IBackupManager,
          processMonitor: IProcessMonitor,

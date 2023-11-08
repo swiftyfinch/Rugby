@@ -1,10 +1,10 @@
 import Foundation
 
 final class BuildTargetsManager {
-    private let xcodeProject: XcodeProject
+    private let xcodeProject: IInternalXcodeProject
     private let buildTargetName = "RugbyPods"
 
-    init(xcodeProject: XcodeProject) {
+    init(xcodeProject: IInternalXcodeProject) {
         self.xcodeProject = xcodeProject
     }
 

@@ -7,7 +7,7 @@ public final class XcodeVault {
     private let logsRotator: LogsRotator
     private let router: Router
 
-    private var xcodeProjectsCache: [String: XcodeProject] = [:]
+    private var xcodeProjectsCache: [String: IInternalXcodeProject] = [:]
 
     // MARK: - Init
 
@@ -44,7 +44,7 @@ public final class XcodeVault {
 
     // MARK: - Internal Methods
 
-    func project(projectPath: String) -> XcodeProject {
+    func project(projectPath: String) -> IInternalXcodeProject {
         if let cachedXcodeProject = xcodeProjectsCache[projectPath] { return cachedXcodeProject }
 
         let projectDataSource = XcodeProjectDataSource(logger: logger, projectPath: projectPath)
