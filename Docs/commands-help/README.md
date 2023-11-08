@@ -90,6 +90,7 @@ flowchart LR
     B --> BA("🏈 Cache")
     BA --> BAA("
     ♻️ Rollback
+    🏗️ Prebuild
     🐳 Warmup
     🏗️ Build
     🎯 Use
@@ -105,7 +106,8 @@ flowchart LR
     Any combination
     of commands
     ")
-    A --> F("🏗️ Build")
+    A --> F("🏗️ Build") --> FA("🏗️ Prebuild")
+    F("🏗️ Build") --> FB("🏗️ Full")
     A --> G("🎯 Use")
     A --> H("🗑️ Delete")
     A --> E("🐳 Warmup")
