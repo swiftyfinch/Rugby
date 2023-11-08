@@ -49,6 +49,5 @@ extension XcodePhaseEditor: IXcodePhaseEditor {
 // MARK: - Private extensions
 
 private extension String {
-    static let sources = "Sources"
     static let copyXCFrameworks = "[CP] Copy XCFrameworks"
 }
