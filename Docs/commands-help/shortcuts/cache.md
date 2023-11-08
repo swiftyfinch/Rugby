@@ -30,6 +30,7 @@
 │ --strip           * Build without debug symbols.                        │
 │ -v, --verbose []  * Increase verbosity level.                           │
 │ -q, --quiet []    * Decrease verbosity level.                           │
+│ --prebuild        * Prebuild targets ignoring sources.                  │
 │ -h, --help        * Show help information.                              │
 ╰─────────────────────────────────────────────────────────────────────────╯
 ```
@@ -39,14 +40,15 @@
 It just a combination of exist commands. You can call them separately:
 ```sh
 > rugby rollback
+> rugby build pre --except SomePod --arch x86_64
 > rugby warmup s3.eu-west-2.amazonaws.com --except SomePod --arch x86_64
-> rugby build --except SomePod --arch x86_64
+> rugby build full --except SomePod --arch x86_64
 > rugby use --except SomePod
 ```
 
 Or just use cache shortcut:
 ```sh
-> rugby cache --rollback --warmup s3.eu-west-2.amazonaws.com --except SomePod --arch x86_64
+> rugby cache --rollback --prebuild --warmup s3.eu-west-2.amazonaws.com --except SomePod --arch x86_64
 ```
 
 When you use cache or [plan](../plan.md) commands Rugby tries to reuse project cache.\
