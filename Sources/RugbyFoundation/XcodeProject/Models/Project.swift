@@ -18,11 +18,18 @@ enum ProjectError: LocalizedError {
     }
 }
 
-final class Project {
-    let xcodeProj: XcodeProj
-    let reference: PBXFileReference?
-    let path: String
+protocol IProject: AnyObject {
+    var uuid: String { get throws }
+    var xcodeProj: XcodeProj { get }
+    var reference: PBXFileReference? { get }
+    var path: String { get }
+    var pbxProj: PBXProj { get }
+    var pbxProject: PBXProject { get throws }
+    var buildConfigurationList: XCConfigurationList { get throws }
+    var buildConfigurations: [String: XCBuildConfiguration] { get async throws }
+}
 
+final class Project: IProject {
     enum Path {
         case string(String)
         case reference(PBXFileReference)
@@ -46,11 +53,19 @@ final class Project {
         }
     }
 
+    let xcodeProj: XcodeProj
+    let reference: PBXFileReference?
+    let path: String
+
     init(path: Path) throws {
         guard let pathString = path.string else { throw ProjectError.emptyProjectPath }
         self.path = pathString
         xcodeProj = try XcodeProj(pathString: pathString)
         reference = path.reference
+    }
+
+    var uuid: String {
+        get throws { try pbxProject.uuid }
     }
 
     var pbxProj: PBXProj { xcodeProj.pbxproj }
@@ -78,21 +93,5 @@ final class Project {
             cachedBuildConfigurations = buildConfigurationsMap
             return buildConfigurationsMap
         }
-    }
-}
-
-// MARK: - Equatable
-
-extension Project: Equatable {
-    static func == (lhs: Project, rhs: Project) -> Bool {
-        (lhs.xcodeProj, lhs.reference, lhs.path) == (rhs.xcodeProj, rhs.reference, rhs.path)
-    }
-}
-
-// MARK: - Hashable
-
-extension Project: Hashable {
-    func hash(into hasher: inout Hasher) {
-        hasher.combine(path)
     }
 }

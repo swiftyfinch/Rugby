@@ -6,7 +6,7 @@ final class Target: IInternalTarget {
     private(set) var explicitDependencies: TargetsMap
 
     internal let pbxTarget: PBXTarget
-    internal let project: Project
+    internal let project: IProject
     internal let projectBuildConfigurations: [String: XCBuildConfiguration]
 
     // MARK: - Lazy Properties
@@ -33,7 +33,7 @@ final class Target: IInternalTarget {
     internal var uuid: TargetId { pbxTarget.uuid }
 
     init(pbxTarget: PBXTarget,
-         project: Project,
+         project: IProject,
          explicitDependencies: TargetsMap = [:],
          projectBuildConfigurations: [String: XCBuildConfiguration]) {
         self.pbxTarget = pbxTarget

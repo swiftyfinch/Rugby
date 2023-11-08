@@ -5,10 +5,10 @@ final class XcodeProjectDataSource: Loggable {
     let logger: ILogger
 
     let projectPath: String
-    private var cachedRootProject: Project?
-    private var cachedSubprojects: [Project]?
+    private var cachedRootProject: IProject?
+    private var cachedSubprojects: [IProject]?
 
-    var rootProject: Project {
+    var rootProject: IProject {
         get async throws {
             if let cachedRootProject { return cachedRootProject }
             let project = try await log("Reading Project", level: .info, auto: Project(path: .string(projectPath)))
@@ -17,11 +17,11 @@ final class XcodeProjectDataSource: Loggable {
         }
     }
 
-    var subprojects: [Project] {
+    var subprojects: [IProject] {
         get async throws {
             if let cachedSubprojects { return cachedSubprojects }
 
-            let subprojects: [Project]
+            let subprojects: [IProject]
             let xcodeprojFileReferences = try await rootProject.pbxProj.projectReferences()
             if xcodeprojFileReferences.isNotEmpty {
                 subprojects = try await log("Reading Subprojects", block: {

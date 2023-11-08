@@ -25,11 +25,11 @@ final class IInternalTargetMock: IInternalTarget {
         set(value) { underlyingPbxTarget = value }
     }
     var underlyingPbxTarget: PBXTarget!
-    var project: Project {
+    var project: IProject {
         get { return underlyingProject }
         set(value) { underlyingProject = value }
     }
-    var underlyingProject: Project!
+    var underlyingProject: IProject!
     var isPodsUmbrella: Bool {
         get { return underlyingIsPodsUmbrella }
         set(value) { underlyingIsPodsUmbrella = value }
