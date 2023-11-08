@@ -20,11 +20,11 @@ public protocol IDeleteTargetsManager {
 
 final class DeleteTargetsManager: Loggable {
     let logger: ILogger
-    private let xcodeProject: XcodeProject
+    private let xcodeProject: IInternalXcodeProject
     private let backupManager: IBackupManager
 
     init(logger: ILogger,
-         xcodeProject: XcodeProject,
+         xcodeProject: IInternalXcodeProject,
          backupManager: IBackupManager) {
         self.logger = logger
         self.xcodeProject = xcodeProject

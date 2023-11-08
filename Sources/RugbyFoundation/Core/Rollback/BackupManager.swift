@@ -9,7 +9,7 @@ public protocol IBackupManager {
     /// - Parameters:
     ///   - xcodeProject: A service for Xcode project managment.
     ///   - kind: The type of backup.
-    func backup(_ xcodeProject: XcodeProject, kind: BackupKind) async throws
+    func backup(_ xcodeProject: IXcodeProject, kind: BackupKind) async throws
 
     /// Restores Xcode project.
     /// - Parameter kind: The type of backup.
@@ -146,7 +146,7 @@ extension BackupManager {
 // MARK: - IBackupManager
 
 extension BackupManager: IBackupManager {
-    public func backup(_ xcodeProject: XcodeProject, kind: BackupKind) async throws {
+    public func backup(_ xcodeProject: IXcodeProject, kind: BackupKind) async throws {
         let projects = try await xcodeProject.folderPaths().map(Folder.at)
         switch kind {
         case .original:

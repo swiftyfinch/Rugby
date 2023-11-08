@@ -11,7 +11,7 @@ extension Vault {
     }
 
     func useBinariesManager(workingDirectory: IFolder,
-                            xcodeProject: XcodeProject,
+                            xcodeProject: IInternalXcodeProject,
                             buildTargetsManager: BuildTargetsManager) -> IUseBinariesManager {
         UseBinariesManager(logger: logger,
                            buildTargetsManager: buildTargetsManager,

@@ -30,7 +30,7 @@ final class UseBinariesManager: Loggable {
 
     private let buildTargetsManager: BuildTargetsManager
     private let librariesPatcher: ILibrariesPatcher
-    private let xcodeProject: XcodeProject
+    private let xcodeProject: IInternalXcodeProject
     private let rugbyXcodeProject: RugbyXcodeProject
     private let backupManager: IBackupManager
     private let binariesManager: IBinariesStorage
@@ -41,7 +41,7 @@ final class UseBinariesManager: Loggable {
     init(logger: ILogger,
          buildTargetsManager: BuildTargetsManager,
          librariesPatcher: ILibrariesPatcher,
-         xcodeProject: XcodeProject,
+         xcodeProject: IInternalXcodeProject,
          rugbyXcodeProject: RugbyXcodeProject,
          backupManager: IBackupManager,
          binariesManager: IBinariesStorage,
