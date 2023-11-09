@@ -86,7 +86,7 @@ If you look for the legacy `Rugby 1.x`, visit [this page](https://github.com/swi
 2. Before using Rugby you should be sure that your project source code is finalized.\
    🔸 For example: if you use `SwiftGen`, run it before calling Rugby.\
    Otherwise, your source code will be modified during building with Rugby. Then the hashes of binaries will not be suited.\
-   If you have encountered a problem, try to use `rugby build pre` to prebuild your project and finalize source code;
+   If you have encountered a problem, try to use [`rugby build pre`](Docs/commands-help/build/pre.md) to prebuild your project and finalize source code;
 3. Be sure that all your pods (including development) are ready to build standalone.\
    Otherwise, you can get a state when one of them can't be reused correctly without the source of its dependencies.\
    As a temporary workaround, you can exclude some pods like `rugby -e BadPod`.\
