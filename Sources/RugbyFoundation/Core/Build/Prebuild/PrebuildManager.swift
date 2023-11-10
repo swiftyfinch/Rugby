@@ -1,3 +1,4 @@
+import Fish
 import Foundation
 
 // MARK: - Interface
@@ -25,17 +26,20 @@ final class PrebuildManager: Loggable {
     private let xcodePhaseEditor: IXcodePhaseEditor
     private let buildManager: IInternalBuildManager
     private let xcodeProject: IInternalXcodeProject
+    private let binariesManager: IBinariesStorage
 
     init(
         logger: ILogger,
         xcodePhaseEditor: IXcodePhaseEditor,
         buildManager: IInternalBuildManager,
-        xcodeProject: IInternalXcodeProject
+        xcodeProject: IInternalXcodeProject,
+        binariesManager: IBinariesStorage
     ) {
         self.logger = logger
         self.xcodePhaseEditor = xcodePhaseEditor
         self.buildManager = buildManager
         self.xcodeProject = xcodeProject
+        self.binariesManager = binariesManager
     }
 }
 
@@ -62,11 +66,22 @@ extension PrebuildManager: IPrebuildManager {
             return await log("Skip")
         }
 
-        // TODO: Sometimes modules expect that their dependencies create product folder.
-        // try await log("Deleting Targets", auto: await xcodeProject.deleteTargets(targetsWithoutPhases))
-        // let targetsToBuild = targetsTree.subtracting(targetsWithoutPhases)
+        let targetsToBuild: TargetsMap
+        if ProcessInfo.processInfo.environment.contains("RUGBY_DELETE_PRE_TARGETS") {
+            // Sometimes modules expect that their dependencies create product folder.
+            let productFolderPaths = targetsWithoutPhases.values.compactMap { [weak self] target in
+                self?.binariesManager.productFolderPath(target: target, options: options, paths: paths)
+            }
+            try await productFolderPaths.concurrentForEach { try Folder.create(at: $0) }
 
-        let buildTarget = try await buildManager.makeBuildTarget(targetsTree)
+            // Xcodebuild works faster if we pass less targets.
+            try await log("Deleting Targets", auto: await xcodeProject.deleteTargets(targetsWithoutPhases))
+            targetsToBuild = targetsTree.subtracting(targetsWithoutPhases)
+        } else {
+            targetsToBuild = targetsTree
+        }
+
+        let buildTarget = try await buildManager.makeBuildTarget(targetsToBuild)
         try await buildManager.build(buildTarget, options: options, paths: paths)
     }
 }

@@ -8,7 +8,8 @@ public extension Vault {
             logger: logger,
             xcodePhaseEditor: XcodePhaseEditor(),
             buildManager: internalBuildManager(workingDirectory: workingDirectory),
-            xcodeProject: xcode.project(projectPath: router.paths(relativeTo: workingDirectory).podsProject)
+            xcodeProject: xcode.project(projectPath: router.paths(relativeTo: workingDirectory).podsProject),
+            binariesManager: binariesManager
         )
     }
 }
