@@ -61,10 +61,12 @@ extension PrebuildManager: IPrebuildManager {
             xcodeProject.resetCache()
             return await log("Skip")
         }
-        try await log("Deleting Targets", auto: await xcodeProject.deleteTargets(targetsWithoutPhases))
 
-        let targetsToBuild = targetsTree.subtracting(targetsWithoutPhases)
-        let buildTarget = try await buildManager.makeBuildTarget(targetsToBuild)
+        // TODO: Sometimes modules expect that their dependencies create product folder.
+        // try await log("Deleting Targets", auto: await xcodeProject.deleteTargets(targetsWithoutPhases))
+        // let targetsToBuild = targetsTree.subtracting(targetsWithoutPhases)
+
+        let buildTarget = try await buildManager.makeBuildTarget(targetsTree)
         try await buildManager.build(buildTarget, options: options, paths: paths)
     }
 }
