@@ -9,6 +9,7 @@ protocol IBinariesStorage: AnyObject {
     func binaryRelativePath(_ target: IInternalTarget, buildOptions: XcodeBuildOptions) throws -> String
     func finderBinaryFolderPath(_ target: IInternalTarget, buildOptions: XcodeBuildOptions) throws -> String
     func xcodeBinaryFolderPath(_ target: IInternalTarget) throws -> String
+    func productFolderPath(target: IInternalTarget, options: XcodeBuildOptions, paths: XcodeBuildPaths) -> String?
 
     func saveBinaries(
         ofTargets targets: TargetsMap,
@@ -74,6 +75,15 @@ final class BinariesStorage: Loggable {
         "\(buildOptions.config)-\(buildOptions.sdk.xcodebuild)-\(buildOptions.arch)"
     }
 
+    private func productFolderPath(_ product: Product, buildConfigFolder: String) -> String? {
+        if product.type == .bundle {
+            return "\(buildConfigFolder)\(product.nameWithParent)"
+        } else if let productFolderName = product.parentFolderName {
+            return "\(buildConfigFolder)\(productFolderName)"
+        }
+        return nil
+    }
+
     private func moveBinariesSteps(
         ofTargets targets: TargetsMap,
         buildConfigFolder: String,
@@ -85,16 +95,20 @@ final class BinariesStorage: Loggable {
             }
 
             let productFiles: [IItem]
-            // Copy bundle to separate bin folder
-            if target.product?.type == .bundle {
-                let binaryPath = "\(buildConfigFolder)\(product.nameWithParent)"
-                productFiles = try [Folder.at(binaryPath)]
-            } else if let productFolderName = product.parentFolderName {
-                let productFolder = try Folder.at("\(buildConfigFolder)\(productFolderName)")
-                let foldersExceptBundle = try productFolder.folders().filter {
-                    $0.pathExtension != .bundleExtension
+            if let productFolderPath = productFolderPath(product, buildConfigFolder: buildConfigFolder) {
+                if target.product?.type == .bundle {
+                    // Copy bundle to separate bin folder
+                    productFiles = try [Folder.at(productFolderPath)]
+                } else if product.parentFolderName != nil {
+                    let productFolder = try Folder.at(productFolderPath)
+                    let foldersExceptBundle = try productFolder.folders().filter {
+                        $0.pathExtension != .bundleExtension
+                    }
+                    productFiles = try productFolder.files() + foldersExceptBundle
+                } else {
+                    // Unsupported products
+                    productFiles = []
                 }
-                productFiles = try productFolder.files() + foldersExceptBundle
             } else {
                 // Unsupported products
                 productFiles = []
@@ -131,6 +145,16 @@ extension BinariesStorage: IBinariesStorage {
 
     func xcodeBinaryFolderPath(_ target: IInternalTarget) throws -> String {
         try binaryFolderPath(target, configFolder: xcodeConfigFolder).homeEnvRelativePath()
+    }
+
+    func productFolderPath(
+        target: IInternalTarget,
+        options: XcodeBuildOptions,
+        paths: XcodeBuildPaths
+    ) -> String? {
+        guard let product = target.product else { return nil }
+        let buildConfigFolder = buildConfigFolder(buildOptions: options, buildPaths: paths)
+        return productFolderPath(product, buildConfigFolder: buildConfigFolder)
     }
 
     func saveBinaries(
