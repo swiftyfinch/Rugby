@@ -3,7 +3,7 @@ import Fish
 // MARK: - Interface
 
 /// Xcode build options.
-public struct XcodeBuildOptions: CustomStringConvertible {
+public struct XcodeBuildOptions: CustomStringConvertible, Equatable {
     let sdk: SDK
     let config: String
     let arch: String
@@ -49,7 +49,7 @@ public enum SDK: String {
 }
 
 /// The collection of Xcode paths.
-public struct XcodeBuildPaths {
+public struct XcodeBuildPaths: Equatable {
     let project: String
     let symroot: String
     let rawLog: String

@@ -47,13 +47,21 @@ public final class ILoggerMock: ILogger {
     public var logFooterMetricKeyLevelOutputBlockCallsCount = 0
     public var logFooterMetricKeyLevelOutputBlockCalled: Bool { logFooterMetricKeyLevelOutputBlockCallsCount > 0 }
     public var logFooterMetricKeyLevelOutputBlockReturnValue: Any!
-    public var logFooterMetricKeyLevelOutputBlockClosure: ((String, String?, String?, LogLevel, LoggerOutput, () async throws -> Any) async -> Any)?
+    public var logFooterMetricKeyLevelOutputBlockClosure: ((String, String?, String?, LogLevel, LoggerOutput, () async throws -> Any) async throws -> Any)?
 
     @discardableResult
-    public func log<Result>(_ header: String, footer: String?, metricKey: String?, level: LogLevel, output: LoggerOutput, block: () async throws -> Result) async -> Result {
+    public func log<Result>(_ header: String, footer: String?, metricKey: String?, level: LogLevel, output: LoggerOutput, block: () async throws -> Result) async rethrows -> Result {
         logFooterMetricKeyLevelOutputBlockCallsCount += 1
         if let logFooterMetricKeyLevelOutputBlockClosure = logFooterMetricKeyLevelOutputBlockClosure {
-            return await logFooterMetricKeyLevelOutputBlockClosure(header, footer, metricKey, level, output, block) as! Result
+            // It's a workaround
+            // https://forums.swift.org/t/run-a-throwable-function-without-try-is-this-expected/32282/2
+            // https://github.com/apple/swift/issues/43295
+            func sync<T>(handler: () async throws -> (T)) async rethrows -> T {
+                try await handler()
+            }
+            return try await sync {
+                try await logFooterMetricKeyLevelOutputBlockClosure(header, footer, metricKey, level, output, block) as! Result
+            }
         } else {
             return logFooterMetricKeyLevelOutputBlockReturnValue as! Result
         }
