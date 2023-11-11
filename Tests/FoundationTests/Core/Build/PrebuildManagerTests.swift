@@ -152,10 +152,9 @@ extension PrebuildManagerTests {
         XCTAssertTrue(deleteReceivedTargets[dependencyTarget.uuid] === dependencyTarget)
 
         XCTAssertEqual(buildManager.makeBuildTargetCallsCount, 1)
-        XCTAssertEqual(buildManager.makeBuildTargetReceivedTargets?.count, 3)
+        XCTAssertEqual(buildManager.makeBuildTargetReceivedTargets?.count, 2)
         XCTAssertTrue(buildManager.makeBuildTargetReceivedTargets?[target0.uuid] === target0)
         XCTAssertTrue(buildManager.makeBuildTargetReceivedTargets?[target1.uuid] === target1)
-        XCTAssertTrue(buildManager.makeBuildTargetReceivedTargets?[dependencyTarget.uuid] === dependencyTarget)
 
         XCTAssertEqual(buildManager.buildOptionsPathsCallsCount, 1)
         let buildArgs = try XCTUnwrap(buildManager.buildOptionsPathsReceivedArguments)

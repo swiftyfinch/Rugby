@@ -20,12 +20,15 @@ struct BuildOptions: AsyncParsableCommand {
     @OptionGroup
     var targetsOptions: TargetsOptions
 
-    func xcodeBuildOptions() -> XcodeBuildOptions {
+    func xcodeBuildOptions(skipSigning: Bool = false) -> XcodeBuildOptions {
         XcodeBuildOptions(
             sdk: sdk,
             config: config,
             arch: resolveArchitecture().rawValue,
-            xcargs: dependencies.xcargsProvider.xcargs(strip: additionalBuildOptions.strip)
+            xcargs: dependencies.xcargsProvider.xcargs(
+                strip: additionalBuildOptions.strip,
+                skipSigning: skipSigning
+            )
         )
     }
 

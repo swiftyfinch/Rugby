@@ -94,7 +94,7 @@ extension Build {
                     patterns: buildOptions.targetsOptions.exceptAsRegex,
                     exactMatches: buildOptions.targetsOptions.exceptTargets
                 ),
-                options: buildOptions.xcodeBuildOptions(),
+                options: buildOptions.xcodeBuildOptions(skipSigning: true),
                 paths: dependencies.xcode.paths(workingDirectory: Folder.current, logsFolder: logFolder)
             )
         }
