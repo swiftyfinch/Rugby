@@ -54,34 +54,38 @@ extension PrebuildManager: IPrebuildManager {
                                                      exceptTargetsRegex: exceptTargetsRegex,
                                                      freeSpaceIfNeeded: false,
                                                      patchLibraries: false)
-        let targetsTree = targets.merging(targets.flatMapValues(\.dependencies))
 
+        let targetsTree = targets.merging(targets.flatMapValues(\.dependencies))
         await log("Removing Build Phases") {
             await xcodePhaseEditor.keepOnlyPreSourceScriptPhases(in: targetsTree)
             await xcodePhaseEditor.deleteCopyXCFrameworksPhase(in: targetsTree)
         }
+
         let targetsWithoutPhases = targetsTree.filter(\.value.buildPhases.isEmpty)
         guard targetsTree.count != targetsWithoutPhases.count else {
             xcodeProject.resetCache()
             return await log("Skip")
         }
 
-        let targetsToBuild: TargetsMap
-        if ProcessInfo.processInfo.environment.contains("RUGBY_DELETE_PRE_TARGETS") {
-            // Sometimes modules expect that their dependencies create product folder.
-            let productFolderPaths = targetsWithoutPhases.values.compactMap { [weak self] target in
-                self?.binariesManager.productFolderPath(target: target, options: options, paths: paths)
-            }
-            try await productFolderPaths.concurrentForEach { try Folder.create(at: $0) }
+        // Sometimes modules expect that their dependencies create product folder.
+        try await createProductFolders(targets: targetsWithoutPhases, options: options, paths: paths)
 
-            // Xcodebuild works faster if we pass less targets.
-            try await log("Deleting Targets", auto: await xcodeProject.deleteTargets(targetsWithoutPhases))
-            targetsToBuild = targets.subtracting(targetsWithoutPhases)
-        } else {
-            targetsToBuild = targets
-        }
+        // Xcodebuild works faster if we pass less targets.
+        try await log("Deleting Targets", auto: await xcodeProject.deleteTargets(targetsWithoutPhases))
 
+        let targetsToBuild = targets.subtracting(targetsWithoutPhases)
         let buildTarget = try await buildManager.makeBuildTarget(targetsToBuild)
         try await buildManager.build(buildTarget, options: options, paths: paths)
+    }
+
+    private func createProductFolders(
+        targets: TargetsMap,
+        options: XcodeBuildOptions,
+        paths: XcodeBuildPaths
+    ) async throws {
+        let productFolderPaths = targets.values.compactMap { [weak self] target in
+            self?.binariesManager.productFolderPath(target: target, options: options, paths: paths)
+        }
+        try await productFolderPaths.concurrentForEach { try Folder.create(at: $0) }
     }
 }
