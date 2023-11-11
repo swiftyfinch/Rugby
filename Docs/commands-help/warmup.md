@@ -37,6 +37,19 @@
 ╰─────────────────────────────────────────────────────────────────────────────────────────────╯
 ```
 
+## Discussion
+
+The command will try to download binaries from `https://${endpoint}/${module_name}/${config}-${sdk}-${arch}/${hash}`.\
+It should be a zip archive for each module. And an archive should contain a product folder.\
+For example, `https://s3.eu-west-2.amazonaws.com/Alamofire/Debug-iphonesimulator-x86_64/f38484e`.
+```
+f38484e (zip)
+├─ f38484e.yml
+└─ Alamofire.framework
+```
+And after unzipping the binary will be moved to `~/.rugby/bin/Alamofire/Debug-iphonesimulator-x86_64/f38484e`.
+<br><br>
+
 ## 🦮 Guides
 
 - 🐳 [Remote Cache](../remote-cache.md)
