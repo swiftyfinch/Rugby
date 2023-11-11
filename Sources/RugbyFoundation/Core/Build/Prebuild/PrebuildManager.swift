@@ -76,9 +76,9 @@ extension PrebuildManager: IPrebuildManager {
 
             // Xcodebuild works faster if we pass less targets.
             try await log("Deleting Targets", auto: await xcodeProject.deleteTargets(targetsWithoutPhases))
-            targetsToBuild = targetsTree.subtracting(targetsWithoutPhases)
+            targetsToBuild = targets.subtracting(targetsWithoutPhases)
         } else {
-            targetsToBuild = targetsTree
+            targetsToBuild = targets
         }
 
         let buildTarget = try await buildManager.makeBuildTarget(targetsToBuild)
