@@ -2,9 +2,10 @@ import Foundation
 import RugbyFoundation
 
 final class FeatureToggles {
+    // swiftlint:disable identifier_name
     private let RUGBY_KEEP_HASH_YAMLS = "RUGBY_KEEP_HASH_YAMLS"
     private let RUGBY_PRINT_MISSING_BINARIES = "RUGBY_PRINT_MISSING_BINARIES"
-
+    // swiftlint:enable identifier_name
 }
 
 extension FeatureToggles: IFeatureToggles {
@@ -24,7 +25,7 @@ extension FeatureToggles: IFeatureToggles {
     }
 }
 
-private extension Optional where Wrapped == String {
+private extension String? {
     var isEnabled: Bool {
         switch self {
         case "YES", "true", "1":
