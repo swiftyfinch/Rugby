@@ -39,3 +39,12 @@ extension IXcodeBuildExecutor {}
 
 //// sourcery: AutoMockable, imports = ["RugbyFoundation"]
 extension FoundationHasher {}
+
+//// sourcery: AutoMockable, imports = ["RugbyFoundation"]
+extension ISwiftVersionProvider {}
+
+//// sourcery: AutoMockable, imports = ["RugbyFoundation"]
+extension IArchitectureProvider {}
+
+//// sourcery: AutoMockable, imports = ["RugbyFoundation"]
+extension IXcodeCLTVersionProvider {}
