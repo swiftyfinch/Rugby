@@ -29,7 +29,8 @@ extension RunnableCommand {
         try await dependencies.environmentCollector.write(
             rugbyVersion: Rugby.configuration.version,
             command: self,
-            workingDirectory: Folder.current
+            workingDirectory: Folder.current,
+            rugbyEnvironment: dependencies.featureToggles.all
         )
 
         let name = Self.configuration.commandName?.capitalized ?? "Unknown"
