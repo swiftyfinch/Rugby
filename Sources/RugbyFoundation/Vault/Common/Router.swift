@@ -21,13 +21,13 @@ public extension IRouter {
     /// The path to Pods folder.
     var podsPath: String { workingDirectory.subpath(.pods) }
     /// The path to Pods project.
-    var podsProjectPath: String { podsPath.subpath(.podsProject) }
+    var podsProjectPath: String { workingDirectory.subpath(.pods, .podsProject) }
     /// The path to .rugby folder.
     var rugbyPath: String { workingDirectory.subpath(.rugby) }
     /// The path to build folder.
-    var buildPath: String { rugbyPath.subpath(.build) }
+    var buildPath: String { workingDirectory.subpath(.rugby, .build) }
     /// The path to backup folder.
-    var backupPath: String { rugbyPath.subpath(.backup) }
+    var backupPath: String { workingDirectory.subpath(.rugby, .backup) }
 
     /// Returns a path to rawBuild.log which contained subpath.
     func rawLogPath(subpath: String) -> String {
