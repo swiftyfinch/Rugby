@@ -63,7 +63,6 @@ extension Warmup: RunnableCommand {
             throw Error.missingEndpoint
         }
         try await dependencies.warmupManager(
-            workingDirectory: Folder.current,
             timeoutIntervalForRequest: TimeInterval(timeout),
             httpMaximumConnectionsPerHost: maxConnections
         ).warmup(

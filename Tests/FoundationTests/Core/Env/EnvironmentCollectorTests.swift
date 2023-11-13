@@ -5,6 +5,7 @@ import XCTest
 final class EnvironmentCollectorTests: XCTestCase {
     private var sut: IEnvironmentCollector!
     private var logger: ILoggerMock!
+    private var workingDirectory: IFolderMock!
     private var shellExecutor: IShellExecutorMock!
     private var swiftVersionProvider: ISwiftVersionProviderMock!
     private var architectureProvider: IArchitectureProviderMock!
@@ -13,12 +14,14 @@ final class EnvironmentCollectorTests: XCTestCase {
     override func setUp() {
         super.setUp()
         logger = ILoggerMock()
+        workingDirectory = IFolderMock()
         shellExecutor = IShellExecutorMock()
         swiftVersionProvider = ISwiftVersionProviderMock()
         architectureProvider = IArchitectureProviderMock()
         xcodeCLTVersionProvider = IXcodeCLTVersionProviderMock()
         sut = EnvironmentCollector(
             logger: logger,
+            workingDirectory: workingDirectory,
             shellExecutor: shellExecutor,
             swiftVersionProvider: swiftVersionProvider,
             architectureProvider: architectureProvider,
@@ -29,6 +32,7 @@ final class EnvironmentCollectorTests: XCTestCase {
     override func tearDown() {
         super.tearDown()
         logger = nil
+        workingDirectory = nil
         shellExecutor = nil
         swiftVersionProvider = nil
         architectureProvider = nil
@@ -50,7 +54,6 @@ extension EnvironmentCollectorTests {
             }
             return nil
         }
-        let workingDirectory = IFolderMock()
         let projectFolder = IFolderMock()
         projectFolder.underlyingPathExtension = "xcworkspace"
         projectFolder.underlyingNameExcludingExtension = "Example"
@@ -63,7 +66,6 @@ extension EnvironmentCollectorTests {
         // Act
         let env = try await sut.env(
             rugbyVersion: "2.2.0",
-            workingDirectory: workingDirectory,
             rugbyEnvironment: rugbyEnvironment
         )
 
@@ -93,7 +95,6 @@ extension EnvironmentCollectorTests {
             let config: String
         }
         let command = Build(arch: "x86_64", config: "Release")
-        let workingDirectory = IFolderMock()
         workingDirectory.foldersDeepReturnValue = []
         let rugbyEnvironment = [
             "RUGBY_KEEP_HASH_YAMLS": "NO",
@@ -104,7 +105,6 @@ extension EnvironmentCollectorTests {
         try await sut.write(
             rugbyVersion: "2.0",
             command: command,
-            workingDirectory: workingDirectory,
             rugbyEnvironment: rugbyEnvironment
         )
 

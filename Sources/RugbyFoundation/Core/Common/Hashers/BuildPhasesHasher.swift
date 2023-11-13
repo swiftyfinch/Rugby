@@ -3,16 +3,16 @@ import Foundation
 import typealias XcodeProj.BuildSettings
 
 final class BuildPhaseHasher: Loggable {
-    private let workingDirectory: IFolder
     let logger: ILogger
+    private let workingDirectory: IFolder
     private let foundationHasher: FoundationHasher
     private let fileContentHasher: FileContentHasher
     private let xcodeEnvResolver: XcodeEnvResolver
 
     private let dollarSymbol = "$"
 
-    init(workingDirectory: IFolder,
-         logger: ILogger,
+    init(logger: ILogger,
+         workingDirectory: IFolder,
          foundationHasher: FoundationHasher,
          fileContentHasher: FileContentHasher,
          xcodeEnvResolver: XcodeEnvResolver) {

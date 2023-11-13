@@ -28,7 +28,7 @@ struct Clear: AsyncParsableCommand {
 
 extension Clear: RunnableCommand {
     func body() async throws {
-        let cleaner = dependencies.cleaner(workingDirectory: Folder.current)
+        let cleaner = dependencies.cleaner()
         try await withThrowingTaskGroup(of: Void.self) { group in
             group.addTask {
                 if modules.isEmpty {
@@ -64,7 +64,7 @@ extension Clear {
         }
 
         func body() async throws {
-            let cleaner = dependencies.cleaner(workingDirectory: Folder.current)
+            let cleaner = dependencies.cleaner()
             try await cleaner.deleteBuildFolder()
         }
     }
@@ -91,7 +91,7 @@ extension Clear {
         }
 
         func body() async throws {
-            let cleaner = dependencies.cleaner(workingDirectory: Folder.current)
+            let cleaner = dependencies.cleaner()
             try await cleaner.deleteAllSharedBinaries()
         }
     }

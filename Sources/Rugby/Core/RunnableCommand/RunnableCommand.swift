@@ -29,7 +29,6 @@ extension RunnableCommand {
         try await dependencies.environmentCollector.write(
             rugbyVersion: Rugby.configuration.version,
             command: self,
-            workingDirectory: Folder.current,
             rugbyEnvironment: dependencies.featureToggles.all
         )
 

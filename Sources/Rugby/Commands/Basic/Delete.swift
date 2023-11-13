@@ -35,10 +35,7 @@ struct Delete: AsyncParsableCommand {
 
 extension Delete: RunnableCommand {
     func body() async throws {
-        let deleteTargetsManager = dependencies.deleteTargetsManager(
-            workingDirectory: Folder.current,
-            projectPath: path
-        )
+        let deleteTargetsManager = dependencies.deleteTargetsManager(projectPath: path)
         try await deleteTargetsManager.delete(
             targetsRegex: regex(
                 patterns: targetsOptions.targetsAsRegex,

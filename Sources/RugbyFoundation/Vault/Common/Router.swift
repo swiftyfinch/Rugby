@@ -1,66 +1,66 @@
 import Fish
 
+// MARK: - Interface
+
+/// The protocol describing router with all Rugby paths.
+public protocol IRouter {
+    /// The directory with Pods folder.
+    var workingDirectory: IFolder { get }
+
+    /// The path to the rugby shared folder.
+    var rugbySharedFolderPath: String { get }
+
+    /// The path to the binaries folder.
+    var binFolderPath: String { get }
+
+    /// The path to the logs folder.
+    var logsFolderPath: String { get }
+}
+
+public extension IRouter {
+    /// The path to Pods folder.
+    var podsPath: String { workingDirectory.subpath(.pods) }
+    /// The path to Pods project.
+    var podsProjectPath: String { podsPath.subpath(.podsProject) }
+    /// The path to .rugby folder.
+    var rugbyPath: String { workingDirectory.subpath(.rugby) }
+    /// The path to build folder.
+    var buildPath: String { rugbyPath.subpath(.build) }
+    /// The path to backup folder.
+    var backupPath: String { rugbyPath.subpath(.backup) }
+
+    /// Returns a path to rawBuild.log which contained subpath.
+    func rawLogPath(subpath: String) -> String {
+        logsFolderPath.subpath(subpath, .rawBuildLog)
+    }
+
+    /// Returns a path to build.log which contained subpath.
+    func beautifiedLog(subpath: String) -> String {
+        logsFolderPath.subpath(subpath, .buildLog)
+    }
+}
+
+// MARK: - Implementation
+
 /// The service providing all paths for Rugby infrastructure.
-public final class Router {
-    /// The general paths to Rugby shared folders.
-    public let paths = Paths(
-        sharedFolder: Folder.home.subpath(.rugby),
-        binFolder: Folder.home.subpath(.rugby, .bin),
-        logsFolder: Folder.home.subpath(.rugby, .logs)
-    )
+public final class Router: IRouter {
+    public let workingDirectory: IFolder
+    public let rugbySharedFolderPath: String
+    public let binFolderPath: String
+    public let logsFolderPath: String
 
-    func paths(relativeTo workingDirectory: IFolder) -> PathRouter {
-        PathRouter(workingDirectory: workingDirectory)
-    }
-}
-
-// MARK: - Paths
-
-public extension Router {
-    /// The structure describing the general paths to Rugby shared folders.
-    struct Paths {
-        /// The path to the main shared folder.
-        public let sharedFolder: String
-        /// The path to the binaries folder.
-        public let binFolder: String
-        /// The path to the logs folder.
-        public let logsFolder: String
-    }
-}
-
-struct PathRouter {
-    private let workingDirectory: IFolder
-
-    init(workingDirectory: IFolder) {
+    /// Creates a router.
+    /// - Parameters:
+    ///   - workingDirectory: The directory with Pods folder.
+    ///   - sharedFolderPath: The path to the main shared folder.
+    public init(
+        workingDirectory: IFolder,
+        sharedFolderPath: String
+    ) {
         self.workingDirectory = workingDirectory
-    }
-
-    var pods: String {
-        workingDirectory.subpath(.pods)
-    }
-
-    var podsProject: String {
-        workingDirectory.subpath(.pods, .podsProject)
-    }
-
-    var build: String {
-        workingDirectory.subpath(.rugby, .build)
-    }
-
-    var rawLog: String {
-        workingDirectory.subpath(.rawBuildLog)
-    }
-
-    var beautifiedLog: String {
-        workingDirectory.subpath(.buildLog)
-    }
-
-    var backup: String {
-        workingDirectory.subpath(.rugby, .backup)
-    }
-
-    var rugby: String {
-        workingDirectory.subpath(.rugby)
+        rugbySharedFolderPath = sharedFolderPath.subpath(.rugby)
+        binFolderPath = sharedFolderPath.subpath(.rugby, .bin)
+        logsFolderPath = sharedFolderPath.subpath(.rugby, .logs)
     }
 }
 
