@@ -20,7 +20,7 @@ struct Rollback: RunnableCommand {
     }
 
     func body() async throws {
-        try await dependencies.backupManager(workingDirectory: Folder.current)
+        try await dependencies.backupManager()
             .restore(.original)
         dependencies.xcode.resetProjectsCache()
     }

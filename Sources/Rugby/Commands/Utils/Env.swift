@@ -11,7 +11,6 @@ struct Env: AsyncParsableCommand {
     func run() async throws {
         try await dependencies.environmentCollector.env(
             rugbyVersion: Rugby.configuration.version,
-            workingDirectory: Folder.current,
             rugbyEnvironment: dependencies.featureToggles.all
         ).forEach { print($0) }
     }

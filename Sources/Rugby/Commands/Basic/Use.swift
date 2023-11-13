@@ -32,7 +32,7 @@ struct Use: AsyncParsableCommand {
 
 extension Use: RunnableCommand {
     func body() async throws {
-        try await dependencies.useBinariesManager(workingDirectory: Folder.current)
+        try await dependencies.useBinariesManager()
             .use(
                 targetsRegex: regex(
                     patterns: targetsOptions.targetsAsRegex,

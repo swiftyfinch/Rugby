@@ -8,11 +8,9 @@ public protocol IEnvironmentCollector {
     /// Returns the environment information.
     /// - Parameters:
     ///   - rugbyVersion: The current version of Rugby.
-    ///   - workingDirectory: A directory with Pods folder.
     ///   - rugbyEnvironment: The variable names and values in the environment which is used by Rugby.
     func env(
         rugbyVersion: String,
-        workingDirectory: IFolder,
         rugbyEnvironment: [String: String]
     ) async throws -> [String]
 
@@ -20,12 +18,10 @@ public protocol IEnvironmentCollector {
     /// - Parameters:
     ///   - rugbyVersion: The current version of Rugby.
     ///   - command: A command to log.
-    ///   - workingDirectory: A directory with Pods folder.
     ///   - rugbyEnvironment: The variable names and values in the environment which is used by Rugby.
     func write<Command>(
         rugbyVersion: String,
         command: Command,
-        workingDirectory: IFolder,
         rugbyEnvironment: [String: String]
     ) async throws
 
@@ -41,17 +37,20 @@ public protocol IEnvironmentCollector {
 
 final class EnvironmentCollector: Loggable {
     let logger: ILogger
+    private let workingDirectory: IFolder
     private let shellExecutor: IShellExecutor
     private let swiftVersionProvider: ISwiftVersionProvider
     private let architectureProvider: IArchitectureProvider
     private let xcodeCLTVersionProvider: IXcodeCLTVersionProvider
 
     init(logger: ILogger,
+         workingDirectory: IFolder,
          shellExecutor: IShellExecutor,
          swiftVersionProvider: ISwiftVersionProvider,
          architectureProvider: IArchitectureProvider,
          xcodeCLTVersionProvider: IXcodeCLTVersionProvider) {
         self.logger = logger
+        self.workingDirectory = workingDirectory
         self.shellExecutor = shellExecutor
         self.swiftVersionProvider = swiftVersionProvider
         self.architectureProvider = architectureProvider
@@ -70,7 +69,7 @@ final class EnvironmentCollector: Loggable {
         return "CPU: \(cpu.trimmingCharacters(in: .newlines)) (\(architectureProvider.architecture().rawValue))"
     }
 
-    private func getProject(workingDirectory: IFolder) -> String {
+    private func getProject() -> String {
         let projects = try? workingDirectory.folders().filter { folder in
             folder.pathExtension == "xcodeproj" || folder.pathExtension == "xcworkspace"
         }
@@ -99,7 +98,6 @@ private extension String {
 extension EnvironmentCollector: IEnvironmentCollector {
     public func env(
         rugbyVersion: String,
-        workingDirectory: IFolder,
         rugbyEnvironment: [String: String]
     ) async throws -> [String] {
         let xcodeCLTInfo = try xcodeCLTVersionProvider.version()
@@ -109,7 +107,7 @@ extension EnvironmentCollector: IEnvironmentCollector {
             await getSwiftVersion(),
             "CLT: \(xcodeCLTVersion)",
             getCPU(),
-            getProject(workingDirectory: workingDirectory),
+            getProject(),
             getGitBranch()
         ]
         rugbyEnvironment.keys.sorted().forEach { key in
@@ -122,12 +120,10 @@ extension EnvironmentCollector: IEnvironmentCollector {
     public func write(
         rugbyVersion: String,
         command: some Any,
-        workingDirectory: IFolder,
         rugbyEnvironment: [String: String]
     ) async throws {
         var environment = try await env(
             rugbyVersion: rugbyVersion,
-            workingDirectory: workingDirectory,
             rugbyEnvironment: rugbyEnvironment
         )
         environment.append(getCommandDump(command: command))

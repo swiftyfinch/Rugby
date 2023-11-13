@@ -9,8 +9,13 @@ public final class Vault {
     /// - Parameters:
     ///   - featureToggles: The service providing the feature toggles.
     ///   - logger: The service collecting information about Rugby execution.
-    public static func setupShared(featureToggles: IFeatureToggles, logger: ILogger) {
-        shared = Vault(featureToggles: featureToggles, logger: logger)
+    ///   - router: The service providing all paths for Rugby infrastructure.
+    public static func setupShared(
+        featureToggles: IFeatureToggles,
+        logger: ILogger,
+        router: IRouter
+    ) {
+        shared = Vault(featureToggles: featureToggles, logger: logger, router: router)
     }
 
     // MARK: - Init
@@ -21,11 +26,17 @@ public final class Vault {
     public let settings = Settings()
     /// The service collecting information about Rugby execution.
     public let logger: ILogger
+    /// The service providing all paths for Rugby infrastructure.
+    public let router: IRouter
 
-    private init(featureToggles: IFeatureToggles,
-                 logger: ILogger) {
+    private init(
+        featureToggles: IFeatureToggles,
+        logger: ILogger,
+        router: IRouter
+    ) {
         self.featureToggles = featureToggles
         self.logger = logger
+        self.router = router
     }
 
     // MARK: - Base
@@ -39,13 +50,10 @@ public final class Vault {
     /// The service to play sound notifications.
     public private(set) lazy var soundPlayer: ISoundPlayer = SoundPlayer(shellExecutor: shellExecutor)
 
-    /// The service providing all paths for Rugby infrastructure.
-    public let router = Router()
-
     /// Returns the backup manager to save or restore an Xcode project state.
-    public func backupManager(workingDirectory: IFolder) -> IBackupManager {
-        BackupManager(backupFolderPath: router.paths(relativeTo: workingDirectory).backup,
-                      workingDirectory: workingDirectory,
+    public func backupManager() -> IBackupManager {
+        BackupManager(backupFolderPath: router.backupPath,
+                      workingDirectory: router.workingDirectory,
                       hasBackupKey: settings.hasBackupKey)
     }
 
@@ -67,6 +75,7 @@ public final class Vault {
     /// The service providing the environment information.
     public private(set) lazy var environmentCollector: IEnvironmentCollector = EnvironmentCollector(
         logger: logger,
+        workingDirectory: router.workingDirectory,
         shellExecutor: shellExecutor,
         swiftVersionProvider: swiftVersionProvider,
         architectureProvider: architectureProvider,
@@ -76,37 +85,37 @@ public final class Vault {
     // MARK: - Logs
 
     /// The service to keep only latest logs.
-    public private(set) lazy var logsRotator = LogsRotator(logsPath: router.paths.logsFolder)
+    public private(set) lazy var logsRotator = LogsRotator(logsPath: router.logsFolderPath)
 
     /// The service to log commands metrics.
-    public private(set) lazy var metricsLogger = MetricsLogger(folderPath: router.paths.logsFolder)
+    public private(set) lazy var metricsLogger = MetricsLogger(folderPath: router.logsFolderPath)
 
     // MARK: - Common
 
     private(set) lazy var binariesManager = BinariesStorage(
         logger: logger,
-        sharedPath: router.paths.binFolder,
+        sharedPath: router.binFolderPath,
         keepHashYamls: featureToggles.keepHashYamls
     )
-    func targetsHasher(workingDirectory: IFolder) -> TargetsHasher {
+    func targetsHasher() -> TargetsHasher {
         let foundationHasher = SHA1Hasher()
         let fileContentHasher = FileContentHasher(
             foundationHasher: foundationHasher,
-            workingDirectory: workingDirectory
+            workingDirectory: router.workingDirectory
         )
         return TargetsHasher(
             foundationHasher: foundationHasher,
             swiftVersionProvider: swiftVersionProvider,
             buildPhaseHasher: BuildPhaseHasher(
-                workingDirectory: workingDirectory,
                 logger: logger,
+                workingDirectory: router.workingDirectory,
                 foundationHasher: foundationHasher,
                 fileContentHasher: fileContentHasher,
                 xcodeEnvResolver: XcodeEnvResolver(
                     logger: logger,
                     env: [
-                        .SRCROOT: router.paths(relativeTo: workingDirectory).pods,
-                        .BUILD_DIR: router.paths(relativeTo: workingDirectory).build
+                        .SRCROOT: router.podsPath,
+                        .BUILD_DIR: router.buildPath
                     ]
                 )
             ),

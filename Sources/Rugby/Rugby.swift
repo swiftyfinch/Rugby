@@ -1,4 +1,5 @@
 import ArgumentParser
+import Fish
 import RugbyFoundation
 
 extension String {
@@ -71,7 +72,11 @@ struct Rugby: AsyncParsableCommand {
     private static func prepareDependencies() {
         Vault.setupShared(
             featureToggles: FeatureToggles(),
-            logger: Logger(clock: Clock())
+            logger: Logger(clock: Clock()),
+            router: Router(
+                workingDirectory: Folder.current,
+                sharedFolderPath: Folder.home.path
+            )
         )
     }
 
