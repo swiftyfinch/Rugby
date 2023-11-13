@@ -35,5 +35,5 @@
 The command keeps only phases before `Sources` and then builds the project.\
 Sometimes targets have "Generate something" build phases going before `Sources`.\
 And it's important to finalize source code before running full build process.\
-Otherwise, we will encounter with situation when target hashes will be changed during building.\
+Otherwise, we will encounter the situation when target hashes are changed during building.\
 And 🏈 Rugby will not be able to reuse them.
