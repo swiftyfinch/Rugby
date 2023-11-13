@@ -21,8 +21,8 @@
 
 ### Checklist (I have ...)
 - [ ] 🧐 Followed the code style of the rest of the project
-- [ ] 📖 Updated the documentation if necessary
-- [ ] 👨🏻‍🔧 Added at least one test that validates that my change is working, if appropriate
+- [ ] 📖 Updated the documentation, if necessary
+- [ ] 👨🏻‍🔧 Added at least one test which validates that my change is working, if appropriate
 - [ ] 👮🏻‍♂️ Run `make lint` and fixed all warnings
 - [ ] ✅ Run `make test` and fixed all tests
 

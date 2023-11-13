@@ -13,7 +13,7 @@ protocol IInternalTarget: ITarget {
     var explicitDependencies: TargetsMap { get }
 
     var pbxTarget: PBXTarget { get }
-    var project: Project { get }
+    var project: IProject { get }
 
     var isPodsUmbrella: Bool { get }
     var isNative: Bool { get }

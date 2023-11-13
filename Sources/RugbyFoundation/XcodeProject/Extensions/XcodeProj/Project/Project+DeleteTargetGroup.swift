@@ -1,6 +1,6 @@
 import XcodeProj
 
-extension Project {
+extension IProject {
     func deleteTargetGroups(_ targetsForRemove: TargetsMap, targets: TargetsMap) {
         let excludedFiles = targets
             .subtracting(targetsForRemove).values

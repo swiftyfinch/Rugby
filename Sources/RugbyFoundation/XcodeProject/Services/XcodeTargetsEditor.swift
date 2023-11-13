@@ -64,11 +64,12 @@ final class XcodeTargetsEditor: Loggable {
         }
 
         if !keepGroups {
-            let targetsByProject = targetsForRemove.values.reduce(into: [:]) { dictionary, target in
-                dictionary[target.project, default: [:]][target.uuid] = target
+            let targetsByProject = try targetsForRemove.values.reduce(into: [:]) { dictionary, target in
+                try dictionary[target.project.uuid, default: [:]][target.uuid] = target
             }
             let targets = try await targetsDataSource.targets
-            targetsByProject.forEach { project, targetsForRemove in
+            targetsByProject.forEach { _, targetsForRemove in
+                guard let project = targetsForRemove.values.first?.project else { return }
                 project.deleteTargetGroups(targetsForRemove, targets: targets)
             }
         }

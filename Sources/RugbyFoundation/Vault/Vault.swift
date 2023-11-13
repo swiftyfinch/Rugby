@@ -15,7 +15,8 @@ public final class Vault {
 
     // MARK: - Init
 
-    let featureToggles: IFeatureToggles
+    /// The service providing feature toggles.
+    public let featureToggles: IFeatureToggles
     /// The general Rugby settings.
     public let settings = Settings()
     /// The service collecting information about Rugby execution.

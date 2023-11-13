@@ -20,7 +20,7 @@ final class XcodeTargetsDataSource {
     var targets: TargetsMap {
         get async throws {
             if let cachedTargets { return cachedTargets }
-            var targets: [String: (target: PBXTarget, project: Project)] = [:]
+            var targets: [String: (target: PBXTarget, project: IProject)] = [:]
 
             // Collect targets from root project
             let rootProject = try await dataSource.rootProject
@@ -70,7 +70,7 @@ final class XcodeTargetsDataSource {
     // MARK: - Private
 
     private func buildTargetsTree(_ target: PBXTarget,
-                                  targets: [String: (target: PBXTarget, project: Project)],
+                                  targets: [String: (target: PBXTarget, project: IProject)],
                                   builtTargets: inout TargetsMap) async throws {
         guard builtTargets[target.uuid] == nil else { return }
 

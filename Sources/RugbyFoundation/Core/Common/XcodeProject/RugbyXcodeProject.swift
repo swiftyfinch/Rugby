@@ -17,10 +17,10 @@ enum RugbyError: LocalizedError {
 // MARK: - Implementation
 
 final class RugbyXcodeProject {
-    private let xcodeProject: XcodeProject
+    private let xcodeProject: IInternalXcodeProject
     private let yes = "YES"
 
-    init(xcodeProject: XcodeProject) {
+    init(xcodeProject: IInternalXcodeProject) {
         self.xcodeProject = xcodeProject
     }
 

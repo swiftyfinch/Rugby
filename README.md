@@ -80,10 +80,13 @@ If you look for the legacy `Rugby 1.x`, visit [this page](https://github.com/swi
 <details><summary>Preconditions</summary>
 <p>
 
-1. Before using Rugby you should be sure that your project source code is finalized.\
+1. If you use Objective-C in your project, be sure that you import modules correctly.\
+   Use `@import Something` instead of `#import "Something.h"`.\
+   Because Rugby will include built frameworks in your project;
+2. Before using Rugby you should be sure that your project source code is finalized.\
    🔸 For example: if you use `SwiftGen`, run it before calling Rugby.\
    Otherwise, your source code will be modified during building with Rugby. Then the hashes of binaries will not be suited;
-2. Be sure that all your pods (including development) are ready to build standalone.\
+3. Be sure that all your pods (including development) are ready to build standalone.\
    Otherwise, you can get a state when one of them can't be reused correctly without the source of its dependencies.\
    As a temporary workaround, you can exclude some pods like `rugby -e BadPod`.\
    🔸 For example: if some of your pods use incorrect headers.
@@ -118,11 +121,7 @@ For advanced usage, please read the documentation below.
 
 # 🎯 Roadmap
 
-- [x] Refactoring
-- [x] GitHub Actions (On staging)
-- [x] Minimal Code Docs
-- [x] Open Source
-- [ ] More Tests
+- [ ] 👨🏻‍🔧 Increase Code Coverage [#236](https://github.com/swiftyfinch/Rugby/issues/236)
 
 ## 🤝 Contribution
 

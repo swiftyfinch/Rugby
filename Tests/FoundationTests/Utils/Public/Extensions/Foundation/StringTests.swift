@@ -47,4 +47,16 @@ final class StringTests: XCTestCase {
         // Assert
         XCTAssertEqual(groups, ["Apple Swift version 5.7.1", "Apple Swift version", "5.7.1"])
     }
+
+    // MARK: - uppercasedFirstLetter
+
+    func test_uppercasedFirstLetter() {
+        XCTAssertEqual("Some".uppercasedFirstLetter, "Some")
+        XCTAssertEqual("some".uppercasedFirstLetter, "Some")
+        XCTAssertEqual("1ome".uppercasedFirstLetter, "1ome")
+        XCTAssertEqual(".ome".uppercasedFirstLetter, ".ome")
+        XCTAssertEqual(" some".uppercasedFirstLetter, " some")
+        XCTAssertEqual("some tests".uppercasedFirstLetter, "Some tests")
+        XCTAssertEqual("some-tests here".uppercasedFirstLetter, "Some-tests here")
+    }
 }

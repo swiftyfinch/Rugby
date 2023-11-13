@@ -9,14 +9,25 @@ public protocol IEnvironmentCollector {
     /// - Parameters:
     ///   - rugbyVersion: The current version of Rugby.
     ///   - workingDirectory: A directory with Pods folder.
-    func env(rugbyVersion: String, workingDirectory: IFolder) async throws -> [String]
+    ///   - rugbyEnvironment: The variable names and values in the environment which is used by Rugby.
+    func env(
+        rugbyVersion: String,
+        workingDirectory: IFolder,
+        rugbyEnvironment: [String: String]
+    ) async throws -> [String]
 
     /// Writes the environment information and the command description to a log file.
     /// - Parameters:
     ///   - rugbyVersion: The current version of Rugby.
     ///   - command: A command to log.
     ///   - workingDirectory: A directory with Pods folder.
-    func write<Command>(rugbyVersion: String, command: Command, workingDirectory: IFolder) async throws
+    ///   - rugbyEnvironment: The variable names and values in the environment which is used by Rugby.
+    func write<Command>(
+        rugbyVersion: String,
+        command: Command,
+        workingDirectory: IFolder,
+        rugbyEnvironment: [String: String]
+    ) async throws
 
     /// Logs Xcode version.
     func logXcodeVersion() async throws
@@ -88,11 +99,12 @@ private extension String {
 extension EnvironmentCollector: IEnvironmentCollector {
     public func env(
         rugbyVersion: String,
-        workingDirectory: IFolder
+        workingDirectory: IFolder,
+        rugbyEnvironment: [String: String]
     ) async throws -> [String] {
         let xcodeCLTInfo = try xcodeCLTVersionProvider.version()
         let xcodeCLTVersion = xcodeCLTInfo.build.map { "\(xcodeCLTInfo.base) (\($0))" } ?? xcodeCLTInfo.base
-        return try [
+        var output = try [
             "Rugby version: \(rugbyVersion)",
             await getSwiftVersion(),
             "CLT: \(xcodeCLTVersion)",
@@ -100,10 +112,24 @@ extension EnvironmentCollector: IEnvironmentCollector {
             getProject(workingDirectory: workingDirectory),
             getGitBranch()
         ]
+        rugbyEnvironment.keys.sorted().forEach { key in
+            guard let value = rugbyEnvironment[key] else { return }
+            output.append("\(key): \(value)")
+        }
+        return output
     }
 
-    public func write(rugbyVersion: String, command: some Any, workingDirectory: IFolder) async throws {
-        var environment = try await env(rugbyVersion: rugbyVersion, workingDirectory: workingDirectory)
+    public func write(
+        rugbyVersion: String,
+        command: some Any,
+        workingDirectory: IFolder,
+        rugbyEnvironment: [String: String]
+    ) async throws {
+        var environment = try await env(
+            rugbyVersion: rugbyVersion,
+            workingDirectory: workingDirectory,
+            rugbyEnvironment: rugbyEnvironment
+        )
         environment.append(getCommandDump(command: command))
         for value in environment {
             await log(value, output: .file)

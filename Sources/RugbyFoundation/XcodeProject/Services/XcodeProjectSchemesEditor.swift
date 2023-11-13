@@ -28,7 +28,7 @@ final class XcodeProjectSchemesEditor: Loggable {
 
     private func deleteSchemes(ofTargets targetsForRemove: TargetsMap,
                                targets: TargetsMap,
-                               project: Project) async throws {
+                               project: IProject) async throws {
         let schemes = try await findSchemes(projectPath: project.path)
         let brokenSchemes = try findBrokenSchemes(schemes, ofTargets: targets)
         let schemesByTargets = try findSchemes(schemes, byTargets: targetsForRemove)
