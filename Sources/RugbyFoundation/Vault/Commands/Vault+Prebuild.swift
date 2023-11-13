@@ -2,13 +2,12 @@ import Fish
 
 public extension Vault {
     /// The manager to prebuild CocoaPods project.
-    /// - Parameter workingDirectory: A directory with Pods folder.
-    func prebuildManager(workingDirectory: IFolder) -> IPrebuildManager {
+    func prebuildManager() -> IPrebuildManager {
         PrebuildManager(
             logger: logger,
             xcodePhaseEditor: XcodePhaseEditor(),
-            buildManager: internalBuildManager(workingDirectory: workingDirectory),
-            xcodeProject: xcode.project(projectPath: router.paths(relativeTo: workingDirectory).podsProject),
+            buildManager: internalBuildManager(),
+            xcodeProject: xcode.project(projectPath: router.podsProjectPath),
             binariesManager: binariesManager
         )
     }
