@@ -19,4 +19,17 @@ extension InternalStringTests {
         XCTAssertEqual(" s Some".prefixCount(symbols: "s"), 0)
         XCTAssertEqual(" s Some".prefixCount(symbols: " "), 1)
     }
+
+    func test_subpath() {
+        XCTAssertEqual(
+            "~/.rugby".subpath("logs", "13.11.2023T18.09.50", "rawBuild.log"),
+            "~/.rugby/logs/13.11.2023T18.09.50/rawBuild.log"
+        )
+        XCTAssertEqual(
+            "~/.rugby".subpath(nil, "logs", nil, "13.11.2023T18.09.50", "rawBuild.log", nil),
+            "~/.rugby/logs/13.11.2023T18.09.50/rawBuild.log"
+        )
+        XCTAssertEqual("~/.rugby".subpath(nil), "~/.rugby")
+        XCTAssertEqual("Example/.rugby".subpath("build"), "Example/.rugby/build")
+    }
 }
