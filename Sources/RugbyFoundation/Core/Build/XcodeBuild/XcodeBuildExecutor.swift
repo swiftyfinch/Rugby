@@ -27,6 +27,7 @@ final class XcodeBuildExecutor: IXcodeBuildExecutor {
     }
 
     func run(_ command: String, rawLogPath: String, logPath: String, args: Any...) throws {
+        try Folder.create(at: URL(fileURLWithPath: rawLogPath).deletingLastPathComponent().path)
         try shellExecutor.throwingShell(command, args: args, "| tee '\(rawLogPath)'")
         if let errors = try? beautifyLog(rawLogPath: rawLogPath, logPath: logPath), errors.isNotEmpty {
             throw BuildError.buildFailed(errors: errors, buildLogPath: logPath, rawBuildLogPath: rawLogPath)

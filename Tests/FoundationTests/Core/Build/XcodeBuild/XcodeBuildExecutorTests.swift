@@ -2,7 +2,7 @@ import Fish
 @testable import RugbyFoundation
 import XCTest
 
-// swiftlint:disable function_body_length
+// swiftlint:disable function_body_length identifier_name
 
 final class XcodeBuildExecutorTests: XCTestCase {
     private var sut: XcodeBuildExecutor!
@@ -41,6 +41,11 @@ extension XcodeBuildExecutorTests {
     func test_taskInLog() throws {
         let createFileMock = IFileMock()
         fishSharedStorage.createFileAtContentsReturnValue = createFileMock
+        let createFolderMock = IFolderMock()
+        fishSharedStorage.createFolderAtReturnValue = createFolderMock
+        let rugbyDirectory = FileManager.default.homeDirectoryForCurrentUser.appendingPathComponent(".rugby")
+        let test_rawLogPath = rugbyDirectory.appendingPathComponent("test_rawLogPath").path
+        let test_logPath = rugbyDirectory.appendingPathComponent("test_logPath").path
 
         var isRead = false
         let expectedContent = "Touching SnapKit.framework"
@@ -61,8 +66,8 @@ extension XcodeBuildExecutorTests {
         // Act
         try sut.run(
             "test_command",
-            rawLogPath: "test_rawLogPath",
-            logPath: "test_logPath",
+            rawLogPath: test_rawLogPath,
+            logPath: test_logPath,
             args: "arg0", "arg1"
         )
 
@@ -70,10 +75,10 @@ extension XcodeBuildExecutorTests {
         XCTAssertEqual(shellExecutor.throwingShellArgsCallsCount, 1)
         let (command, args) = try XCTUnwrap(shellExecutor.throwingShellArgsReceivedArguments)
         XCTAssertEqual(command, "test_command")
-        XCTAssertEqual("\(args)", #"[["arg0", "arg1"], "| tee \'test_rawLogPath\'"]"#)
+        XCTAssertEqual("\(args)", #"[["arg0", "arg1"], "| tee \'\#(test_rawLogPath)\'"]"#)
 
         let (path, text) = try XCTUnwrap(fishSharedStorage.createFileAtContentsReceivedArguments)
-        XCTAssertEqual(path, "test_logPath")
+        XCTAssertEqual(path, test_logPath)
         XCTAssertNil(text)
         XCTAssertEqual(fishSharedStorage.createFileAtContentsCallsCount, 1)
 
@@ -92,6 +97,11 @@ extension XcodeBuildExecutorTests {
     func test_errorsInLog() throws {
         let createFileMock = IFileMock()
         fishSharedStorage.createFileAtContentsReturnValue = createFileMock
+        let createFolderMock = IFolderMock()
+        fishSharedStorage.createFolderAtReturnValue = createFolderMock
+        let rugbyDirectory = FileManager.default.homeDirectoryForCurrentUser.appendingPathComponent(".rugby")
+        let test_rawLogPath = rugbyDirectory.appendingPathComponent("test_rawLogPath").path
+        let test_logPath = rugbyDirectory.appendingPathComponent("test_logPath").path
 
         var readIndex = 0
         let expectedContent = [
@@ -118,8 +128,8 @@ extension XcodeBuildExecutorTests {
         try XCTAssertThrowsError(
             sut.run(
                 "test_command",
-                rawLogPath: "test_rawLogPath",
-                logPath: "test_logPath",
+                rawLogPath: test_rawLogPath,
+                logPath: test_logPath,
                 args: "arg0", "arg1"
             )
         ) { resultError = $0 }
@@ -132,18 +142,18 @@ extension XcodeBuildExecutorTests {
                     "error: Expressions are not allowed at the top level.",
                     "error: No exact matches in call to initializer."
                 ],
-                buildLogPath: "test_logPath",
-                rawBuildLogPath: "test_rawLogPath"
+                buildLogPath: test_logPath,
+                rawBuildLogPath: test_rawLogPath
             )
         )
 
         XCTAssertEqual(shellExecutor.throwingShellArgsCallsCount, 1)
         let (command, args) = try XCTUnwrap(shellExecutor.throwingShellArgsReceivedArguments)
         XCTAssertEqual(command, "test_command")
-        XCTAssertEqual("\(args)", #"[["arg0", "arg1"], "| tee \'test_rawLogPath\'"]"#)
+        XCTAssertEqual("\(args)", #"[["arg0", "arg1"], "| tee \'\#(test_rawLogPath)\'"]"#)
 
         let (path, text) = try XCTUnwrap(fishSharedStorage.createFileAtContentsReceivedArguments)
-        XCTAssertEqual(path, "test_logPath")
+        XCTAssertEqual(path, test_logPath)
         XCTAssertNil(text)
         XCTAssertEqual(fishSharedStorage.createFileAtContentsCallsCount, 1)
 
@@ -155,9 +165,11 @@ extension XcodeBuildExecutorTests {
         XCTAssertEqual(resultLines, expectedContent)
         XCTAssertEqual(buildLogFormatter.finishOutputCallsCount, 1)
 
+        XCTAssertEqual(fishSharedStorage.createFolderAtCallsCount, 1)
+        XCTAssertEqual(fishSharedStorage.createFolderAtReceivedPath, rugbyDirectory.path)
         XCTAssertEqual(createFileMock.appendCallsCount, 2)
         XCTAssertEqual(createFileMock.appendReceivedInvocations, expectedContent.map { "\($0)\n" })
     }
 }
 
-// swiftlint:enable function_body_length
+// swiftlint:enable function_body_length identifier_name

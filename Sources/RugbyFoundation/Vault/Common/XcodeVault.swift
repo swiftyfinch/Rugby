@@ -30,7 +30,6 @@ public final class XcodeVault {
     public func paths(logsSubfolder: String? = nil) throws -> XcodeBuildPaths {
         let logsFolder = try logsRotator.currentLogFolder().name
         let logsSubpath = logsSubfolder.map { logsFolder.subpath($0) } ?? logsFolder
-        try Folder.create(at: router.logsFolderPath.subpath(logsSubpath))
         return XcodeBuildPaths(
             project: router.podsProjectPath,
             symroot: router.buildPath,
