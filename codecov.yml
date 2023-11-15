@@ -1,3 +1,4 @@
 ignore:
+- "Rugby.swift"
 - "Sources/Rugby/Commands"
 - "Sources/RugbyFoundation/Vault"
