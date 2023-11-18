@@ -42,7 +42,7 @@ extension Vault {
                             useBinariesManager: useBinariesManager,
                             binariesCleaner: binariesCleaner,
                             environmentCollector: environmentCollector,
-                            featureToggles: featureToggles,
+                            env: env,
                             targetTreePainter: TargetTreePainter())
     }
 }

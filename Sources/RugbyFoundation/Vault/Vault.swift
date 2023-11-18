@@ -11,17 +11,17 @@ public final class Vault {
     ///   - logger: The service collecting information about Rugby execution.
     ///   - router: The service providing all paths for Rugby infrastructure.
     public static func setupShared(
-        featureToggles: IFeatureToggles,
+        env: IEnvironment,
         logger: ILogger,
         router: IRouter
     ) {
-        shared = Vault(featureToggles: featureToggles, logger: logger, router: router)
+        shared = Vault(env: env, logger: logger, router: router)
     }
 
     // MARK: - Init
 
-    /// The service providing feature toggles.
-    public let featureToggles: IFeatureToggles
+    /// The service providing environment variables.
+    public let env: IEnvironment
     /// The general Rugby settings.
     public let settings = Settings()
     /// The service collecting information about Rugby execution.
@@ -30,11 +30,11 @@ public final class Vault {
     public let router: IRouter
 
     private init(
-        featureToggles: IFeatureToggles,
+        env: IEnvironment,
         logger: ILogger,
         router: IRouter
     ) {
-        self.featureToggles = featureToggles
+        self.env = env
         self.logger = logger
         self.router = router
     }
@@ -95,7 +95,7 @@ public final class Vault {
     private(set) lazy var binariesManager = BinariesStorage(
         logger: logger,
         sharedPath: router.binFolderPath,
-        keepHashYamls: featureToggles.keepHashYamls
+        keepHashYamls: env.keepHashYamls
     )
     func targetsHasher() -> TargetsHasher {
         let foundationHasher = SHA1Hasher()

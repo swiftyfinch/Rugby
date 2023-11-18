@@ -1,14 +1,15 @@
+import Fish
 import Foundation
 import RugbyFoundation
 
-final class FeatureToggles {
+final class Environment {
     // swiftlint:disable identifier_name
     private let RUGBY_KEEP_HASH_YAMLS = "RUGBY_KEEP_HASH_YAMLS"
     private let RUGBY_PRINT_MISSING_BINARIES = "RUGBY_PRINT_MISSING_BINARIES"
     // swiftlint:enable identifier_name
 }
 
-extension FeatureToggles: IFeatureToggles {
+extension Environment: IEnvironment {
     var all: [String: String] {
         [
             RUGBY_KEEP_HASH_YAMLS: keepHashYamls.yesNo,
