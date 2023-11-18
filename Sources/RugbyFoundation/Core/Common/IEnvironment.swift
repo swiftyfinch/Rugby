@@ -8,4 +8,7 @@ public protocol IEnvironment: AnyObject {
 
     /// A flag to print missing binaries as a tree during an analysing process.
     var printMissingBinaries: Bool { get }
+
+    /// A path to the root of shared folder (without `.rugby` folder name).
+    var sharedFolderParentPath: String { get }
 }
