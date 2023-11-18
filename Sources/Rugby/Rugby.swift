@@ -70,8 +70,9 @@ struct Rugby: AsyncParsableCommand {
     // MARK: - Private
 
     private static func prepareDependencies() {
-        Vault.setupShared(
-            featureToggles: FeatureToggles(),
+        let env = Environment()
+        return Vault.setupShared(
+            env: env,
             logger: Logger(clock: Clock()),
             router: Router(
                 workingDirectory: Folder.current,

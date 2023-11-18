@@ -43,7 +43,7 @@ final class BuildManager: Loggable {
     private let useBinariesManager: IUseBinariesManager
     private let binariesCleaner: BinariesCleaner
     private let environmentCollector: IEnvironmentCollector
-    private let featureToggles: IFeatureToggles
+    private let env: IEnvironment
     private let targetTreePainter: ITargetTreePainter
 
     init(logger: ILogger,
@@ -59,7 +59,7 @@ final class BuildManager: Loggable {
          useBinariesManager: IUseBinariesManager,
          binariesCleaner: BinariesCleaner,
          environmentCollector: IEnvironmentCollector,
-         featureToggles: IFeatureToggles,
+         env: IEnvironment,
          targetTreePainter: ITargetTreePainter) {
         self.logger = logger
         self.buildTargetsManager = buildTargetsManager
@@ -74,7 +74,7 @@ final class BuildManager: Loggable {
         self.useBinariesManager = useBinariesManager
         self.binariesCleaner = binariesCleaner
         self.environmentCollector = environmentCollector
-        self.featureToggles = featureToggles
+        self.env = env
         self.targetTreePainter = targetTreePainter
     }
 
@@ -99,7 +99,7 @@ final class BuildManager: Loggable {
             return nil
         }
 
-        if featureToggles.printMissingBinaries {
+        if env.printMissingBinaries {
             let tree = targetTreePainter.paint(targets: buildTargets)
             await logPlain(
                 "\(".".yellow) \("Missing Binaries (\(buildTargets.count))".green)\n\(tree)"
