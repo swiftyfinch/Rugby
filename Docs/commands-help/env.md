@@ -28,6 +28,7 @@ Project: Example
 Git branch: main
 RUGBY_KEEP_HASH_YAMLS: NO
 RUGBY_PRINT_MISSING_BINARIES: NO
+RUGBY_SHARED_PARENT_DIR: /Users/swiftyfinch
 ```
 
 You can find the same environment output in the head of each Rugby log file.
@@ -60,4 +61,31 @@ RUGBY_PRINT_MISSING_BINARIES=YES rugby
 ┣━ Kingfisher-framework (1a1f878)
 ┗━ Moya-framework (a4a42b2)
     ┗━ Alamofire-framework (85d4367)
+```
+
+### Set a custom path to shared folder root
+
+A path to the root of shared folder (without `.rugby` folder name).
+By default:
+```objc
+RUGBY_SHARED_DIR_ROOT=$HOME rugby
+```
+```sh
+~
+└─ .rugby # shared folder
+   ├─ bin
+   └─ logs
+```
+
+You can set a different one. For example, a current directory:
+```objc
+RUGBY_SHARED_DIR_ROOT=`pwd` rugby
+```
+```sh
+pwd
+└─ .rugby # shared folder combined with local one
+   ├─ backup
+   ├─ bin
+   ├─ build
+   └─ logs
 ```

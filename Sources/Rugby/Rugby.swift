@@ -76,7 +76,7 @@ struct Rugby: AsyncParsableCommand {
             logger: Logger(clock: Clock()),
             router: Router(
                 workingDirectory: Folder.current,
-                sharedFolderPath: Folder.home.path
+                sharedFolderPath: env.sharedFolderParentPath
             )
         )
     }
