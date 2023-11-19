@@ -13,6 +13,11 @@ struct FileReplacement {
     }
 }
 
+enum ReplacementBoundary {
+    static let prefix = #"(?<=(\"|'|\s))"#
+    static let suffix = #"(?=(\"|'|\s))"#
+}
+
 protocol ISupportFilesPatcher {
     func prepareReplacements(forTarget target: IInternalTarget) throws -> [FileReplacement]
 }
@@ -21,7 +26,8 @@ final class SupportFilesPatcher {
     private typealias Replacement = (lookup: String, replacement: String)
 
     // swiftlint:disable identifier_name
-    private let MATCHING_BOUNDARY = "\\b"
+    private let PREFIX_BOUNDARY = ReplacementBoundary.prefix
+    private let SUFFIX_BOUNDARY = ReplacementBoundary.suffix
     private let BUILT_PRODUCTS_DIR = "${BUILT_PRODUCTS_DIR}/"
     private let PODS_CONFIGURATION_BUILD_DIR = "${PODS_CONFIGURATION_BUILD_DIR}/"
     private let PODS_XCFRAMEWORKS_BUILD_DIR = "${PODS_XCFRAMEWORKS_BUILD_DIR}/"
@@ -58,7 +64,8 @@ final class SupportFilesPatcher {
         let replacements = buildMap(from: replacementsPairs)
 
         let regex = try buildRegexPattern(from: replacementsPairs,
-                                          suffix: MATCHING_BOUNDARY).regex()
+                                          prefix: PREFIX_BOUNDARY,
+                                          suffix: SUFFIX_BOUNDARY).regex()
 
         return target.xcconfigPaths.compactMap {
             FileReplacement(replacements: replacements, filePath: $0, regex: regex)
@@ -78,8 +85,8 @@ final class SupportFilesPatcher {
                                     modifyKey: { "\(BUILT_PRODUCTS_DIR)\($0)" })
 
         let regex = try buildRegexPattern(from: replacementsPairs,
-                                          prefix: "\(BUILT_PRODUCTS_DIR)",
-                                          suffix: MATCHING_BOUNDARY).regex()
+                                          prefix: "\(PREFIX_BOUNDARY)\(BUILT_PRODUCTS_DIR.escapedPattern)",
+                                          suffix: SUFFIX_BOUNDARY).regex()
 
         return FileReplacement(replacements: replacements, filePath: filePath, regex: regex)
     }
@@ -103,11 +110,14 @@ final class SupportFilesPatcher {
                                 initial: replacements,
                                 modifyKey: { "\(BUILT_PRODUCTS_DIR)\($0)" })
 
-        let bundlesRegexPattern = buildRegexPattern(from: bundlesReplacementsPairs,
-                                                    prefix: "\(PODS_CONFIGURATION_BUILD_DIR)",
-                                                    suffix: MATCHING_BOUNDARY)
+        let bundlesRegexPattern = buildRegexPattern(
+            from: bundlesReplacementsPairs,
+            prefix: "\(PREFIX_BOUNDARY)\(PODS_CONFIGURATION_BUILD_DIR.escapedPattern)",
+            suffix: SUFFIX_BOUNDARY
+        )
+
         let frameworksRegexPattern = buildRegexPattern(from: frameworksReplacementsPairs,
-                                                       prefix: BUILT_PRODUCTS_DIR)
+                                                       prefix: BUILT_PRODUCTS_DIR.escapedPattern)
         let regex = try "(\(bundlesRegexPattern)|\(frameworksRegexPattern))".regex()
 
         return FileReplacement(replacements: replacements, filePath: filePath, regex: regex)
@@ -128,7 +138,6 @@ final class SupportFilesPatcher {
     private func buildRegexPattern(from replacements: [Replacement],
                                    prefix: String = "",
                                    suffix: String = "") -> String {
-        let prefix = NSRegularExpression.escapedPattern(for: prefix)
         let replacements = replacements.lazy.map(\.lookup).map(NSRegularExpression.escapedPattern(for:))
         let replacementsJoined = replacements.joined(separator: "|")
         return "\(prefix)(\(replacementsJoined))\(suffix)"

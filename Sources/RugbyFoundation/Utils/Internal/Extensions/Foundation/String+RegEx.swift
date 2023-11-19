@@ -5,6 +5,10 @@ enum RegexError: Error {
 }
 
 extension String {
+    var escapedPattern: String {
+        NSRegularExpression.escapedPattern(for: self)
+    }
+
     func regex() throws -> NSRegularExpression {
         try NSRegularExpression(pattern: self, options: .anchorsMatchLines)
     }
