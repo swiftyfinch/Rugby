@@ -1,15 +1,24 @@
+import Fish
 @testable import RugbyFoundation
 import XCTest
 
 final class FileContentEditorTests: XCTestCase {
     private var sut: FileContentEditor!
+    private var fishSharedStorage: IFilesManagerMock!
 
     override func setUpWithError() throws {
+        fishSharedStorage = IFilesManagerMock()
+        let backupFishSharedStorage = Fish.sharedStorage
+        Fish.sharedStorage = fishSharedStorage
+        addTeardownBlock {
+            Fish.sharedStorage = backupFishSharedStorage
+        }
         sut = FileContentEditor()
     }
 
     override func tearDownWithError() throws {
         sut = nil
+        fishSharedStorage = nil
     }
 }
 
@@ -39,9 +48,11 @@ extension FileContentEditorTests {
         HEADER_SEARCH_PATH = $(Inherited) ${HOME}/.rugby/bin/Realm-library/${CONFIGURATION}${EFFECTIVE_PLATFORM_NAME}-${ARCHS}/d2d48c5/libRealm-library.a/Headers '${HOME}/.rugby/bin/Moya/${CONFIGURATION}${EFFECTIVE_PLATFORM_NAME}-${ARCHS}/badaa58/Moya.framework/Headers'
         """
         // swiftlint:enable line_length
+        fishSharedStorage.isItemExistAtClosure = { _ in true }
+        fishSharedStorage.fileAtClosure = { _ in file }
 
         // Act
-        try sut.replace(replacements, regex: regexPattern, file: file)
+        try sut.replace(replacements, regex: regexPattern, filePath: "/test/path")
 
         // Assert
         XCTAssertEqual(newContent, expectedNewContent)

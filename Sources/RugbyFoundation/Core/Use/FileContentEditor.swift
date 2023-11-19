@@ -4,11 +4,8 @@ import Foundation
 final class FileContentEditor {
     func replace(_ replacements: [String: String], regex: NSRegularExpression, filePath: String) throws {
         guard File.isExist(at: filePath) else { return }
-        let file = try File.at(filePath)
-        try replace(replacements, regex: regex, file: file)
-    }
 
-    func replace(_ replacements: [String: String], regex: NSRegularExpression, file: IFile) throws {
+        let file = try File.at(filePath)
         let content = try file.read()
         let matches = regex.matches(in: content, range: NSRange(content.startIndex..., in: content))
         guard matches.isNotEmpty else { return }
