@@ -42,12 +42,11 @@ A flag to keep yaml files with target hash in the binaries folder.
 RUGBY_KEEP_HASH_YAMLS=YES rugby
 ```
 ```sh
-.rugby 
-└─ bin
-   └─ Debug-iphonesimulator-arm64
-      └─ 85d4367
-         ├─ 85d4367.yml # Hash yml file
-         └─ Alamofire.framework
+~/.rugby/bin
+└─ Debug-iphonesimulator-arm64
+   └─ 85d4367
+      ├─ 85d4367.yml # Hash yml file
+      └─ Alamofire.framework
 ```
 
 ### Print missing binaries as a tree
@@ -58,9 +57,9 @@ RUGBY_PRINT_MISSING_BINARIES=YES rugby
 ```
 ```
 . Missing Binaries (3)
-┣━ Kingfisher-framework (1a1f878)
-┗━ Moya-framework (a4a42b2)
-    ┗━ Alamofire-framework (85d4367)
+├─ Kingfisher-framework (1a1f878)
+└─ Moya-framework (a4a42b2)
+   └─ Alamofire-framework (85d4367)
 ```
 
 ### Set a custom path to shared folder root
@@ -79,10 +78,10 @@ RUGBY_SHARED_DIR_ROOT=$HOME rugby
 
 You can set a different one. For example, a current directory:
 ```objc
-RUGBY_SHARED_DIR_ROOT=`pwd` rugby
+RUGBY_SHARED_DIR_ROOT=$PWD rugby
 ```
 ```sh
-pwd
+.
 └─ .rugby # shared folder combined with local one
    ├─ backup
    ├─ bin
