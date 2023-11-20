@@ -28,7 +28,7 @@ Project: Example
 Git branch: main
 RUGBY_KEEP_HASH_YAMLS: NO
 RUGBY_PRINT_MISSING_BINARIES: NO
-RUGBY_SHARED_PARENT_DIR: /Users/swiftyfinch
+RUGBY_SHARED_DIR_ROOT: /Users/swiftyfinch
 ```
 
 You can find the same environment output in the head of each Rugby log file.
