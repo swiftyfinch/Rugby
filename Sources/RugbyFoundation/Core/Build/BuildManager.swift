@@ -41,7 +41,7 @@ final class BuildManager: Loggable {
     private let binariesManager: IBinariesStorage
     private let targetsHasher: TargetsHasher
     private let useBinariesManager: IUseBinariesManager
-    private let binariesCleaner: BinariesCleaner
+    private let binariesCleaner: IBinariesCleaner
     private let environmentCollector: IEnvironmentCollector
     private let env: IEnvironment
     private let targetTreePainter: ITargetTreePainter
@@ -57,7 +57,7 @@ final class BuildManager: Loggable {
          binariesManager: IBinariesStorage,
          targetsHasher: TargetsHasher,
          useBinariesManager: IUseBinariesManager,
-         binariesCleaner: BinariesCleaner,
+         binariesCleaner: IBinariesCleaner,
          environmentCollector: IEnvironmentCollector,
          env: IEnvironment,
          targetTreePainter: ITargetTreePainter) {

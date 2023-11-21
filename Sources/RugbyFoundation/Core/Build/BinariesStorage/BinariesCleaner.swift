@@ -1,6 +1,14 @@
 import Fish
 import Foundation
 
+// MARK: - Interface
+
+protocol IBinariesCleaner: AnyObject {
+    func freeSpace() async throws
+}
+
+// MARK: - Implementation
+
 final class BinariesCleaner: Loggable {
     let logger: ILogger
     private let limit: Int
@@ -30,61 +38,6 @@ final class BinariesCleaner: Loggable {
         self.binariesFolderPath = binariesFolderPath
         self.localRugbyFolderPath = localRugbyFolderPath
         self.buildFolderPath = buildFolderPath
-    }
-
-    func freeSpace() async throws {
-        let cleanUpInfo = try await log("Calculating Storage Info", level: .info, auto: await calculateCleanUpInfo())
-        let usedPercent = cleanUpInfo.used.percent(total: limit)
-        await log("Used: \(formatter.string(fromByteCount: Int64(cleanUpInfo.used))) (\(usedPercent)%)", level: .info)
-
-        guard cleanUpInfo.isCleanUpNeeded else { return }
-        await log("Used: \(formatter.string(fromByteCount: Int64(cleanUpInfo.used)))", level: .info)
-        await log("Reserved: \(formatter.string(fromByteCount: Int64(cleanUpInfo.reserved)))", level: .info)
-        await log("Limit: \(formatter.string(fromByteCount: Int64(limit)))", level: .info)
-        await log("To Free: \(formatter.string(fromByteCount: Int64(cleanUpInfo.spaceToFree)))", level: .info)
-
-        let candidatesForDeletion = try await log("Finding Candidates", level: .info, auto: findCandidatesForDeletion())
-        let filesForDeletion = try await log(
-            "Selecting Binaries",
-            level: .info,
-            auto: await selectFoldersForDeletion(in: candidatesForDeletion, spaceToFree: cleanUpInfo.spaceToFree)
-        )
-        let logText = filesForDeletion.reduce(into: "Folders For Deletion:\n") { text, group in
-            text.append("\(group.key)\n")
-            text.append(group.value.reduce(into: "") { text, info in
-                text.append(info.delete ? "- \(info.path)\n" : "+ \(info.path)\n")
-            })
-        }
-        await log(logText, level: .info)
-
-        try await log("Removing files", level: .info, block: {
-            let pathsForDeletion = filesForDeletion.reduce(into: []) { paths, group in
-                paths.append(contentsOf: group.value.lazy.filter(\.delete).map(\.path))
-            }
-            try await Set(pathsForDeletion).concurrentForEach { path in
-                try File.delete(at: path)
-            }
-        })
-
-        var emptyFoldersLogText = ""
-        let emptyFolders = try Folder.at(binariesFolderPath).folders(deep: true).filter { folder in
-            try folder.isEmpty()
-        }
-        for folder in emptyFolders {
-            try folder.delete()
-            emptyFoldersLogText.append("- \(folder.path)\n")
-        }
-        if emptyFoldersLogText.isNotEmpty {
-            await log("Deleted Empty Folders:\n\(emptyFoldersLogText)", level: .info)
-        }
-
-        // Always remove build folder (DerivedData)
-        try await removeBuildFolder()
-
-        if let used = try await calculateUsedSize() {
-            let freed = cleanUpInfo.used - used
-            await log("Freed: \(formatter.string(fromByteCount: Int64(freed)))", level: .info)
-        }
     }
 
     // MARK: - Private
@@ -166,5 +119,62 @@ final class BinariesCleaner: Loggable {
             }
             try buildFolder.delete()
         })
+    }
+}
+
+extension BinariesCleaner: IBinariesCleaner {
+    func freeSpace() async throws {
+        let cleanUpInfo = try await log("Calculating Storage Info", level: .info, auto: await calculateCleanUpInfo())
+        let usedPercent = cleanUpInfo.used.percent(total: limit)
+        await log("Used: \(formatter.string(fromByteCount: Int64(cleanUpInfo.used))) (\(usedPercent)%)", level: .info)
+
+        guard cleanUpInfo.isCleanUpNeeded else { return }
+        await log("Used: \(formatter.string(fromByteCount: Int64(cleanUpInfo.used)))", level: .info)
+        await log("Reserved: \(formatter.string(fromByteCount: Int64(cleanUpInfo.reserved)))", level: .info)
+        await log("Limit: \(formatter.string(fromByteCount: Int64(limit)))", level: .info)
+        await log("To Free: \(formatter.string(fromByteCount: Int64(cleanUpInfo.spaceToFree)))", level: .info)
+
+        let candidatesForDeletion = try await log("Finding Candidates", level: .info, auto: findCandidatesForDeletion())
+        let filesForDeletion = try await log(
+            "Selecting Binaries",
+            level: .info,
+            auto: await selectFoldersForDeletion(in: candidatesForDeletion, spaceToFree: cleanUpInfo.spaceToFree)
+        )
+        let logText = filesForDeletion.reduce(into: "Folders For Deletion:\n") { text, group in
+            text.append("\(group.key)\n")
+            text.append(group.value.reduce(into: "") { text, info in
+                text.append(info.delete ? "- \(info.path)\n" : "+ \(info.path)\n")
+            })
+        }
+        await log(logText, level: .info)
+
+        try await log("Removing files", level: .info, block: {
+            let pathsForDeletion = filesForDeletion.reduce(into: []) { paths, group in
+                paths.append(contentsOf: group.value.lazy.filter(\.delete).map(\.path))
+            }
+            try await Set(pathsForDeletion).concurrentForEach { path in
+                try File.delete(at: path)
+            }
+        })
+
+        var emptyFoldersLogText = ""
+        let emptyFolders = try Folder.at(binariesFolderPath).folders(deep: true).filter { folder in
+            try folder.isEmpty()
+        }
+        for folder in emptyFolders {
+            try folder.delete()
+            emptyFoldersLogText.append("- \(folder.path)\n")
+        }
+        if emptyFoldersLogText.isNotEmpty {
+            await log("Deleted Empty Folders:\n\(emptyFoldersLogText)", level: .info)
+        }
+
+        // Always remove build folder (DerivedData)
+        try await removeBuildFolder()
+
+        if let used = try await calculateUsedSize() {
+            let freed = cleanUpInfo.used - used
+            await log("Freed: \(formatter.string(fromByteCount: Int64(freed)))", level: .info)
+        }
     }
 }
