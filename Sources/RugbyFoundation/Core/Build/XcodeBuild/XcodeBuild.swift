@@ -3,7 +3,7 @@ import Fish
 // MARK: - Interface
 
 /// Xcode build options.
-public struct XcodeBuildOptions: CustomStringConvertible, Equatable {
+public struct XcodeBuildOptions: Equatable {
     let sdk: SDK
     let config: String
     let arch: String
@@ -27,19 +27,6 @@ public struct XcodeBuildOptions: CustomStringConvertible, Equatable {
         self.arch = arch
         self.xcargs = xcargs
         self.resultBundlePath = resultBundlePath
-    }
-
-    public var description: String {
-        var str = """
-        sdk: \(sdk.xcodebuild)
-        config: \(config)
-        arch: \(arch)
-        xcargs: [\(xcargs.joined(separator: ", "))]
-        """
-        if let resultBundlePath {
-            str.append("resultBundlePath: \(resultBundlePath)\n")
-        }
-        return str
     }
 }
 
