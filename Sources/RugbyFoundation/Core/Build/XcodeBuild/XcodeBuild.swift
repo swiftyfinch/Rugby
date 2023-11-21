@@ -8,6 +8,7 @@ public struct XcodeBuildOptions: CustomStringConvertible, Equatable {
     let config: String
     let arch: String
     let xcargs: [String]
+    let resultBundlePath: String?
 
     /// Initializer.
     /// - Parameters:
@@ -15,23 +16,30 @@ public struct XcodeBuildOptions: CustomStringConvertible, Equatable {
     ///   - config: A config to use in xcodebuild.
     ///   - arch: An architecture to use in xcodebuild.
     ///   - xcargs: The xcargs to use in xcodebuild.
+    ///   - resultBundlePath: The resultBundlePath to use in xcodebuild.
     public init(sdk: SDK,
                 config: String,
                 arch: String,
-                xcargs: [String]) {
+                xcargs: [String],
+                resultBundlePath: String?) {
         self.sdk = sdk
         self.config = config
         self.arch = arch
         self.xcargs = xcargs
+        self.resultBundlePath = resultBundlePath
     }
 
     public var description: String {
-        """
+        var str = """
         sdk: \(sdk.xcodebuild)
         config: \(config)
         arch: \(arch)
         xcargs: [\(xcargs.joined(separator: ", "))]
         """
+        if let resultBundlePath {
+            str.append("resultBundlePath: \(resultBundlePath)\n")
+        }
+        return str
     }
 }
 
@@ -85,7 +93,7 @@ final class XcodeBuild {
                options: XcodeBuildOptions,
                paths: XcodeBuildPaths) throws {
         let command = "NSUnbufferedIO=YES xcodebuild"
-        let arguments = [
+        var arguments = [
             "-project \(paths.project.shellFriendly)",
             "-target \(target)",
             "-sdk \(options.sdk.xcodebuild)",
@@ -93,7 +101,11 @@ final class XcodeBuild {
             "ARCHS=\(options.arch)",
             "SYMROOT=\(paths.symroot.shellFriendly)",
             "-parallelizeTargets"
-        ] + options.xcargs
+        ]
+        options.resultBundlePath.map {
+            arguments.append("-resultBundlePath \($0.shellFriendly)")
+        }
+        arguments.append(contentsOf: options.xcargs)
 
         try Folder.create(at: paths.symroot)
         try xcodeBuildExecutor.run(command,

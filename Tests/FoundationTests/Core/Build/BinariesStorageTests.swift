@@ -244,7 +244,7 @@ extension BinariesStorageTests {
 
 extension BinariesStorageTests {
     private var options: XcodeBuildOptions {
-        XcodeBuildOptions(sdk: .sim, config: "Debug", arch: "arm64", xcargs: [])
+        XcodeBuildOptions(sdk: .sim, config: "Debug", arch: "arm64", xcargs: [], resultBundlePath: nil)
     }
 
     private func xcodeBuildPaths(symroot: String = "symroot") -> XcodeBuildPaths {
