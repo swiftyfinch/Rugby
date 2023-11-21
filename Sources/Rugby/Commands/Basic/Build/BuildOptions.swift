@@ -28,7 +28,8 @@ struct BuildOptions: AsyncParsableCommand {
             xcargs: dependencies.xcargsProvider.xcargs(
                 strip: additionalBuildOptions.strip,
                 skipSigning: skipSigning
-            )
+            ),
+            resultBundlePath: additionalBuildOptions.resultBundlePath
         )
     }
 

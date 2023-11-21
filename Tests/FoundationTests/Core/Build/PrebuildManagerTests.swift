@@ -44,7 +44,8 @@ extension PrebuildManagerTests {
             sdk: .sim,
             config: "Debug",
             arch: "arm64",
-            xcargs: ["test_arg0"]
+            xcargs: ["test_arg0"],
+            resultBundlePath: nil
         )
     }
 

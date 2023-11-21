@@ -37,7 +37,8 @@ extension XcodeBuildTests {
                 sdk: .ios,
                 config: "Debug",
                 arch: "x86_64",
-                xcargs: XCARGSProvider().xcargs(strip: true)
+                xcargs: XCARGSProvider().xcargs(strip: true),
+                resultBundlePath: "build.xcresult"
             ),
             paths: XcodeBuildPaths(
                 project: "/Users/swiftyfinch/Developer/Repos/Rugby/Example/Pods/Pods.xcodeproj",
@@ -67,6 +68,7 @@ extension XcodeBuildTests {
                 "ARCHS=x86_64",
                 "SYMROOT=/Users/swiftyfinch/Developer/Repos/Rugby/Example/.rugby/build",
                 "-parallelizeTargets",
+                "-resultBundlePath build.xcresult",
                 "COMPILER_INDEX_STORE_ENABLE=NO",
                 "SWIFT_COMPILATION_MODE=wholemodule",
                 "GCC_GENERATE_DEBUGGING_SYMBOLS=NO",
@@ -85,7 +87,8 @@ extension XcodeBuildTests {
                 sdk: .sim,
                 config: "QA Release",
                 arch: "arm64",
-                xcargs: XCARGSProvider().xcargs(strip: false)
+                xcargs: XCARGSProvider().xcargs(strip: false),
+                resultBundlePath: nil
             ),
             paths: XcodeBuildPaths(
                 project: "/Users/swiftyfinch/Developer/Repos/Rugby/Exa mple/Pods/Pods.xcodeproj",

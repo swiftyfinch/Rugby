@@ -19,6 +19,7 @@
 │ -s, --sdk                  * Build SDK: sim or ios.                               │
 │ -a, --arch                 * Build architecture: auto, x86_64 or arm64.           │
 │ -c, --config               * Build configuration. (Debug)                         │
+│ --result-bundle-path       * Path for xcresult bundle.                            │
 │ -t, --targets []           * Targets for building. Empty means all targets.       │
 │ -g, --targets-as-regex []  * Targets for building as a RegEx pattern.             │
 │ -e, --except []            * Exclude targets from building.                       │
