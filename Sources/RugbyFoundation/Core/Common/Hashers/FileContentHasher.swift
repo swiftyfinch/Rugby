@@ -18,7 +18,7 @@ final class FileContentHasher {
 
     private func hashContext(path: String) throws -> String {
         let file = try File.at(path)
-        return try "\(relativePath(of: file)): \(hash(file))"
+        return try "\(path): \(hash(file))"
     }
 
     private func hash(_ file: IFile) throws -> String {
