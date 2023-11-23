@@ -8,44 +8,17 @@ final class BuildPhaseTests: XCTestCase {
         let localPodGroup = PBXGroup(sourceTree: .group, name: "LocalPod", path: "LocalPod")
         let developmentPodsGroup = PBXGroup(sourceTree: .sourceRoot, name: "Development Pods")
         localPodGroup.parent = developmentPodsGroup
-        let resourcesGroup = PBXGroup(
-            sourceTree: .group,
-            name: "Resources",
-            path: "Resources"
-        )
+        let resourcesGroup = PBXGroup(sourceTree: .group, name: "Resources", path: "Resources")
         resourcesGroup.parent = localPodGroup
-        
+
         // Dummy file without localization
-        let dummyJSON = PBXFileElement.mock(
-            name: "dummy.json",
-            path: "dummy.json",
-            parent: resourcesGroup
-        )
-        
+        let dummyJSON = dummyJSONStub(parent: resourcesGroup)
+
         // Localization with two languages
-        let localizationGroup = PBXGroup(
-            sourceTree: .group,
-            name: "Localization",
-            path: "Localization")
-        localizationGroup.parent = resourcesGroup
-        
-        let localizableStringsRu = PBXFileElement.mock(
-            name: "Localizable.strings",
-            path: "ru.lproj/Localizable.strings",
-            parent: localizationGroup
-        )
-        let localizableStringsEn = PBXFileElement.mock(
-            name: "Localizable.strings",
-            path: "en.lproj/Localizable.strings",
-            parent: localizationGroup
-        )
-        
-        let localizableStrings = PBXVariantGroup.mock(
-            children: [localizableStringsRu, localizableStringsEn],
-            name: "Localizable.strings",
-            path: ".'",
-            parent: localizationGroup
-        )
+        let localizationGroup = localicationPBXGroupStub(parent: resourcesGroup)
+        let localizationChildren = localizationChildrenStub(parent: localizationGroup)
+        let localizableStrings = localizationVariantGroupStub(parent: localizationGroup, children: localizationChildren)
+
         let buildFiles = [
             dummyJSON,
             localizableStrings
@@ -74,5 +47,50 @@ final class BuildPhaseTests: XCTestCase {
         XCTAssertTrue(result.inputFileListPaths.isEmpty)
         XCTAssertTrue(result.outputFileListPaths.isEmpty)
         XCTAssertEqual(result.files, expectedFiles)
+    }
+
+    // MARK: - Stub data
+
+    private func dummyJSONStub(parent: PBXGroup) -> PBXFileElement {
+        let dummyJSON = PBXFileElement.mock(
+            name: "dummy.json",
+            path: "dummy.json",
+            parent: parent
+        )
+        return dummyJSON
+    }
+
+    private func localicationPBXGroupStub(parent: PBXGroup) -> PBXGroup {
+        let localizationGroup = PBXGroup(
+            sourceTree: .group,
+            name: "Localization",
+            path: "Localization"
+        )
+        localizationGroup.parent = parent
+        return localizationGroup
+    }
+
+    private func localizationVariantGroupStub(parent: PBXGroup, children: [PBXFileElement]) -> PBXVariantGroup {
+        let localizableStrings = PBXVariantGroup.mock(
+            children: children,
+            name: "Localizable.strings",
+            path: ".",
+            parent: parent
+        )
+        return localizableStrings
+    }
+
+    private func localizationChildrenStub(parent: PBXGroup) -> [PBXFileElement] {
+        let localizableStringsRu = PBXFileElement.mock(
+            name: "Localizable.strings",
+            path: "ru.lproj/Localizable.strings",
+            parent: parent
+        )
+        let localizableStringsEn = PBXFileElement.mock(
+            name: "Localizable.strings",
+            path: "en.lproj/Localizable.strings",
+            parent: parent
+        )
+        return [localizableStringsRu, localizableStringsEn]
     }
 }
