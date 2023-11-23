@@ -5,28 +5,50 @@ import XCTest
 
 final class BuildPhaseTests: XCTestCase {
     func test_init() throws {
-        let localPodGroup = PBXGroup(name: "LocalPod")
-        let developmentPodsGroup = PBXGroup(name: "Development Pods")
+        let localPodGroup = PBXGroup(sourceTree: .group, name: "LocalPod", path: "LocalPod")
+        let developmentPodsGroup = PBXGroup(sourceTree: .sourceRoot, name: "Development Pods")
         localPodGroup.parent = developmentPodsGroup
+        let resourcesGroup = PBXGroup(
+            sourceTree: .group,
+            name: "Resources",
+            path: "Resources"
+        )
+        resourcesGroup.parent = localPodGroup
+        
+        // Dummy file without localization
         let dummyJSON = PBXFileElement.mock(
             name: "dummy.json",
-            path: "LocalPod/Resources/dummy.json",
-            parent: localPodGroup
+            path: "dummy.json",
+            parent: resourcesGroup
         )
-        let localizableStrings = PBXFileElement.mock(
+        
+        // Localization with two languages
+        let localizationGroup = PBXGroup(
+            sourceTree: .group,
+            name: "Localization",
+            path: "Localization")
+        localizationGroup.parent = resourcesGroup
+        
+        let localizableStringsRu = PBXFileElement.mock(
             name: "Localizable.strings",
-            path: "LocalPod/Resources/Localizable.strings",
-            parent: localPodGroup
+            path: "ru.lproj/Localizable.strings",
+            parent: localizationGroup
         )
-        let localizableStringsdict = PBXFileElement.mock(
-            name: "Localizable.stringsdict",
-            path: "Example", // Broken path
-            parent: localPodGroup
+        let localizableStringsEn = PBXFileElement.mock(
+            name: "Localizable.strings",
+            path: "en.lproj/Localizable.strings",
+            parent: localizationGroup
+        )
+        
+        let localizableStrings = PBXVariantGroup.mock(
+            children: [localizableStringsRu, localizableStringsEn],
+            name: "Localizable.strings",
+            path: ".'",
+            parent: localizationGroup
         )
         let buildFiles = [
             dummyJSON,
-            localizableStrings,
-            localizableStringsdict
+            localizableStrings
         ].map(PBXBuildFile.mock(file:))
         let pbxPhase = PBXResourcesBuildPhase(
             files: buildFiles,
@@ -37,7 +59,7 @@ final class BuildPhaseTests: XCTestCase {
         )
         let expectedFiles = [
             "\(Folder.current.path)/Pods/LocalPod/Resources/dummy.json",
-            "\(Folder.current.path)/Pods/LocalPod/Resources/Localizable.strings"
+            "\(Folder.current.path)/Pods/LocalPod/Resources/Localization"
         ]
 
         // Act
