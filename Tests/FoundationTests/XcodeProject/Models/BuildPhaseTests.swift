@@ -19,9 +19,13 @@ final class BuildPhaseTests: XCTestCase {
         let localizationChildren = localizationChildrenStub(parent: localizationGroup)
         let localizableStrings = localizationVariantGroupStub(parent: localizationGroup, children: localizationChildren)
 
+        // Broken path file
+        let brokenPathFile = brokenFileElementPathStub(parent: localPodGroup)
+
         let buildFiles = [
             dummyJSON,
-            localizableStrings
+            localizableStrings,
+            brokenPathFile
         ].map(PBXBuildFile.mock(file:))
         let pbxPhase = PBXResourcesBuildPhase(
             files: buildFiles,
@@ -92,5 +96,13 @@ final class BuildPhaseTests: XCTestCase {
             parent: parent
         )
         return [localizableStringsRu, localizableStringsEn]
+    }
+
+    private func brokenFileElementPathStub(parent: PBXGroup) -> PBXFileElement {
+        PBXFileElement.mock(
+            name: "Localizable.stringsdict",
+            path: "Example", // Broken path
+            parent: parent
+        )
     }
 }
