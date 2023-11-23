@@ -1,6 +1,7 @@
 import enum XcodeProj.BuildPhase
 import class XcodeProj.PBXBuildFile
 import class XcodeProj.PBXBuildPhase
+import class XcodeProj.PBXVariantGroup
 
 struct BuildPhase {
     enum Kind: String {
@@ -62,10 +63,15 @@ private extension PBXBuildPhase {
         return files.compactMap {
             guard let displayName = $0.file?.displayName,
                   let fullPath = $0.file?.fullPath else { return nil }
+            // PBXFileElement can't retrun correct path for PBXVariantGroup
+            if let variantGroup = $0.file as? PBXVariantGroup {
+                return variantGroup.fullPath
+            }
+            
             // Skipping files with a broken reference.
             // If the reference is broken, the name is non-relative to a full path.
             return fullPath.hasSuffix(displayName) ? fullPath : nil
-        }
+        }.uniqued()
     }
 }
 
