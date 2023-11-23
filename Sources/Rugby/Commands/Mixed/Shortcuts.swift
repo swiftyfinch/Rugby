@@ -1,11 +1,3 @@
-//
-//  Shortcuts.swift
-//  Rugby
-//
-//  Created by Vyacheslav Khorkov on 14.10.2022.
-//  Copyright © 2022 Vyacheslav Khorkov. All rights reserved.
-//
-
 import ArgumentParser
 import Fish
 import RugbyFoundation
@@ -89,10 +81,13 @@ extension Shortcuts {
         @Option(help: "Warmup cache with this endpoint.")
         var warmup: String?
 
+        @Flag(name: .long, help: "Prebuild targets ignoring sources.")
+        var prebuild = false
+
         func run() async throws {
             try await run(body,
                           outputType: commonOptions.output,
-                          logLevel: commonOptions.verbose)
+                          logLevel: commonOptions.logLevel)
         }
     }
 }
@@ -107,6 +102,13 @@ extension Shortcuts.Cache: RunnableCommand {
             runnableCommands.append(("Rollback", rollback))
         }
 
+        if prebuild {
+            var prebuild = Build.Pre()
+            prebuild.buildOptions = buildOptions
+            prebuild.commonOptions = commonOptions
+            runnableCommands.append(("Prebuild", prebuild))
+        }
+
         if let endpoint = warmup {
             var warmup = Warmup()
             warmup.endpoint = endpoint
@@ -118,7 +120,7 @@ extension Shortcuts.Cache: RunnableCommand {
             runnableCommands.append(("Warmup", warmup))
         }
 
-        var build = Build()
+        var build = Build.Full()
         build.buildOptions = buildOptions
         build.ignoreCache = ignoreCache
         build.commonOptions = commonOptions

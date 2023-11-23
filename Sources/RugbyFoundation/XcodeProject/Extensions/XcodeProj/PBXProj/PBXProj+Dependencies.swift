@@ -1,11 +1,3 @@
-//
-//  PBXProj+Dependencies.swift
-//  RugbyFoundation
-//
-//  Created by Vyacheslav Khorkov on 20.08.2022.
-//  Copyright © 2022 Vyacheslav Khorkov. All rights reserved.
-//
-
 import Foundation
 import XcodeProj
 
@@ -15,24 +7,24 @@ enum AddDependencyError: LocalizedError {
 
     var errorDescription: String? {
         switch self {
-        case .missingProjectReference(let name):
+        case let .missingProjectReference(name):
             return "Missing project reference '\(name)'."
-        case .emptyProjectPath(let name):
+        case let .emptyProjectPath(name):
             return "Empty project path '\(name ?? "Unknown")'."
         }
     }
 }
 
 extension PBXProj {
-    func addDependencies(_ dependencies: Set<Target>, target: Target) throws {
-        try dependencies.forEach {
-            try addDependency($0, toTarget: target.pbxTarget)
+    func addDependencies(_ dependencies: TargetsMap, target: IInternalTarget) throws {
+        try dependencies.values.forEach { dependency in
+            try addDependency(dependency, toTarget: target.pbxTarget)
         }
         target.addDependencies(dependencies)
     }
 
     @discardableResult
-    func addDependency(_ dependency: Target, toTarget target: PBXTarget) throws -> PBXTargetDependency {
+    func addDependency(_ dependency: IInternalTarget, toTarget target: PBXTarget) throws -> PBXTargetDependency {
         let proxyType: PBXContainerItemProxy.ProxyType
         let containerPortal: PBXContainerItemProxy.ContainerPortal
         if let reference = dependency.project.reference {
@@ -64,14 +56,14 @@ extension PBXProj {
         return targetDependency
     }
 
-    func deleteDependencies(_ dependencies: Set<Target>, target: Target) {
-        let dependenciesUUIDs = dependencies.map(\.pbxTarget.uuid)
+    func deleteDependencies(_ dependencies: TargetsMap, target: IInternalTarget) {
+        let dependenciesUUIDs = dependencies.values.map(\.pbxTarget.uuid).set()
         let pbxDependencies = target.pbxTarget.dependencies.filter {
             guard let remoteGlobalID = $0.targetProxy?.remoteGlobalID else { return false }
             switch remoteGlobalID {
-            case .object(let object):
+            case let .object(object):
                 return dependenciesUUIDs.contains(object.uuid)
-            case .string(let uuid):
+            case let .string(uuid):
                 return dependenciesUUIDs.contains(uuid)
             }
         }

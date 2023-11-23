@@ -1,15 +1,8 @@
-//
-//  Product.swift
-//  RugbyFoundation
-//
-//  Created by Vyacheslav Khorkov on 29.08.2022.
-//  Copyright © 2022 Vyacheslav Khorkov. All rights reserved.
-//
-
 import XcodeProj
 
 final class Product {
     let name: String
+    let moduleName: String?
     let type: PBXProductType
     let parentFolderName: String?
     var context: [AnyHashable: Any] = [:]
@@ -31,21 +24,13 @@ final class Product {
         parentFolderName.map { "\($0)/\(fileName)" } ?? fileName
     }
 
-    init(name: String, type: PBXProductType, parentFolderName: String?) {
+    init(name: String,
+         moduleName: String?,
+         type: PBXProductType,
+         parentFolderName: String?) {
         self.name = name
+        self.moduleName = moduleName
         self.type = type
         self.parentFolderName = parentFolderName
-    }
-}
-
-// MARK: - Hashable
-
-extension Product: Hashable {
-    static func == (lhs: Product, rhs: Product) -> Bool {
-        lhs.nameWithParent == rhs.nameWithParent
-    }
-
-    func hash(into hasher: inout Hasher) {
-        hasher.combine(nameWithParent)
     }
 }

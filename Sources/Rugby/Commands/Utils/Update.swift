@@ -1,11 +1,3 @@
-//
-//  Update.swift
-//  Rugby
-//
-//  Created by Vyacheslav Khorkov on 29.11.2022.
-//  Copyright © 2022 Vyacheslav Khorkov. All rights reserved.
-//
-
 import ArgumentParser
 import RugbyFoundation
 
@@ -38,7 +30,7 @@ struct Update: AsyncParsableCommand {
     func run() async throws {
         try await run(body,
                       outputType: commonOptions.output,
-                      logLevel: commonOptions.verbose)
+                      logLevel: commonOptions.logLevel)
     }
 }
 
@@ -58,7 +50,7 @@ extension Update {
         func run() async throws {
             try await run(body,
                           outputType: commonOptions.output,
-                          logLevel: commonOptions.verbose)
+                          logLevel: commonOptions.logLevel)
         }
 
         func body() async throws {

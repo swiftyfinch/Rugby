@@ -1,11 +1,3 @@
-//
-//  Plan.swift
-//  Rugby
-//
-//  Created by Vyacheslav Khorkov on 06.09.2022.
-//  Copyright © 2022 Vyacheslav Khorkov. All rights reserved.
-//
-
 import ArgumentParser
 import Foundation
 import RugbyFoundation
@@ -30,9 +22,17 @@ struct Plan: AsyncParsableCommand {
     var commonOptions: CommonOptions
 
     func run() async throws {
+        // It's a hidden subcommand
+        if let name, name == .plansList {
+            // Prints raw plans list for autocompletion
+            let plans = (try? dependencies.plansParser.plans(atPath: path)) ?? []
+            plans.forEach { print($0.name) }
+            return
+        }
+
         try await run(body,
                       outputType: commonOptions.output,
-                      logLevel: commonOptions.verbose)
+                      logLevel: commonOptions.logLevel)
     }
 }
 
@@ -45,10 +45,10 @@ extension Plan: RunnableCommand {
     }
 
     private func selectPlan() throws -> RugbyFoundation.Plan {
-        if let name = name {
-            return try dependencies.plansParser.named(name, path: path)
+        if let name {
+            return try dependencies.plansParser.planNamed(name, path: path)
         } else {
-            return try dependencies.plansParser.top(path: path)
+            return try dependencies.plansParser.topPlan(atPath: path)
         }
     }
 
@@ -62,11 +62,12 @@ extension Plan: RunnableCommand {
 
         let overriddenCommands = commands.map(overrideCommand)
         let runnableCommands = try overriddenCommands.map { command in
-            let commandWithArgs = ([command.name.capitalized.green] + command.args).joined(separator: " ")
-            return (command.name, commandWithArgs, try convertToRunnable(command))
+            let commandWithArgs = ([command.name.uppercasedFirstLetter.green] + command.args).joined(separator: " ")
+            return try (command.name, commandWithArgs, convertToRunnable(command))
         }
         for (commandName, commandWithArgs, runnableCommand) in runnableCommands {
-            try await log(commandWithArgs, footer: commandName.capitalized.green, metricKey: commandName) {
+            let header = commonOptions.logLevel > .compact ? commandWithArgs : commandName.uppercasedFirstLetter.green
+            try await log(header, footer: commandName.uppercasedFirstLetter.green, metricKey: commandName) {
                 await dependencies.environmentCollector.logCommandDump(command: runnableCommand)
                 try await runnableCommand.body()
             }
@@ -93,7 +94,8 @@ extension Plan: RunnableCommand {
 
     private func convertToRunnable(_ command: RugbyFoundation.Plan.Command) throws -> RunnableCommand {
         do {
-            let parsedCommand = try Rugby.parseCommand([command.name] + command.args)
+            let splittedCommandName = command.name.components(separatedBy: .whitespaces)
+            let parsedCommand = try Rugby.parseCommand(splittedCommandName + command.args)
             return try parsedCommand.toRunnable()
         } catch {
             Rugby.exit(withError: error)
@@ -102,6 +104,7 @@ extension Plan: RunnableCommand {
 }
 
 private extension String {
+    static let plansList = "list"
     static let pathLongKey = "--path"
     static let outputLongKey = "--output"
     static let outputShortKey = "-o"

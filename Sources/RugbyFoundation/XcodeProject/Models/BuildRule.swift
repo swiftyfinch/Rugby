@@ -1,11 +1,3 @@
-//
-//  BuildRule.swift
-//  RugbyFoundation
-//
-//  Created by Vyacheslav Khorkov on 03.09.2022.
-//  Copyright © 2022 Vyacheslav Khorkov. All rights reserved.
-//
-
 import XcodeProj
 
 struct BuildRule {
@@ -23,15 +15,15 @@ struct BuildRule {
 
 extension BuildRule {
     init(_ buildRule: PBXBuildRule) {
-        self.name = buildRule.name
-        self.compilerSpec = buildRule.compilerSpec
-        self.filePatterns = buildRule.filePatterns
-        self.fileType = buildRule.fileType
-        self.isEditable = buildRule.isEditable
-        self.outputFiles = buildRule.outputFiles
-        self.inputFiles = buildRule.inputFiles
-        self.outputFilesCompilerFlags = buildRule.outputFilesCompilerFlags
-        self.script = buildRule.script
-        self.runOncePerArchitecture = buildRule.runOncePerArchitecture
+        name = buildRule.name
+        compilerSpec = buildRule.compilerSpec
+        filePatterns = buildRule.filePatterns
+        fileType = buildRule.fileType
+        isEditable = buildRule.isEditable
+        outputFiles = buildRule.outputFiles
+        inputFiles = buildRule.inputFiles
+        outputFilesCompilerFlags = buildRule.outputFilesCompilerFlags
+        script = buildRule.script
+        runOncePerArchitecture = buildRule.runOncePerArchitecture
     }
 }

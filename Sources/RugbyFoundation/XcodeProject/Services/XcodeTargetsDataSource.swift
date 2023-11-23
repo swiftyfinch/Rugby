@@ -1,11 +1,3 @@
-//
-//  XcodeTargetsDataSource.swift
-//  RugbyFoundation
-//
-//  Created by Vyacheslav Khorkov on 20.08.2022.
-//  Copyright © 2022 Vyacheslav Khorkov. All rights reserved.
-//
-
 import Foundation
 import XcodeProj
 
@@ -14,7 +6,7 @@ enum XcodeTargetsDataSourceError: LocalizedError {
 
     var errorDescription: String? {
         switch self {
-        case .missingTarget(let target):
+        case let .missingTarget(target):
             return "Missing target '\(target ?? "Unknown")'."
         }
     }
@@ -23,12 +15,12 @@ enum XcodeTargetsDataSourceError: LocalizedError {
 final class XcodeTargetsDataSource {
     private typealias Error = XcodeTargetsDataSourceError
     private let dataSource: XcodeProjectDataSource
-    private var cachedTargets: Set<Target>?
+    private var cachedTargets: TargetsMap?
 
-    var targets: Set<Target> {
+    var targets: TargetsMap {
         get async throws {
-            if let cachedTargets = cachedTargets { return cachedTargets }
-            var targets: [String: (target: PBXTarget, project: Project)] = [:]
+            if let cachedTargets { return cachedTargets }
+            var targets: [String: (target: PBXTarget, project: IProject)] = [:]
 
             // Collect targets from root project
             let rootProject = try await dataSource.rootProject
@@ -44,13 +36,12 @@ final class XcodeTargetsDataSource {
                 }
             }
 
-            var builtTargets: [String: Target] = [:]
+            var builtTargets: TargetsMap = [:]
             for target in targets.values.map(\.target) {
                 try await buildTargetsTree(target, targets: targets, builtTargets: &builtTargets)
             }
-            let rugbyTargets = builtTargets.values.set()
-            cachedTargets = rugbyTargets
-            return rugbyTargets
+            cachedTargets = builtTargets
+            return builtTargets
         }
     }
 
@@ -66,21 +57,21 @@ final class XcodeTargetsDataSource {
         cachedTargets = nil
     }
 
-    func addAggregatedTarget(_ target: Target) {
-        cachedTargets?.insert(target)
+    func addAggregatedTarget(_ target: IInternalTarget) {
+        cachedTargets?[target.uuid] = target
         target.resetDependencies()
     }
 
-    func deleteTargets(_ targets: Set<Target>) {
+    func deleteTargets(_ targets: TargetsMap) {
         cachedTargets?.subtract(targets)
-        cachedTargets?.forEach { $0.resetDependencies() }
+        cachedTargets?.values.forEach { $0.resetDependencies() }
     }
 
     // MARK: - Private
 
     private func buildTargetsTree(_ target: PBXTarget,
-                                  targets: [String: (target: PBXTarget, project: Project)],
-                                  builtTargets: inout [String: Target]) async throws {
+                                  targets: [String: (target: PBXTarget, project: IProject)],
+                                  builtTargets: inout TargetsMap) async throws {
         guard builtTargets[target.uuid] == nil else { return }
 
         let pbxDependencies = try target.dependencies.compactMap { dependency in
@@ -95,24 +86,26 @@ final class XcodeTargetsDataSource {
             try await buildTargetsTree(target, targets: targets, builtTargets: &builtTargets)
         }
 
-        let dependencies: Set<Target> = try await pbxDependencies.reduce(into: []) { set, dependency in
-            let target: Target
+        let dependencies: TargetsMap = try await pbxDependencies.reduce(
+            into: [:]
+        ) { dictionary, dependency in
+            let target: IInternalTarget
             if let sharedTarget = builtTargets[dependency.uuid] {
                 target = sharedTarget
             } else if let project = targets[dependency.uuid]?.project {
-                target = Target(pbxTarget: dependency,
-                                project: project,
-                                projectBuildConfigurations: try await project.buildConfigurations)
+                target = try Target(pbxTarget: dependency,
+                                    project: project,
+                                    projectBuildConfigurations: await project.buildConfigurations)
             } else {
                 throw Error.missingTarget(dependency.name)
             }
-            set.insert(target)
+            dictionary[target.uuid] = target
         }
 
         guard let project = targets[target.uuid]?.project else { throw Error.missingTarget(target.name) }
-        builtTargets[target.uuid] = Target(pbxTarget: target,
-                                           project: project,
-                                           explicitDependencies: dependencies,
-                                           projectBuildConfigurations: try await project.buildConfigurations)
+        builtTargets[target.uuid] = try Target(pbxTarget: target,
+                                               project: project,
+                                               explicitDependencies: dependencies,
+                                               projectBuildConfigurations: await project.buildConfigurations)
     }
 }

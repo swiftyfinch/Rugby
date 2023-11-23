@@ -1,11 +1,3 @@
-//
-//  ProgressPrinter.swift
-//  Rugby
-//
-//  Created by Vyacheslav Khorkov on 18.09.2022.
-//  Copyright © 2022 Vyacheslav Khorkov. All rights reserved.
-//
-
 import Foundation
 import RugbyFoundation
 
@@ -27,13 +19,21 @@ final actor ProgressPrinter {
 
     // Dependencies
     private let printer: Printer
+    private let timerTaskFactory: ITimerTaskFactory
+    private let clock: IClock
 
     // Variables
-    private var timerTask: TimerTask?
+    private var timerTask: ITimerTask?
     private var stopped = false
 
-    init(printer: Printer) {
+    init(
+        printer: Printer,
+        timerTaskFactory: ITimerTaskFactory,
+        clock: IClock
+    ) {
         self.printer = printer
+        self.timerTaskFactory = timerTaskFactory
+        self.clock = clock
     }
 
     func stop() {
@@ -43,20 +43,16 @@ final actor ProgressPrinter {
 
     // MARK: - Private
 
-    private func drawFrame(format: @escaping (String) -> String) -> (() -> Void) {
+    private func drawFrame(text: String, level: LogLevel) -> (() -> Void) {
         var frameIndex = -1
-        let begin = ProcessInfo.processInfo.systemUptime
+        let begin = clock.systemUptime
         return { [weak self] in
-            guard let self = self else { return }
+            guard let self else { return }
 
             frameIndex = (frameIndex + 1) % self.frames.count
             let frame = self.frames[frameIndex]
-
-            let time = ProcessInfo.processInfo.systemUptime - begin
-            let formattedTime = "[\(time.format(withMilliseconds: false))]".yellow
-
-            let output = format("\(frame) \(formattedTime)")
-            self.printer.print(output, level: 0, updateLine: true)
+            let time = self.clock.time(sinceSystemUptime: begin).rounded(.down)
+            self.printer.print(text, icon: frame, duration: time, level: level, updateLine: true)
         }
     }
 }
@@ -64,13 +60,14 @@ final actor ProgressPrinter {
 // MARK: - IProgressPrinter
 
 extension ProgressPrinter: IProgressPrinter {
-    func show<Result>(format: @escaping (String) -> String,
+    func show<Result>(text: String,
+                      level: LogLevel,
                       job: () async throws -> Result) async rethrows -> Result {
         guard !stopped else { return try await job() }
 
         cancel()
-        let drawFrame = drawFrame(format: format)
-        timerTask = TimerTask(interval: timeInterval, task: drawFrame)
+        let drawFrame = drawFrame(text: text, level: level)
+        timerTask = timerTaskFactory.makeTask(interval: timeInterval, task: drawFrame)
 
         defer { cancel() }
         return try await job()

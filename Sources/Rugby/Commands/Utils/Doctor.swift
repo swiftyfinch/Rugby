@@ -1,11 +1,3 @@
-//
-//  Doctor.swift
-//  Rugby
-//
-//  Created by Vyacheslav Khorkov on 06.04.2023.
-//  Copyright © 2023 Vyacheslav Khorkov. All rights reserved.
-//
-
 import ArgumentParser
 
 struct Doctor: AsyncParsableCommand {

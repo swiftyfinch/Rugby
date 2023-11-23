@@ -1,0 +1,15 @@
+--swiftversion 5.7
+--exclude **/Mocks/**/*.swift
+--exclude Example/Pods
+
+# rules
+--commas inline
+--header strip
+
+--enable blankLineAfterImports
+
+--disable wrapMultilineStatementBraces
+--disable redundantType
+--disable andOperator
+--disable redundantInternal
+--disable hoistAwait

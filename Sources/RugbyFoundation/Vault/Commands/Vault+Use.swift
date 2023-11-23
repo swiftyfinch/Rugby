@@ -1,33 +1,23 @@
-//
-//  Vault+Use.swift
-//  RugbyFoundation
-//
-//  Created by Vyacheslav Khorkov on 05.08.2023.
-//  Copyright © 2023 Vyacheslav Khorkov. All rights reserved.
-//
-
 import Fish
 
 extension Vault {
     /// The manager to use built binaries instead of targets in CocoaPods project.
-    /// - Parameter workingDirectory: A directory with Pods folder.
-    public func useBinariesManager(workingDirectory: IFolder) -> IUseBinariesManager {
-        let xcodeProject = xcode.project(projectPath: router.paths(relativeTo: workingDirectory).podsProject)
-        return useBinariesManager(workingDirectory: workingDirectory,
-                                  xcodeProject: xcodeProject,
+    public func useBinariesManager() -> IUseBinariesManager {
+        let xcodeProject = xcode.project(projectPath: router.podsProjectPath)
+        return useBinariesManager(xcodeProject: xcodeProject,
                                   buildTargetsManager: BuildTargetsManager(xcodeProject: xcodeProject))
     }
 
-    func useBinariesManager(workingDirectory: IFolder,
-                            xcodeProject: XcodeProject,
+    func useBinariesManager(xcodeProject: IInternalXcodeProject,
                             buildTargetsManager: BuildTargetsManager) -> IUseBinariesManager {
         UseBinariesManager(logger: logger,
                            buildTargetsManager: buildTargetsManager,
+                           librariesPatcher: LibrariesPatcher(logger: logger),
                            xcodeProject: xcodeProject,
                            rugbyXcodeProject: RugbyXcodeProject(xcodeProject: xcodeProject),
-                           backupManager: backupManager(workingDirectory: workingDirectory),
+                           backupManager: backupManager(),
                            binariesManager: binariesManager,
-                           targetsHasher: targetsHasher(workingDirectory: workingDirectory),
+                           targetsHasher: targetsHasher(),
                            supportFilesPatcher: SupportFilesPatcher(),
                            fileContentEditor: FileContentEditor())
     }

@@ -1,11 +1,3 @@
-//
-//  ShellExecuter.swift
-//  RugbyFoundation
-//
-//  Created by Vyacheslav Khorkov on 04.07.2022.
-//  Copyright © 2022 Vyacheslav Khorkov. All rights reserved.
-//
-
 import Foundation
 import SwiftShell
 
@@ -18,20 +10,24 @@ public protocol IShellExecutor {
     ///   - command: A commad to run.
     ///   - args: Command arguments.
     @discardableResult
-    func shell(_ command: String, args: Any ...) -> (String?, Error?)
+    func shell(_ command: String, args: Any...) -> (String?, Error?)
 
     /// Runs shell command and returns output.
     /// - Parameters:
     ///   - command: A commad to run.
     ///   - args: Command arguments.
     @discardableResult
-    func throwingShell(_ command: String, args: Any ...) throws -> String?
+    func throwingShell(_ command: String, args: Any...) throws -> String?
 
     /// Runs shell command and prints output.
     /// - Parameters:
     ///   - command: A commad to run.
     ///   - args: Command arguments.
-    func printShell(_ command: String, args: Any ...) throws
+    func printShell(_ command: String, args: Any...) throws
+
+    /// Opens a file for reading, throws if an error occurs.
+    /// - Parameter path: A file path to open.
+    func open(_ path: String) throws -> ReadableStream
 }
 
 enum ShellError: LocalizedError {
@@ -41,7 +37,7 @@ enum ShellError: LocalizedError {
     var errorDescription: String? {
         let output: String
         switch self {
-        case .common(let stderror):
+        case let .common(stderror):
             output = stderror
         case .emptyShellVariable:
             output = "Shell variable is empty."
@@ -61,8 +57,7 @@ final class ShellExecutor {
 }
 
 private extension ShellExecutor {
-
-    func runAndPrint(_ command: String, args: Any ...) throws {
+    func runAndPrint(_ command: String, args: Any...) throws {
         let commandWithArgs = combine(command: command, args: args)
         let currentShell = try getCurrentShell()
         let asyncCommand = SwiftShell.runAsyncAndPrint(currentShell, "-c", commandWithArgs)
@@ -74,7 +69,7 @@ private extension ShellExecutor {
         }
     }
 
-    func run(_ command: String, args: Any ...) -> (String?, Error?) {
+    func run(_ command: String, args: Any...) -> (String?, Error?) {
         var stdout: String?
         var stderror: String?
         do {
@@ -101,7 +96,7 @@ private extension ShellExecutor {
             return (stdout, nil)
         } catch {
             let errorMessage: String
-            if let stderror = stderror, !stderror.isEmpty {
+            if let stderror, !stderror.isEmpty {
                 errorMessage = stderror
             } else {
                 errorMessage = error.beautifulDescription
@@ -114,7 +109,6 @@ private extension ShellExecutor {
 // MARK: - Utils
 
 private extension ShellExecutor {
-
     func getCurrentShell() throws -> String {
         guard let shell = ProcessInfo.processInfo.environment["SHELL"] else {
             throw ShellError.emptyShellVariable
@@ -122,7 +116,7 @@ private extension ShellExecutor {
         return shell
     }
 
-    func combine(command: String, args: Any ...) -> String {
+    func combine(command: String, args: Any...) -> String {
         let stringArgs = args.flatten().map(String.init(describing:))
         return command + " " + stringArgs.joined(separator: " ")
     }
@@ -132,18 +126,22 @@ private extension ShellExecutor {
 
 extension ShellExecutor: IShellExecutor {
     @discardableResult
-    public func shell(_ command: String, args: Any ...) -> (String?, Error?) {
+    public func shell(_ command: String, args: Any...) -> (String?, Error?) {
         run(command, args: args)
     }
 
     @discardableResult
-    public func throwingShell(_ command: String, args: Any ...) throws -> String? {
+    public func throwingShell(_ command: String, args: Any...) throws -> String? {
         let (output, error) = run(command, args: args)
-        if let error = error { throw error }
+        if let error { throw error }
         return output
     }
 
-    public func printShell(_ command: String, args: Any ...) throws {
+    public func printShell(_ command: String, args: Any...) throws {
         try runAndPrint(command, args: args)
+    }
+
+    public func open(_ path: String) throws -> ReadableStream {
+        try SwiftShell.open(path, encoding: .utf8)
     }
 }

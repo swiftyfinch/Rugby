@@ -1,15 +1,7 @@
-//
-//  TargetTreePainter.swift
-//  RugbyFoundation
-//
-//  Created by Vyacheslav Khorkov on 31.03.2023.
-//  Copyright © 2023 Vyacheslav Khorkov. All rights reserved.
-//
-
 // MARK: - Interface
 
 protocol ITargetTreePainter {
-    func paint(targets: Set<Target>) -> String
+    func paint(targets: TargetsMap) -> String
 }
 
 // MARK: - Implementation
@@ -37,14 +29,14 @@ private extension TargetTreePainter {
         }
     }
 
-    func depthOfTree(root: Target, allowed: Set<Target>) -> Int {
-        var foundTreeDepths: [Target: Int] = [:]
+    func depthOfTree(root: IInternalTarget, allowed: TargetsMap) -> Int {
+        var foundTreeDepths: [String: Int] = [:]
         return depthOfTree(root: root, allowed: allowed, foundTreeDepths: &foundTreeDepths, depth: 0)
     }
 
-    private func buildTree(targets: Set<Target>) -> Tree {
-        var seen: Set<Target> = []
-        return buildTree(name: "root", isRoot: true, targets: targets, seen: &seen, allowed: targets)
+    private func buildTree(targets: TargetsMap) -> Tree {
+        var seen: Set<String> = []
+        return buildTree(name: "root", isRoot: true, targets: targets.values, seen: &seen, allowed: targets)
     }
 
     private func renderTree(_ tree: Tree) -> String {
@@ -55,14 +47,14 @@ private extension TargetTreePainter {
 }
 
 private extension TargetTreePainter {
-    func depthOfTree(root: Target,
-                     allowed: Set<Target>,
-                     foundTreeDepths: inout [Target: Int],
+    func depthOfTree(root: IInternalTarget,
+                     allowed: TargetsMap,
+                     foundTreeDepths: inout [String: Int],
                      depth: Int) -> Int {
         var maxDepth = depth
-        for dependency in root.explicitDependencies {
-            guard allowed.contains(dependency) else { continue }
-            if let foundDepth = foundTreeDepths[dependency] {
+        for dependency in root.explicitDependencies.values {
+            guard allowed.contains(dependency.uuid) else { continue }
+            if let foundDepth = foundTreeDepths[dependency.uuid] {
                 maxDepth = max(maxDepth, depth + foundDepth)
                 continue
             }
@@ -72,7 +64,7 @@ private extension TargetTreePainter {
                 foundTreeDepths: &foundTreeDepths,
                 depth: depth + 1
             )
-            foundTreeDepths[dependency] = treeDepth
+            foundTreeDepths[dependency.uuid] = treeDepth
             maxDepth = max(maxDepth, treeDepth)
         }
         return maxDepth
@@ -82,9 +74,9 @@ private extension TargetTreePainter {
                    isRoot: Bool = false,
                    isCollapsed: Bool = false,
                    info: String? = nil,
-                   targets: some Sequence<Target>,
-                   seen: inout Set<Target>,
-                   allowed: Set<Target>) -> Tree {
+                   targets: some Sequence<IInternalTarget>,
+                   seen: inout Set<String>,
+                   allowed: TargetsMap) -> Tree {
         Tree(
             name: name,
             isRoot: isRoot,
@@ -97,21 +89,21 @@ private extension TargetTreePainter {
                 .sorted { $0.maxDepth > $1.maxDepth }
                 .map(\.target)
                 .reduce(into: []) { subtrees, target in
-                    guard allowed.contains(target) else { return }
-                    if seen.insert(target).inserted {
+                    guard allowed.contains(target.uuid) else { return }
+                    if seen.insert(target.uuid).inserted {
                         subtrees.append(
                             buildTree(name: target.name,
                                       isCollapsed: false,
                                       info: target.hash,
-                                      targets: target.explicitDependencies,
+                                      targets: target.explicitDependencies.values,
                                       seen: &seen,
                                       allowed: allowed)
                         )
-                    }/* else if !isRoot { // It's generate too many lines
-                        subtrees.append(
-                            Tree(name: target.name, info: target.hash, isCollapsed: true)
-                        )
-                    }*/
+                    } /* else if !isRoot { // It's generate too many lines
+                         subtrees.append(
+                             Tree(name: target.name, info: target.hash, isCollapsed: true)
+                         )
+                     }*/
                 }
                 .sorted(by: { $0.name < $1.name })
         )
@@ -147,7 +139,7 @@ private extension TargetTreePainter {
 // MARK: - ITargetTreePainter
 
 extension TargetTreePainter: ITargetTreePainter {
-    public func paint(targets: Set<Target>) -> String {
+    public func paint(targets: TargetsMap) -> String {
         let tree = buildTree(targets: targets)
         return renderTree(tree)
     }

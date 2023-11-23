@@ -1,11 +1,3 @@
-//
-//  Vault+Update.swift
-//  Rugby
-//
-//  Created by Vyacheslav Khorkov on 05.08.2023.
-//  Copyright © 2023 Vyacheslav Khorkov. All rights reserved.
-//
-
 import RugbyFoundation
 
 extension Vault {
@@ -32,9 +24,9 @@ extension Settings {
     var minUpdateVersion: String { "2.0.0b2" }
 }
 
-private extension Router {
+private extension IRouter {
     var cltName: String { "rugby" }
-    var cltFolderPath: String { "\(paths.sharedFolder)/clt" }
+    var cltFolderPath: String { "\(rugbySharedFolderPath)/clt" }
     var repositoryPath: String { "swiftyfinch/rugby" }
     var downloadsCLTFolderPath: String { "\(cltFolderPath)/downloads" }
 }

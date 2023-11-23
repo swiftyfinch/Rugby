@@ -1,11 +1,3 @@
-//
-//  PlansParser.swift
-//  RugbyFoundation
-//
-//  Created by Vyacheslav Khorkov on 09.09.2022.
-//  Copyright © 2022 Vyacheslav Khorkov. All rights reserved.
-//
-
 import Fish
 import Foundation
 import Yams
@@ -14,21 +6,25 @@ import Yams
 
 /// The protocol describing a service to parse YAML files with Rugby plans.
 public protocol IPlansParser {
+    /// Returns plans list.
+    /// - Parameter path: A path to plans file.
+    func plans(atPath path: String) throws -> [Plan]
+
     /// Returns the first plan from file at a path.
     /// - Parameter path: A path to plans file.
-    func top(path: String) throws -> Plan
+    func topPlan(atPath path: String) throws -> Plan
 
     /// Returns a plan with the name.
     /// - Parameters:
     ///   - name: A name of plan to find.
     ///   - path: A path to plans file.
-    func named(_ name: String, path: String) throws -> Plan
+    func planNamed(_ name: String, path: String) throws -> Plan
 }
 
 /// The Rugby plan structure.
-public struct Plan {
+public struct Plan: Equatable {
     /// The model of commands in the plan.
-    public struct Command {
+    public struct Command: Equatable {
         /// The command name.
         public let name: String
         /// The command arguments.
@@ -78,7 +74,6 @@ enum PlansParserError: LocalizedError {
 // MARK: - Implementation
 
 final class PlansParser {
-
     private typealias Error = PlansParserError
     private typealias RawCommand = [String: Any]
     private var cache: [String: [Plan]] = [:]
@@ -123,10 +118,10 @@ final class PlansParser {
             throw Error.missedCommandType
         }
 
-        let args: [String] = try command.reduce(into: []) { args, field in
-            guard field.key != .commandKey else { return }
-            guard parsers.contains(where: { $0.parse(field.value, ofField: field.key, toArgs: &args) }) else {
-                throw Error.unknownArgumentType(field.value)
+        let args: [String] = try command.keys.sorted().reduce(into: []) { args, key in
+            guard let value = command[key], key != .commandKey else { return }
+            guard parsers.contains(where: { $0.parse(value, ofField: key, toArgs: &args) }) else {
+                throw Error.unknownArgumentType(value)
             }
         }
         return Plan.Command(name: commandName, args: args)
@@ -196,16 +191,20 @@ private struct StringsFieldParser: FieldParser {
 // MARK: - IPlansParser
 
 extension PlansParser: IPlansParser {
-    public func top(path: String) throws -> Plan {
-        let plans = try parse(path: path)
+    public func plans(atPath path: String) throws -> [Plan] {
+        try parse(path: path)
+    }
+
+    public func topPlan(atPath path: String) throws -> Plan {
+        let plans = try plans(atPath: path)
         guard let plan = plans.first else {
             throw Error.noPlans
         }
         return plan
     }
 
-    public func named(_ name: String, path: String) throws -> Plan {
-        let plans = try parse(path: path)
+    public func planNamed(_ name: String, path: String) throws -> Plan {
+        let plans = try plans(atPath: path)
         guard let plan = plans.first(where: { $0.name == name }) else {
             throw Error.noPlanWithName(name)
         }

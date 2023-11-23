@@ -1,11 +1,3 @@
-//
-//  XcodeVault.swift
-//  RugbyFoundation
-//
-//  Created by Vyacheslav Khorkov on 05.08.2023.
-//  Copyright © 2023 Vyacheslav Khorkov. All rights reserved.
-//
-
 import Fish
 
 /// The container of Xcode stuff.
@@ -13,9 +5,9 @@ public final class XcodeVault {
     private let settings: Settings
     private let logger: ILogger
     private let logsRotator: LogsRotator
-    private let router: Router
+    private let router: IRouter
 
-    private var xcodeProjectsCache: [String: XcodeProject] = [:]
+    private var xcodeProjectsCache: [String: IInternalXcodeProject] = [:]
 
     // MARK: - Init
 
@@ -23,7 +15,7 @@ public final class XcodeVault {
         settings: Settings,
         logger: ILogger,
         logsRotator: LogsRotator,
-        router: Router
+        router: IRouter
     ) {
         self.logger = logger
         self.logsRotator = logsRotator
@@ -34,14 +26,15 @@ public final class XcodeVault {
     // MARK: - Public Methods
 
     /// Returns the collection of Xcode paths relative to the working directory.
-    /// - Parameter workingDirectory: A directory with Pods folder.
-    public func paths(workingDirectory: IFolder) throws -> XcodeBuildPaths {
-        let logsFolder = try logsRotator.currentLogFolder()
+    /// - Parameter logsSubfolder: An intermediate folder to keep specific logs.
+    public func paths(logsSubfolder: String? = nil) throws -> XcodeBuildPaths {
+        let logsFolder = try logsRotator.currentLogFolder().name
+        let logsSubpath = logsSubfolder.map { logsFolder.subpath($0) } ?? logsFolder
         return XcodeBuildPaths(
-            project: router.paths(relativeTo: workingDirectory).podsProject,
-            symroot: router.paths(relativeTo: workingDirectory).build,
-            rawLog: router.paths(relativeTo: logsFolder).rawLog,
-            beautifiedLog: router.paths(relativeTo: logsFolder).beautifiedLog
+            project: router.podsProjectPath,
+            symroot: router.buildPath,
+            rawLog: router.rawLogPath(subpath: logsSubpath),
+            beautifiedLog: router.beautifiedLog(subpath: logsSubpath)
         )
     }
 
@@ -52,7 +45,7 @@ public final class XcodeVault {
 
     // MARK: - Internal Methods
 
-    func project(projectPath: String) -> XcodeProject {
+    func project(projectPath: String) -> IInternalXcodeProject {
         if let cachedXcodeProject = xcodeProjectsCache[projectPath] { return cachedXcodeProject }
 
         let projectDataSource = XcodeProjectDataSource(logger: logger, projectPath: projectPath)

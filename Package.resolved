@@ -59,8 +59,8 @@
       "kind" : "remoteSourceControl",
       "location" : "https://github.com/apple/swift-argument-parser",
       "state" : {
-        "revision" : "fee6933f37fde9a5e12a1e4aeaa93fe60116ff2a",
-        "version" : "1.2.2"
+        "revision" : "8f4d2753f0e4778c76d5f05ad16c74f707390531",
+        "version" : "1.2.3"
       }
     },
     {
@@ -77,8 +77,8 @@
       "kind" : "remoteSourceControl",
       "location" : "https://github.com/tuist/xcbeautify",
       "state" : {
-        "revision" : "a996cc125e45afb9f2d77cacc5710f3595bcdd07",
-        "version" : "1.0.0"
+        "revision" : "7dc31d4a9e9cc660f2de6ff6c6e0f0d5dfbb572b",
+        "version" : "1.0.1"
       }
     },
     {
@@ -86,8 +86,8 @@
       "kind" : "remoteSourceControl",
       "location" : "https://github.com/tuist/XcodeProj",
       "state" : {
-        "revision" : "c4d5f9d7f789dd944222be95938810947561e559",
-        "version" : "8.12.0"
+        "revision" : "3797181813ee963fe305d939232bc576d23ddbb0",
+        "version" : "8.15.0"
       }
     },
     {

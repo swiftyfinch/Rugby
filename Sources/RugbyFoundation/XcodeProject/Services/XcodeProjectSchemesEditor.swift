@@ -1,11 +1,3 @@
-//
-//  XcodeProjectSchemesEditor.swift
-//  RugbyFoundation
-//
-//  Created by Vyacheslav Khorkov on 20.08.2022.
-//  Copyright © 2022 Vyacheslav Khorkov. All rights reserved.
-//
-
 import Fish
 import XcodeProj
 
@@ -19,7 +11,10 @@ final class XcodeProjectSchemesEditor: Loggable {
         self.dataSource = dataSource
     }
 
-    func deleteSchemes(ofTargets targetsForRemove: Set<Target>, targets: Set<Target>) async throws {
+    func deleteSchemes(
+        ofTargets targetsForRemove: TargetsMap,
+        targets: TargetsMap
+    ) async throws {
         try await deleteSchemes(ofTargets: targetsForRemove,
                                 targets: targets,
                                 project: dataSource.rootProject)
@@ -31,9 +26,9 @@ final class XcodeProjectSchemesEditor: Loggable {
         }
     }
 
-    private func deleteSchemes(ofTargets targetsForRemove: Set<Target>,
-                               targets: Set<Target>,
-                               project: Project) async throws {
+    private func deleteSchemes(ofTargets targetsForRemove: TargetsMap,
+                               targets: TargetsMap,
+                               project: IProject) async throws {
         let schemes = try await findSchemes(projectPath: project.path)
         let brokenSchemes = try findBrokenSchemes(schemes, ofTargets: targets)
         let schemesByTargets = try findSchemes(schemes, byTargets: targetsForRemove)
@@ -48,13 +43,19 @@ final class XcodeProjectSchemesEditor: Loggable {
         return schemes.set()
     }
 
-    private func findBrokenSchemes(_ schemes: Set<Scheme>, ofTargets targets: Set<Target>) throws -> Set<Scheme> {
-        let references = targets.map(\.uuid)
+    private func findBrokenSchemes(
+        _ schemes: Set<Scheme>,
+        ofTargets targets: TargetsMap
+    ) throws -> Set<Scheme> {
+        let references = targets.values.map(\.uuid).set()
         return schemes.filter { !$0.isReachable(fromReferences: references) }
     }
 
-    private func findSchemes(_ schemes: Set<Scheme>, byTargets targets: Set<Target>) throws -> Set<Scheme> {
-        let targetNames = targets.map(\.name)
+    private func findSchemes(
+        _ schemes: Set<Scheme>,
+        byTargets targets: TargetsMap
+    ) throws -> Set<Scheme> {
+        let targetNames = targets.values.map(\.name).set()
         return schemes.filter { targetNames.contains($0.name) }
     }
 

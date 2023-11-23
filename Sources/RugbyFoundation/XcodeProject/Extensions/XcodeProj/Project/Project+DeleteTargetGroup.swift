@@ -1,20 +1,14 @@
-//
-//  Project+DeleteTargetGroup.swift
-//  RugbyFoundation
-//
-//  Created by Vyacheslav Khorkov on 29.03.2023.
-//  Copyright © 2023 Vyacheslav Khorkov. All rights reserved.
-//
-
 import XcodeProj
 
-extension Project {
-    func deleteTargetGroups(_ targetsForRemove: Set<Target>, targets: Set<Target>) {
+extension IProject {
+    func deleteTargetGroups(_ targetsForRemove: TargetsMap, targets: TargetsMap) {
         let excludedFiles = targets
-            .subtracting(targetsForRemove)
+            .subtracting(targetsForRemove).values
             .flatMap { targetFiles($0.pbxTarget) }
-        let filesForRemove = targetsForRemove
+            .set()
+        let filesForRemove = targetsForRemove.values
             .flatMap { targetFiles($0.pbxTarget) }
+            .set()
             .subtracting(excludedFiles)
         filesForRemove.forEach(deleteFileElement)
     }

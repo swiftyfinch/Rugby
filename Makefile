@@ -4,7 +4,19 @@ debug: lint
 
 .PHONY: lint
 lint:
+	@which swiftformat || \
+	(printf '\e[31m⛔️ Could not find SwiftFormat.\e[m\n\e[33m🚑 Run: brew install swiftformat\e[m\n' && exit 1)
+	@which swiftlint || \
+	(printf '\e[31m⛔️ Could not find SwiftLint.\e[m\n\e[33m🚑 Run: brew install swiftlint\e[m\n' && exit 1)
+	swiftformat --quiet .
+	swiftlint --fix --quiet
 	swiftlint --strict --quiet
+
+.PHONY: install
+install:
+	swift build --arch arm64 -c release
+	cp -f `swift build --arch arm64 -c release --show-bin-path`/rugby ~/.rugby/clt/rugby
+	strip -rSTx ~/.rugby/clt/rugby
 
 .PHONY: release
 release:
@@ -30,10 +42,15 @@ mocks:
 			 --sources Tests/FoundationTests \
 			 --templates Tests/Sourcery/AutoMockable.stencil \
 			 --output Tests/FoundationTests
+	sourcery --sources Sources/RugbyFoundation \
+			 --sources Sources/Rugby \
+			 --sources Tests/RugbyTests \
+			 --templates Tests/Sourcery/AutoMockable.stencil \
+			 --output Tests/RugbyTests
 
 .PHONY: test
 test:
-	swift test | xcbeautify
+	set -o pipefail && swift test 2>&1 | xcbeautify
 
 .PHONY: smoke
 smoke:

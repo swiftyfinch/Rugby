@@ -1,11 +1,3 @@
-//
-//  VersionParser.swift
-//  Rugby
-//
-//  Created by Vyacheslav Khorkov on 30.11.2022.
-//  Copyright © 2022 Vyacheslav Khorkov. All rights reserved.
-//
-
 import Foundation
 import RugbyFoundation
 
@@ -33,20 +25,21 @@ struct GitHubUpdaterVersion: Comparable {
     }
 }
 
+enum VersionParserError: LocalizedError {
+    case incorrectVersion(String)
+
+    var errorDescription: String? {
+        switch self {
+        case let .incorrectVersion(version):
+            return "Incorrect version: \(version)"
+        }
+    }
+}
+
 // MARK: - Implementation
 
 final class VersionParser {
-    enum Error: LocalizedError {
-        case incorrectVersion(String)
-
-        var errorDescription: String? {
-            switch self {
-            case .incorrectVersion(let version):
-                return "Incorrect version: \(version)"
-            }
-        }
-    }
-
+    private typealias Error = VersionParserError
     func parse(_ string: String) throws -> GitHubUpdaterVersion {
         let groups = try string.groups(regex: "(\\d+)\\.(\\d+)\\.(\\d+)(b?)(\\d*)")
         guard groups.count > 3,

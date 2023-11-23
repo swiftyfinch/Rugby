@@ -1,11 +1,3 @@
-//
-//  Rollback.swift
-//  Rugby
-//
-//  Created by Vyacheslav Khorkov on 12.08.2022.
-//  Copyright © 2022 Vyacheslav Khorkov. All rights reserved.
-//
-
 import ArgumentParser
 import Fish
 import RugbyFoundation
@@ -23,12 +15,12 @@ struct Rollback: RunnableCommand {
     func run() async throws {
         try await run(body,
                       outputType: commonOptions.output,
-                      logLevel: commonOptions.verbose,
+                      logLevel: commonOptions.logLevel,
                       muteSound: true)
     }
 
     func body() async throws {
-        try await dependencies.backupManager(workingDirectory: Folder.current)
+        try await dependencies.backupManager()
             .restore(.original)
         dependencies.xcode.resetProjectsCache()
     }

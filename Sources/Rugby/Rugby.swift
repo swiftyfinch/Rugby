@@ -1,21 +1,14 @@
-//
-//  Rugby.swift
-//  Rugby
-//
-//  Created by Vyacheslav Khorkov on 04.07.2022.
-//  Copyright © 2022 Vyacheslav Khorkov. All rights reserved.
-//
-
 import ArgumentParser
+import Fish
 import RugbyFoundation
 
 extension String {
-    static let version = "2.0.3"
+    static let version = "2.4.0"
     // ╭────────────────────────────────╮
     // │                                │
     // │       █▀█ █ █ █▀▀ █▄▄ █▄█      │
     // │     > █▀▄ █▄█ █▄█ █▄█  █       │
-    // │                 v.2.0.3        │
+    // │                 v.2.4.0        │
     // │ Cache Cocoa 🌱 pods            │
     // │             for faster rebuild │
     // │   and indexing Xcode project   │
@@ -77,9 +70,14 @@ struct Rugby: AsyncParsableCommand {
     // MARK: - Private
 
     private static func prepareDependencies() {
-        Vault.setupShared(
-            featureToggles: FeatureToggles(),
-            logger: Logger()
+        let env = Environment()
+        return Vault.setupShared(
+            env: env,
+            logger: Logger(clock: Clock()),
+            router: Router(
+                workingDirectory: Folder.current,
+                sharedFolderPath: env.sharedFolderParentPath
+            )
         )
     }
 

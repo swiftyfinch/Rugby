@@ -1,11 +1,3 @@
-//
-//  Logger.swift
-//  Rugby
-//
-//  Created by Vyacheslav Khorkov on 21.08.2022.
-//  Copyright © 2022 Vyacheslav Khorkov. All rights reserved.
-//
-
 import Foundation
 import Rainbow
 import RugbyFoundation
@@ -13,42 +5,98 @@ import RugbyFoundation
 // MARK: - Implementation
 
 final actor Logger {
-    private let clock = "⚑".yellow
-    private let done = "✓".green
+    private struct Shift: OptionSet {
+        let rawValue: Int
+        static let left = Shift(rawValue: 1 << 0)
+        static let right = Shift(rawValue: 1 << 1)
+    }
 
-    private var shift = 0
+    // Constants
+    private var beginIcon: String { "⚑".yellow }
+    private var doneIcon: String { "✓".green }
+
+    // Variables
     private var lastEnter: String?
 
+    // Dependencies
+    private let clock: IClock
     private var screenPrinter: Printer?
     private var filePrinter: Printer?
     private var progressPrinter: IProgressPrinter?
     private var metricsLogger: IMetricsLogger?
 
+    // MARK: - Init
+
+    init(clock: IClock) {
+        self.clock = clock
+    }
+
     // MARK: - Log
 
     private func logToPrinters(
         _ text: String,
-        level: Int,
+        icon: String? = nil,
+        duration: Double? = nil,
+        level: LogLevel,
         updateLine: Bool = false,
+        shifts: Shift = [],
         output: LoggerOutput
     ) async {
-        if output.contains(.screen), let screenPrinter, screenPrinter.canPrint(level: level) {
-            await progressPrinter?.cancel()
+        if output.contains(.screen), let progressPrinter, let screenPrinter, screenPrinter.canPrint(level: level) {
+            await progressPrinter.cancel()
+            if let lastEnter {
+                await logToPrinter(
+                    screenPrinter,
+                    text: lastEnter,
+                    icon: beginIcon,
+                    level: level,
+                    updateLine: true
+                )
+            }
             lastEnter = nil
         }
-        if output.contains(.file) {
-            filePrinter?.print(text, level: level, updateLine: updateLine)
+        if output.contains(.file), let filePrinter {
+            await logToPrinter(
+                filePrinter,
+                text: text,
+                icon: icon,
+                duration: duration,
+                level: level,
+                updateLine: updateLine,
+                shifts: shifts
+            )
         }
-        if output.contains(.screen) {
-            screenPrinter?.print(text, level: level, updateLine: updateLine)
+        if output.contains(.screen), let screenPrinter {
+            await logToPrinter(
+                screenPrinter,
+                text: text,
+                icon: icon,
+                duration: duration,
+                level: level,
+                updateLine: updateLine,
+                shifts: shifts
+            )
         }
     }
 
-    // MARK: - Prefix
-
-    private func prefix() -> String { String(repeating: "  ", count: max(0, shift - 1)) }
-    private func prefixOpen() -> String { "\(prefix())\(clock) " }
-    private func prefixClose() -> String { "\(prefix())\(done) " }
+    private func logToPrinter(
+        _ printer: Printer,
+        text: String,
+        icon: String? = nil,
+        duration: Double? = nil,
+        level: LogLevel,
+        updateLine: Bool = false,
+        shifts: Shift = []
+    ) async {
+        guard printer.canPrint(level: level) else { return }
+        if shifts.contains(.right) {
+            printer.shift()
+        }
+        printer.print(text, icon: icon, duration: duration, level: level, updateLine: updateLine)
+        if shifts.contains(.left) {
+            printer.unshift()
+        }
+    }
 
     // MARK: - Step Wrapper
 
@@ -57,42 +105,51 @@ final actor Logger {
         level: LogLevel,
         output: LoggerOutput
     ) async {
-        shift += 1
-        await logToPrinters("\(prefixOpen())\(title)", level: level.rawValue, output: output)
-        lastEnter = title
+        await logToPrinters(
+            title,
+            icon: beginIcon,
+            level: level,
+            shifts: .right,
+            output: output
+        )
+        if let screenPrinter, screenPrinter.canPrint(level: level) {
+            lastEnter = title
+        }
     }
 
     private func leaveBlock(
         _ title: String,
-        _ time: Double? = nil,
+        _ duration: Double? = nil,
         updateLine: Bool,
         level: LogLevel,
         output: LoggerOutput
     ) async {
-        let formattedTime = time.map { "[\($0.format())] ".yellow } ?? ""
-        let text = "\(prefixClose())\(formattedTime)\(title)"
-        await logToPrinters(text, level: level.rawValue, updateLine: updateLine, output: output)
-        shift -= 1
+        await logToPrinters(
+            title,
+            icon: doneIcon,
+            duration: duration,
+            level: level,
+            updateLine: updateLine,
+            shifts: .left,
+            output: output
+        )
     }
 
     // MARK: - Measure
 
     private func measure<Result>(
         _ text: String,
+        level: LogLevel,
         job: () async throws -> Result
     ) async rethrows -> (result: Result, time: Double) {
-        let begin = ProcessInfo.processInfo.systemUptime
+        let begin = clock.systemUptime
         let result: Result
-        if let progressPrinter {
-            let prefix = prefix()
-            result = try await progressPrinter.show(
-                format: { "\(prefix)\($0) \(text)" },
-                job: job
-            )
+        if let progressPrinter, let screenPrinter, screenPrinter.canPrint(level: level) {
+            result = try await progressPrinter.show(text: text, level: level, job: job)
         } else {
             result = try await job()
         }
-        return (result, ProcessInfo.processInfo.systemUptime - begin)
+        return (result, clock.time(sinceSystemUptime: begin))
     }
 }
 
@@ -138,12 +195,13 @@ extension Logger: ILogger {
         block: () async throws -> Result
     ) async rethrows -> Result {
         await enterBlock(header, level: level, output: output)
-        let (result, time) = try await measure(header, job: block)
-        if time >= 0.1 { metricsLogger?.add(time, name: metricKey ?? header) }
+        let (result, duration) = try await measure(header, level: level, job: block)
+        let notZeroDuration = (duration >= 0.1)
+        if notZeroDuration { metricsLogger?.add(duration, name: metricKey ?? header) }
         let updateLine = (lastEnter == header)
         await leaveBlock(
             updateLine ? header : footer ?? header,
-            time >= 0.1 ? time : nil,
+            notZeroDuration ? duration : nil,
             updateLine: updateLine,
             level: level,
             output: output
@@ -156,13 +214,13 @@ extension Logger: ILogger {
         level: LogLevel = .compact,
         output: LoggerOutput = .all
     ) async {
-        shift += 1
         await logToPrinters(
-            "\(prefixClose())\(text)",
-            level: level.rawValue,
+            text,
+            icon: doneIcon,
+            level: level,
+            shifts: [.right, .left],
             output: output
         )
-        shift -= 1
     }
 
     func logPlain(
@@ -170,14 +228,28 @@ extension Logger: ILogger {
         level: LogLevel = .compact,
         output: LoggerOutput = .all
     ) async {
-        shift += 1
         for line in text.components(separatedBy: .newlines) {
             await logToPrinters(
-                "\(prefix())\(line)",
-                level: level.rawValue,
+                line,
+                level: level,
+                shifts: [.right, .left],
                 output: output
             )
         }
-        shift -= 1
+    }
+
+    func logList(
+        _ list: [String],
+        level: LogLevel,
+        output: LoggerOutput
+    ) async {
+        for line in list {
+            await logToPrinters(
+                line,
+                level: level,
+                shifts: [.right, .left],
+                output: output
+            )
+        }
     }
 }

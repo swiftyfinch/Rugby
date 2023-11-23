@@ -1,11 +1,3 @@
-//
-//  BinariesCleaner.swift
-//  RugbyFoundation
-//
-//  Created by Vyacheslav Khorkov on 13.11.2022.
-//  Copyright © 2023 Vyacheslav Khorkov. All rights reserved.
-//
-
 import Fish
 import Foundation
 
@@ -19,7 +11,7 @@ final class BinariesCleaner: Loggable {
 
     private let binariesPathDepth = 4
     private let reserveMultiplier = 1.2 // 20%
-    private let freeMultiplier = 0.4    // 40%
+    private let freeMultiplier = 0.4 // 40%
     private let formatter: ByteCountFormatter = {
         let formatter = ByteCountFormatter()
         formatter.allowedUnits = [.useGB]
@@ -41,9 +33,9 @@ final class BinariesCleaner: Loggable {
     }
 
     func freeSpace() async throws {
-        let cleanUpInfo = try await log("Calculating Storage Info", auto: try await calculateCleanUpInfo())
+        let cleanUpInfo = try await log("Calculating Storage Info", level: .info, auto: await calculateCleanUpInfo())
         let usedPercent = cleanUpInfo.used.percent(total: limit)
-        await log("Used: \(formatter.string(fromByteCount: Int64(cleanUpInfo.used))) (\(usedPercent)%)")
+        await log("Used: \(formatter.string(fromByteCount: Int64(cleanUpInfo.used))) (\(usedPercent)%)", level: .info)
 
         guard cleanUpInfo.isCleanUpNeeded else { return }
         await log("Used: \(formatter.string(fromByteCount: Int64(cleanUpInfo.used)))", level: .info)
@@ -51,10 +43,11 @@ final class BinariesCleaner: Loggable {
         await log("Limit: \(formatter.string(fromByteCount: Int64(limit)))", level: .info)
         await log("To Free: \(formatter.string(fromByteCount: Int64(cleanUpInfo.spaceToFree)))", level: .info)
 
-        let candidatesForDeletion = try await log("Finding Candidates", auto: try findCandidatesForDeletion())
+        let candidatesForDeletion = try await log("Finding Candidates", level: .info, auto: findCandidatesForDeletion())
         let filesForDeletion = try await log(
             "Selecting Binaries",
-            auto: try await selectFoldersForDeletion(in: candidatesForDeletion, spaceToFree: cleanUpInfo.spaceToFree)
+            level: .info,
+            auto: await selectFoldersForDeletion(in: candidatesForDeletion, spaceToFree: cleanUpInfo.spaceToFree)
         )
         let logText = filesForDeletion.reduce(into: "Folders For Deletion:\n") { text, group in
             text.append("\(group.key)\n")
@@ -64,7 +57,7 @@ final class BinariesCleaner: Loggable {
         }
         await log(logText, level: .info)
 
-        try await log("Removing files", block: {
+        try await log("Removing files", level: .info, block: {
             let pathsForDeletion = filesForDeletion.reduce(into: []) { paths, group in
                 paths.append(contentsOf: group.value.lazy.filter(\.delete).map(\.path))
             }
@@ -90,7 +83,7 @@ final class BinariesCleaner: Loggable {
 
         if let used = try await calculateUsedSize() {
             let freed = cleanUpInfo.used - used
-            await log("Freed: \(formatter.string(fromByteCount: Int64(freed)))")
+            await log("Freed: \(formatter.string(fromByteCount: Int64(freed)))", level: .info)
         }
     }
 
@@ -165,7 +158,7 @@ final class BinariesCleaner: Loggable {
     private func removeBuildFolder() async throws {
         guard Folder.isExist(at: buildFolderPath) else { return }
 
-        try await log("Removing build folder", block: {
+        try await log("Removing build folder", level: .info, block: {
             let buildFolder = try Folder.at(buildFolderPath)
             let files = try buildFolder.files(deep: true)
             try await files.concurrentForEach { file in

@@ -1,11 +1,3 @@
-//
-//  Clear.swift
-//  Rugby
-//
-//  Created by Vyacheslav Khorkov on 23.08.2022.
-//  Copyright © 2022 Vyacheslav Khorkov. All rights reserved.
-//
-
 import ArgumentParser
 import Fish
 import Foundation
@@ -27,7 +19,7 @@ struct Clear: AsyncParsableCommand {
     func run() async throws {
         try await run(body,
                       outputType: commonOptions.output,
-                      logLevel: commonOptions.verbose,
+                      logLevel: commonOptions.logLevel,
                       muteSound: true)
     }
 }
@@ -36,7 +28,7 @@ struct Clear: AsyncParsableCommand {
 
 extension Clear: RunnableCommand {
     func body() async throws {
-        let cleaner = dependencies.cleaner(workingDirectory: Folder.current)
+        let cleaner = dependencies.cleaner()
         try await withThrowingTaskGroup(of: Void.self) { group in
             group.addTask {
                 if modules.isEmpty {
@@ -67,12 +59,12 @@ extension Clear {
         func run() async throws {
             try await run(body,
                           outputType: commonOptions.output,
-                          logLevel: commonOptions.verbose,
+                          logLevel: commonOptions.logLevel,
                           muteSound: true)
         }
 
         func body() async throws {
-            let cleaner = dependencies.cleaner(workingDirectory: Folder.current)
+            let cleaner = dependencies.cleaner()
             try await cleaner.deleteBuildFolder()
         }
     }
@@ -94,12 +86,12 @@ extension Clear {
         func run() async throws {
             try await run(body,
                           outputType: commonOptions.output,
-                          logLevel: commonOptions.verbose,
+                          logLevel: commonOptions.logLevel,
                           muteSound: true)
         }
 
         func body() async throws {
-            let cleaner = dependencies.cleaner(workingDirectory: Folder.current)
+            let cleaner = dependencies.cleaner()
             try await cleaner.deleteAllSharedBinaries()
         }
     }

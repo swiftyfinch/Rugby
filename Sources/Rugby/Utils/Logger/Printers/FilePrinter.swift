@@ -1,11 +1,3 @@
-//
-//  FilePrinter.swift
-//  Rugby
-//
-//  Created by Vyacheslav Khorkov on 17.09.2022.
-//  Copyright © 2022 Vyacheslav Khorkov. All rights reserved.
-//
-
 import Fish
 import Foundation
 import RugbyFoundation
@@ -14,6 +6,8 @@ import RugbyFoundation
 
 final class FilePrinter {
     private let file: IFile
+    private var shiftValue = 0
+    private var dateProvider: () -> Date
 
     private lazy var timeFormatter: DateFormatter = {
         let formatter = DateFormatter()
@@ -21,19 +15,32 @@ final class FilePrinter {
         return formatter
     }()
 
-    init(file: IFile) {
+    init(file: IFile, dateProvider: @escaping () -> Date = Date.init) {
         self.file = file
+        self.dateProvider = dateProvider
     }
 }
 
 // MARK: - Printer
 
 extension FilePrinter: Printer {
-    func canPrint(level: Int) -> Bool { true }
+    func canPrint(level _: LogLevel) -> Bool { true }
 
-    func print(_ text: String, level: Int, updateLine: Bool) {
-        let time = timeFormatter.string(from: Date())
-        let text = "[\(time)]: \(text)\n".raw
+    func shift() { shiftValue += 1 }
+    func unshift() { shiftValue -= 1 }
+
+    func print(
+        _ text: String,
+        icon: String?,
+        duration: Double?,
+        level _: LogLevel,
+        updateLine _: Bool
+    ) {
+        let time = timeFormatter.string(from: dateProvider())
+        let prefix = String(repeating: "  ", count: max(0, shiftValue - 1))
+        let icon = icon.map { "\($0) " } ?? ""
+        let duration = duration.map { "[\($0.format())] " } ?? ""
+        let text = "[\(time)]: \(prefix)\(icon)\(duration)\(text)\n".raw
         try? file.append(text)
     }
 }

@@ -1,11 +1,3 @@
-//
-//  WarmupManager.swift
-//  RugbyFoundation
-//
-//  Created by Vyacheslav Khorkov on 16.01.2023.
-//  Copyright © 2023 Vyacheslav Khorkov. All rights reserved.
-//
-
 import Foundation
 
 // MARK: - Interface
@@ -39,7 +31,7 @@ enum WarmupManagerError: LocalizedError {
 
     var errorDescription: String? {
         switch self {
-        case .incorrectEndpoint(let endpoint):
+        case let .incorrectEndpoint(endpoint):
             return "Incorrect endpoint: \(endpoint)"
         }
     }
@@ -76,34 +68,36 @@ final class WarmupManager: Loggable {
 
     private func findLocalBinaries(targetsRegex: NSRegularExpression?,
                                    exceptTargetsRegex: NSRegularExpression?,
-                                   options: XcodeBuildOptions) async throws -> Set<Target> {
+                                   options: XcodeBuildOptions,
+                                   dryRun: Bool) async throws -> TargetsMap {
         let targets = try await log(
             "Finding Build Targets",
-            auto: try await buildTargetsManager.findTargets(targetsRegex, exceptTargets: exceptTargetsRegex)
+            auto: await buildTargetsManager.findTargets(targetsRegex, exceptTargets: exceptTargetsRegex)
         )
         guard targets.isNotEmpty else { throw BuildError.cantFindBuildTargets }
 
-        try await log("Hashing Targets", auto: try await targetsHasher.hash(targets, xcargs: options.xcargs))
+        try await log("Hashing Targets", auto: await targetsHasher.hash(targets, xcargs: options.xcargs))
         let (_, notFound) = try await log(
             "Finding Binaries",
             auto: binariesManager.findBinaries(ofTargets: targets, buildOptions: options)
         )
 
-        let notFoundPaths = try notFound.compactMap {
-            "- \(try binariesManager.finderBinaryFolderPath($0, buildOptions: options))"
-        }
-        if notFoundPaths.isNotEmpty {
-            let list = notFoundPaths.caseInsensitiveSorted().joined(separator: "\n")
-            await log("Not Found:\n\(list)", level: .info)
+        if notFound.values.isNotEmpty {
+            let logLevel: LogLevel = dryRun ? .result : .info
+            let notFoundPaths = try notFound.values
+                .map { try "- \(binariesManager.finderBinaryFolderPath($0, buildOptions: options))" }
+                .caseInsensitiveSorted()
+            await log("Not Found:", level: logLevel)
+            await logList(notFoundPaths, level: logLevel)
         }
 
         let notFoundPercent = notFound.count.percent(total: targets.count)
-        await log("Not Found Locally \(notFoundPercent)% Binaries (\(notFound.count)/\(targets.count))")
+        await log("Not Found Locally \(notFoundPercent)% Binaries (\(notFound.count)/\(targets.count))", level: .result)
 
         return notFound
     }
 
-    private func downloadRemoteBinaries(targets: Set<Target>,
+    private func downloadRemoteBinaries(targets: TargetsMap,
                                         endpointURL: URL,
                                         options: XcodeBuildOptions,
                                         dryRun: Bool,
@@ -143,14 +137,14 @@ final class WarmupManager: Loggable {
 }
 
 private extension WarmupManager {
-    typealias RemoteBinaryInfo = ((url: URL, localPath: URL))
+    typealias RemoteBinaryInfo = (url: URL, localPath: URL)
 
     private func collectRemoteBinariesInfo(
-        targets: Set<Target>,
+        targets: TargetsMap,
         endpoint: URL,
         options: XcodeBuildOptions
     ) throws -> [RemoteBinaryInfo] {
-        try targets.map { target in
+        try targets.values.map { target in
             let binaryPath = try binariesManager.finderBinaryFolderPath(target, buildOptions: options)
             let binaryConfigFolder = URL(fileURLWithPath: binaryPath).deletingLastPathComponent()
 
@@ -220,10 +214,11 @@ extension WarmupManager: IWarmupManager {
         let notFoundTargets = try await findLocalBinaries(
             targetsRegex: targetsRegex,
             exceptTargetsRegex: exceptTargetsRegex,
-            options: options
+            options: options,
+            dryRun: mode.dryRun
         )
 
-        guard let endpointURL = endpointURL else { return }
+        guard let endpointURL, notFoundTargets.isNotEmpty else { return }
         try await downloadRemoteBinaries(
             targets: notFoundTargets,
             endpointURL: endpointURL,

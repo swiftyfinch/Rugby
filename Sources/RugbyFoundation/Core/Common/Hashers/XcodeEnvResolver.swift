@@ -1,11 +1,3 @@
-//
-//  XcodeEnvResolver.swift
-//  RugbyFoundation
-//
-//  Created by Vyacheslav Khorkov on 08.11.2022.
-//  Copyright © 2023 Vyacheslav Khorkov. All rights reserved.
-//
-
 final class XcodeEnvResolver: Loggable {
     let logger: ILogger
     private let env: [String: String]

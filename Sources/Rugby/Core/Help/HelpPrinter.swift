@@ -1,11 +1,3 @@
-//
-//  HelpPrinter.swift
-//  Rugby
-//
-//  Created by Vyacheslav Khorkov on 01.11.2022.
-//  Copyright © 2022 Vyacheslav Khorkov. All rights reserved.
-//
-
 import ArgumentParserToolInfo
 import RugbyFoundation
 
@@ -52,10 +44,10 @@ final class HelpPrinter {
         } else {
             let prefix = " \(">".black.bold.onAccent) "
             /* TODO: Support multiline abstract?
-             let lines = discussion.components(separatedBy: .newlines).flatMap {
-                 $0.wordWrappedLines(width: terminalWidth - prefix.rawCount - 1)
-             }
-            */
+              let lines = discussion.components(separatedBy: .newlines).flatMap {
+                  $0.wordWrappedLines(width: terminalWidth - prefix.rawCount - 1)
+              }
+             */
             let words = abstract.wordWrappedLines(width: terminalWidth - prefix.rawCount - 1)
             let shiftedAbstract = words.enumerated().map { index, line in
                 if index == 0 {
@@ -81,8 +73,8 @@ final class HelpPrinter {
             guard let abstract = subcommand.abstract else { continue }
             guard !abstract.hasPrefix(.hiddenCommandsPrefix) else { continue }
             let left = subcommand.commandName == defaultSubcommand
-            ? subcommand.commandName.bold.accent
-            : subcommand.commandName
+                ? subcommand.commandName.bold.accent
+                : subcommand.commandName
             lines.append((
                 left: left,
                 right: abstract
@@ -137,7 +129,7 @@ private extension ArgumentInfoV0 {
     }
 }
 
-private extension Array where Element == ArgumentInfoV0.NameInfoV0 {
+private extension [ArgumentInfoV0.NameInfoV0] {
     var string: String {
         sorted(by: { $0.kind.string.count < $1.kind.string.count })
             .map(\.string)

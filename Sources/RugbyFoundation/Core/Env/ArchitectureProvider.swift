@@ -1,11 +1,3 @@
-//
-//  ArchitectureProvider.swift
-//  RugbyFoundation
-//
-//  Created by Vyacheslav Khorkov on 13.04.2023.
-//  Copyright © 2023 Vyacheslav Khorkov. All rights reserved.
-//
-
 // MARK: - Interface
 
 /// The protocol describing a service providing the current CPU architecture.

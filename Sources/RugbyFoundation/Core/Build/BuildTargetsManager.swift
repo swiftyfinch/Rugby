@@ -1,31 +1,25 @@
-//
-//  BuildTargetsManager.swift
-//  RugbyFoundation
-//
-//  Created by Vyacheslav Khorkov on 07.08.2022.
-//  Copyright © 2023 Vyacheslav Khorkov. All rights reserved.
-//
-
 import Foundation
 
 final class BuildTargetsManager {
-    private let xcodeProject: XcodeProject
+    private let xcodeProject: IInternalXcodeProject
     private let buildTargetName = "RugbyPods"
 
-    init(xcodeProject: XcodeProject) {
+    init(xcodeProject: IInternalXcodeProject) {
         self.xcodeProject = xcodeProject
     }
 
     func findTargets(_ targets: NSRegularExpression?,
-                     exceptTargets: NSRegularExpression?) async throws -> Set<Target> {
+                     exceptTargets: NSRegularExpression?) async throws -> TargetsMap {
         try await xcodeProject.findTargets(
             by: targets,
             except: exceptTargets,
             includingDependencies: true
-        ).filter { $0.isNative && !$0.isTests && !$0.isPodsUmbrella }
+        ).filter { _, target in
+            target.isNative && !target.isTests && !target.isPodsUmbrella
+        }
     }
 
-    func createTarget(dependencies: Set<Target>) async throws -> Target {
+    func createTarget(dependencies: TargetsMap) async throws -> IInternalTarget {
         try await xcodeProject.createAggregatedTarget(name: buildTargetName, dependencies: dependencies)
     }
 }

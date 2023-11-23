@@ -1,11 +1,3 @@
-//
-//  UseBinariesManager.swift
-//  RugbyFoundation
-//
-//  Created by Vyacheslav Khorkov on 19.07.2022.
-//  Copyright © 2022 Vyacheslav Khorkov. All rights reserved.
-//
-
 import Foundation
 
 // MARK: - Interface
@@ -27,7 +19,7 @@ public protocol IUseBinariesManager {
     /// - Parameters:
     ///   - targets: A set of targets to select.
     ///   - keepGroups: An option to keep groups after removing targets in Xcode project.
-    func use(targets: Set<Target>,
+    func use(targets: [String: ITarget],
              keepGroups: Bool) async throws
 }
 
@@ -37,25 +29,28 @@ final class UseBinariesManager: Loggable {
     let logger: ILogger
 
     private let buildTargetsManager: BuildTargetsManager
-    private let xcodeProject: XcodeProject
+    private let librariesPatcher: ILibrariesPatcher
+    private let xcodeProject: IInternalXcodeProject
     private let rugbyXcodeProject: RugbyXcodeProject
     private let backupManager: IBackupManager
     private let binariesManager: IBinariesStorage
     private let targetsHasher: TargetsHasher
-    private let supportFilesPatcher: SupportFilesPatcher
+    private let supportFilesPatcher: ISupportFilesPatcher
     private let fileContentEditor: FileContentEditor
 
     init(logger: ILogger,
          buildTargetsManager: BuildTargetsManager,
-         xcodeProject: XcodeProject,
+         librariesPatcher: ILibrariesPatcher,
+         xcodeProject: IInternalXcodeProject,
          rugbyXcodeProject: RugbyXcodeProject,
          backupManager: IBackupManager,
          binariesManager: IBinariesStorage,
          targetsHasher: TargetsHasher,
-         supportFilesPatcher: SupportFilesPatcher,
+         supportFilesPatcher: ISupportFilesPatcher,
          fileContentEditor: FileContentEditor) {
         self.logger = logger
         self.buildTargetsManager = buildTargetsManager
+        self.librariesPatcher = librariesPatcher
         self.xcodeProject = xcodeProject
         self.rugbyXcodeProject = rugbyXcodeProject
         self.backupManager = backupManager
@@ -69,11 +64,10 @@ final class UseBinariesManager: Loggable {
 // MARK: - File Replacements
 
 extension UseBinariesManager {
-
-    private func patchProductFiles(binaryTargets: Set<Target>) async throws -> Set<Target> {
+    private func patchProductFiles(binaryTargets: TargetsMap) async throws -> TargetsMap {
         let binaryUsers = try await findBinaryUsers(binaryTargets)
-        try binaryUsers.forEach { target in
-            target.binaryProducts = try target.binaryDependencies.compactMap { target in
+        try binaryUsers.values.forEach { target in
+            target.binaryProducts = try target.binaryDependencies.values.compactMap { target in
                 guard let product = target.product else { return nil }
                 product.binaryPath = try binariesManager.xcodeBinaryFolderPath(target)
                 return product
@@ -82,19 +76,18 @@ extension UseBinariesManager {
 
         // For all dynamic frameworks we should keep resource bundles which is produced by targets.
         // The easiest way is just find resource bundle targets and exclude them from reusing from binaries.
-        let resourceBundleTargets = try await binaryUsers.concurrentFlatMap { target -> [Target] in
-            guard target.product?.type == .framework else { return [] }
+        let resourceBundleTargets: TargetsMap = try await binaryUsers.concurrentFlatMapValues { target in
+            guard target.product?.type == .framework else { return [:] }
 
             let resourceBundleNames = try target.resourceBundleNames()
-            let found = binaryTargets.filter {
-                guard let productName = $0.product?.name else { return false }
+            return binaryTargets.filter {
+                guard let productName = $0.value.product?.name else { return false }
                 return resourceBundleNames.contains(productName)
             }
-            return Array(found)
         }
         let binaryTargets = binaryTargets.subtracting(resourceBundleTargets)
 
-        let fileReplacements = try await binaryUsers.concurrentFlatMap(supportFilesPatcher.prepareReplacements)
+        let fileReplacements = try await binaryUsers.values.concurrentFlatMap(supportFilesPatcher.prepareReplacements)
         try await fileReplacements.concurrentCompactMap { fileReplacement in
             try self.fileContentEditor.replace(fileReplacement.replacements,
                                                regex: fileReplacement.regex,
@@ -104,20 +97,20 @@ extension UseBinariesManager {
         return binaryTargets
     }
 
-    private func findBinaryUsers(_ binaryTargets: Set<Target>) async throws -> Set<Target> {
+    private func findBinaryUsers(_ binaryTargets: TargetsMap) async throws -> TargetsMap {
         let binaryUsers = try await xcodeProject.findTargets().subtracting(binaryTargets)
-        binaryUsers.forEach { target in
-            target.binaryDependencies = target.dependencies.intersection(binaryTargets)
+        binaryUsers.values.forEach { target in
+            target.binaryDependencies = target.dependencies.keysIntersection(binaryTargets)
         }
-        return binaryUsers.filter(\.binaryDependencies.isNotEmpty)
+        return binaryUsers.filter(\.value.binaryDependencies.isNotEmpty)
     }
 }
 
 // MARK: - Context Properties
 
-extension Target {
-    var binaryProducts: Set<Product> {
-        get { (context[String.binaryProductsKey] as? Set<Product>) ?? [] }
+extension IInternalTarget {
+    var binaryProducts: [Product] {
+        get { (context[String.binaryProductsKey] as? [Product]) ?? [] }
         set { context[String.binaryProductsKey] = newValue }
     }
 }
@@ -129,9 +122,9 @@ extension Product {
     }
 }
 
-private extension Target {
-    var binaryDependencies: Set<Target> {
-        get { (context[String.binaryDependenciesKey] as? Set<Target>) ?? [] }
+private extension IInternalTarget {
+    var binaryDependencies: TargetsMap {
+        get { (context[String.binaryDependenciesKey] as? TargetsMap) ?? [:] }
         set { context[String.binaryDependenciesKey] = newValue }
     }
 }
@@ -152,21 +145,25 @@ extension UseBinariesManager: IUseBinariesManager {
         guard try await !rugbyXcodeProject.isAlreadyUsingRugby() else { throw RugbyError.alreadyUseRugby }
         let binaryTargets = try await log(
             "Finding Build Targets",
-            auto: try await buildTargetsManager.findTargets(targetsRegex, exceptTargets: exceptTargetsRegex)
+            auto: await buildTargetsManager.findTargets(targetsRegex, exceptTargets: exceptTargetsRegex)
         )
-        try await log("Hashing Targets", auto: try await targetsHasher.hash(binaryTargets, xcargs: xcargs))
-        try await log("Backuping", auto: try await backupManager.backup(xcodeProject, kind: .original))
+        try await log("Backuping", level: .info, auto: await backupManager.backup(xcodeProject, kind: .original))
+        try await librariesPatcher.patch(binaryTargets)
+        try await log("Hashing Targets", auto: await targetsHasher.hash(binaryTargets, xcargs: xcargs))
         try await use(targets: binaryTargets, keepGroups: !deleteSources)
         try await rugbyXcodeProject.markAsUsingRugby()
-        try await log("Saving Project", auto: try await xcodeProject.save())
+        try await log("Saving Project", auto: await xcodeProject.save())
     }
 
-    public func use(targets: Set<Target>, keepGroups: Bool) async throws {
+    public func use(targets: [String: ITarget], keepGroups: Bool) async throws {
+        let internalTargets = targets.compactMapValues { $0 as? IInternalTarget }
         let binaryTargets = try await log("Patching Product Files",
-                                          auto: try await patchProductFiles(binaryTargets: targets))
+                                          level: .result,
+                                          auto: await patchProductFiles(binaryTargets: internalTargets))
         try await log(
             "Deleting Targets (\(binaryTargets.count))",
-            auto: try await xcodeProject.deleteTargets(binaryTargets, keepGroups: keepGroups)
+            level: .result,
+            auto: await xcodeProject.deleteTargets(binaryTargets, keepGroups: keepGroups)
         )
     }
 }

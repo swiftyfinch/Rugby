@@ -1,11 +1,3 @@
-//
-//  ParsableCommand+ToRunnable.swift
-//  Rugby
-//
-//  Created by Vyacheslav Khorkov on 02.08.2023.
-//  Copyright © 2023 Vyacheslav Khorkov. All rights reserved.
-//
-
 import ArgumentParser
 import Foundation
 

@@ -1,11 +1,3 @@
-//
-//  SoundPlayer.swift
-//  RugbyFoundation
-//
-//  Created by Vyacheslav Khorkov on 04.07.2022.
-//  Copyright © 2022 Vyacheslav Khorkov. All rights reserved.
-//
-
 // MARK: - Interface
 
 /// The protocol describing a service to play sound notifications.

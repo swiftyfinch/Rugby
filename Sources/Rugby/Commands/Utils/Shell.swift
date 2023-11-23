@@ -1,11 +1,3 @@
-//
-//  Shell.swift
-//  Rugby
-//
-//  Created by Vyacheslav Khorkov on 09.09.2022.
-//  Copyright © 2022 Vyacheslav Khorkov. All rights reserved.
-//
-
 import ArgumentParser
 
 struct Shell: RunnableCommand {
@@ -24,7 +16,7 @@ struct Shell: RunnableCommand {
     func run() async throws {
         try await run(body,
                       outputType: commonOptions.output,
-                      logLevel: commonOptions.verbose,
+                      logLevel: commonOptions.logLevel,
                       muteSound: false)
     }
 
@@ -36,7 +28,9 @@ struct Shell: RunnableCommand {
             await logPlain(output, level: .info, output: .screen)
         case .multiline:
             try dependencies.shellExecutor.printShell(command)
-        case .quiet:
+        case .raw:
+            try dependencies.shellExecutor.printShell(command)
+        case .silence:
             try dependencies.shellExecutor.throwingShell(command)
         }
         dependencies.xcode.resetProjectsCache()

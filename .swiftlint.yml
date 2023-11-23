@@ -90,23 +90,14 @@ opt_in_rules:
   - weak_delegate
   - xctfail_message
   - explicit_init
-  - file_header
   - missing_docs
 
 included:
   - Sources
+  - Tests
 
 # Custom
 large_tuple: 4
 nesting:
   type_level: 2
 function_parameter_count: 6
-file_header:
-  required_pattern: |
-                    \/\/
-                    \/\/  .*?\.swift
-                    \/\/  Rugby.*
-                    \/\/
-                    \/\/  Created by .*? on \d{1,2}\.\d{1,2}\.\d{4}\.
-                    \/\/  Copyright © .*?\. All rights reserved\.
-                    \/\/

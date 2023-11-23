@@ -1,19 +1,15 @@
-//
-//  MultiLinePrinter.swift
-//  Rugby
-//
-//  Created by Vyacheslav Khorkov on 17.09.2022.
-//  Copyright © 2022 Vyacheslav Khorkov. All rights reserved.
-//
-
 import RugbyFoundation
 
 // MARK: - Implementation
 
 final class MultiLinePrinter {
-    private let maxLevel: Int
+    private let standardOutput: IStandardOutput
+    private let maxLevel: LogLevel
+    private var shiftValue = 0
 
-    init(maxLevel: Int) {
+    init(standardOutput: IStandardOutput,
+         maxLevel: LogLevel) {
+        self.standardOutput = standardOutput
         self.maxLevel = maxLevel
     }
 }
@@ -21,10 +17,22 @@ final class MultiLinePrinter {
 // MARK: - Printer
 
 extension MultiLinePrinter: Printer {
-    func canPrint(level: Int) -> Bool { level <= maxLevel }
+    func canPrint(level: LogLevel) -> Bool { level <= maxLevel }
 
-    func print(_ text: String, level: Int, updateLine: Bool) {
+    func shift() { shiftValue += 1 }
+    func unshift() { shiftValue -= 1 }
+
+    func print(
+        _ text: String,
+        icon: String?,
+        duration: Double?,
+        level: LogLevel,
+        updateLine _: Bool
+    ) {
         guard canPrint(level: level) else { return }
-        Swift.print(text)
+        let prefix = String(repeating: "  ", count: max(0, shiftValue - 1))
+        let icon = icon.map { "\($0) " } ?? ""
+        let duration = duration.map { "[\($0.format())] ".yellow } ?? ""
+        standardOutput.print("\(prefix)\(icon)\(duration)\(text)")
     }
 }

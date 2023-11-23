@@ -1,11 +1,3 @@
-//
-//  RunnableCommand.swift
-//  Rugby
-//
-//  Created by Vyacheslav Khorkov on 17.09.2022.
-//  Copyright © 2022 Vyacheslav Khorkov. All rights reserved.
-//
-
 import ArgumentParser
 import Darwin
 import Fish
@@ -24,7 +16,7 @@ protocol RunnableCommand: AsyncParsableCommand, Loggable {
 extension RunnableCommand {
     func run(_ block: () async throws -> Void,
              outputType: OutputType,
-             logLevel: Int = 0,
+             logLevel: LogLevel,
              muteSound: Bool = false) async throws {
         defer {
             fflush(stdout) // We need to flush print buffer here before printing errors
@@ -37,7 +29,7 @@ extension RunnableCommand {
         try await dependencies.environmentCollector.write(
             rugbyVersion: Rugby.configuration.version,
             command: self,
-            workingDirectory: Folder.current
+            rugbyEnvironment: dependencies.env.all
         )
 
         let name = Self.configuration.commandName?.capitalized ?? "Unknown"
@@ -45,8 +37,8 @@ extension RunnableCommand {
         try await log("\(name.green)\(description)",
                       footer: name.green,
                       metricKey: name,
-                      auto: try await handle(block))
-        await log("\("⚑".yellow) Let's Roll-oll 🏈".green)
+                      auto: await handle(block))
+        await logPlain("\("⚑".yellow) Let's Roll-oll 🏈".green)
     }
 }
 
@@ -69,7 +61,7 @@ extension RunnableCommand {
         switch outputType {
         case .fold, .multiline:
             dependencies.soundPlayer.playBell()
-        case .quiet:
+        case .raw, .silence:
             break
         }
     }
@@ -95,7 +87,7 @@ extension RunnableCommand {
 extension RunnableCommand {
     var logger: ILogger { dependencies.logger }
 
-    private func prepareLogger(outputType: OutputType, logLevel: Int) async throws {
+    private func prepareLogger(outputType: OutputType, logLevel: LogLevel) async throws {
         let logFolder = try dependencies.logsRotator.currentLogFolder()
         let logFile = try logFolder.createFile(named: "rugby.log")
         let filePrinter = FilePrinter(file: logFile)
@@ -110,16 +102,33 @@ extension RunnableCommand {
         switch outputType {
         case .fold:
             let columns = Debugger().isAttached() ? Int.max : (Terminal.columns() ?? Int.max)
-            let printer = OneLinePrinter(maxLevel: logLevel, columns: columns)
+            let printer = OneLinePrinter(
+                standardOutput: dependencies.standardOutput,
+                maxLevel: logLevel,
+                columns: columns
+            )
             screenPrinter = printer
-            progressPrinter = ProgressPrinter(printer: printer)
+            progressPrinter = ProgressPrinter(
+                printer: printer,
+                timerTaskFactory: dependencies.timerTaskFactory,
+                clock: Clock()
+            )
             dependencies.processMonitor.runOnInterruption {
                 Task { [weak progressPrinter] in await progressPrinter?.stop() }
             }
         case .multiline:
-            screenPrinter = MultiLinePrinter(maxLevel: logLevel)
+            screenPrinter = MultiLinePrinter(
+                standardOutput: dependencies.standardOutput,
+                maxLevel: logLevel
+            )
             progressPrinter = nil
-        case .quiet:
+        case .raw:
+            screenPrinter = RawPrinter(
+                standardOutput: dependencies.standardOutput,
+                maxLevel: logLevel
+            )
+            progressPrinter = nil
+        case .silence:
             screenPrinter = nil
             progressPrinter = nil
         }

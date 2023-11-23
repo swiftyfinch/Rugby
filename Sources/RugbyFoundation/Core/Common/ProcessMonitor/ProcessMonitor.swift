@@ -1,11 +1,3 @@
-//
-//  ProcessMonitor.swift
-//  RugbyFoundation
-//
-//  Created by Vyacheslav Khorkov on 04.07.2022.
-//  Copyright © 2022 Vyacheslav Khorkov. All rights reserved.
-//
-
 import Foundation
 import SwiftShell
 
@@ -47,7 +39,7 @@ extension ProcessMonitor: IProcessMonitor {
         // Make sure the signal does not terminate the application.
         signal(SIGINT, SIG_IGN)
         signalSource.setEventHandler { [weak self] in
-            guard let self = self else { return }
+            guard let self else { return }
             print(" ✕ Interruption, please wait a bit.".red)
             self.processes.allObjects.forEach { $0.interrupt() }
             self.interruptionTasks.forEach { $0.run() }

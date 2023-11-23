@@ -1,11 +1,3 @@
-//
-//  XcodeTargetsFinder.swift
-//  RugbyFoundation
-//
-//  Created by Vyacheslav Khorkov on 20.08.2022.
-//  Copyright © 2022 Vyacheslav Khorkov. All rights reserved.
-//
-
 import Foundation
 
 final class XcodeTargetsFinder {
@@ -17,31 +9,30 @@ final class XcodeTargetsFinder {
 
     func findTargets(by regex: NSRegularExpression? = nil,
                      except exceptRegex: NSRegularExpression? = nil,
-                     includingDependencies: Bool = false) async throws -> Set<Target> {
+                     includingDependencies: Bool = false) async throws -> TargetsMap {
         let targets = try await targetsDataSource.targets
-        let foundTargets = try resolveTargets(targets: targets,
-                                              by: regex,
-                                              except: exceptRegex,
-                                              includingDependencies: includingDependencies)
-        return foundTargets
+        return try resolveTargets(targets: targets,
+                                  by: regex,
+                                  except: exceptRegex,
+                                  includingDependencies: includingDependencies)
     }
 
-    private func resolveTargets(targets: Set<Target>,
+    private func resolveTargets(targets: TargetsMap,
                                 by regex: NSRegularExpression? = nil,
                                 except exceptRegex: NSRegularExpression? = nil,
-                                includingDependencies: Bool) throws -> Set<Target> {
-        targets.filter {
-            if let regex = exceptRegex, $0.name.match(regex) {
+                                includingDependencies: Bool) throws -> TargetsMap {
+        targets.filter { _, target in
+            if let regex = exceptRegex, target.name.match(regex) {
                 return false
-            } else if let regex = regex {
-                return $0.name.match(regex)
+            } else if let regex {
+                return target.name.match(regex)
             }
             return true
         }.modifyIf(includingDependencies) { targets in
-            let dependencies = targets.flatMap(\.dependencies)
-            targets.formUnion(dependencies)
-        }.filter {
-            if let regex = exceptRegex, $0.name.match(regex) {
+            let dependencies = targets.flatMapValues(\.dependencies)
+            targets.merge(dependencies)
+        }.filter { _, target in
+            if let regex = exceptRegex, target.name.match(regex) {
                 return false
             }
             return true

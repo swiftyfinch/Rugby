@@ -1,11 +1,3 @@
-//
-//  Collection+ConcurrentMap.swift
-//  RugbyFoundation
-//
-//  Created by Vyacheslav Khorkov on 01.02.2023.
-//  Copyright © 2022 Vyacheslav Khorkov. All rights reserved.
-//
-
 extension Collection {
     @discardableResult
     func concurrentMap<T>(

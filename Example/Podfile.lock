@@ -1,9 +1,11 @@
 PODS:
-  - Alamofire (5.6.4)
+  - Alamofire (5.8.0)
   - AutoMate (1.8.0)
   - "Keyboard+LayoutGuide (1.6.0)"
-  - Kingfisher (7.4.1)
+  - Kingfisher (7.9.1)
   - LocalPod (1.0.0):
+    - Moya/Core
+  - LocalPod/ResourceBundleTests (1.0.0):
     - Moya/Core
   - LocalPod/Tests (1.0.0):
     - Moya/Core
@@ -16,6 +18,7 @@ DEPENDENCIES:
   - "Keyboard+LayoutGuide"
   - Kingfisher
   - LocalPod (from `LocalPods`)
+  - LocalPod/ResourceBundleTests (from `LocalPods`)
   - LocalPod/Tests (from `LocalPods`)
   - Moya/Core
   - SnapKit
@@ -34,14 +37,14 @@ EXTERNAL SOURCES:
     :path: LocalPods
 
 SPEC CHECKSUMS:
-  Alamofire: 4e95d97098eacb88856099c4fc79b526a299e48c
+  Alamofire: 0e92e751b3e9e66d7982db43919d01f313b8eb91
   AutoMate: e73f192ba530a60c01e1803f391f28bc154dd9ec
   "Keyboard+LayoutGuide": db44b1764e2bb5d9824cc9cea9d9006cd4442045
-  Kingfisher: cd762a593a61b2fbecf7645c00f9a801a3ebfc9c
-  LocalPod: 8af4ebad4bff9ce755d0f0c2ff1601ff76d92288
+  Kingfisher: 1d14e9f59cbe19389f591c929000332bf70efd32
+  LocalPod: 98c9e510a9ffb889839862aafcde67a1bd2e503f
   Moya: 138f0573e53411fb3dc17016add0b748dfbd78ee
   SnapKit: e01d52ebb8ddbc333eefe2132acf85c8227d9c25
 
-PODFILE CHECKSUM: d3b1db059a31108c140019f7fa9b0d4e804b7d9b
+PODFILE CHECKSUM: 68b380e021774eb655075ed785b0db9f6d8d3a2e
 
 COCOAPODS: 1.12.1

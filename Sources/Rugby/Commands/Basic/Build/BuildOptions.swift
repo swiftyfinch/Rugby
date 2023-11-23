@@ -1,11 +1,3 @@
-//
-//  BuildOptions.swift
-//  Rugby
-//
-//  Created by Vyacheslav Khorkov on 22.10.2022.
-//  Copyright © 2022 Vyacheslav Khorkov. All rights reserved.
-//
-
 import ArgumentParser
 import RugbyFoundation
 
@@ -28,12 +20,16 @@ struct BuildOptions: AsyncParsableCommand {
     @OptionGroup
     var targetsOptions: TargetsOptions
 
-    func xcodeBuildOptions() -> XcodeBuildOptions {
+    func xcodeBuildOptions(skipSigning: Bool = false) -> XcodeBuildOptions {
         XcodeBuildOptions(
             sdk: sdk,
             config: config,
             arch: resolveArchitecture().rawValue,
-            xcargs: dependencies.xcargsProvider.xcargs(strip: additionalBuildOptions.strip)
+            xcargs: dependencies.xcargsProvider.xcargs(
+                strip: additionalBuildOptions.strip,
+                skipSigning: skipSigning
+            ),
+            resultBundlePath: additionalBuildOptions.resultBundlePath
         )
     }
 

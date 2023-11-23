@@ -1,26 +1,18 @@
-//
-//  BuildPhasesHasher.swift
-//  RugbyFoundation
-//
-//  Created by Vyacheslav Khorkov on 03.09.2022.
-//  Copyright © 2022 Vyacheslav Khorkov. All rights reserved.
-//
-
 import Fish
 import Foundation
 import typealias XcodeProj.BuildSettings
 
 final class BuildPhaseHasher: Loggable {
-    private let workingDirectory: IFolder
     let logger: ILogger
+    private let workingDirectory: IFolder
     private let foundationHasher: FoundationHasher
     private let fileContentHasher: FileContentHasher
     private let xcodeEnvResolver: XcodeEnvResolver
 
     private let dollarSymbol = "$"
 
-    init(workingDirectory: IFolder,
-         logger: ILogger,
+    init(logger: ILogger,
+         workingDirectory: IFolder,
          foundationHasher: FoundationHasher,
          fileContentHasher: FileContentHasher,
          xcodeEnvResolver: XcodeEnvResolver) {
@@ -31,7 +23,7 @@ final class BuildPhaseHasher: Loggable {
         self.xcodeEnvResolver = xcodeEnvResolver
     }
 
-    func hashContext(target: Target) async throws -> Any {
+    func hashContext(target: IInternalTarget) async throws -> Any {
         // Get the first configuration sorted by name.
         guard
             let configurationName = (target.configurations ?? [:]).keys.sorted().first,
@@ -61,14 +53,14 @@ final class BuildPhaseHasher: Loggable {
                              additionalEnv: [String: String]) async throws -> [String: Any] {
         let inputFileListPaths = try await resolveFileListPaths(buildPhase.inputFileListPaths,
                                                                 additionalEnv: additionalEnv)
-        var hashContext: [String: Any] = await [
+        var hashContext: [String: Any] = try await [
             "name": buildPhase.name,
             "type": buildPhase.type.rawValue,
             "buildActionMask": buildPhase.buildActionMask,
             "runOnlyForDeploymentPostprocessing": buildPhase.runOnlyForDeploymentPostprocessing,
-            "inputFileListPaths": try fileContentHasher.hashContext(paths: inputFileListPaths.resolved),
+            "inputFileListPaths": fileContentHasher.hashContext(paths: inputFileListPaths.resolved),
             "outputFileListPaths": preparePaths(buildPhase.outputFileListPaths),
-            "files": try fileContentHasher.hashContext(paths: buildPhase.files)
+            "files": fileContentHasher.hashContext(paths: buildPhase.files)
         ]
         if inputFileListPaths.unresolved.isNotEmpty {
             hashContext["inputFileListPaths_missing"] = preparePaths(inputFileListPaths.unresolved)

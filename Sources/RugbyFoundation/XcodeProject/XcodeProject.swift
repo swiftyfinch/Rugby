@@ -1,15 +1,56 @@
-//
-//  XcodeProject.swift
-//  RugbyFoundation
-//
-//  Created by Vyacheslav Khorkov on 27.07.2022.
-//  Copyright © 2022 Vyacheslav Khorkov. All rights reserved.
-//
-
 import Foundation
 
-/// The service for Xcode project managment.
-public final class XcodeProject {
+/// The protocol describing a service for Xcode project managment.
+public protocol IXcodeProject: AnyObject {
+    /// Returns paths to folders with root project and subprojects.
+    func folderPaths() async throws -> [String]
+    /// Returns `true` if the root project contains the key in the build settings.
+    func contains(buildSettingsKey: String) async throws -> Bool
+    /// Sets the value to the key in the build settings of the root project.
+    func set(buildSettingsKey: String, value: Any) async throws
+}
+
+protocol IInternalXcodeProject: IXcodeProject {
+    func resetCache()
+    func save() async throws
+
+    func findTargets(
+        by regex: NSRegularExpression?,
+        except exceptRegex: NSRegularExpression?,
+        includingDependencies: Bool
+    ) async throws -> TargetsMap
+
+    func createAggregatedTarget(
+        name: String,
+        dependencies: TargetsMap
+    ) async throws -> IInternalTarget
+
+    func deleteTargets(
+        _ targetsForRemove: TargetsMap,
+        keepGroups: Bool
+    ) async throws
+}
+
+// MARK: - Implementation
+
+extension IInternalXcodeProject {
+    func findTargets() async throws -> TargetsMap {
+        try await findTargets(by: nil, except: nil, includingDependencies: false)
+    }
+
+    func findTargets(
+        by regex: NSRegularExpression?,
+        except exceptRegex: NSRegularExpression?
+    ) async throws -> TargetsMap {
+        try await findTargets(by: regex, except: exceptRegex, includingDependencies: false)
+    }
+
+    func deleteTargets(_ targetsForRemove: TargetsMap) async throws {
+        try await deleteTargets(targetsForRemove, keepGroups: true)
+    }
+}
+
+final class XcodeProject {
     private let projectDataSource: XcodeProjectDataSource
     private let targetsFinder: XcodeTargetsFinder
     private let targetsEditor: XcodeTargetsEditor
@@ -26,10 +67,7 @@ public final class XcodeProject {
     }
 }
 
-// MARK: - Implementation
-
-extension XcodeProject {
-
+extension XcodeProject: IInternalXcodeProject {
     // MARK: - File System
 
     func folderPaths() async throws -> [String] {
@@ -60,7 +98,7 @@ extension XcodeProject {
 
     func findTargets(by regex: NSRegularExpression? = nil,
                      except exceptRegex: NSRegularExpression? = nil,
-                     includingDependencies: Bool = false) async throws -> Set<Target> {
+                     includingDependencies: Bool = false) async throws -> TargetsMap {
         try await targetsFinder.findTargets(by: regex,
                                             except: exceptRegex,
                                             includingDependencies: includingDependencies)
@@ -69,13 +107,13 @@ extension XcodeProject {
     // MARK: - Create Targets
 
     func createAggregatedTarget(name: String,
-                                dependencies: Set<Target>) async throws -> Target {
+                                dependencies: TargetsMap) async throws -> IInternalTarget {
         try await targetsEditor.createAggregatedTarget(name: name, dependencies: dependencies)
     }
 
     // MARK: - Delete Targets
 
-    func deleteTargets(_ targetsForRemove: Set<Target>, keepGroups: Bool = true) async throws {
+    func deleteTargets(_ targetsForRemove: TargetsMap, keepGroups: Bool = true) async throws {
         try await targetsEditor.deleteTargets(targetsForRemove, keepGroups: keepGroups)
     }
 }

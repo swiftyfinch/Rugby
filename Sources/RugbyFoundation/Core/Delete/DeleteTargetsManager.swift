@@ -1,11 +1,3 @@
-//
-//  DeleteTargetsManager.swift
-//  RugbyFoundation
-//
-//  Created by Vyacheslav Khorkov on 02.08.2022.
-//  Copyright © 2022 Vyacheslav Khorkov. All rights reserved.
-//
-
 import Foundation
 
 // MARK: - Interface
@@ -28,11 +20,11 @@ public protocol IDeleteTargetsManager {
 
 final class DeleteTargetsManager: Loggable {
     let logger: ILogger
-    private let xcodeProject: XcodeProject
+    private let xcodeProject: IInternalXcodeProject
     private let backupManager: IBackupManager
 
     init(logger: ILogger,
-         xcodeProject: XcodeProject,
+         xcodeProject: IInternalXcodeProject,
          backupManager: IBackupManager) {
         self.logger = logger
         self.xcodeProject = xcodeProject
@@ -49,19 +41,19 @@ extension DeleteTargetsManager: IDeleteTargetsManager {
                        deleteSources: Bool) async throws {
         var shouldBeRemoved = try await log(
             "Finding Targets",
-            auto: try await xcodeProject.findTargets(by: targetsRegex, except: exceptTargetsRegex)
+            auto: await xcodeProject.findTargets(by: targetsRegex, except: exceptTargetsRegex)
         )
-        try await log("Keeping Excepted Targets Dependencies", block: {
+        try await log("Keeping Excepted Targets Dependencies", level: .info, block: {
             if keepExceptedTargetsDependencies {
-                try await xcodeProject.findTargets().subtracting(shouldBeRemoved).forEach {
-                    let intersection = $0.dependencies.intersection(shouldBeRemoved)
+                try await xcodeProject.findTargets().subtracting(shouldBeRemoved).values.forEach {
+                    let intersection = $0.dependencies.keysIntersection(shouldBeRemoved)
                     shouldBeRemoved.subtract(intersection)
                 }
             }
         })
-        try await log("Backuping", auto: try await backupManager.backup(xcodeProject, kind: .original))
+        try await log("Backuping", level: .info, auto: await backupManager.backup(xcodeProject, kind: .original))
         try await log("Deleting Targets (\(shouldBeRemoved.count))",
-                      auto: try await xcodeProject.deleteTargets(shouldBeRemoved, keepGroups: !deleteSources))
-        try await log("Saving Project", auto: try await xcodeProject.save())
+                      auto: await xcodeProject.deleteTargets(shouldBeRemoved, keepGroups: !deleteSources))
+        try await log("Saving Project", auto: await xcodeProject.save())
     }
 }

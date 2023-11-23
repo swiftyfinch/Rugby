@@ -1,20 +1,17 @@
-//
-//  OneLinePrinter.swift
-//  Rugby
-//
-//  Created by Vyacheslav Khorkov on 17.09.2022.
-//  Copyright © 2022 Vyacheslav Khorkov. All rights reserved.
-//
-
 import RugbyFoundation
 
 // MARK: - Implementation
 
 final class OneLinePrinter {
-    private let maxLevel: Int
+    private let standardOutput: IStandardOutput
+    private let maxLevel: LogLevel
     private let columns: Int
+    private var shiftValue = 0
 
-    init(maxLevel: Int, columns: Int) {
+    init(standardOutput: IStandardOutput,
+         maxLevel: LogLevel,
+         columns: Int) {
+        self.standardOutput = standardOutput
         self.maxLevel = maxLevel
         self.columns = columns
     }
@@ -23,11 +20,24 @@ final class OneLinePrinter {
 // MARK: - Printer
 
 extension OneLinePrinter: Printer {
-    func canPrint(level: Int) -> Bool { level <= maxLevel }
+    func canPrint(level: LogLevel) -> Bool { level <= maxLevel }
 
-    func print(_ text: String, level: Int, updateLine: Bool) {
+    func shift() { shiftValue += 1 }
+    func unshift() { shiftValue -= 1 }
+
+    func print(
+        _ text: String,
+        icon: String?,
+        duration: Double?,
+        level: LogLevel,
+        updateLine: Bool
+    ) {
         guard canPrint(level: level) else { return }
+        let prefix = String(repeating: "  ", count: max(0, shiftValue - 1))
+        let icon = icon.map { "\($0) " } ?? ""
+        let duration = duration.map { "[\($0.format())] ".yellow } ?? ""
+        let text = "\(prefix)\(icon)\(duration)\(text)"
         let choppedText = text.rainbowWidth(columns)
-        Swift.print(updateLine ? "\u{1B}[1A\u{1B}[K\(choppedText)" : choppedText)
+        standardOutput.print(updateLine ? "\u{1B}[1A\u{1B}[K\(choppedText)" : choppedText)
     }
 }

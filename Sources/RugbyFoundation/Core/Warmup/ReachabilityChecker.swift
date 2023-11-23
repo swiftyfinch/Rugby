@@ -1,11 +1,3 @@
-//
-//  ReachabilityChecker.swift
-//  RugbyFoundation
-//
-//  Created by Vyacheslav Khorkov on 17.01.2023.
-//  Copyright © 2023 Vyacheslav Khorkov. All rights reserved.
-//
-
 import Foundation
 
 enum ReachabilityCheckerError: LocalizedError {
@@ -13,7 +5,7 @@ enum ReachabilityCheckerError: LocalizedError {
 
     var errorDescription: String? {
         switch self {
-        case .urlUnreachable(let url):
+        case let .urlUnreachable(url):
             return "\(url) unreachable."
         }
     }

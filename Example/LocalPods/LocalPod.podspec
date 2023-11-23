@@ -12,7 +12,7 @@ Pod::Spec.new do |s|
   s.source_files = "#{s.name}/Sources/**/*.swift"
   s.resource_bundles = {
     "#{s.name}Resources" => [
-      "#{s.name}/{Sources,Resources}/**/*.{strings}"
+      "#{s.name}/{Sources,Resources}/**/*.{json,strings}"
     ]
   }
   s.dependency 'Moya/Core'
@@ -20,5 +20,12 @@ Pod::Spec.new do |s|
   s.test_spec 'Tests' do |ts|
     ts.source_files = "#{s.name}/Tests/**/*.swift"
     ts.resources = "#{s.name}/Tests/**/*.{json,xcassets}"
+  end
+
+  s.test_spec 'ResourceBundleTests' do |ts|
+    ts.source_files = "#{s.name}/ResourceBundleTests/**/*.swift"
+    ts.resource_bundle = {
+      "#{s.name}ResourceBundleTestsResources" => "#{s.name}/ResourceBundleTests/**/*.{json,xcassets}"
+    }
   end
 end

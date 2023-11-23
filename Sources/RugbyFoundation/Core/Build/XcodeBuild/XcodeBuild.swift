@@ -1,21 +1,14 @@
-//
-//  XcodeBuild.swift
-//  RugbyFoundation
-//
-//  Created by Vyacheslav Khorkov on 14.07.2022.
-//  Copyright © 2022 Vyacheslav Khorkov. All rights reserved.
-//
-
 import Fish
 
 // MARK: - Interface
 
 /// Xcode build options.
-public struct XcodeBuildOptions: CustomStringConvertible {
+public struct XcodeBuildOptions: Equatable {
     let sdk: SDK
     let config: String
     let arch: String
     let xcargs: [String]
+    let resultBundlePath: String?
 
     /// Initializer.
     /// - Parameters:
@@ -23,23 +16,17 @@ public struct XcodeBuildOptions: CustomStringConvertible {
     ///   - config: A config to use in xcodebuild.
     ///   - arch: An architecture to use in xcodebuild.
     ///   - xcargs: The xcargs to use in xcodebuild.
+    ///   - resultBundlePath: The resultBundlePath to use in xcodebuild.
     public init(sdk: SDK,
                 config: String,
                 arch: String,
-                xcargs: [String]) {
+                xcargs: [String],
+                resultBundlePath: String?) {
         self.sdk = sdk
         self.config = config
         self.arch = arch
         self.xcargs = xcargs
-    }
-
-    public var description: String {
-        """
-        sdk: \(sdk.xcodebuild)
-        config: \(config)
-        arch: \(arch)
-        xcargs: [\(xcargs.joined(separator: ", "))]
-        """
+        self.resultBundlePath = resultBundlePath
     }
 }
 
@@ -57,7 +44,7 @@ public enum SDK: String {
 }
 
 /// The collection of Xcode paths.
-public struct XcodeBuildPaths {
+public struct XcodeBuildPaths: Equatable {
     let project: String
     let symroot: String
     let rawLog: String
@@ -83,9 +70,9 @@ public struct XcodeBuildPaths {
 // MARK: - Implementation
 
 final class XcodeBuild {
-    private let xcodeBuildExecutor: XcodeBuildExecutor
+    private let xcodeBuildExecutor: IXcodeBuildExecutor
 
-    init(xcodeBuildExecutor: XcodeBuildExecutor) {
+    init(xcodeBuildExecutor: IXcodeBuildExecutor) {
         self.xcodeBuildExecutor = xcodeBuildExecutor
     }
 
@@ -93,14 +80,19 @@ final class XcodeBuild {
                options: XcodeBuildOptions,
                paths: XcodeBuildPaths) throws {
         let command = "NSUnbufferedIO=YES xcodebuild"
-        let arguments = [
-            "-project \(paths.project)",
-            "-scheme \(target)",
+        var arguments = [
+            "-project \(paths.project.shellFriendly)",
+            "-target \(target)",
             "-sdk \(options.sdk.xcodebuild)",
             "-config \(options.config.shellFriendly)",
             "ARCHS=\(options.arch)",
-            "SYMROOT=\(paths.symroot.shellFriendly)"
-        ] + options.xcargs
+            "SYMROOT=\(paths.symroot.shellFriendly)",
+            "-parallelizeTargets"
+        ]
+        options.resultBundlePath.map {
+            arguments.append("-resultBundlePath \($0.shellFriendly)")
+        }
+        arguments.append(contentsOf: options.xcargs)
 
         try Folder.create(at: paths.symroot)
         try xcodeBuildExecutor.run(command,

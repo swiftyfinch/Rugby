@@ -4,7 +4,10 @@
   <img src="https://img.shields.io/badge/Platform-macOS-2679eb" />
   <a href="https://swiftpackageindex.com/swiftyfinch/Rugby"><img src="https://img.shields.io/endpoint?url=https%3A%2F%2Fswiftpackageindex.com%2Fapi%2Fpackages%2Fswiftyfinch%2FRugby%2Fbadge%3Ftype%3Dswift-versions" /></a>
   <br>
+  <a href="https://swiftpackageindex.com/swiftyfinch/Rugby/main/documentation/rugbyfoundation"><img src="https://img.shields.io/badge/Docs-4BA057?logo=data%3Aimage%2Fsvg%2Bxml%3Bbase64%2CPHN2ZyB2ZXJzaW9uPSIxLjEiIHZpZXdCb3g9IjAgMCAxNiAxNiIgeG1sbnM9Imh0dHA6Ly93d3cudzMub3JnLzIwMDAvc3ZnIj48cmVjdCB4PSIxLjQiIHk9IjIuMzUiIHdpZHRoPSIxMy4yIiBoZWlnaHQ9IjkuOCIgc3R5bGU9ImZpbGw6ICNkZmRiZjM7IG9wYWNpdHk6IDAuMzMzMzM7Ii8%2BPHBhdGggc3R5bGU9ImZpbGw6ICNmZmY7IiBkPSJNMCwxLjc1YzAsLTAuNCAwLjM1LC0wLjg1IDAuNzUsLTAuODVjMi43LDAgNS4yNSwtMC42IDcuMjUsMS40YzIsLTIgNC4yNSwtMS40IDcuMjUsLTEuNGMwLjQsMCAwLjc1LDAuNCAwLjc1LDAuODV2MTAuNWMwLDAuNCAtMC4zNSwwLjc1IC0wLjc1LDAuNzVjLTIuNSwwIC00LjgsLTAuNiAtNi43NSwxLjNjLTAuMjUsMC4yNSAtMC43NSwwLjI1IC0xLDBjLTEuNzUsLTEuNyAtNC40NSwtMS4zIC02Ljc1LC0xLjNjLTAuNCwwIC0wLjc1LC0wLjM1IC0wLjc1LC0wLjc1em03LjI1LDEwLjI1di03LjI1Yy0wLjA4LC0yLjk1IC0zLjYsLTIuMjUgLTUuNzUsLTIuMjV2OWMxLjk1LDAgMy45NSwtMC4zIDUuNzUsMC41em0xLjUsLTcuMjV2Ny4yNWMxLjc1LC0wLjg1IDMuODUsLTAuNSA1Ljc1LC0wLjV2LTljLTIuMjUsMCAtNS43NSwtMC43IC01Ljc1LDIuMjV6Ii8%2BPC9zdmc%2BCg%3D%3D" /></a>
   <a href="https://app.codecov.io/gh/swiftyfinch/Rugby"><img src="https://img.shields.io/codecov/c/github/swiftyfinch/rugby/main?label=Coverage"></a>
+  <a href="https://tooomm.github.io/github-release-stats/?username=swiftyfinch&repository=Rugby"><img src="https://img.shields.io/github/downloads/swiftyfinch/Rugby/total?label=Downloads&logo=github"></a>
+  <a href="https://github.com/withfig/autocomplete/pull/2105"><img src="https://img.shields.io/badge/Fig-fff?logo=fig&logoColor=black" /></a>
   <br>
   <img src="https://img.shields.io/badge/Press_★_to_pay_respects-fff?logo=github&logoColor=black" />
   <a href="https://twitter.com/swiftyfinch"><img src="https://img.shields.io/badge/SwiftyFinch-blue?logo=twitter&logoColor=white" /></a>
@@ -50,21 +53,41 @@ Ruby alternatives: [PodBuilder](https://github.com/Subito-it/PodBuilder) | [Coco
 
 # How to install 📦
 
-This version of Rugby hasn't opened source yet. I'm going to open it this summer.\
-There are still [a lot of preparation steps](README.md#-roadmap) to do.
+First of all, if you have the first version `Rugby 1.x`, you need to delete it.\
+Then call `where rugby` command and be sure that there are no any of paths to rugby.
 
-But you can download a binary, read the guide 🦮 [how to install](Docs/how-to-install.md) it.\
-If you look for the legacy `Rugby 1.x`, which source is opened, visit [this page](https://github.com/swiftyfinch/Rugby/tree/1.23.0#how-to-install-).
+### First Install
+
+```sh
+curl -Ls https://swiftyfinch.github.io/rugby/install.sh | bash
+```
+
+### Self-Update
+
+If you already have Rugby, which version is at least `2.0.0b2`, you can use such a command.
+
+```sh
+> rugby update
+```
+
+### Full Guide
+
+Read more in the guide [how to install](Docs/how-to-install.md) it.\
+If you look for the legacy `Rugby 1.x`, visit [this page](https://github.com/swiftyfinch/Rugby/tree/1.23.0#how-to-install-).
 
 ## How to use 🏈
 
 <details><summary>Preconditions</summary>
 <p>
 
-1. Before using Rugby you should be sure that your project source code is finalized.\
+1. If you use Objective-C in your project, be sure that you import modules correctly.\
+   Use `@import Something` instead of `#import "Something.h"`.\
+   Because Rugby will include built frameworks in your project;
+2. Before using Rugby you should be sure that your project source code is finalized.\
    🔸 For example: if you use `SwiftGen`, run it before calling Rugby.\
-   Otherwise, your source code will be modified during building with Rugby. Then the hashes of binaries will not be suited;
-2. Be sure that all your pods (including development) are ready to build standalone.\
+   Otherwise, your source code will be modified during building with Rugby. Then the hashes of binaries will not be suited.\
+   If you encountered a problem, try to use [`rugby build pre`](Docs/commands-help/build/pre.md) to prebuild your project and finalize source code;
+3. Be sure that all your pods (including development) are ready to build standalone.\
    Otherwise, you can get a state when one of them can't be reused correctly without the source of its dependencies.\
    As a temporary workaround, you can exclude some pods like `rugby -e BadPod`.\
    🔸 For example: if some of your pods use incorrect headers.
@@ -99,15 +122,11 @@ For advanced usage, please read the documentation below.
 
 # 🎯 Roadmap
 
-- [x] Refactoring
-- [x] GitHub Actions (On staging)
-- [x] Minimal Code Docs
-- [x] Open Source
-- [ ] More Tests
+- [ ] 👨🏻‍🔧 Increase Code Coverage up to `50%` [#236](https://github.com/swiftyfinch/Rugby/issues/236)
 
 ## 🤝 Contribution
 
-Feel free to open a pull request / an issue or a discussion.
+Feel free [to open a pull request](https://github.com/swiftyfinch/rugby/contribute) / an issue or a discussion.
 
 ## 📮 Support
 
@@ -117,3 +136,6 @@ If you want to support this project, you can do some of these:\
 `3)` <ins><b>Leave feedback</b></ins> in the discussions 💬 section.
 
 Let's Roll-oll 🏈
+<br>
+
+![visitors](https://visitor-badge.laobi.icu/badge?page_id=swiftyfinch.rugby&left_text=Views&format=true)

@@ -1,11 +1,3 @@
-//
-//  ILogger.swift
-//  RugbyFoundation
-//
-//  Created by Vyacheslav Khorkov on 18.02.2023.
-//  Copyright © 2023 Vyacheslav Khorkov. All rights reserved.
-//
-
 /// The protocol describing logger service.
 public protocol ILogger: AnyObject {
     /// Configures the logger with specific printers.
@@ -78,12 +70,28 @@ public protocol ILogger: AnyObject {
         level: LogLevel,
         output: LoggerOutput
     ) async
+
+    /// Logs list of lines.
+    /// - Parameters:
+    ///   - list: A list of lines to log.
+    ///   - level: A level of logging.
+    ///   - output: An output type.
+    func logList(
+        _ list: [String],
+        level: LogLevel,
+        output: LoggerOutput
+    ) async
 }
 
 /// Log level.
-public enum LogLevel: Int, CaseIterable {
+public enum LogLevel: Int, Comparable, CaseIterable {
+    case result = -1
     case compact
     case info
+
+    public static func < (lhs: LogLevel, rhs: LogLevel) -> Bool {
+        lhs.rawValue < rhs.rawValue
+    }
 }
 
 /// Log output type.

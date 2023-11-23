@@ -1,11 +1,3 @@
-//
-//  GitHubReleaseListLoader.swift
-//  Rugby
-//
-//  Created by Vyacheslav Khorkov on 30.11.2022.
-//  Copyright © 2022 Vyacheslav Khorkov. All rights reserved.
-//
-
 import Foundation
 
 // MARK: - Interface
@@ -74,10 +66,12 @@ private struct ReleaseResponseModel: Decodable {
         let name: String
         let browser_download_url: String
     }
+
     let name: String
     let tag_name: String
     let prerelease: Bool
     let published_at: String
     let assets: [Asset]
 }
+
 // swiftlint:enable identifier_name

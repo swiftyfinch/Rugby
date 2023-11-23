@@ -1,11 +1,3 @@
-//
-//  GitHubUpdater.swift
-//  Rugby
-//
-//  Created by Vyacheslav Khorkov on 30.11.2022.
-//  Copyright © 2022 Vyacheslav Khorkov. All rights reserved.
-//
-
 import Foundation
 import RugbyFoundation
 
@@ -19,12 +11,6 @@ final class GitHubUpdater: Loggable {
         let newVersion: Version
         let current: String
         let min: String
-
-        init(newVersion: Version, current: String, min: String) {
-            self.newVersion = newVersion
-            self.current = current
-            self.min = min
-        }
     }
 
     enum Error: LocalizedError {
@@ -94,9 +80,9 @@ final class GitHubUpdater: Loggable {
         switch versionInfo.newVersion {
         case .latest:
             let releases = try await log("Loading Releases",
-                                         auto: try await list(count: maxLatestReleasesCount,
-                                                              architecture: architecture,
-                                                              minVersion: minVersion))
+                                         auto: await list(count: maxLatestReleasesCount,
+                                                          architecture: architecture,
+                                                          minVersion: minVersion))
             guard let latest = releases.first(where: { allowBeta || !$0.prerelease })
             else { throw Error.couldnotFindLatestVersion }
 
@@ -106,7 +92,7 @@ final class GitHubUpdater: Loggable {
                 return
             }
             stringVersion = latest.version
-        case .some(let version):
+        case let .some(version):
             parsedVersion = try versionParser.parse(version)
             stringVersion = version
         }
@@ -133,10 +119,10 @@ final class GitHubUpdater: Loggable {
     private func list(count: Int,
                       architecture: GitHubUpdaterArchitecture,
                       minVersion: GitHubUpdaterVersion) async throws -> [Release] {
-         return try await releaseListLoader.load(count: count, architecture: architecture).filter {
-             try versionParser.parse($0.version) >= minVersion
-         }
-     }
+        try await releaseListLoader.load(count: count, architecture: architecture).filter {
+            try versionParser.parse($0.version) >= minVersion
+        }
+    }
 
     private func getBinaryPath(binaryName: String) throws -> String {
         guard let binaryPath = try shellExecutor.throwingShell("where \(binaryName)") else {

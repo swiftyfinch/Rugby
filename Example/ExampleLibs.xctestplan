@@ -1,0 +1,41 @@
+{
+  "configurations" : [
+    {
+      "id" : "11205FCA-7A39-4EEF-927C-AB528306E7EF",
+      "name" : "Configuration 1",
+      "options" : {
+
+      }
+    }
+  ],
+  "defaultOptions" : {
+
+  },
+  "testTargets" : [
+    {
+      "parallelizable" : true,
+      "target" : {
+        "containerPath" : "container:Example.xcodeproj",
+        "identifier" : "2322FDE42AD4696D00F56303",
+        "name" : "ExampleLibsTests"
+      }
+    },
+    {
+      "parallelizable" : true,
+      "target" : {
+        "containerPath" : "container:..\/Pods\/Pods.xcodeproj",
+        "identifier" : "1113B7AF895C7176C6F4DCDD0A8FF916",
+        "name" : "LocalPod-library-Unit-ResourceBundleTests"
+      }
+    },
+    {
+      "parallelizable" : true,
+      "target" : {
+        "containerPath" : "container:..\/Pods\/Pods.xcodeproj",
+        "identifier" : "DE09D7B11088259762F10913DEE0F070",
+        "name" : "LocalPod-library-Unit-Tests"
+      }
+    }
+  ],
+  "version" : 1
+}

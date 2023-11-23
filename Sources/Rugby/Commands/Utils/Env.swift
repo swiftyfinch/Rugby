@@ -1,11 +1,3 @@
-//
-//  Env.swift
-//  Rugby
-//
-//  Created by Vyacheslav Khorkov on 21.04.2023.
-//  Copyright © 2023 Vyacheslav Khorkov. All rights reserved.
-//
-
 import ArgumentParser
 import Fish
 
@@ -19,7 +11,7 @@ struct Env: AsyncParsableCommand {
     func run() async throws {
         try await dependencies.environmentCollector.env(
             rugbyVersion: Rugby.configuration.version,
-            workingDirectory: Folder.current
+            rugbyEnvironment: dependencies.env.all
         ).forEach { print($0) }
     }
 }

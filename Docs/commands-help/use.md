@@ -16,13 +16,15 @@
 │ -g, --targets-as-regex []  * Targets for building as a RegEx pattern.          │
 │ -e, --except []            * Exclude targets from building.                    │
 │ -x, --except-as-regex []   * Exclude targets from building as a RegEx pattern. │
-│ -o, --output               * Output mode: fold, multiline, quiet.              │
+│ --result-bundle-path       * Path for xcresult bundle.                         │
+│ -o, --output               * Output mode: fold, multiline, silent, raw.        │
 ╰────────────────────────────────────────────────────────────────────────────────╯
  Flags:
 ╭────────────────────────────────────────────────────────╮
 │ --delete-sources  * Delete target groups from project. │
 │ --strip           * Build without debug symbols.       │
-│ -v, --verbose []  * Log level.                         │
+│ -v, --verbose []  * Increase verbosity level.          │
+│ -q, --quiet []    * Decrease verbosity level.          │
 │ -h, --help        * Show help information.             │
 ╰────────────────────────────────────────────────────────╯
 ```

@@ -1,14 +1,6 @@
-//
-//  BuildPhase.swift
-//  RugbyFoundation
-//
-//  Created by Vyacheslav Khorkov on 31.08.2022.
-//  Copyright © 2022 Vyacheslav Khorkov. All rights reserved.
-//
-
-import class XcodeProj.PBXBuildPhase
 import enum XcodeProj.BuildPhase
 import class XcodeProj.PBXBuildFile
+import class XcodeProj.PBXBuildPhase
 
 struct BuildPhase {
     enum Kind: String {
@@ -27,29 +19,57 @@ struct BuildPhase {
     let inputFileListPaths: [String]
     let outputFileListPaths: [String]
     let files: [String]
+
+    init(
+        name: String,
+        type: Kind,
+        buildActionMask: UInt = PBXBuildPhase.defaultBuildActionMask,
+        runOnlyForDeploymentPostprocessing: Bool = false,
+        inputFileListPaths: [String] = [],
+        outputFileListPaths: [String] = [],
+        files: [String] = []
+    ) {
+        self.name = name
+        self.type = type
+        self.buildActionMask = buildActionMask
+        self.runOnlyForDeploymentPostprocessing = runOnlyForDeploymentPostprocessing
+        self.inputFileListPaths = inputFileListPaths
+        self.outputFileListPaths = outputFileListPaths
+        self.files = files
+    }
 }
 
 // MARK: - Conversions
 
 extension BuildPhase {
     init?(_ pbxPhase: PBXBuildPhase) {
-        guard
-            let name = pbxPhase.name(),
-            let type = Kind(pbxPhase.buildPhase),
-            let files = pbxPhase.files?.compactMap(\.file?.fullPath)
-        else { return nil }
+        guard let name = pbxPhase.name(),
+              let type = Kind(pbxPhase.buildPhase) else { return nil }
 
         self.name = name
         self.type = type
-        self.buildActionMask = pbxPhase.buildActionMask
-        self.runOnlyForDeploymentPostprocessing = pbxPhase.runOnlyForDeploymentPostprocessing
-        self.inputFileListPaths = pbxPhase.inputFileListPaths ?? []
-        self.outputFileListPaths = pbxPhase.outputFileListPaths ?? []
-        self.files = files
+        buildActionMask = pbxPhase.buildActionMask
+        runOnlyForDeploymentPostprocessing = pbxPhase.runOnlyForDeploymentPostprocessing
+        inputFileListPaths = pbxPhase.inputFileListPaths ?? []
+        outputFileListPaths = pbxPhase.outputFileListPaths ?? []
+        files = pbxPhase.filePaths()
     }
 }
 
-extension BuildPhase.Kind {
+private extension PBXBuildPhase {
+    func filePaths() -> [String] {
+        guard let files else { return [] }
+        return files.compactMap {
+            guard let displayName = $0.file?.displayName,
+                  let fullPath = $0.file?.fullPath else { return nil }
+            // Skipping files with a broken reference.
+            // If the reference is broken, the name is non-relative to a full path.
+            return fullPath.hasSuffix(displayName) ? fullPath : nil
+        }
+    }
+}
+
+private extension BuildPhase.Kind {
     init?(_ phase: XcodeProj.BuildPhase) {
         switch phase {
         case .sources:

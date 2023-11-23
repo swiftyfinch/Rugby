@@ -4,14 +4,18 @@
 
 #### Preconditions:
 
-1. Before using Rugby you should be sure that your project source code is finalized.\
+1. If you use Objective-C in your project, be sure that you import modules correctly.\
+   Use `@import Something` instead of `#import "Something.h"`.\
+   Because Rugby will include built frameworks in your project;
+2. Before using Rugby you should be sure that your project source code is finalized.\
    🔸 For example: if you use `SwiftGen`, run it before calling Rugby.\
-   Otherwise, your source code will be modified during building with Rugby. Then the hashes of binaries will not be suited;
-2. Be sure that all your pods (including development) are ready to build standalone.\
+   Otherwise, your source code will be modified during building with Rugby. Then the hashes of binaries will not be suited.\
+   If you encountered a problem, try to use [`rugby build pre`](commands-help/build/pre.md) to prebuild your project and finalize source code;
+3. Be sure that all your pods (including development) are ready to build standalone.\
    Otherwise, you can get a state when one of them can't be reused correctly without the source of its dependencies.\
    As a temporary workaround, you can exclude some pods like `rugby -e BadPod`.\
    🔸 For example: if some of your pods use incorrect headers;
-3. You need cloud object storage.\
+4. You need cloud object storage.\
    🔸 For example: I've tested only with AWS S3.
 
 <br>
@@ -75,7 +79,7 @@ default:
 If you have a more complex workflow with your remote storage, you can use the command [`rugby warmup --analyse`](commands-help/warmup.md).\
 The command with this flag analyses local binaries and then you can grep it like so:
 ```shell
-rugby warmup --analyse --verbose --output multiline | grep "^-\s"
+rugby warmup --analyse --quiet --output raw | grep "^-\s"
 ```
 
 You will get output in such way:
