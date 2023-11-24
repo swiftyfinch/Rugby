@@ -1,9 +1,4 @@
 disabled_rules:
-  - let_var_whitespace
-  - conditional_returns_on_newline
-  - todo
-  - reduce_boolean
-  - attributes
   - function_body_length
   - identifier_name
   - large_tuple
