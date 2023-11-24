@@ -16,7 +16,6 @@
 │ -g, --targets-as-regex []  * Targets for building as a RegEx pattern.          │
 │ -e, --except []            * Exclude targets from building.                    │
 │ -x, --except-as-regex []   * Exclude targets from building as a RegEx pattern. │
-│ --result-bundle-path       * Path for xcresult bundle.                         │
 │ -o, --output               * Output mode: fold, multiline, silent, raw.        │
 ╰────────────────────────────────────────────────────────────────────────────────╯
  Flags:

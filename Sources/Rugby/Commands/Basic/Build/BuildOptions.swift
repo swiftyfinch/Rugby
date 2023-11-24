@@ -20,7 +20,10 @@ struct BuildOptions: AsyncParsableCommand {
     @OptionGroup
     var targetsOptions: TargetsOptions
 
-    func xcodeBuildOptions(skipSigning: Bool = false) -> XcodeBuildOptions {
+    func xcodeBuildOptions(
+        skipSigning: Bool = false,
+        resultBundlePath: String? = nil
+    ) -> XcodeBuildOptions {
         XcodeBuildOptions(
             sdk: sdk,
             config: config,
@@ -29,7 +32,7 @@ struct BuildOptions: AsyncParsableCommand {
                 strip: additionalBuildOptions.strip,
                 skipSigning: skipSigning
             ),
-            resultBundlePath: additionalBuildOptions.resultBundlePath
+            resultBundlePath: resultBundlePath
         )
     }
 

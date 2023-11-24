@@ -22,11 +22,14 @@ extension Build {
             discussion: Links.commandsHelp("build/full.md")
         )
 
+        @OptionGroup
+        var buildOptions: BuildOptions
+
         @Flag(name: .long, help: "Ignore shared cache.")
         var ignoreCache = false
 
-        @OptionGroup
-        var buildOptions: BuildOptions
+        @Option(name: .long, help: "Path to xcresult bundle.")
+        var resultBundlePath: String?
 
         @OptionGroup
         var commonOptions: CommonOptions
@@ -48,7 +51,7 @@ extension Build {
                     patterns: buildOptions.targetsOptions.exceptAsRegex,
                     exactMatches: buildOptions.targetsOptions.exceptTargets
                 ),
-                options: buildOptions.xcodeBuildOptions(),
+                options: buildOptions.xcodeBuildOptions(resultBundlePath: resultBundlePath),
                 paths: dependencies.xcode.paths(),
                 ignoreCache: ignoreCache
             )
