@@ -4,7 +4,6 @@ import XcbeautifyLib
 import XCTest
 
 // swiftlint:disable line_length
-// swiftlint:disable function_body_length
 // swiftlint:disable file_length
 
 final class BuildLogFormatterTests: XCTestCase {
@@ -431,5 +430,4 @@ extension BuildLogFormatterTests {
 }
 
 // swiftlint:enable line_length
-// swiftlint:enable function_body_length
 // swiftlint:enable file_length
