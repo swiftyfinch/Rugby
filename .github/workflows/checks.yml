@@ -109,8 +109,7 @@ jobs:
 
     - name: Rugby
       working-directory: ./Example
-      run: |
-        rugby --prebuild --targets Pods-ExampleFrameworks --output multiline
+      run: rugby --prebuild --targets Pods-ExampleFrameworks --output multiline
 
     - run: brew install xcbeautify
     - name: XcodeBuild Test
@@ -148,9 +147,7 @@ jobs:
 
     - name: Rugby
       working-directory: ./Example
-      run: |
-        rugby build -t Pods-ExampleLibs --output multiline
-        rugby use -t Pods-ExampleLibs --output multiline
+      run: rugby --prebuild --targets Pods-ExampleLibs --output multiline
 
     - run: brew install xcbeautify
     - name: XcodeBuild Test
