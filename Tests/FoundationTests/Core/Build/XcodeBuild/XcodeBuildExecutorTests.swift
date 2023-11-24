@@ -2,7 +2,7 @@ import Fish
 @testable import RugbyFoundation
 import XCTest
 
-// swiftlint:disable function_body_length identifier_name
+// swiftlint:disable identifier_name
 
 final class XcodeBuildExecutorTests: XCTestCase {
     private var sut: XcodeBuildExecutor!
@@ -172,4 +172,4 @@ extension XcodeBuildExecutorTests {
     }
 }
 
-// swiftlint:enable function_body_length identifier_name
+// swiftlint:enable identifier_name

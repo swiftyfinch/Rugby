@@ -62,7 +62,6 @@ extension PrebuildManagerTests {
 extension PrebuildManagerTests {
     func test_zeroTargets() async throws {
         var logReceivedInvocations: [
-            // swiftlint:disable:next large_tuple
             (header: String, footer: String?, metricKey: String?, level: LogLevel, output: LoggerOutput)
         ] = []
         logger.logFooterMetricKeyLevelOutputBlockClosure = { header, footer, metricKey, level, output, block in

@@ -28,7 +28,6 @@ final class LibrariesPatcherTests: XCTestCase {
 }
 
 extension LibrariesPatcherTests {
-    // swiftlint:disable:next function_body_length
     func test_basic() async throws {
         let fileMock = IFileMock()
         fileMock.readReturnValue = """
