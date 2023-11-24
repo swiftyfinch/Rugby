@@ -17,14 +17,14 @@ final class AnalyseManager: Loggable {
     let logger: ILogger
     private let rugbyXcodeProject: RugbyXcodeProject
     private let buildTargetsManager: BuildTargetsManager
-    private let targetsHasher: TargetsHasher
+    private let targetsHasher: ITargetsHasher
     private let binariesManager: IBinariesStorage
 
     init(logger: ILogger,
          rugbyXcodeProject: RugbyXcodeProject,
          buildTargetsManager: BuildTargetsManager,
          binariesManager: IBinariesStorage,
-         targetsHasher: TargetsHasher) {
+         targetsHasher: ITargetsHasher) {
         self.logger = logger
         self.rugbyXcodeProject = rugbyXcodeProject
         self.buildTargetsManager = buildTargetsManager
