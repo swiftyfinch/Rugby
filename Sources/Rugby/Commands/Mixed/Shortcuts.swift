@@ -63,26 +63,29 @@ extension Shortcuts {
             discussion: Links.commandsHelp("shortcuts/cache.md")
         )
 
-        @Flag(name: .long, help: "Ignore shared cache.")
-        var ignoreCache = false
-
-        @Flag(name: .long, help: "Delete target groups from project.")
-        var deleteSources = false
-
         @Flag(name: .shortAndLong, help: "Restore projects state before the last Rugby usage.")
         var rollback = false
 
-        @OptionGroup
-        var buildOptions: BuildOptions
-
-        @OptionGroup
-        var commonOptions: CommonOptions
+        @Flag(name: .long, help: "Prebuild targets ignoring sources.")
+        var prebuild = false
 
         @Option(help: "Warmup cache with this endpoint.")
         var warmup: String?
 
-        @Flag(name: .long, help: "Prebuild targets ignoring sources.")
-        var prebuild = false
+        @OptionGroup
+        var buildOptions: BuildOptions
+
+        @Flag(name: .long, help: "Ignore shared cache.")
+        var ignoreCache = false
+
+        @Option(name: .long, help: "Path to xcresult bundle.")
+        var resultBundlePath: String?
+
+        @Flag(name: .long, help: "Delete target groups from project.")
+        var deleteSources = false
+
+        @OptionGroup
+        var commonOptions: CommonOptions
 
         func run() async throws {
             try await run(body,
@@ -123,6 +126,7 @@ extension Shortcuts.Cache: RunnableCommand {
         var build = Build.Full()
         build.buildOptions = buildOptions
         build.ignoreCache = ignoreCache
+        build.resultBundlePath = resultBundlePath
         build.commonOptions = commonOptions
         runnableCommands.append(("Build", build))
 
