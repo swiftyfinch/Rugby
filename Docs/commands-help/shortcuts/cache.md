@@ -12,26 +12,26 @@
 
  Options:
 ╭────────────────────────────────────────────────────────────────────────────────╮
+│ --warmup                   * Warmup cache with this endpoint.                  │
 │ -s, --sdk                  * Build SDK: sim or ios.                            │
 │ -a, --arch                 * Build architecture: auto, x86_64 or arm64.        │
 │ -c, --config               * Build configuration. (Debug)                      │
-│ --result-bundle-path       * Path for xcresult bundle.                         │
 │ -t, --targets []           * Targets for building. Empty means all targets.    │
 │ -g, --targets-as-regex []  * Targets for building as a RegEx pattern.          │
 │ -e, --except []            * Exclude targets from building.                    │
 │ -x, --except-as-regex []   * Exclude targets from building as a RegEx pattern. │
+│ --result-bundle-path       * Path to xcresult bundle.                          │
 │ -o, --output               * Output mode: fold, multiline, silent, raw.        │
-│ --warmup                   * Warmup cache with this endpoint.                  │
 ╰────────────────────────────────────────────────────────────────────────────────╯
  Flags:
 ╭─────────────────────────────────────────────────────────────────────────╮
+│ -r, --rollback    * Restore projects state before the last Rugby usage. │
+│ --prebuild        * Prebuild targets ignoring sources.                  │
+│ --strip           * Build without debug symbols.                        │
 │ --ignore-cache    * Ignore shared cache.                                │
 │ --delete-sources  * Delete target groups from project.                  │
-│ -r, --rollback    * Restore projects state before the last Rugby usage. │
-│ --strip           * Build without debug symbols.                        │
 │ -v, --verbose []  * Increase verbosity level.                           │
 │ -q, --quiet []    * Decrease verbosity level.                           │
-│ --prebuild        * Prebuild targets ignoring sources.                  │
 │ -h, --help        * Show help information.                              │
 ╰─────────────────────────────────────────────────────────────────────────╯
 ```
