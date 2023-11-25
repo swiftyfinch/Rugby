@@ -23,8 +23,8 @@
       "kind" : "remoteSourceControl",
       "location" : "https://github.com/swiftyfinch/Fish",
       "state" : {
-        "revision" : "78b0685ff956af62ee6c2eb20ff3751c14e16d13",
-        "version" : "0.1.0"
+        "revision" : "cb55bf4dc0fa0b74b7c64da66df5a4be834e884d",
+        "version" : "0.1.1"
       }
     },
     {
