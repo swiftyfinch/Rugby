@@ -39,11 +39,13 @@ final class FileContentHasher {
         }
     }
 
+    // Traversing from working directory to its parents to find nearest common parent.
     private func relativePath(of file: IFile) -> String {
-        let relativePath = file.relativePath(to: workingDirectory)
-        // Sometimes modules can be outside of working directory (React Native).
-        if relativePath.hasPrefix("/"), let parent = workingDirectory.parent {
-            return file.relativePath(to: parent)
+        var relativePath = file.path
+        var current: IFolder? = workingDirectory
+        while relativePath == file.path, let toFolder = current {
+            relativePath = file.relativePath(to: toFolder)
+            current = toFolder.parent
         }
         return relativePath
     }
