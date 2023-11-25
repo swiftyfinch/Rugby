@@ -91,8 +91,15 @@ final class WarmupManager: Loggable {
             await logList(notFoundPaths, level: logLevel)
         }
 
-        let notFoundPercent = notFound.count.percent(total: targets.count)
-        await log("Not Found Locally \(notFoundPercent)% Binaries (\(notFound.count)/\(targets.count))", level: .result)
+        if notFound.count == 0 {
+            await log("Found 100% Binaries (\(targets.count))", level: .result)
+        } else {
+            let notFoundPercent = notFound.count.percent(total: targets.count)
+            await log(
+                "Not Found Locally \(notFoundPercent)% Binaries (\(notFound.count)/\(targets.count))",
+                level: .result
+            )
+        }
 
         return notFound
     }
