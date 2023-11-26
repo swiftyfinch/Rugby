@@ -2,49 +2,30 @@ import Fish
 import Foundation
 import typealias XcodeProj.BuildSettings
 
+// MARK: - Interface
+
+protocol IBuildPhaseHasher: AnyObject {
+    func hashContext(target: IInternalTarget) async throws -> Any
+}
+
+// MARK: - Implementation
+
 final class BuildPhaseHasher: Loggable {
     let logger: ILogger
-    private let workingDirectory: IFolder
-    private let foundationHasher: FoundationHasher
-    private let fileContentHasher: FileContentHasher
+    private let workingDirectoryPath: String
+    private let fileContentHasher: IFileContentHasher
     private let xcodeEnvResolver: IXcodeEnvResolver
 
     private let dollarSymbol = "$"
 
     init(logger: ILogger,
-         workingDirectory: IFolder,
-         foundationHasher: FoundationHasher,
-         fileContentHasher: FileContentHasher,
+         workingDirectoryPath: String,
+         fileContentHasher: IFileContentHasher,
          xcodeEnvResolver: IXcodeEnvResolver) {
-        self.workingDirectory = workingDirectory
+        self.workingDirectoryPath = workingDirectoryPath
         self.logger = logger
-        self.foundationHasher = foundationHasher
         self.fileContentHasher = fileContentHasher
         self.xcodeEnvResolver = xcodeEnvResolver
-    }
-
-    func hashContext(target: IInternalTarget) async throws -> Any {
-        // Get the first configuration sorted by name.
-        guard
-            let configurationName = (target.configurations ?? [:]).keys.sorted().first,
-            let configuration = target.configurations?[configurationName]
-        else { return [] }
-
-        // Using sim arch by default. It should be enough.
-        let buildSettings = configuration.buildSettings
-            .merging(["EFFECTIVE_PLATFORM_NAME": "-\(SDK.sim.xcodebuild)"],
-                     uniquingKeysWith: { _, rhs in rhs })
-
-        // Convert the build setting to different format
-        var additionalEnv: [String: String] = [:]
-        buildSettings.forEach { key, value in
-            guard let value = value as? String else { return }
-            additionalEnv[key] = value
-        }
-
-        return try await target.buildPhases.concurrentMap {
-            try await self.hashContext($0, additionalEnv: additionalEnv)
-        }
     }
 
     // MARK: - Private
@@ -74,7 +55,7 @@ final class BuildPhaseHasher: Loggable {
 
     private func preparePaths(_ paths: [String]) -> [String] {
         paths.compactMap { path in
-            path.relativePath(to: workingDirectory.path)
+            path.relativePath(to: workingDirectoryPath)
         }.sorted()
     }
 
@@ -109,5 +90,31 @@ final class BuildPhaseHasher: Loggable {
         }
 
         return (Array(resolved), Array(unresolved))
+    }
+}
+
+extension BuildPhaseHasher: IBuildPhaseHasher {
+    func hashContext(target: IInternalTarget) async throws -> Any {
+        // Get the first configuration sorted by name.
+        guard
+            let configurationName = (target.configurations ?? [:]).keys.sorted().first,
+            let configuration = target.configurations?[configurationName]
+        else { return [] }
+
+        // Using sim arch by default. It should be enough.
+        let buildSettings = configuration.buildSettings
+            .merging(["EFFECTIVE_PLATFORM_NAME": "-\(SDK.sim.xcodebuild)"],
+                     uniquingKeysWith: { _, rhs in rhs })
+
+        // Convert the build setting to different format
+        var additionalEnv: [String: String] = [:]
+        buildSettings.forEach { key, value in
+            guard let value = value as? String else { return }
+            additionalEnv[key] = value
+        }
+
+        return try await target.buildPhases.concurrentMap {
+            try await self.hashContext($0, additionalEnv: additionalEnv)
+        }
     }
 }

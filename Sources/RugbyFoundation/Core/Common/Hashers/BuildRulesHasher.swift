@@ -1,9 +1,9 @@
 final class BuildRulesHasher {
     private let foundationHasher: FoundationHasher
-    private let fileContentHasher: FileContentHasher
+    private let fileContentHasher: IFileContentHasher
 
     init(foundationHasher: FoundationHasher,
-         fileContentHasher: FileContentHasher) {
+         fileContentHasher: IFileContentHasher) {
         self.foundationHasher = foundationHasher
         self.fileContentHasher = fileContentHasher
     }

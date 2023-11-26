@@ -1,9 +1,9 @@
 import Fish
 
 final class CocoaPodsScriptsHasher {
-    private let fileContentHasher: FileContentHasher
+    private let fileContentHasher: IFileContentHasher
 
-    init(fileContentHasher: FileContentHasher) {
+    init(fileContentHasher: IFileContentHasher) {
         self.fileContentHasher = fileContentHasher
     }
 

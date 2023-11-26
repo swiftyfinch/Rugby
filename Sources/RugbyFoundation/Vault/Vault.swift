@@ -108,8 +108,7 @@ public final class Vault {
             swiftVersionProvider: swiftVersionProvider,
             buildPhaseHasher: BuildPhaseHasher(
                 logger: logger,
-                workingDirectory: router.workingDirectory,
-                foundationHasher: foundationHasher,
+                workingDirectoryPath: router.workingDirectory.path,
                 fileContentHasher: fileContentHasher,
                 xcodeEnvResolver: XcodeEnvResolver(
                     logger: logger,
