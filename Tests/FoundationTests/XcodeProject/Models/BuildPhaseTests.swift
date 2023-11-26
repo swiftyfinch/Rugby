@@ -5,10 +5,10 @@ import XCTest
 
 final class BuildPhaseTests: XCTestCase {
     func test_init() throws {
-        let localPodGroup = PBXGroup(sourceTree: .group, name: "LocalPod", path: "LocalPod")
-        let developmentPodsGroup = PBXGroup(sourceTree: .sourceRoot, name: "Development Pods")
+        let developmentPodsGroup = PBXGroup(sourceTree: .sourceRoot, name: "LocalPods")
+        let localPodGroup = PBXGroup(sourceTree: .group, name: "LocalPod")
         localPodGroup.parent = developmentPodsGroup
-        let resourcesGroup = PBXGroup(sourceTree: .group, name: "Resources", path: "Resources")
+        let resourcesGroup = PBXGroup(sourceTree: .group, name: "LocalPod", path: "../LocalPods")
         resourcesGroup.parent = localPodGroup
 
         // Dummy file without localization
@@ -35,8 +35,9 @@ final class BuildPhaseTests: XCTestCase {
             runOnlyForDeploymentPostprocessing: false
         )
         let expectedFiles = [
-            "\(Folder.current.path)/Pods/LocalPod/Resources/dummy.json",
-            "\(Folder.current.path)/Pods/LocalPod/Resources/Localization"
+            "\(Folder.current.path)/LocalPods/LocalPod/Resources/dummy.json",
+            "\(Folder.current.path)/LocalPods/Localization/LocalPod/Resources/ru.lproj/Localizable.strings",
+            "\(Folder.current.path)/LocalPods/Localization/LocalPod/Resources/en.lproj/Localizable.strings"
         ]
 
         // Act
@@ -58,7 +59,7 @@ final class BuildPhaseTests: XCTestCase {
     private func dummyJSONStub(parent: PBXGroup) -> PBXFileElement {
         let dummyJSON = PBXFileElement.mock(
             name: "dummy.json",
-            path: "dummy.json",
+            path: "LocalPod/Resources/dummy.json",
             parent: parent
         )
         return dummyJSON
@@ -78,7 +79,7 @@ final class BuildPhaseTests: XCTestCase {
         let localizableStrings = PBXVariantGroup.mock(
             children: children,
             name: "Localizable.strings",
-            path: ".",
+            path: "LocalPod/Resources",
             parent: parent
         )
         return localizableStrings
