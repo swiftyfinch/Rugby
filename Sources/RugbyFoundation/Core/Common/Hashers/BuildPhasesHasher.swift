@@ -7,7 +7,7 @@ final class BuildPhaseHasher: Loggable {
     private let workingDirectory: IFolder
     private let foundationHasher: FoundationHasher
     private let fileContentHasher: FileContentHasher
-    private let xcodeEnvResolver: XcodeEnvResolver
+    private let xcodeEnvResolver: IXcodeEnvResolver
 
     private let dollarSymbol = "$"
 
@@ -15,7 +15,7 @@ final class BuildPhaseHasher: Loggable {
          workingDirectory: IFolder,
          foundationHasher: FoundationHasher,
          fileContentHasher: FileContentHasher,
-         xcodeEnvResolver: XcodeEnvResolver) {
+         xcodeEnvResolver: IXcodeEnvResolver) {
         self.workingDirectory = workingDirectory
         self.logger = logger
         self.foundationHasher = foundationHasher

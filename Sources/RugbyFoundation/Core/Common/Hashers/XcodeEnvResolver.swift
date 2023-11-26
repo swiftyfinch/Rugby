@@ -1,3 +1,14 @@
+// MARK: - Interface
+
+protocol IXcodeEnvResolver: AnyObject {
+    func resolve(
+        path: String,
+        additionalEnv: [String: String]
+    ) async throws -> String
+}
+
+// MARK: - Implementation
+
 final class XcodeEnvResolver: Loggable {
     let logger: ILogger
     private let env: [String: String]
@@ -7,7 +18,9 @@ final class XcodeEnvResolver: Loggable {
         self.logger = logger
         self.env = env
     }
+}
 
+extension XcodeEnvResolver: IXcodeEnvResolver {
     func resolve(path: String, additionalEnv: [String: String]) async throws -> String {
         var resolvedPath = path
         var replaced = true
