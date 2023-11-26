@@ -59,19 +59,23 @@ extension BuildPhase {
 
 private extension PBXBuildPhase {
     func filePaths() -> [String] {
-        guard let files else { return [] }
-        return files.compactMap {
-            guard let displayName = $0.file?.displayName,
-                  let fullPath = $0.file?.fullPath else { return nil }
-            // PBXFileElement can't return correct path for PBXVariantGroup
-            if let variantGroup = $0.file as? PBXVariantGroup {
-                return variantGroup.fullPath
+        (files ?? []).flatMap { buildFile -> [String] in
+            guard let fullPath = buildFile.file?.fullPath else { return [] }
+
+            if let variantGroup = buildFile.file as? PBXVariantGroup, let path = variantGroup.path {
+                // Returning children in group instead of a path to directory
+                return variantGroup.children.compactMap {
+                    guard let childPath = $0.path else { return nil }
+                    return "\(fullPath)/\(path)/\(childPath)"
+                }
             }
+
+            guard let displayName = buildFile.file?.displayName else { return [] }
 
             // Skipping files with a broken reference.
             // If the reference is broken, the name is non-relative to a full path.
-            return fullPath.hasSuffix(displayName) ? fullPath : nil
-        }.uniqued()
+            return fullPath.hasSuffix(displayName) ? [fullPath] : []
+        }
     }
 }
 
