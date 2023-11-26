@@ -1,6 +1,14 @@
 import Fish
 import Foundation
 
+// MARK: - Interface
+
+protocol IFileContentHasher: AnyObject {
+    func hashContext(paths: [String]) async throws -> [String]
+}
+
+// MARK: - Implementation
+
 final class FileContentHasher {
     private let foundationHasher: FoundationHasher
     private let workingDirectory: IFolder
@@ -8,10 +16,6 @@ final class FileContentHasher {
     init(foundationHasher: FoundationHasher, workingDirectory: IFolder) {
         self.foundationHasher = foundationHasher
         self.workingDirectory = workingDirectory
-    }
-
-    func hashContext(paths: [String]) async throws -> [String] {
-        try await flatPaths(paths).sorted().concurrentMap(hashContext)
     }
 
     // MARK: - Private
@@ -48,5 +52,11 @@ final class FileContentHasher {
             current = toFolder.parent
         }
         return relativePath
+    }
+}
+
+extension FileContentHasher: IFileContentHasher {
+    func hashContext(paths: [String]) async throws -> [String] {
+        try await flatPaths(paths).sorted().concurrentMap(hashContext)
     }
 }

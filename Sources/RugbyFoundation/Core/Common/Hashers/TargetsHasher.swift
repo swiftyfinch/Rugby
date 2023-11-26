@@ -22,7 +22,7 @@ final class TargetsHasher {
     private typealias Error = TargetsHasherError
     private let foundationHasher: FoundationHasher
     private let swiftVersionProvider: ISwiftVersionProvider
-    private let buildPhaseHasher: BuildPhaseHasher
+    private let buildPhaseHasher: IBuildPhaseHasher
     private let cocoaPodsScriptsHasher: CocoaPodsScriptsHasher
     private let configurationsHasher: ConfigurationsHasher
     private let productHasher: ProductHasher
@@ -30,7 +30,7 @@ final class TargetsHasher {
 
     init(foundationHasher: FoundationHasher,
          swiftVersionProvider: ISwiftVersionProvider,
-         buildPhaseHasher: BuildPhaseHasher,
+         buildPhaseHasher: IBuildPhaseHasher,
          cocoaPodsScriptsHasher: CocoaPodsScriptsHasher,
          configurationsHasher: ConfigurationsHasher,
          productHasher: ProductHasher,
