@@ -35,9 +35,9 @@ You can find the same environment output in the head of each Rugby log file.
 
 <br>
 
-### Keep hash YML files
+### Keep hash YAML files
 
-A flag to keep yaml files with target hash in the binaries folder.
+A flag to keep YAML files with target hash in the binaries folder.
 ```objc
 RUGBY_KEEP_HASH_YAMLS=YES rugby
 ```

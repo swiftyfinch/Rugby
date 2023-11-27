@@ -7,7 +7,7 @@ assignees: ''
 
 ---
 
-## Did you already try Rugby doctor?
+## Have you already tried Rugby doctor?
 Use `rugby doctor` as a self-diagnostic tool.
 
 ## Describe the bug
