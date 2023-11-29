@@ -23,7 +23,7 @@ final class TargetsHasher {
     private let foundationHasher: FoundationHasher
     private let swiftVersionProvider: ISwiftVersionProvider
     private let buildPhaseHasher: IBuildPhaseHasher
-    private let cocoaPodsScriptsHasher: CocoaPodsScriptsHasher
+    private let cocoaPodsScriptsHasher: ICocoaPodsScriptsHasher
     private let configurationsHasher: ConfigurationsHasher
     private let productHasher: IProductHasher
     private let buildRulesHasher: BuildRulesHasher
@@ -31,7 +31,7 @@ final class TargetsHasher {
     init(foundationHasher: FoundationHasher,
          swiftVersionProvider: ISwiftVersionProvider,
          buildPhaseHasher: IBuildPhaseHasher,
-         cocoaPodsScriptsHasher: CocoaPodsScriptsHasher,
+         cocoaPodsScriptsHasher: ICocoaPodsScriptsHasher,
          configurationsHasher: ConfigurationsHasher,
          productHasher: IProductHasher,
          buildRulesHasher: BuildRulesHasher) {
