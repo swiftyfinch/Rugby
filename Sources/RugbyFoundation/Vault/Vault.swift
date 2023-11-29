@@ -121,7 +121,7 @@ public final class Vault {
             cocoaPodsScriptsHasher: CocoaPodsScriptsHasher(fileContentHasher: fileContentHasher),
             configurationsHasher: ConfigurationsHasher(foundationHasher: foundationHasher,
                                                        excludeKeys: [settings.hasBackupKey]),
-            productHasher: ProductHasher(foundationHasher: foundationHasher),
+            productHasher: ProductHasher(),
             buildRulesHasher: BuildRulesHasher(foundationHasher: foundationHasher,
                                                fileContentHasher: fileContentHasher)
         )

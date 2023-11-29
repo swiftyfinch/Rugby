@@ -1,10 +1,14 @@
-final class ProductHasher {
-    private let foundationHasher: FoundationHasher
+// MARK: - Interface
 
-    init(foundationHasher: FoundationHasher) {
-        self.foundationHasher = foundationHasher
-    }
+protocol IProductHasher: AnyObject {
+    func hashContext(_ product: Product) -> [String: String?]
+}
 
+// MARK: - Implementation
+
+final class ProductHasher {}
+
+extension ProductHasher: IProductHasher {
     func hashContext(_ product: Product) -> [String: String?] {
         ["name": product.name,
          "type": product.type.rawValue,
