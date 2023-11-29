@@ -1,5 +1,4 @@
 @testable import Rugby
-import RugbyFoundation
 import XCTest
 
 final class RegexTests: XCTestCase {
