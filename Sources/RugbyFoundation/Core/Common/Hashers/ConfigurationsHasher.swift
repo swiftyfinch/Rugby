@@ -1,20 +1,20 @@
 import Foundation
 
+// MARK: - Interface
+
+protocol IConfigurationsHasher: AnyObject {
+    func hashContext(_ target: IInternalTarget) throws -> [Any]
+}
+
+// MARK: - Implementation
+
 final class ConfigurationsHasher {
-    private let foundationHasher: FoundationHasher
     private let excludeKeys: Set<String>
 
     private let commonKey = "_Common"
 
-    init(foundationHasher: FoundationHasher, excludeKeys: Set<String>) {
-        self.foundationHasher = foundationHasher
+    init(excludeKeys: Set<String>) {
         self.excludeKeys = excludeKeys
-    }
-
-    func hashContext(_ target: IInternalTarget) throws -> [Any] {
-        guard let configurations = target.configurations?.values, configurations.isNotEmpty else { return [] }
-        let sortedConfigurations = configurations.sorted { $0.name < $1.name }
-        return separateCommonBuildSettings(sortedConfigurations)
     }
 
     // MARK: - Private
@@ -56,5 +56,13 @@ final class ConfigurationsHasher {
             dictionary.removeValue(forKey: key)
         }
         return dictionary
+    }
+}
+
+extension ConfigurationsHasher: IConfigurationsHasher {
+    func hashContext(_ target: IInternalTarget) throws -> [Any] {
+        guard let configurations = target.configurations?.values, configurations.isNotEmpty else { return [] }
+        let sortedConfigurations = configurations.sorted { $0.name < $1.name }
+        return separateCommonBuildSettings(sortedConfigurations)
     }
 }
