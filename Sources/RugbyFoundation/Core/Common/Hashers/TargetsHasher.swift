@@ -16,6 +16,11 @@ enum TargetsHasherError: LocalizedError {
     }
 }
 
+protocol ITargetsHasher: AnyObject {
+    func hash(_ targets: TargetsMap, xcargs: [String], rehash: Bool) async throws
+    func hash(_ targets: TargetsMap, xcargs: [String]) async throws
+}
+
 // MARK: - Implementation
 
 final class TargetsHasher {
@@ -42,19 +47,6 @@ final class TargetsHasher {
         self.configurationsHasher = configurationsHasher
         self.productHasher = productHasher
         self.buildRulesHasher = buildRulesHasher
-    }
-
-    func hash(_ targets: TargetsMap, xcargs: [String], rehash: Bool = false) async throws {
-        targets.modifyIf(rehash) { resetHash($0) }
-
-        try await targets.merging(targets.flatMapValues(\.dependencies)).values.concurrentForEach { target in
-            guard target.targetHashContext == nil else { return }
-            target.targetHashContext = try await self.targetHashContext(target, xcargs: xcargs)
-        }
-
-        for target in targets.values {
-            try await hash(target)
-        }
     }
 
     // MARK: - Private
@@ -100,6 +92,25 @@ final class TargetsHasher {
             target.hashContext = nil
             target.targetHashContext = nil
         }
+    }
+}
+
+extension TargetsHasher: ITargetsHasher {
+    func hash(_ targets: TargetsMap, xcargs: [String], rehash: Bool) async throws {
+        targets.modifyIf(rehash) { resetHash($0) }
+
+        try await targets.merging(targets.flatMapValues(\.dependencies)).values.concurrentForEach { target in
+            guard target.targetHashContext == nil else { return }
+            target.targetHashContext = try await self.targetHashContext(target, xcargs: xcargs)
+        }
+
+        for target in targets.values {
+            try await hash(target)
+        }
+    }
+
+    func hash(_ targets: TargetsMap, xcargs: [String]) async throws {
+        try await hash(targets, xcargs: xcargs, rehash: false)
     }
 }
 

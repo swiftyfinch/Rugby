@@ -34,7 +34,7 @@ final class UseBinariesManager: Loggable {
     private let rugbyXcodeProject: RugbyXcodeProject
     private let backupManager: IBackupManager
     private let binariesManager: IBinariesStorage
-    private let targetsHasher: TargetsHasher
+    private let targetsHasher: ITargetsHasher
     private let supportFilesPatcher: ISupportFilesPatcher
     private let fileContentEditor: FileContentEditor
 
@@ -45,7 +45,7 @@ final class UseBinariesManager: Loggable {
          rugbyXcodeProject: RugbyXcodeProject,
          backupManager: IBackupManager,
          binariesManager: IBinariesStorage,
-         targetsHasher: TargetsHasher,
+         targetsHasher: ITargetsHasher,
          supportFilesPatcher: ISupportFilesPatcher,
          fileContentEditor: FileContentEditor) {
         self.logger = logger

@@ -39,7 +39,7 @@ final class BuildManager: Loggable {
     private let processMonitor: IProcessMonitor
     private let xcodeBuild: XcodeBuild
     private let binariesManager: IBinariesStorage
-    private let targetsHasher: TargetsHasher
+    private let targetsHasher: ITargetsHasher
     private let useBinariesManager: IUseBinariesManager
     private let binariesCleaner: IBinariesCleaner
     private let environmentCollector: IEnvironmentCollector
@@ -55,7 +55,7 @@ final class BuildManager: Loggable {
          processMonitor: IProcessMonitor,
          xcodeBuild: XcodeBuild,
          binariesManager: IBinariesStorage,
-         targetsHasher: TargetsHasher,
+         targetsHasher: ITargetsHasher,
          useBinariesManager: IUseBinariesManager,
          binariesCleaner: IBinariesCleaner,
          environmentCollector: IEnvironmentCollector,
