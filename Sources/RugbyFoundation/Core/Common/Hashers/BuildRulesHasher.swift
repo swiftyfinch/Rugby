@@ -1,3 +1,11 @@
+// MARK: - Interface
+
+protocol IBuildRulesHasher: AnyObject {
+    func hashContext(_ buildRules: [BuildRule]) async throws -> [Any]
+}
+
+// MARK: - Implementation
+
 final class BuildRulesHasher {
     private let foundationHasher: FoundationHasher
     private let fileContentHasher: IFileContentHasher
@@ -6,10 +14,6 @@ final class BuildRulesHasher {
          fileContentHasher: IFileContentHasher) {
         self.foundationHasher = foundationHasher
         self.fileContentHasher = fileContentHasher
-    }
-
-    func hashContext(_ buildRules: [BuildRule]) async throws -> [Any] {
-        try await buildRules.concurrentMap(hashContext)
     }
 
     // MARK: - Private
@@ -25,5 +29,11 @@ final class BuildRulesHasher {
                    "outputFilesCompilerFlags": buildRule.outputFilesCompilerFlags,
                    "script": buildRule.script,
                    "runOncePerArchitecture": buildRule.runOncePerArchitecture]
+    }
+}
+
+extension BuildRulesHasher: IBuildRulesHasher {
+    func hashContext(_ buildRules: [BuildRule]) async throws -> [Any] {
+        try await buildRules.concurrentMap(hashContext)
     }
 }
