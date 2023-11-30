@@ -44,6 +44,21 @@ extension FoundationHasher {}
 extension IFileContentHasher {}
 
 //// sourcery: AutoMockable, imports = ["RugbyFoundation"]
+extension IBuildPhaseHasher {}
+
+//// sourcery: AutoMockable, imports = ["RugbyFoundation"]
+extension ICocoaPodsScriptsHasher {}
+
+//// sourcery: AutoMockable, imports = ["RugbyFoundation"]
+extension IConfigurationsHasher {}
+
+//// sourcery: AutoMockable, imports = ["RugbyFoundation"]
+extension IProductHasher {}
+
+//// sourcery: AutoMockable, imports = ["RugbyFoundation"]
+extension IBuildRulesHasher {}
+
+//// sourcery: AutoMockable, imports = ["RugbyFoundation"]
 extension IXcodeEnvResolver {}
 
 //// sourcery: AutoMockable, imports = ["RugbyFoundation"]
