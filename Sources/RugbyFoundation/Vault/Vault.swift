@@ -97,7 +97,7 @@ public final class Vault {
         sharedPath: router.binFolderPath,
         keepHashYamls: env.keepHashYamls
     )
-    func targetsHasher() -> TargetsHasher {
+    func targetsHasher() -> ITargetsHasher {
         let foundationHasher = SHA1Hasher()
         let fileContentHasher = FileContentHasher(
             foundationHasher: foundationHasher,
