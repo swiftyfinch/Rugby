@@ -14,6 +14,7 @@ final class IBuildRulesHasherMock: IBuildRulesHasher {
     var hashContextCallsCount = 0
     var hashContextCalled: Bool { hashContextCallsCount > 0 }
     var hashContextReceivedBuildRules: [BuildRule]?
+    let hashContextReceivedInvocationsLock = NSRecursiveLock()
     var hashContextReceivedInvocations: [[BuildRule]] = []
     var hashContextReturnValue: [Any]!
     var hashContextClosure: (([BuildRule]) async throws -> [Any])?
@@ -24,7 +25,9 @@ final class IBuildRulesHasherMock: IBuildRulesHasher {
         }
         hashContextCallsCount += 1
         hashContextReceivedBuildRules = buildRules
-        hashContextReceivedInvocations.append(buildRules)
+        hashContextReceivedInvocationsLock.withLock {
+            hashContextReceivedInvocations.append(buildRules)
+        }
         if let hashContextClosure = hashContextClosure {
             return try await hashContextClosure(buildRules)
         } else {

@@ -14,7 +14,7 @@ final class IXcodeEnvResolverMock: IXcodeEnvResolver {
     var resolvePathAdditionalEnvCallsCount = 0
     var resolvePathAdditionalEnvCalled: Bool { resolvePathAdditionalEnvCallsCount > 0 }
     var resolvePathAdditionalEnvReceivedArguments: (path: String, additionalEnv: [String: String])?
-    var resolvePathAdditionalEnvReceivedInvocationsLock = NSLock()
+    var resolvePathAdditionalEnvReceivedInvocationsLock = NSRecursiveLock()
     var resolvePathAdditionalEnvReceivedInvocations: [(path: String, additionalEnv: [String: String])] = []
     var resolvePathAdditionalEnvReturnValue: String!
     var resolvePathAdditionalEnvClosure: ((String, [String: String]) async throws -> String)?

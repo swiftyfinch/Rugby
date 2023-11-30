@@ -14,6 +14,7 @@ final class ICocoaPodsScriptsHasherMock: ICocoaPodsScriptsHasher {
     var hashContextCallsCount = 0
     var hashContextCalled: Bool { hashContextCallsCount > 0 }
     var hashContextReceivedTarget: IInternalTarget?
+    let hashContextReceivedInvocationsLock = NSRecursiveLock()
     var hashContextReceivedInvocations: [IInternalTarget] = []
     var hashContextReturnValue: [String]!
     var hashContextClosure: ((IInternalTarget) async throws -> [String])?
@@ -24,7 +25,9 @@ final class ICocoaPodsScriptsHasherMock: ICocoaPodsScriptsHasher {
         }
         hashContextCallsCount += 1
         hashContextReceivedTarget = target
-        hashContextReceivedInvocations.append(target)
+        hashContextReceivedInvocationsLock.withLock {
+            hashContextReceivedInvocations.append(target)
+        }
         if let hashContextClosure = hashContextClosure {
             return try await hashContextClosure(target)
         } else {
