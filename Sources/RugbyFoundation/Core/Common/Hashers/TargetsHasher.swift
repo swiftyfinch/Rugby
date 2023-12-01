@@ -3,19 +3,6 @@ import Yams
 
 // MARK: - Interface
 
-enum TargetsHasherError: LocalizedError {
-    case emptyConfigurations(target: String)
-
-    var errorDescription: String? {
-        let output: String
-        switch self {
-        case let .emptyConfigurations(target):
-            output = #"Couldn't find any configuration in target "\#(target)"."#
-        }
-        return output
-    }
-}
-
 protocol ITargetsHasher: AnyObject {
     func hash(_ targets: TargetsMap, xcargs: [String], rehash: Bool) async throws
     func hash(_ targets: TargetsMap, xcargs: [String]) async throws
@@ -24,7 +11,6 @@ protocol ITargetsHasher: AnyObject {
 // MARK: - Implementation
 
 final class TargetsHasher {
-    private typealias Error = TargetsHasherError
     private let foundationHasher: FoundationHasher
     private let swiftVersionProvider: ISwiftVersionProvider
     private let buildPhaseHasher: IBuildPhaseHasher
