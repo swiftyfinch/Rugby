@@ -40,7 +40,7 @@ final class TargetsHasherTests: XCTestCase {
         configurationsHasher = nil
         productHasher = nil
         buildRulesHasher = nil
-        sut = nil
+        sut = nil // FIXME: Sometimes I catch EXC_BAD_ACCESS here
     }
 }
 
