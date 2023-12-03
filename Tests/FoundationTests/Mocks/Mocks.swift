@@ -72,3 +72,6 @@ extension IXcodeCLTVersionProvider {}
 
 //// sourcery: AutoMockable, imports = ["RugbyFoundation"]
 extension IBinariesStorage {}
+
+//// sourcery: AutoMockable, imports = ["RugbyFoundation"]
+extension IXcodeProject {}
