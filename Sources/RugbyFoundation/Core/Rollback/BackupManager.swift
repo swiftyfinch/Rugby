@@ -13,7 +13,7 @@ public protocol IBackupManager {
 
     /// Restores Xcode project.
     /// - Parameter kind: The type of backup.
-    func restore(_ kind: BackupKind) async throws
+    func asyncRestore(_ kind: BackupKind) async throws
 
     /// Restores Xcode project.
     /// - Parameter kind: The type of backup.
@@ -160,7 +160,7 @@ extension BackupManager: IBackupManager {
         }
     }
 
-    public func restore(_ kind: BackupKind) async throws {
+    public func asyncRestore(_ kind: BackupKind) async throws {
         let steps = try restoreSteps(from: kind.folderName)
         try await applySteps(steps)
     }
