@@ -75,3 +75,6 @@ extension IBinariesStorage {}
 
 //// sourcery: AutoMockable, imports = ["RugbyFoundation"]
 extension IXcodeProject {}
+
+//// sourcery: AutoMockable, imports = ["RugbyFoundation"]
+extension IBackupManager {}
