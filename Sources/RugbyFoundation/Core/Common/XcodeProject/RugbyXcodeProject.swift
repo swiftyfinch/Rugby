@@ -14,6 +14,11 @@ enum RugbyError: LocalizedError {
     }
 }
 
+protocol IRugbyXcodeProject: AnyObject {
+    func isAlreadyUsingRugby() async throws -> Bool
+    func markAsUsingRugby() async throws
+}
+
 // MARK: - Implementation
 
 final class RugbyXcodeProject {
@@ -23,7 +28,9 @@ final class RugbyXcodeProject {
     init(xcodeProject: IInternalXcodeProject) {
         self.xcodeProject = xcodeProject
     }
+}
 
+extension RugbyXcodeProject: IRugbyXcodeProject {
     func isAlreadyUsingRugby() async throws -> Bool {
         try await xcodeProject.contains(buildSettingsKey: .rugbyPatched)
     }

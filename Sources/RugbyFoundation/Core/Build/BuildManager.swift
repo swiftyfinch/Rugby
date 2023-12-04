@@ -34,7 +34,7 @@ final class BuildManager: Loggable {
     private let buildTargetsManager: BuildTargetsManager
     private let librariesPatcher: ILibrariesPatcher
     private let xcodeProject: IInternalXcodeProject
-    private let rugbyXcodeProject: RugbyXcodeProject
+    private let rugbyXcodeProject: IRugbyXcodeProject
     private let backupManager: IBackupManager
     private let processMonitor: IProcessMonitor
     private let xcodeBuild: XcodeBuild
@@ -50,7 +50,7 @@ final class BuildManager: Loggable {
          buildTargetsManager: BuildTargetsManager,
          librariesPatcher: ILibrariesPatcher,
          xcodeProject: IInternalXcodeProject,
-         rugbyXcodeProject: RugbyXcodeProject,
+         rugbyXcodeProject: IRugbyXcodeProject,
          backupManager: IBackupManager,
          processMonitor: IProcessMonitor,
          xcodeBuild: XcodeBuild,
