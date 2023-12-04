@@ -9,7 +9,7 @@ extension Vault {
     }
 
     func useBinariesManager(xcodeProject: IInternalXcodeProject,
-                            buildTargetsManager: BuildTargetsManager) -> IUseBinariesManager {
+                            buildTargetsManager: IBuildTargetsManager) -> IUseBinariesManager {
         UseBinariesManager(logger: logger,
                            buildTargetsManager: buildTargetsManager,
                            librariesPatcher: LibrariesPatcher(logger: logger),
