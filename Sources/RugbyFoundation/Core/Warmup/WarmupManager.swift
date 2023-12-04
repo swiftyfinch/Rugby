@@ -43,7 +43,7 @@ final class WarmupManager: Loggable {
     private typealias Error = WarmupManagerError
 
     let logger: ILogger
-    private let rugbyXcodeProject: RugbyXcodeProject
+    private let rugbyXcodeProject: IRugbyXcodeProject
     private let buildTargetsManager: BuildTargetsManager
     private let binariesManager: IBinariesStorage
     private let targetsHasher: ITargetsHasher
@@ -51,7 +51,7 @@ final class WarmupManager: Loggable {
     private let metricsLogger: IMetricsLogger
 
     init(logger: ILogger,
-         rugbyXcodeProject: RugbyXcodeProject,
+         rugbyXcodeProject: IRugbyXcodeProject,
          buildTargetsManager: BuildTargetsManager,
          binariesManager: IBinariesStorage,
          targetsHasher: ITargetsHasher,
