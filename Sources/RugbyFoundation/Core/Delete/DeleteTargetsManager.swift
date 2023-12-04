@@ -43,14 +43,16 @@ extension DeleteTargetsManager: IDeleteTargetsManager {
             "Finding Targets",
             auto: await xcodeProject.findTargets(by: targetsRegex, except: exceptTargetsRegex)
         )
-        try await log("Keeping Excepted Targets Dependencies", level: .info, block: {
-            if keepExceptedTargetsDependencies {
+        if keepExceptedTargetsDependencies {
+            try await log("Keeping Excepted Targets Dependencies", level: .info, block: {
                 try await xcodeProject.findTargets().subtracting(shouldBeRemoved).values.forEach {
                     let intersection = $0.dependencies.keysIntersection(shouldBeRemoved)
                     shouldBeRemoved.subtract(intersection)
                 }
-            }
-        })
+            })
+        }
+        guard shouldBeRemoved.isNotEmpty else { return await log("Skip") }
+
         try await log("Backuping", level: .info, auto: await backupManager.backup(xcodeProject, kind: .original))
         try await log("Deleting Targets (\(shouldBeRemoved.count))",
                       auto: await xcodeProject.deleteTargets(shouldBeRemoved, keepGroups: !deleteSources))
