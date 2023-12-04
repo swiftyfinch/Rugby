@@ -44,7 +44,7 @@ final class WarmupManager: Loggable {
 
     let logger: ILogger
     private let rugbyXcodeProject: IRugbyXcodeProject
-    private let buildTargetsManager: BuildTargetsManager
+    private let buildTargetsManager: IBuildTargetsManager
     private let binariesManager: IBinariesStorage
     private let targetsHasher: ITargetsHasher
     private let cacheDownloader: CacheDownloader
@@ -52,7 +52,7 @@ final class WarmupManager: Loggable {
 
     init(logger: ILogger,
          rugbyXcodeProject: IRugbyXcodeProject,
-         buildTargetsManager: BuildTargetsManager,
+         buildTargetsManager: IBuildTargetsManager,
          binariesManager: IBinariesStorage,
          targetsHasher: ITargetsHasher,
          cacheDownloader: CacheDownloader,

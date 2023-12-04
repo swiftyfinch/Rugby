@@ -28,7 +28,7 @@ public protocol IUseBinariesManager {
 final class UseBinariesManager: Loggable {
     let logger: ILogger
 
-    private let buildTargetsManager: BuildTargetsManager
+    private let buildTargetsManager: IBuildTargetsManager
     private let librariesPatcher: ILibrariesPatcher
     private let xcodeProject: IInternalXcodeProject
     private let rugbyXcodeProject: IRugbyXcodeProject
@@ -39,7 +39,7 @@ final class UseBinariesManager: Loggable {
     private let fileContentEditor: FileContentEditor
 
     init(logger: ILogger,
-         buildTargetsManager: BuildTargetsManager,
+         buildTargetsManager: IBuildTargetsManager,
          librariesPatcher: ILibrariesPatcher,
          xcodeProject: IInternalXcodeProject,
          rugbyXcodeProject: IRugbyXcodeProject,
