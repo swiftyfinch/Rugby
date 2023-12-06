@@ -1,30 +1,29 @@
 import Fish
 import Foundation
-import Zip
+
+// MARK: - Interface
+
+protocol ICacheDownloader: AnyObject {
+    func checkIfBinaryIsReachable(url: URL) async -> Bool
+    func downloadBinary(url: URL, to folderURL: URL) async -> Bool
+}
+
+// MARK: - Implementation
 
 final class CacheDownloader: Loggable {
     let logger: ILogger
-    private let reachabilityChecker: ReachabilityChecker
-    private let urlSession: URLSession
+    private let reachabilityChecker: IReachabilityChecker
+    private let urlSession: IURLSession
+    private let decompressor: IDecompressor
 
     init(logger: ILogger,
-         reachabilityChecker: ReachabilityChecker,
-         urlSession: URLSession) {
+         reachabilityChecker: IReachabilityChecker,
+         urlSession: IURLSession,
+         decompressor: IDecompressor) {
         self.logger = logger
         self.reachabilityChecker = reachabilityChecker
         self.urlSession = urlSession
-        Zip.addCustomFileExtension("tmp")
-    }
-
-    // MARK: - Internal
-
-    func checkIfBinaryIsReachable(url: URL) async -> Bool {
-        (try? await reachabilityChecker.checkIfURLIsReachable(url)) == true
-    }
-
-    func downloadBinary(url: URL, to folderURL: URL) async -> Bool {
-        guard let fileURL = await download(url) else { return false }
-        return await unzip(fileURL, to: folderURL)
+        self.decompressor = decompressor
     }
 
     // MARK: - Private
@@ -33,7 +32,7 @@ final class CacheDownloader: Loggable {
         do {
             await log("Downloading \(url)", output: .file)
             let urlRequest = URLRequest(url: url)
-            return try await urlSession.download(for: urlRequest).0
+            return try await urlSession.download(for: urlRequest)
         } catch {
             await log("Failed downloading \(url):\n\(error.beautifulDescription)", output: .file)
             return nil
@@ -44,11 +43,22 @@ final class CacheDownloader: Loggable {
         do {
             await log("Unzipping to \(folderURL.path)", output: .file)
             try Folder.create(at: folderURL.path)
-            try Zip.unzipFile(fileURL, destination: folderURL, overwrite: true, password: nil)
+            try decompressor.unzipFile(fileURL, destination: folderURL)
             return true
         } catch {
             await log("Failed unzipping to \(folderURL.path):\n\(error.beautifulDescription)", output: .file)
             return false
         }
+    }
+}
+
+extension CacheDownloader: ICacheDownloader {
+    func checkIfBinaryIsReachable(url: URL) async -> Bool {
+        (try? await reachabilityChecker.checkIfURLIsReachable(url)) == true
+    }
+
+    func downloadBinary(url: URL, to folderURL: URL) async -> Bool {
+        guard let fileURL = await download(url) else { return false }
+        return await unzip(fileURL, to: folderURL)
     }
 }
