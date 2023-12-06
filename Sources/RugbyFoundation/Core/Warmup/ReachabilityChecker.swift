@@ -1,5 +1,11 @@
 import Foundation
 
+// MARK: - Interface
+
+protocol IReachabilityChecker: AnyObject {
+    func checkIfURLIsReachable(_ url: URL) async throws -> Bool
+}
+
 enum ReachabilityCheckerError: LocalizedError {
     case urlUnreachable(URL)
 
@@ -13,7 +19,9 @@ enum ReachabilityCheckerError: LocalizedError {
 
 // MARK: - Implementation
 
-final class ReachabilityChecker {
+final class ReachabilityChecker {}
+
+extension ReachabilityChecker: IReachabilityChecker {
     private typealias Error = ReachabilityCheckerError
 
     func checkIfURLIsReachable(_ url: URL) async throws -> Bool {

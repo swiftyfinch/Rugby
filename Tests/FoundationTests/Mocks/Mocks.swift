@@ -78,3 +78,12 @@ extension IXcodeProject {}
 
 //// sourcery: AutoMockable, imports = ["RugbyFoundation"]
 extension IBackupManager {}
+
+//// sourcery: AutoMockable, imports = ["RugbyFoundation"]
+extension IReachabilityChecker {}
+
+//// sourcery: AutoMockable, imports = ["RugbyFoundation"]
+extension IURLSession {}
+
+// sourcery: AutoMockable, imports = ["RugbyFoundation"]
+extension IDecompressor {}

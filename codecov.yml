@@ -2,3 +2,5 @@ ignore:
 - "Rugby.swift"
 - "Sources/Rugby/Commands"
 - "Sources/RugbyFoundation/Vault"
+- "Sources/RugbyFoundation/Core/Warmup/Decompressor.swift"
+- "Sources/RugbyFoundation/Core/Warmup/URLSession.swift"

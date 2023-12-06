@@ -16,7 +16,8 @@ public extension Vault {
         let cacheDownloader = CacheDownloader(
             logger: logger,
             reachabilityChecker: ReachabilityChecker(),
-            urlSession: URLSession(configuration: urlSessionConfiguration)
+            urlSession: URLSession(configuration: urlSessionConfiguration),
+            decompressor: Decompressor()
         )
         return WarmupManager(logger: logger,
                              rugbyXcodeProject: RugbyXcodeProject(xcodeProject: xcodeProject),
