@@ -26,7 +26,7 @@ public enum WarmupMode {
     case analyse(endpoint: String?)
 }
 
-enum WarmupManagerError: LocalizedError {
+enum WarmupManagerError: LocalizedError, Equatable {
     case incorrectEndpoint(String)
 
     var errorDescription: String? {

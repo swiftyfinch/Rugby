@@ -80,10 +80,25 @@ extension IXcodeProject {}
 extension IBackupManager {}
 
 //// sourcery: AutoMockable, imports = ["RugbyFoundation"]
+extension IRugbyXcodeProject {}
+
+//// sourcery: AutoMockable, imports = ["RugbyFoundation"]
 extension IReachabilityChecker {}
 
 //// sourcery: AutoMockable, imports = ["RugbyFoundation"]
 extension IURLSession {}
 
-// sourcery: AutoMockable, imports = ["RugbyFoundation"]
+//// sourcery: AutoMockable, imports = ["RugbyFoundation"]
 extension IDecompressor {}
+
+//// sourcery: AutoMockable, imports = ["RugbyFoundation"]
+extension IBuildTargetsManager {}
+
+//// sourcery: AutoMockable, imports = ["RugbyFoundation"]
+extension ITargetsHasher {}
+
+//// sourcery: AutoMockable, imports = ["RugbyFoundation"]
+extension ICacheDownloader {}
+
+//// sourcery: AutoMockable, imports = ["RugbyFoundation"]
+extension IMetricsLogger {}
