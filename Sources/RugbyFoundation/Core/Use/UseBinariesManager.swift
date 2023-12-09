@@ -147,6 +147,8 @@ extension UseBinariesManager: IUseBinariesManager {
             "Finding Build Targets",
             auto: await buildTargetsManager.findTargets(targetsRegex, exceptTargets: exceptTargetsRegex)
         )
+        guard binaryTargets.isNotEmpty else { return await log("Skip") }
+
         try await log("Backuping", level: .info, auto: await backupManager.backup(xcodeProject, kind: .original))
         try await librariesPatcher.patch(binaryTargets)
         try await log("Hashing Targets", auto: await targetsHasher.hash(binaryTargets, xcargs: xcargs))
