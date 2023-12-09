@@ -102,3 +102,14 @@ extension ICacheDownloader {}
 
 //// sourcery: AutoMockable, imports = ["RugbyFoundation"]
 extension IMetricsLogger {}
+
+//// sourcery: AutoMockable, imports = ["RugbyFoundation"]
+extension ILibrariesPatcher {}
+
+//// sourcery: AutoMockable, imports = ["RugbyFoundation"]
+extension ISupportFilesPatcher {}
+
+//// sourcery: AutoMockable, imports = ["RugbyFoundation"]
+extension IFileContentEditor {}
+
+// TODO: Needs to improve Sourcery template to generate mocks automatically w/o manual editing
