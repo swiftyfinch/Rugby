@@ -36,7 +36,7 @@ final class UseBinariesManager: Loggable {
     private let binariesManager: IBinariesStorage
     private let targetsHasher: ITargetsHasher
     private let supportFilesPatcher: ISupportFilesPatcher
-    private let fileContentEditor: FileContentEditor
+    private let fileContentEditor: IFileContentEditor
 
     init(logger: ILogger,
          buildTargetsManager: IBuildTargetsManager,
@@ -47,7 +47,7 @@ final class UseBinariesManager: Loggable {
          binariesManager: IBinariesStorage,
          targetsHasher: ITargetsHasher,
          supportFilesPatcher: ISupportFilesPatcher,
-         fileContentEditor: FileContentEditor) {
+         fileContentEditor: IFileContentEditor) {
         self.logger = logger
         self.buildTargetsManager = buildTargetsManager
         self.librariesPatcher = librariesPatcher

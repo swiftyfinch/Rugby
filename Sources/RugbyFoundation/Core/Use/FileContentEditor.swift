@@ -1,7 +1,21 @@
 import Fish
 import Foundation
 
-final class FileContentEditor {
+// MARK: - Interface
+
+protocol IFileContentEditor: AnyObject {
+    func replace(
+        _ replacements: [String: String],
+        regex: NSRegularExpression,
+        filePath: String
+    ) throws
+}
+
+// MARK: - Implementation
+
+final class FileContentEditor {}
+
+extension FileContentEditor: IFileContentEditor {
     func replace(_ replacements: [String: String], regex: NSRegularExpression, filePath: String) throws {
         guard File.isExist(at: filePath) else { return }
 

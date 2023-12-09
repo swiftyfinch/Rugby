@@ -3,7 +3,7 @@ import Fish
 import XCTest
 
 final class FileContentEditorTests: XCTestCase {
-    private var sut: FileContentEditor!
+    private var sut: IFileContentEditor!
     private var fishSharedStorage: IFilesManagerMock!
 
     override func setUpWithError() throws {
