@@ -6,7 +6,7 @@ protocol IReachabilityChecker: AnyObject {
     func checkIfURLIsReachable(_ url: URL) async throws -> Bool
 }
 
-enum ReachabilityCheckerError: LocalizedError {
+enum ReachabilityCheckerError: LocalizedError, Equatable {
     case urlUnreachable(URL)
 
     var errorDescription: String? {
@@ -19,7 +19,13 @@ enum ReachabilityCheckerError: LocalizedError {
 
 // MARK: - Implementation
 
-final class ReachabilityChecker {}
+final class ReachabilityChecker {
+    private let urlSession: IURLSession
+
+    init(urlSession: IURLSession) {
+        self.urlSession = urlSession
+    }
+}
 
 extension ReachabilityChecker: IReachabilityChecker {
     private typealias Error = ReachabilityCheckerError
@@ -27,7 +33,7 @@ extension ReachabilityChecker: IReachabilityChecker {
     func checkIfURLIsReachable(_ url: URL) async throws -> Bool {
         var urlRequest = URLRequest(url: url)
         urlRequest.httpMethod = "HEAD"
-        let (_, response) = try await URLSession.shared.data(for: urlRequest)
+        let (_, response) = try await urlSession.data(for: urlRequest)
         guard let httpResponse = (response as? HTTPURLResponse) else { throw Error.urlUnreachable(url) }
         return httpResponse.statusCode == 200
     }
