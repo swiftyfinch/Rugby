@@ -8,6 +8,30 @@ import Foundation
 
 final class IURLSessionMock: IURLSession {
 
+    // MARK: - data
+
+    var dataForThrowableError: Error?
+    var dataForCallsCount = 0
+    var dataForCalled: Bool { dataForCallsCount > 0 }
+    var dataForReceivedRequest: URLRequest?
+    var dataForReceivedInvocations: [URLRequest] = []
+    var dataForReturnValue: (Data, URLResponse)!
+    var dataForClosure: ((URLRequest) async throws -> (Data, URLResponse))?
+
+    func data(for request: URLRequest) async throws -> (Data, URLResponse) {
+        dataForCallsCount += 1
+        dataForReceivedRequest = request
+        dataForReceivedInvocations.append(request)
+        if let error = dataForThrowableError {
+            throw error
+        }
+        if let dataForClosure = dataForClosure {
+            return try await dataForClosure(request)
+        } else {
+            return dataForReturnValue
+        }
+    }
+
     // MARK: - download
 
     var downloadForThrowableError: Error?

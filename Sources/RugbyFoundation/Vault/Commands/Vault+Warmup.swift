@@ -15,7 +15,7 @@ public extension Vault {
         urlSessionConfiguration.httpMaximumConnectionsPerHost = httpMaximumConnectionsPerHost
         let cacheDownloader = CacheDownloader(
             logger: logger,
-            reachabilityChecker: ReachabilityChecker(),
+            reachabilityChecker: ReachabilityChecker(urlSession: URLSession.shared),
             urlSession: URLSession(configuration: urlSessionConfiguration),
             decompressor: Decompressor()
         )
