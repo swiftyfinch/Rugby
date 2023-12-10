@@ -4,7 +4,7 @@ import Foundation
 // MARK: - Interface
 
 /// The protocol describing a manager to clean Rugby folders.
-public protocol IСleaner {
+public protocol ICleaner {
     /// Deletes selected shared binaries.
     /// - Parameter names: A collection of binaries to delete.
     func deleteSharedBinaries(names: [String]) async throws
@@ -18,7 +18,7 @@ public protocol IСleaner {
 
 // MARK: - Implementation
 
-final class Сleaner {
+final class Cleaner {
     private let sharedBinariesPath: String
     private let buildFolderPath: String
 
@@ -41,7 +41,7 @@ final class Сleaner {
 
 // MARK: - IСleaner
 
-extension Сleaner: IСleaner {
+extension Cleaner: ICleaner {
     public func deleteSharedBinaries(names: [String]) async throws {
         try await names.concurrentForEach { name in
             try await self.deleteFolder(atPath: "\(self.sharedBinariesPath)/\(name)")
