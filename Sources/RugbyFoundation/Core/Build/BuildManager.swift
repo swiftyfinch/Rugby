@@ -109,7 +109,7 @@ final class BuildManager: Loggable {
             let percent = shared.count.percent(total: targets.count)
             await log("Found \(percent)% Binaries (\(shared.count)/\(targets.count))", level: .result)
 
-            await log("Reusing Binaries: \n\(shared.values.map { "* \($0.name)" }.sorted().joined(separator: "\n"))",
+            await log("Reusing Binaries:\n\(shared.values.map { "* \($0.name)" }.sorted().joined(separator: "\n"))",
                       level: .info)
             try await log("Reusing Binaries", auto: await useBinariesManager.use(targets: shared, keepGroups: true))
 
