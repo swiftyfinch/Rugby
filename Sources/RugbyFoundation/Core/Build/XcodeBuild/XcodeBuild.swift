@@ -2,6 +2,12 @@ import Fish
 
 // MARK: - Interface
 
+protocol IXcodeBuild: AnyObject {
+    func build(target: String,
+               options: XcodeBuildOptions,
+               paths: XcodeBuildPaths) throws
+}
+
 /// Xcode build options.
 public struct XcodeBuildOptions: Equatable {
     let sdk: SDK
@@ -75,7 +81,9 @@ final class XcodeBuild {
     init(xcodeBuildExecutor: IXcodeBuildExecutor) {
         self.xcodeBuildExecutor = xcodeBuildExecutor
     }
+}
 
+extension XcodeBuild: IXcodeBuild {
     func build(target: String,
                options: XcodeBuildOptions,
                paths: XcodeBuildPaths) throws {
