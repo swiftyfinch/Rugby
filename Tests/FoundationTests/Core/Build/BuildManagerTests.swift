@@ -5,7 +5,7 @@ import XCTest
 final class BuildManagerTests: XCTestCase {
     private enum TestError: Error { case test }
 
-    private var sut: IBuildManager!
+    private var sut: BuildManager!
     private var logger: ILoggerMock!
     private var loggerBlockInvocations: [
         (header: String, footer: String?, metricKey: String?, level: LogLevel, output: LoggerOutput)
@@ -688,18 +688,13 @@ extension BuildManagerTests {
         let buildPaths: XcodeBuildPaths = .mock()
 
         // Act
-        var resultError: Error?
-        do {
-            try await sut.build(
-                targetsRegex: targetsRegex,
-                exceptTargetsRegex: exceptTargetsRegex,
-                options: buildOptions,
-                paths: buildPaths,
-                ignoreCache: false
-            )
-        } catch {
-            resultError = error
-        }
+        try await sut.build(
+            targetsRegex: targetsRegex,
+            exceptTargetsRegex: exceptTargetsRegex,
+            options: buildOptions,
+            paths: buildPaths,
+            ignoreCache: false
+        )
 
         // Assert
         XCTAssertEqual(environmentCollector.logXcodeVersionCallsCount, 1)
@@ -876,5 +871,86 @@ extension BuildManagerTests {
         XCTAssertTrue(saveBinariesArguments.targets.contains(moya.uuid))
         XCTAssertEqual(saveBinariesArguments.buildOptions, buildOptions)
         XCTAssertEqual(saveBinariesArguments.buildPaths, buildPaths)
+    }
+}
+
+extension BuildManagerTests {
+    func test_prepare_patchLibrariesFalse_freeSpaceIfNeededFalse() async throws {
+        let targetsRegex = try NSRegularExpression(pattern: "test_targetsRegex")
+        let exceptTargetsRegex = try NSRegularExpression(pattern: "test_exceptTargetsRegex")
+        let snapkit = IInternalTargetMock()
+        snapkit.underlyingUuid = "test_snapkit_uuid"
+        rugbyXcodeProject.isAlreadyUsingRugbyReturnValue = false
+        buildTargetsManager.findTargetsExceptTargetsReturnValue = [snapkit.uuid: snapkit]
+
+        // Act
+        _ = try await sut.prepare(
+            targetsRegex: targetsRegex,
+            exceptTargetsRegex: exceptTargetsRegex,
+            freeSpaceIfNeeded: false,
+            patchLibraries: false
+        )
+
+        // Assert
+        XCTAssertEqual(environmentCollector.logXcodeVersionCallsCount, 1)
+        XCTAssertEqual(rugbyXcodeProject.isAlreadyUsingRugbyCallsCount, 1)
+        XCTAssertEqual(loggerBlockInvocations.count, 2)
+
+        XCTAssertEqual(loggerBlockInvocations[0].header, "Finding Build Targets")
+        XCTAssertNil(loggerBlockInvocations[0].footer)
+        XCTAssertNil(loggerBlockInvocations[0].metricKey)
+        XCTAssertEqual(loggerBlockInvocations[0].level, .compact)
+        XCTAssertEqual(loggerBlockInvocations[0].output, .all)
+        XCTAssertEqual(buildTargetsManager.findTargetsExceptTargetsCallsCount, 1)
+        let findTargetsArguments = try XCTUnwrap(buildTargetsManager.findTargetsExceptTargetsReceivedArguments)
+        XCTAssertEqual(findTargetsArguments.targets, targetsRegex)
+        XCTAssertEqual(findTargetsArguments.exceptTargets, exceptTargetsRegex)
+
+        XCTAssertEqual(loggerBlockInvocations[1].header, "Backuping")
+        XCTAssertNil(loggerBlockInvocations[1].footer)
+        XCTAssertNil(loggerBlockInvocations[1].metricKey)
+        XCTAssertEqual(loggerBlockInvocations[1].level, .info)
+        XCTAssertEqual(loggerBlockInvocations[1].output, .all)
+        XCTAssertEqual(backupManager.backupKindCallsCount, 1)
+        XCTAssertIdentical(backupManager.backupKindReceivedArguments?.xcodeProject, xcodeProject)
+        XCTAssertEqual(backupManager.backupKindReceivedArguments?.kind, .tmp)
+    }
+
+    func test_makeBuildTarget_saveProjectError() async throws {
+        let snapkit = IInternalTargetMock()
+        snapkit.underlyingUuid = "test_snapkit_uuid"
+        buildTargetsManager.createTargetDependenciesReturnValue = IInternalTargetMock()
+        xcodeProject.saveThrowableError = TestError.test
+
+        // Act
+        var resultError: Error?
+        do {
+            _ = try await sut.makeBuildTarget([snapkit.uuid: snapkit])
+        } catch {
+            resultError = error
+        }
+
+        // Assert
+        XCTAssertEqual(resultError as? TestError, .test)
+    }
+
+    func test_xcodeBuild_interruption() async throws {
+        let buildTarget = IInternalTargetMock()
+        buildTarget.underlyingName = "RugbyPods"
+        let processInterruptionTask = ProcessInterruptionTask(job: {})
+        processMonitor.runOnInterruptionReturnValue = processInterruptionTask
+        xcodeBuild.buildTargetOptionsPathsClosure = { _, _, _ in
+            self.processMonitor.runOnInterruptionReceivedJob!()
+        }
+
+        // Act
+        try await sut.build(buildTarget, options: .mock(), paths: .mock())
+
+        // Assert
+        XCTAssertTrue(processInterruptionTask.isCancelled)
+        XCTAssertEqual(xcodeBuild.buildTargetOptionsPathsCallsCount, 1)
+        XCTAssertEqual(backupManager.restoreCallsCount, 2)
+        XCTAssertEqual(backupManager.restoreReceivedInvocations, [.tmp, .tmp])
+        XCTAssertEqual(xcodeProject.resetCacheCallsCount, 2)
     }
 }
