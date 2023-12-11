@@ -37,7 +37,7 @@ final class BuildManager: Loggable {
     private let rugbyXcodeProject: IRugbyXcodeProject
     private let backupManager: IBackupManager
     private let processMonitor: IProcessMonitor
-    private let xcodeBuild: XcodeBuild
+    private let xcodeBuild: IXcodeBuild
     private let binariesManager: IBinariesStorage
     private let targetsHasher: ITargetsHasher
     private let useBinariesManager: IUseBinariesManager
@@ -53,7 +53,7 @@ final class BuildManager: Loggable {
          rugbyXcodeProject: IRugbyXcodeProject,
          backupManager: IBackupManager,
          processMonitor: IProcessMonitor,
-         xcodeBuild: XcodeBuild,
+         xcodeBuild: IXcodeBuild,
          binariesManager: IBinariesStorage,
          targetsHasher: ITargetsHasher,
          useBinariesManager: IUseBinariesManager,
