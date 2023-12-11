@@ -81,7 +81,6 @@ final class BuildManager: Loggable {
     private func reuseTargets(
         targets: TargetsMap,
         options: XcodeBuildOptions,
-        paths _: XcodeBuildPaths,
         ignoreCache: Bool
     ) async throws -> TargetsMap? {
         try await log("Hashing Targets", auto: await targetsHasher.hash(targets, xcargs: options.xcargs))
@@ -192,7 +191,6 @@ extension BuildManager: IBuildManager {
         guard let buildTargets = try await reuseTargets(
             targets: targets,
             options: options,
-            paths: paths,
             ignoreCache: ignoreCache
         ) else { return }
 
