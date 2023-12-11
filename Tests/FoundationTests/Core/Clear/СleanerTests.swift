@@ -69,7 +69,7 @@ extension СleanerTests {
     }
 
     func test_deleteBuildFolder() async throws {
-        let build = try buildFolder.createFolder(named: "Content")
+        try buildFolder.createFolder(named: "Content")
         let moya = try sharedRugbyFolder.createFolder(named: "Moya")
         let moyaContent = try moya.createFolder(named: "Content")
 
