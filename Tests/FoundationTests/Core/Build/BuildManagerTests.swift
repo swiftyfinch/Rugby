@@ -2,6 +2,8 @@ import Rainbow
 @testable import RugbyFoundation
 import XCTest
 
+// swiftlint:disable file_length
+
 final class BuildManagerTests: XCTestCase {
     private enum TestError: Error { case test }
 
@@ -940,7 +942,7 @@ extension BuildManagerTests {
         let processInterruptionTask = ProcessInterruptionTask(job: {})
         processMonitor.runOnInterruptionReturnValue = processInterruptionTask
         xcodeBuild.buildTargetOptionsPathsClosure = { _, _, _ in
-            self.processMonitor.runOnInterruptionReceivedJob!()
+            self.processMonitor.runOnInterruptionReceivedJob?()
         }
 
         // Act
@@ -954,3 +956,5 @@ extension BuildManagerTests {
         XCTAssertEqual(xcodeProject.resetCacheCallsCount, 2)
     }
 }
+
+// swiftlint:enable file_length
