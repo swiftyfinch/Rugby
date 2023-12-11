@@ -92,17 +92,6 @@ final class BuildManagerTests: XCTestCase {
     }
 }
 
-extension XcodeBuildPaths {
-    static func mock() -> XcodeBuildPaths {
-        XcodeBuildPaths(
-            project: "test_project",
-            symroot: "test_symroot",
-            rawLog: "test_rawLog",
-            beautifiedLog: "test_beautifiedLog"
-        )
-    }
-}
-
 extension BuildManagerTests {
     func test_build_isAlreadyUsingRugby() async throws {
         rugbyXcodeProject.isAlreadyUsingRugbyReturnValue = true
