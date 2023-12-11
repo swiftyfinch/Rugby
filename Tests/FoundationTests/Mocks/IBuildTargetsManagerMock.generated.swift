@@ -43,12 +43,12 @@ final class IBuildTargetsManagerMock: IBuildTargetsManager {
     var createTargetDependenciesClosure: ((TargetsMap) async throws -> IInternalTarget)?
 
     func createTarget(dependencies: TargetsMap) async throws -> IInternalTarget {
-        if let error = createTargetDependenciesThrowableError {
-            throw error
-        }
         createTargetDependenciesCallsCount += 1
         createTargetDependenciesReceivedDependencies = dependencies
         createTargetDependenciesReceivedInvocations.append(dependencies)
+        if let error = createTargetDependenciesThrowableError {
+            throw error
+        }
         if let createTargetDependenciesClosure = createTargetDependenciesClosure {
             return try await createTargetDependenciesClosure(dependencies)
         } else {

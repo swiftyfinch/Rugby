@@ -112,4 +112,25 @@ extension ISupportFilesPatcher {}
 //// sourcery: AutoMockable, imports = ["RugbyFoundation"]
 extension IFileContentEditor {}
 
+//// sourcery: AutoMockable, imports = ["RugbyFoundation"]
+extension IProcessMonitor {}
+
+//// sourcery: AutoMockable, imports = ["RugbyFoundation"]
+extension IXcodeBuild {}
+
+//// sourcery: AutoMockable, imports = ["RugbyFoundation"]
+extension IUseBinariesManager {}
+
+//// sourcery: AutoMockable, imports = ["RugbyFoundation"]
+extension IBinariesCleaner {}
+
+//// sourcery: AutoMockable, imports = ["RugbyFoundation"]
+extension IEnvironmentCollector {}
+
+//// sourcery: AutoMockable, imports = ["RugbyFoundation"]
+extension IEnvironment {}
+
+//// sourcery: AutoMockable, imports = ["RugbyFoundation"]
+extension ITargetTreePainter {}
+
 // TODO: Needs to improve Sourcery template to generate mocks automatically w/o manual editing
