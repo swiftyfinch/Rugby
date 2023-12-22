@@ -19,7 +19,7 @@ struct Delete: AsyncParsableCommand {
     var deleteSources = false
 
     @OptionGroup
-    var targetsOptions: TargetsOptions
+    var targetsOptions: TargetsOptions<TargetsOptionsNameSpace.Deleting>
 
     @OptionGroup
     var commonOptions: CommonOptions

@@ -13,7 +13,7 @@ struct Use: AsyncParsableCommand {
     var deleteSources = false
 
     @OptionGroup
-    var targetsOptions: TargetsOptions
+    var targetsOptions: TargetsOptions<TargetsOptionsNameSpace.Using>
 
     @OptionGroup
     var additionalBuildOptions: AdditionalBuildOptions

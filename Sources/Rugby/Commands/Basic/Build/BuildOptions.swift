@@ -18,7 +18,7 @@ struct BuildOptions: AsyncParsableCommand {
     var additionalBuildOptions: AdditionalBuildOptions
 
     @OptionGroup
-    var targetsOptions: TargetsOptions
+    var targetsOptions: TargetsOptions<TargetsOptionsNameSpace.Building>
 
     func xcodeBuildOptions(
         skipSigning: Bool = false,

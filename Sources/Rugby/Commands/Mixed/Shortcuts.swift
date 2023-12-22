@@ -132,7 +132,7 @@ extension Shortcuts.Cache: RunnableCommand {
 
         var use = Use()
         use.deleteSources = deleteSources
-        use.targetsOptions = buildOptions.targetsOptions
+        use.targetsOptions = buildOptions.targetsOptions.mapTo(type: TargetsOptionsNameSpace.Using.self)
         use.additionalBuildOptions = buildOptions.additionalBuildOptions
         use.commonOptions = commonOptions
         runnableCommands.append(("Use", use))
