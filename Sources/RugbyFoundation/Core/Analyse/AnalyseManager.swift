@@ -3,9 +3,17 @@ import Foundation
 
 // MARK: - Interface
 
-public protocol IAnalyseManager {
-    func analyse(onlyNotFound: Bool,
-                 hashDir: String,
+/// The protocol describing a manager to analyse hasher of targets.
+public protocol IAnalyseHasherManager {
+    /// Analyse the hash of targets
+    /// - Parameters:
+    ///   - missingBinariesOnly: If true, only analyse and output the targets with missting binaries.
+    ///   - outputDir: The directory that save the hash results.
+    ///   - targetsRegex: A RegEx to select targets.
+    ///   - exceptTargetsRegex: A RegEx to exclude targets.
+    ///   - options: Xcode build options.
+    func analyse(missingBinariesOnly: Bool,
+                 outputDir: String,
                  targetsRegex: NSRegularExpression?,
                  exceptTargetsRegex: NSRegularExpression?,
                  options: XcodeBuildOptions) async throws
@@ -13,7 +21,7 @@ public protocol IAnalyseManager {
 
 // MARK: - Implementation
 
-final class AnalyseManager: Loggable {
+final class AnalyseHasherManager: Loggable {
     let logger: ILogger
     private let rugbyXcodeProject: RugbyXcodeProject
     private let buildTargetsManager: BuildTargetsManager
@@ -35,31 +43,33 @@ final class AnalyseManager: Loggable {
 
 // MARK: - IWarmupManager
 
-extension AnalyseManager: IAnalyseManager {
-    public func analyse(onlyNotFound: Bool,
-                        hashDir: String,
+extension AnalyseHasherManager: IAnalyseHasherManager {
+    public func analyse(missingBinariesOnly: Bool,
+                        outputDir: String,
                         targetsRegex: NSRegularExpression?,
                         exceptTargetsRegex: NSRegularExpression?,
                         options: XcodeBuildOptions) async throws {
+        guard try await !rugbyXcodeProject.isAlreadyUsingRugby() else { throw RugbyError.alreadyUseRugby }
+
         let targets = try await findLocalBinaries(
             targetsRegex: targetsRegex,
             exceptTargetsRegex: exceptTargetsRegex,
             options: options,
-            onlyNotFound: onlyNotFound
+            missingBinariesOnly: missingBinariesOnly
         )
 
-        let folder = try Folder.create(at: hashDir)
+        let folder = try Folder.create(at: outputDir)
         try await targets.concurrentForEach { (_: TargetId, value: IInternalTarget) in
             let fileName = "\(value.name)_\(value.hash ?? "").yaml"
             try folder.createFile(named: fileName, contents: value.hashContext)
         }
-        await log("Hash yamls saved at: \(hashDir)", level: .result)
+        await log("Hash yamls saved at: \(outputDir)", level: .result)
     }
 
     private func findLocalBinaries(targetsRegex: NSRegularExpression?,
                                    exceptTargetsRegex: NSRegularExpression?,
                                    options: XcodeBuildOptions,
-                                   onlyNotFound: Bool) async throws -> TargetsMap {
+                                   missingBinariesOnly: Bool) async throws -> TargetsMap {
         let targets = try await log(
             "Finding Build Targets",
             auto: await buildTargetsManager.findTargets(targetsRegex, exceptTargets: exceptTargetsRegex)
@@ -73,7 +83,7 @@ extension AnalyseManager: IAnalyseManager {
             auto: binariesManager.findBinaries(ofTargets: targets, buildOptions: options)
         )
 
-        if !onlyNotFound {
+        if !missingBinariesOnly {
             try await printTargets(found, options: options, category: "Found:")
         }
         try await printTargets(notFound, options: options, category: "Not Found:")
@@ -81,7 +91,7 @@ extension AnalyseManager: IAnalyseManager {
         let notFoundPercent = notFound.count.percent(total: targets.count)
         await log("Not Found Locally \(notFoundPercent)% Binaries (\(notFound.count)/\(targets.count))", level: .result)
 
-        return notFound
+        return missingBinariesOnly ? notFound : found.merging(notFound)
     }
 
     private func printTargets(_ targets: TargetsMap, options: XcodeBuildOptions, category: String) async throws {
