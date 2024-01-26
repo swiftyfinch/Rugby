@@ -47,7 +47,7 @@ final class XcodeTargetsEditor: Loggable {
 
         // Remove all dependencies with these targets
         let targets = try await targetsDataSource.targets.subtracting(targetsForRemove)
-        try await targets.values.concurrentCompactMap { target in
+        try targets.values.compactMap { target in
             // Add sub-dependencies of removing dependency explicitly
             let dependencies = target.explicitDependencies.keysIntersection(targetsForRemove)
             guard dependencies.isNotEmpty else { return }
