@@ -13,3 +13,4 @@
 --disable andOperator
 --disable redundantInternal
 --disable hoistAwait
+--disable preferForLoop
