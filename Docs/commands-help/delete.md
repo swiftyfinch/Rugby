@@ -11,14 +11,14 @@
  > Delete targets from the project.
 
  Options:
-╭────────────────────────────────────────────────────────────────────────────────╮
-│ -p, --path                 * Project location. (Pods/Pods.xcodeproj)           │
-│ -t, --targets []           * Targets for building. Empty means all targets.    │
-│ -g, --targets-as-regex []  * Targets for building as a RegEx pattern.          │
-│ -e, --except []            * Exclude targets from building.                    │
-│ -x, --except-as-regex []   * Exclude targets from building as a RegEx pattern. │
-│ -o, --output               * Output mode: fold, multiline, silent, raw.        │
-╰────────────────────────────────────────────────────────────────────────────────╯
+╭───────────────────────────────────────────────────────────────────────────────╮
+│ -p, --path                 * Project location. (Pods/Pods.xcodeproj)          │
+│ -t, --targets []           * Target names to select. Empty means all targets. │
+│ -g, --targets-as-regex []  * Regular expression patterns to select targets.   │
+│ -e, --except []            * Target names to exclude.                         │
+│ -x, --except-as-regex []   * Regular expression patterns to exclude targets.  │
+│ -o, --output               * Output mode: fold, multiline, silent, raw.       │
+╰───────────────────────────────────────────────────────────────────────────────╯
  Flags:
 ╭────────────────────────────────────────────────────────────╮
 │ --safe            * Keep dependencies of excepted targets. │
