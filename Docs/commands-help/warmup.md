@@ -19,10 +19,10 @@
 │ -s, --sdk                  * Build SDK: sim or ios.                               │
 │ -a, --arch                 * Build architecture: auto, x86_64 or arm64.           │
 │ -c, --config               * Build configuration. (Debug)                         │
-│ -t, --targets []           * Targets for building. Empty means all targets.       │
-│ -g, --targets-as-regex []  * Targets for building as a RegEx pattern.             │
-│ -e, --except []            * Exclude targets from building.                       │
-│ -x, --except-as-regex []   * Exclude targets from building as a RegEx pattern.    │
+│ -t, --targets []           * Target names to select. Empty means all targets.     │
+│ -g, --targets-as-regex []  * Regular expression patterns to select targets.       │
+│ -e, --except []            * Target names to exclude.                             │
+│ -x, --except-as-regex []   * Regular expression patterns to exclude targets.      │
 │ -o, --output               * Output mode: fold, multiline, silent, raw.           │
 │ --timeout                  * Timeout for requests in seconds. (60)                │
 │ --max-connections          * The maximum number of simultaneous connections. (10) │
