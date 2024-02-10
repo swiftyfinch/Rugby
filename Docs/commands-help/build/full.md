@@ -1,4 +1,4 @@
-[< 📚 Commands Help](README.md)
+[< 🏗️ Build](../build.md)
 
 # 🏗️ Full
 
