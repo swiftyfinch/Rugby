@@ -19,7 +19,7 @@ final class BuildManagerTests: XCTestCase {
     private var backupManager: IBackupManagerMock!
     private var processMonitor: IProcessMonitorMock!
     private var xcodeBuild: IXcodeBuildMock!
-    private var binariesManager: IBinariesStorageMock!
+    private var binariesStorage: IBinariesStorageMock!
     private var targetsHasher: ITargetsHasherMock!
     private var useBinariesManager: IUseBinariesManagerMock!
     private var binariesCleaner: IBinariesCleanerMock!
@@ -44,7 +44,7 @@ final class BuildManagerTests: XCTestCase {
         backupManager = IBackupManagerMock()
         processMonitor = IProcessMonitorMock()
         xcodeBuild = IXcodeBuildMock()
-        binariesManager = IBinariesStorageMock()
+        binariesStorage = IBinariesStorageMock()
         targetsHasher = ITargetsHasherMock()
         useBinariesManager = IUseBinariesManagerMock()
         binariesCleaner = IBinariesCleanerMock()
@@ -60,7 +60,7 @@ final class BuildManagerTests: XCTestCase {
             backupManager: backupManager,
             processMonitor: processMonitor,
             xcodeBuild: xcodeBuild,
-            binariesManager: binariesManager,
+            binariesStorage: binariesStorage,
             targetsHasher: targetsHasher,
             useBinariesManager: useBinariesManager,
             binariesCleaner: binariesCleaner,
@@ -81,7 +81,7 @@ final class BuildManagerTests: XCTestCase {
         backupManager = nil
         processMonitor = nil
         xcodeBuild = nil
-        binariesManager = nil
+        binariesStorage = nil
         targetsHasher = nil
         useBinariesManager = nil
         binariesCleaner = nil
@@ -165,7 +165,7 @@ extension BuildManagerTests {
             moya.uuid: moya
         ]
         buildTargetsManager.findTargetsExceptTargetsReturnValue = targets
-        binariesManager.findBinariesOfTargetsBuildOptionsReturnValue = (targets, [:])
+        binariesStorage.findBinariesOfTargetsBuildOptionsReturnValue = (targets, [:])
         let buildOptions: XcodeBuildOptions = .mock()
 
         // Act
@@ -239,8 +239,8 @@ extension BuildManagerTests {
         XCTAssertNil(loggerBlockInvocations[5].metricKey)
         XCTAssertEqual(loggerBlockInvocations[5].level, .compact)
         XCTAssertEqual(loggerBlockInvocations[5].output, .all)
-        XCTAssertEqual(binariesManager.findBinariesOfTargetsBuildOptionsCallsCount, 1)
-        let findBinariesArguments = try XCTUnwrap(binariesManager.findBinariesOfTargetsBuildOptionsReceivedArguments)
+        XCTAssertEqual(binariesStorage.findBinariesOfTargetsBuildOptionsCallsCount, 1)
+        let findBinariesArguments = try XCTUnwrap(binariesStorage.findBinariesOfTargetsBuildOptionsReceivedArguments)
         XCTAssertEqual(findBinariesArguments.targets.count, 3)
         XCTAssertTrue(findBinariesArguments.targets.contains(alamofire.uuid))
         XCTAssertTrue(findBinariesArguments.targets.contains(moya.uuid))
@@ -271,7 +271,7 @@ extension BuildManagerTests {
             moya.uuid: moya
         ]
         buildTargetsManager.findTargetsExceptTargetsReturnValue = targets
-        binariesManager.findBinariesOfTargetsBuildOptionsReturnValue = (
+        binariesStorage.findBinariesOfTargetsBuildOptionsReturnValue = (
             [alamofire.uuid: alamofire],
             [snapkit.uuid: snapkit, moya.uuid: moya]
         )
@@ -357,8 +357,8 @@ extension BuildManagerTests {
         XCTAssertNil(loggerBlockInvocations[5].metricKey)
         XCTAssertEqual(loggerBlockInvocations[5].level, .compact)
         XCTAssertEqual(loggerBlockInvocations[5].output, .all)
-        XCTAssertEqual(binariesManager.findBinariesOfTargetsBuildOptionsCallsCount, 1)
-        let findBinariesArguments = try XCTUnwrap(binariesManager.findBinariesOfTargetsBuildOptionsReceivedArguments)
+        XCTAssertEqual(binariesStorage.findBinariesOfTargetsBuildOptionsCallsCount, 1)
+        let findBinariesArguments = try XCTUnwrap(binariesStorage.findBinariesOfTargetsBuildOptionsReceivedArguments)
         XCTAssertEqual(findBinariesArguments.targets.count, 3)
         XCTAssertTrue(findBinariesArguments.targets.contains(alamofire.uuid))
         XCTAssertTrue(findBinariesArguments.targets.contains(moya.uuid))
@@ -446,7 +446,7 @@ extension BuildManagerTests {
             moya.uuid: moya
         ]
         buildTargetsManager.findTargetsExceptTargetsReturnValue = targets
-        binariesManager.findBinariesOfTargetsBuildOptionsReturnValue = (
+        binariesStorage.findBinariesOfTargetsBuildOptionsReturnValue = (
             [alamofire.uuid: alamofire],
             [snapkit.uuid: snapkit, moya.uuid: moya]
         )
@@ -541,8 +541,8 @@ extension BuildManagerTests {
         XCTAssertNil(loggerBlockInvocations[5].metricKey)
         XCTAssertEqual(loggerBlockInvocations[5].level, .compact)
         XCTAssertEqual(loggerBlockInvocations[5].output, .all)
-        XCTAssertEqual(binariesManager.findBinariesOfTargetsBuildOptionsCallsCount, 1)
-        let findBinariesArguments = try XCTUnwrap(binariesManager.findBinariesOfTargetsBuildOptionsReceivedArguments)
+        XCTAssertEqual(binariesStorage.findBinariesOfTargetsBuildOptionsCallsCount, 1)
+        let findBinariesArguments = try XCTUnwrap(binariesStorage.findBinariesOfTargetsBuildOptionsReceivedArguments)
         XCTAssertEqual(findBinariesArguments.targets.count, 3)
         XCTAssertTrue(findBinariesArguments.targets.contains(alamofire.uuid))
         XCTAssertTrue(findBinariesArguments.targets.contains(moya.uuid))
@@ -660,7 +660,7 @@ extension BuildManagerTests {
             moya.uuid: moya
         ]
         buildTargetsManager.findTargetsExceptTargetsReturnValue = targets
-        binariesManager.findBinariesOfTargetsBuildOptionsReturnValue = (
+        binariesStorage.findBinariesOfTargetsBuildOptionsReturnValue = (
             [alamofire.uuid: alamofire],
             [snapkit.uuid: snapkit, moya.uuid: moya]
         )
@@ -750,8 +750,8 @@ extension BuildManagerTests {
         XCTAssertNil(loggerBlockInvocations[5].metricKey)
         XCTAssertEqual(loggerBlockInvocations[5].level, .compact)
         XCTAssertEqual(loggerBlockInvocations[5].output, .all)
-        XCTAssertEqual(binariesManager.findBinariesOfTargetsBuildOptionsCallsCount, 1)
-        let findBinariesArguments = try XCTUnwrap(binariesManager.findBinariesOfTargetsBuildOptionsReceivedArguments)
+        XCTAssertEqual(binariesStorage.findBinariesOfTargetsBuildOptionsCallsCount, 1)
+        let findBinariesArguments = try XCTUnwrap(binariesStorage.findBinariesOfTargetsBuildOptionsReceivedArguments)
         XCTAssertEqual(findBinariesArguments.targets.count, 3)
         XCTAssertTrue(findBinariesArguments.targets.contains(alamofire.uuid))
         XCTAssertTrue(findBinariesArguments.targets.contains(moya.uuid))
@@ -853,9 +853,9 @@ extension BuildManagerTests {
         XCTAssertNil(loggerBlockInvocations[11].metricKey)
         XCTAssertEqual(loggerBlockInvocations[11].level, .result)
         XCTAssertEqual(loggerBlockInvocations[11].output, .all)
-        XCTAssertEqual(binariesManager.saveBinariesOfTargetsBuildOptionsBuildPathsCallsCount, 1)
+        XCTAssertEqual(binariesStorage.saveBinariesOfTargetsBuildOptionsBuildPathsCallsCount, 1)
         let saveBinariesArguments = try XCTUnwrap(
-            binariesManager.saveBinariesOfTargetsBuildOptionsBuildPathsReceivedArguments
+            binariesStorage.saveBinariesOfTargetsBuildOptionsBuildPathsReceivedArguments
         )
         XCTAssertEqual(saveBinariesArguments.targets.count, 2)
         XCTAssertTrue(saveBinariesArguments.targets.contains(snapkit.uuid))

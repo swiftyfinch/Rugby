@@ -8,7 +8,7 @@ final class PrebuildManagerTests: XCTestCase {
     private var xcodePhaseEditor: IXcodePhaseEditorMock!
     private var buildManager: IInternalBuildManagerMock!
     private var xcodeProject: IInternalXcodeProjectMock!
-    private var binariesManager: IBinariesStorageMock!
+    private var binariesStorage: IBinariesStorageMock!
 
     override func setUp() {
         super.setUp()
@@ -16,13 +16,13 @@ final class PrebuildManagerTests: XCTestCase {
         xcodePhaseEditor = IXcodePhaseEditorMock()
         buildManager = IInternalBuildManagerMock()
         xcodeProject = IInternalXcodeProjectMock()
-        binariesManager = IBinariesStorageMock()
+        binariesStorage = IBinariesStorageMock()
         sut = PrebuildManager(
             logger: logger,
             xcodePhaseEditor: xcodePhaseEditor,
             buildManager: buildManager,
             xcodeProject: xcodeProject,
-            binariesManager: binariesManager
+            binariesStorage: binariesStorage
         )
         Rainbow.enabled = true
     }
@@ -34,7 +34,7 @@ final class PrebuildManagerTests: XCTestCase {
         xcodePhaseEditor = nil
         buildManager = nil
         xcodeProject = nil
-        binariesManager = nil
+        binariesStorage = nil
     }
 }
 

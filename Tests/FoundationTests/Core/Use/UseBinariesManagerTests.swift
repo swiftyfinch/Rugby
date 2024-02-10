@@ -15,7 +15,7 @@ final class UseBinariesManagerTests: XCTestCase {
     private var xcodeProject: IInternalXcodeProjectMock!
     private var rugbyXcodeProject: IRugbyXcodeProjectMock!
     private var backupManager: IBackupManagerMock!
-    private var binariesManager: IBinariesStorageMock!
+    private var binariesStorage: IBinariesStorageMock!
     private var targetsHasher: ITargetsHasherMock!
     private var supportFilesPatcher: ISupportFilesPatcherMock!
     private var fileContentEditor: IFileContentEditorMock!
@@ -35,7 +35,7 @@ final class UseBinariesManagerTests: XCTestCase {
         xcodeProject = IInternalXcodeProjectMock()
         rugbyXcodeProject = IRugbyXcodeProjectMock()
         backupManager = IBackupManagerMock()
-        binariesManager = IBinariesStorageMock()
+        binariesStorage = IBinariesStorageMock()
         targetsHasher = ITargetsHasherMock()
         supportFilesPatcher = ISupportFilesPatcherMock()
         fileContentEditor = IFileContentEditorMock()
@@ -46,7 +46,7 @@ final class UseBinariesManagerTests: XCTestCase {
             xcodeProject: xcodeProject,
             rugbyXcodeProject: rugbyXcodeProject,
             backupManager: backupManager,
-            binariesManager: binariesManager,
+            binariesStorage: binariesStorage,
             targetsHasher: targetsHasher,
             supportFilesPatcher: supportFilesPatcher,
             fileContentEditor: fileContentEditor
@@ -63,7 +63,7 @@ final class UseBinariesManagerTests: XCTestCase {
         xcodeProject = nil
         rugbyXcodeProject = nil
         backupManager = nil
-        binariesManager = nil
+        binariesStorage = nil
         targetsHasher = nil
         supportFilesPatcher = nil
         fileContentEditor = nil
@@ -170,7 +170,7 @@ extension UseBinariesManagerTests {
                 localPodResources.uuid: localPodResources
             ]
         }
-        binariesManager.xcodeBinaryFolderPathClosure = { target in
+        binariesStorage.xcodeBinaryFolderPathClosure = { target in
             switch target.uuid {
             case snapkit.uuid: return "${HOME}/.rugby/bin/SnapKit/${CONFIGURATION}${EFFECTIVE_PLATFORM_NAME}-${ARCHS}/f6aa8a7"
             default: fatalError()
@@ -246,7 +246,7 @@ extension UseBinariesManagerTests {
         XCTAssertEqual(loggerBlockInvocations[3].level, .result)
         XCTAssertEqual(loggerBlockInvocations[3].output, .all)
         XCTAssertEqual(xcodeProject.findTargetsByExceptIncludingDependenciesCallsCount, 1)
-        XCTAssertEqual(binariesManager.xcodeBinaryFolderPathCallsCount, 1)
+        XCTAssertEqual(binariesStorage.xcodeBinaryFolderPathCallsCount, 1)
         XCTAssertEqual(supportFilesPatcher.prepareReplacementsForTargetCallsCount, 1)
         XCTAssertEqual(supportFilesPatcher.prepareReplacementsForTargetReceivedTarget?.uuid, localPod.uuid)
         XCTAssertEqual(fileContentEditor.replaceRegexFilePathCallsCount, 1)

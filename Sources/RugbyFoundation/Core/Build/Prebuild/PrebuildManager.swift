@@ -26,20 +26,20 @@ final class PrebuildManager: Loggable {
     private let xcodePhaseEditor: IXcodePhaseEditor
     private let buildManager: IInternalBuildManager
     private let xcodeProject: IInternalXcodeProject
-    private let binariesManager: IBinariesStorage
+    private let binariesStorage: IBinariesStorage
 
     init(
         logger: ILogger,
         xcodePhaseEditor: IXcodePhaseEditor,
         buildManager: IInternalBuildManager,
         xcodeProject: IInternalXcodeProject,
-        binariesManager: IBinariesStorage
+        binariesStorage: IBinariesStorage
     ) {
         self.logger = logger
         self.xcodePhaseEditor = xcodePhaseEditor
         self.buildManager = buildManager
         self.xcodeProject = xcodeProject
-        self.binariesManager = binariesManager
+        self.binariesStorage = binariesStorage
     }
 }
 
@@ -84,7 +84,7 @@ extension PrebuildManager: IPrebuildManager {
         paths: XcodeBuildPaths
     ) async throws {
         let productFolderPaths = targets.values.compactMap { [weak self] target in
-            self?.binariesManager.productFolderPath(target: target, options: options, paths: paths)
+            self?.binariesStorage.productFolderPath(target: target, options: options, paths: paths)
         }
         try await productFolderPaths.concurrentForEach { try Folder.create(at: $0) }
     }

@@ -22,7 +22,7 @@ public extension Vault {
         return WarmupManager(logger: logger,
                              rugbyXcodeProject: RugbyXcodeProject(xcodeProject: xcodeProject),
                              buildTargetsManager: buildTargetsManager,
-                             binariesManager: binariesManager,
+                             binariesStorage: binariesStorage,
                              targetsHasher: targetsHasher(),
                              cacheDownloader: cacheDownloader,
                              metricsLogger: metricsLogger)

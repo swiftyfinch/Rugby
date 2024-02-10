@@ -37,7 +37,7 @@ extension Vault {
                             backupManager: backupManager(),
                             processMonitor: processMonitor,
                             xcodeBuild: xcodeBuild,
-                            binariesManager: binariesManager,
+                            binariesStorage: binariesStorage,
                             targetsHasher: targetsHasher(),
                             useBinariesManager: useBinariesManager,
                             binariesCleaner: binariesCleaner,

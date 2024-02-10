@@ -45,7 +45,7 @@ final class WarmupManager: Loggable {
     let logger: ILogger
     private let rugbyXcodeProject: IRugbyXcodeProject
     private let buildTargetsManager: IBuildTargetsManager
-    private let binariesManager: IBinariesStorage
+    private let binariesStorage: IBinariesStorage
     private let targetsHasher: ITargetsHasher
     private let cacheDownloader: ICacheDownloader
     private let metricsLogger: IMetricsLogger
@@ -53,14 +53,14 @@ final class WarmupManager: Loggable {
     init(logger: ILogger,
          rugbyXcodeProject: IRugbyXcodeProject,
          buildTargetsManager: IBuildTargetsManager,
-         binariesManager: IBinariesStorage,
+         binariesStorage: IBinariesStorage,
          targetsHasher: ITargetsHasher,
          cacheDownloader: ICacheDownloader,
          metricsLogger: IMetricsLogger) {
         self.logger = logger
         self.rugbyXcodeProject = rugbyXcodeProject
         self.buildTargetsManager = buildTargetsManager
-        self.binariesManager = binariesManager
+        self.binariesStorage = binariesStorage
         self.targetsHasher = targetsHasher
         self.cacheDownloader = cacheDownloader
         self.metricsLogger = metricsLogger
@@ -79,13 +79,13 @@ final class WarmupManager: Loggable {
         try await log("Hashing Targets", auto: await targetsHasher.hash(targets, xcargs: options.xcargs))
         let (_, notFound) = try await log(
             "Finding Binaries",
-            auto: binariesManager.findBinaries(ofTargets: targets, buildOptions: options)
+            auto: binariesStorage.findBinaries(ofTargets: targets, buildOptions: options)
         )
 
         if notFound.values.isNotEmpty {
             let logLevel: LogLevel = dryRun ? .result : .info
             let notFoundPaths = try notFound.values
-                .map { try "- \(binariesManager.finderBinaryFolderPath($0, buildOptions: options))" }
+                .map { try "- \(binariesStorage.finderBinaryFolderPath($0, buildOptions: options))" }
                 .caseInsensitiveSorted()
             await log("Not Found:", level: logLevel)
             await logList(notFoundPaths, level: logLevel)
@@ -152,10 +152,10 @@ private extension WarmupManager {
         options: XcodeBuildOptions
     ) throws -> [RemoteBinaryInfo] {
         try targets.values.map { target in
-            let binaryPath = try binariesManager.finderBinaryFolderPath(target, buildOptions: options)
+            let binaryPath = try binariesStorage.finderBinaryFolderPath(target, buildOptions: options)
             let binaryConfigFolder = URL(fileURLWithPath: binaryPath).deletingLastPathComponent()
 
-            let relativePath = try binariesManager.binaryRelativePath(target, buildOptions: options)
+            let relativePath = try binariesStorage.binaryRelativePath(target, buildOptions: options)
             let url = endpoint.appendingPathComponent(relativePath).appendingPathExtension("zip")
 
             return (url, binaryConfigFolder)
