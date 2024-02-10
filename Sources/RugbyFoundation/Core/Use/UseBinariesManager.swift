@@ -33,7 +33,7 @@ final class UseBinariesManager: Loggable {
     private let xcodeProject: IInternalXcodeProject
     private let rugbyXcodeProject: IRugbyXcodeProject
     private let backupManager: IBackupManager
-    private let binariesManager: IBinariesStorage
+    private let binariesStorage: IBinariesStorage
     private let targetsHasher: ITargetsHasher
     private let supportFilesPatcher: ISupportFilesPatcher
     private let fileContentEditor: IFileContentEditor
@@ -44,7 +44,7 @@ final class UseBinariesManager: Loggable {
          xcodeProject: IInternalXcodeProject,
          rugbyXcodeProject: IRugbyXcodeProject,
          backupManager: IBackupManager,
-         binariesManager: IBinariesStorage,
+         binariesStorage: IBinariesStorage,
          targetsHasher: ITargetsHasher,
          supportFilesPatcher: ISupportFilesPatcher,
          fileContentEditor: IFileContentEditor) {
@@ -54,7 +54,7 @@ final class UseBinariesManager: Loggable {
         self.xcodeProject = xcodeProject
         self.rugbyXcodeProject = rugbyXcodeProject
         self.backupManager = backupManager
-        self.binariesManager = binariesManager
+        self.binariesStorage = binariesStorage
         self.targetsHasher = targetsHasher
         self.supportFilesPatcher = supportFilesPatcher
         self.fileContentEditor = fileContentEditor
@@ -69,7 +69,7 @@ extension UseBinariesManager {
         try binaryUsers.values.forEach { target in
             target.binaryProducts = try target.binaryDependencies.values.compactMap { target in
                 guard let product = target.product else { return nil }
-                product.binaryPath = try binariesManager.xcodeBinaryFolderPath(target)
+                product.binaryPath = try binariesStorage.xcodeBinaryFolderPath(target)
                 return product
             }
         }

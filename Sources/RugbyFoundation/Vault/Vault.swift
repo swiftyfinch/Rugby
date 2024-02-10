@@ -92,7 +92,7 @@ public final class Vault {
 
     // MARK: - Common
 
-    private(set) lazy var binariesManager = BinariesStorage(
+    private(set) lazy var binariesStorage = BinariesStorage(
         logger: logger,
         sharedPath: router.binFolderPath,
         keepHashYamls: env.keepHashYamls

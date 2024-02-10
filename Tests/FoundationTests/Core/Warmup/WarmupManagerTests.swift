@@ -12,7 +12,7 @@ final class WarmupManagerTests: XCTestCase {
     ]!
     private var rugbyXcodeProject: IRugbyXcodeProjectMock!
     private var buildTargetsManager: IBuildTargetsManagerMock!
-    private var binariesManager: IBinariesStorageMock!
+    private var binariesStorage: IBinariesStorageMock!
     private var targetsHasher: ITargetsHasherMock!
     private var cacheDownloader: ICacheDownloaderMock!
     private var metricsLogger: IMetricsLoggerMock!
@@ -29,7 +29,7 @@ final class WarmupManagerTests: XCTestCase {
 
         rugbyXcodeProject = IRugbyXcodeProjectMock()
         buildTargetsManager = IBuildTargetsManagerMock()
-        binariesManager = IBinariesStorageMock()
+        binariesStorage = IBinariesStorageMock()
         targetsHasher = ITargetsHasherMock()
         cacheDownloader = ICacheDownloaderMock()
         metricsLogger = IMetricsLoggerMock()
@@ -37,7 +37,7 @@ final class WarmupManagerTests: XCTestCase {
             logger: logger,
             rugbyXcodeProject: rugbyXcodeProject,
             buildTargetsManager: buildTargetsManager,
-            binariesManager: binariesManager,
+            binariesStorage: binariesStorage,
             targetsHasher: targetsHasher,
             cacheDownloader: cacheDownloader,
             metricsLogger: metricsLogger
@@ -50,7 +50,7 @@ final class WarmupManagerTests: XCTestCase {
         loggerBlockInvocations = nil
         rugbyXcodeProject = nil
         buildTargetsManager = nil
-        binariesManager = nil
+        binariesStorage = nil
         targetsHasher = nil
         cacheDownloader = nil
         metricsLogger = nil
@@ -142,7 +142,7 @@ extension WarmupManagerTests {
             alamofire.uuid: alamofire,
             snapkit.uuid: snapkit
         ]
-        binariesManager.findBinariesOfTargetsBuildOptionsReturnValue = (
+        binariesStorage.findBinariesOfTargetsBuildOptionsReturnValue = (
             [snapkit.uuid: snapkit, alamofire.uuid: alamofire],
             [:]
         )
@@ -181,7 +181,7 @@ extension WarmupManagerTests {
         XCTAssertEqual(loggerBlockInvocations[1].level, .compact)
         XCTAssertEqual(loggerBlockInvocations[1].output, .all)
 
-        let findBinariesArguments = try XCTUnwrap(binariesManager.findBinariesOfTargetsBuildOptionsReceivedArguments)
+        let findBinariesArguments = try XCTUnwrap(binariesStorage.findBinariesOfTargetsBuildOptionsReceivedArguments)
         XCTAssertEqual(findBinariesArguments.targets.count, 2)
         XCTAssertTrue(findBinariesArguments.targets.contains(alamofire.uuid))
         XCTAssertTrue(findBinariesArguments.targets.contains(snapkit.uuid))
@@ -212,12 +212,12 @@ extension WarmupManagerTests {
             alamofire.uuid: alamofire,
             snapkit.uuid: snapkit
         ]
-        binariesManager.findBinariesOfTargetsBuildOptionsReturnValue = (
+        binariesStorage.findBinariesOfTargetsBuildOptionsReturnValue = (
             [moya.uuid: moya],
             [snapkit.uuid: snapkit, alamofire.uuid: alamofire]
         )
         let xcodeBuildOptions = XcodeBuildOptions.mock()
-        binariesManager.finderBinaryFolderPathBuildOptionsClosure = { target, options in
+        binariesStorage.finderBinaryFolderPathBuildOptionsClosure = { target, options in
             guard options == xcodeBuildOptions else { fatalError() }
             switch target.uuid {
             case alamofire.uuid:
@@ -261,7 +261,7 @@ extension WarmupManagerTests {
         XCTAssertEqual(loggerBlockInvocations[1].level, .compact)
         XCTAssertEqual(loggerBlockInvocations[1].output, .all)
 
-        let findBinariesArguments = try XCTUnwrap(binariesManager.findBinariesOfTargetsBuildOptionsReceivedArguments)
+        let findBinariesArguments = try XCTUnwrap(binariesStorage.findBinariesOfTargetsBuildOptionsReceivedArguments)
         XCTAssertEqual(findBinariesArguments.targets.count, 2)
         XCTAssertTrue(findBinariesArguments.targets.contains(alamofire.uuid))
         XCTAssertTrue(findBinariesArguments.targets.contains(snapkit.uuid))
@@ -311,11 +311,11 @@ extension WarmupManagerTests {
             snapkit.uuid: snapkit,
             moya.uuid: moya
         ]
-        binariesManager.findBinariesOfTargetsBuildOptionsReturnValue = (
+        binariesStorage.findBinariesOfTargetsBuildOptionsReturnValue = (
             [moya.uuid: moya],
             [snapkit.uuid: snapkit, alamofire.uuid: alamofire]
         )
-        binariesManager.finderBinaryFolderPathBuildOptionsClosure = { target, options in
+        binariesStorage.finderBinaryFolderPathBuildOptionsClosure = { target, options in
             guard options == xcodeBuildOptions else { fatalError() }
             switch target.uuid {
             case alamofire.uuid:
@@ -325,7 +325,7 @@ extension WarmupManagerTests {
             default: fatalError()
             }
         }
-        binariesManager.binaryRelativePathBuildOptionsClosure = { target, options in
+        binariesStorage.binaryRelativePathBuildOptionsClosure = { target, options in
             guard options == xcodeBuildOptions else { fatalError() }
             switch target.uuid {
             case alamofire.uuid:
@@ -382,7 +382,7 @@ extension WarmupManagerTests {
         XCTAssertEqual(loggerBlockInvocations[1].level, .compact)
         XCTAssertEqual(loggerBlockInvocations[1].output, .all)
 
-        let findBinariesArguments = try XCTUnwrap(binariesManager.findBinariesOfTargetsBuildOptionsReceivedArguments)
+        let findBinariesArguments = try XCTUnwrap(binariesStorage.findBinariesOfTargetsBuildOptionsReceivedArguments)
         XCTAssertEqual(findBinariesArguments.targets.count, 3)
         XCTAssertTrue(findBinariesArguments.targets.contains(alamofire.uuid))
         XCTAssertTrue(findBinariesArguments.targets.contains(snapkit.uuid))
@@ -471,11 +471,11 @@ extension WarmupManagerTests {
             moya.uuid: moya,
             localPod.uuid: localPod
         ]
-        binariesManager.findBinariesOfTargetsBuildOptionsReturnValue = (
+        binariesStorage.findBinariesOfTargetsBuildOptionsReturnValue = (
             [moya.uuid: moya],
             [snapkit.uuid: snapkit, alamofire.uuid: alamofire, localPod.uuid: localPod]
         )
-        binariesManager.finderBinaryFolderPathBuildOptionsClosure = { target, options in
+        binariesStorage.finderBinaryFolderPathBuildOptionsClosure = { target, options in
             guard options == xcodeBuildOptions else { fatalError() }
             switch target.uuid {
             case alamofire.uuid:
@@ -487,7 +487,7 @@ extension WarmupManagerTests {
             default: fatalError()
             }
         }
-        binariesManager.binaryRelativePathBuildOptionsClosure = { target, options in
+        binariesStorage.binaryRelativePathBuildOptionsClosure = { target, options in
             guard options == xcodeBuildOptions else { fatalError() }
             switch target.uuid {
             case alamofire.uuid:
@@ -558,7 +558,7 @@ extension WarmupManagerTests {
         XCTAssertEqual(loggerBlockInvocations[1].level, .compact)
         XCTAssertEqual(loggerBlockInvocations[1].output, .all)
 
-        let findBinariesArguments = try XCTUnwrap(binariesManager.findBinariesOfTargetsBuildOptionsReceivedArguments)
+        let findBinariesArguments = try XCTUnwrap(binariesStorage.findBinariesOfTargetsBuildOptionsReceivedArguments)
         XCTAssertEqual(findBinariesArguments.targets.count, 4)
         XCTAssertTrue(findBinariesArguments.targets.contains(alamofire.uuid))
         XCTAssertTrue(findBinariesArguments.targets.contains(snapkit.uuid))

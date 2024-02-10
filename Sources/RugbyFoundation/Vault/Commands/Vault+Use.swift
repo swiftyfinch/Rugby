@@ -16,7 +16,7 @@ extension Vault {
                            xcodeProject: xcodeProject,
                            rugbyXcodeProject: RugbyXcodeProject(xcodeProject: xcodeProject),
                            backupManager: backupManager(),
-                           binariesManager: binariesManager,
+                           binariesStorage: binariesStorage,
                            targetsHasher: targetsHasher(),
                            supportFilesPatcher: SupportFilesPatcher(),
                            fileContentEditor: FileContentEditor())

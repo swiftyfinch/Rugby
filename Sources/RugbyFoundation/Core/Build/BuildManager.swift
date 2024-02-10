@@ -38,7 +38,7 @@ final class BuildManager: Loggable {
     private let backupManager: IBackupManager
     private let processMonitor: IProcessMonitor
     private let xcodeBuild: IXcodeBuild
-    private let binariesManager: IBinariesStorage
+    private let binariesStorage: IBinariesStorage
     private let targetsHasher: ITargetsHasher
     private let useBinariesManager: IUseBinariesManager
     private let binariesCleaner: IBinariesCleaner
@@ -54,7 +54,7 @@ final class BuildManager: Loggable {
          backupManager: IBackupManager,
          processMonitor: IProcessMonitor,
          xcodeBuild: IXcodeBuild,
-         binariesManager: IBinariesStorage,
+         binariesStorage: IBinariesStorage,
          targetsHasher: ITargetsHasher,
          useBinariesManager: IUseBinariesManager,
          binariesCleaner: IBinariesCleaner,
@@ -69,7 +69,7 @@ final class BuildManager: Loggable {
         self.backupManager = backupManager
         self.processMonitor = processMonitor
         self.xcodeBuild = xcodeBuild
-        self.binariesManager = binariesManager
+        self.binariesStorage = binariesStorage
         self.targetsHasher = targetsHasher
         self.useBinariesManager = useBinariesManager
         self.binariesCleaner = binariesCleaner
@@ -90,7 +90,7 @@ final class BuildManager: Loggable {
         if !ignoreCache {
             (shared, buildTargets) = try await log(
                 "Finding Binaries",
-                auto: binariesManager.findBinaries(ofTargets: buildTargets, buildOptions: options)
+                auto: binariesStorage.findBinaries(ofTargets: buildTargets, buildOptions: options)
             )
         }
         guard buildTargets.isNotEmpty else {
@@ -200,7 +200,7 @@ extension BuildManager: IBuildManager {
         try await log(
             "Saving binaries (\(buildTarget.explicitDependencies.count))",
             level: .result,
-            auto: await binariesManager.saveBinaries(ofTargets: buildTarget.explicitDependencies,
+            auto: await binariesStorage.saveBinaries(ofTargets: buildTarget.explicitDependencies,
                                                      buildOptions: options,
                                                      buildPaths: paths)
         )
