@@ -102,7 +102,7 @@ extension UseBinariesManagerTests {
         let targetsRegex = try NSRegularExpression(pattern: "^Alamofire$")
         let exceptTargetsRegex = try NSRegularExpression(pattern: "^SnapKit$")
         rugbyXcodeProject.isAlreadyUsingRugbyReturnValue = false
-        buildTargetsManager.findTargetsExceptTargetsReturnValue = [:]
+        buildTargetsManager.findTargetsExceptTargetsIncludingTestsReturnValue = [:]
 
         // Act
         try await sut.use(
@@ -113,9 +113,9 @@ extension UseBinariesManagerTests {
         )
 
         // Assert
-        XCTAssertEqual(buildTargetsManager.findTargetsExceptTargetsCallsCount, 1)
-        XCTAssertEqual(buildTargetsManager.findTargetsExceptTargetsReceivedArguments?.targets, targetsRegex)
-        XCTAssertEqual(buildTargetsManager.findTargetsExceptTargetsReceivedArguments?.exceptTargets, exceptTargetsRegex)
+        XCTAssertEqual(buildTargetsManager.findTargetsExceptTargetsIncludingTestsCallsCount, 1)
+        XCTAssertEqual(buildTargetsManager.findTargetsExceptTargetsIncludingTestsReceivedArguments?.targets, targetsRegex)
+        XCTAssertEqual(buildTargetsManager.findTargetsExceptTargetsIncludingTestsReceivedArguments?.exceptTargets, exceptTargetsRegex)
 
         XCTAssertEqual(loggerBlockInvocations.count, 1)
         XCTAssertEqual(loggerBlockInvocations[0].header, "Finding Build Targets")
@@ -152,7 +152,7 @@ extension UseBinariesManagerTests {
         let localPodResources = IInternalTargetMock()
         localPodResources.underlyingUuid = "test_localPodResources_uuid"
         localPodResources.product = Product(name: "LocalPodResources", moduleName: "LocalPodResources", type: .framework, parentFolderName: "LocalPodResources")
-        buildTargetsManager.findTargetsExceptTargetsClosure = { targets, exceptTargets in
+        buildTargetsManager.findTargetsExceptTargetsIncludingTestsClosure = { targets, exceptTargets, _ in
             guard targets == targetsRegex, exceptTargets == exceptTargetsRegex else { fatalError() }
             return [
                 snapkit.uuid: snapkit,
@@ -206,9 +206,9 @@ extension UseBinariesManagerTests {
         XCTAssertNil(loggerBlockInvocations[0].metricKey)
         XCTAssertEqual(loggerBlockInvocations[0].level, .compact)
         XCTAssertEqual(loggerBlockInvocations[0].output, .all)
-        XCTAssertEqual(buildTargetsManager.findTargetsExceptTargetsCallsCount, 1)
-        XCTAssertEqual(buildTargetsManager.findTargetsExceptTargetsReceivedArguments?.targets, targetsRegex)
-        XCTAssertEqual(buildTargetsManager.findTargetsExceptTargetsReceivedArguments?.exceptTargets, exceptTargetsRegex)
+        XCTAssertEqual(buildTargetsManager.findTargetsExceptTargetsIncludingTestsCallsCount, 1)
+        XCTAssertEqual(buildTargetsManager.findTargetsExceptTargetsIncludingTestsReceivedArguments?.targets, targetsRegex)
+        XCTAssertEqual(buildTargetsManager.findTargetsExceptTargetsIncludingTestsReceivedArguments?.exceptTargets, exceptTargetsRegex)
 
         XCTAssertEqual(loggerBlockInvocations[1].header, "Backuping")
         XCTAssertNil(loggerBlockInvocations[1].footer)
