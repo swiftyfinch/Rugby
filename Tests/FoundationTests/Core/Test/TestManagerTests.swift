@@ -239,7 +239,7 @@ extension TestManagerTests {
         XCTAssertTrue(findMissingArguments.targets.contains(localPodFrameworkUnitTests.uuid))
         XCTAssertTrue(findMissingArguments.targets.contains(localPodLibraryUnitTests.uuid))
 
-        XCTAssertEqual(loggerBlockInvocations[2].header, "Affected Test Targets")
+        XCTAssertEqual(loggerBlockInvocations[2].header, "Affected Test Targets (1)")
         XCTAssertEqual(loggerBlockInvocations[2].level, .compact)
         XCTAssertEqual(loggerBlockInvocations[2].output, .all)
 
