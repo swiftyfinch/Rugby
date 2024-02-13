@@ -37,7 +37,11 @@ final class TestsStorage: Loggable {
         buildOptions: XcodeBuildOptions
     ) async throws -> [(target: IInternalTarget, fullPath: URL, hashContext: String)] {
         try await targets.values.concurrentCompactMap { target in
-            guard let hash = target.hash, let hashContext = target.hashContext else { return nil }
+            // Skipping targets w/o product, e.g. "AppHost-*"
+            guard target.product != nil,
+                  let hash = target.hash,
+                  let hashContext = target.hashContext
+            else { return nil }
             let relativePath = try self.binariesStorage.binaryRelativePath(target, buildOptions: buildOptions)
             let fullPath = URL(fileURLWithPath: "\(self.sharedPath)/\(relativePath)/\(hash).yml")
             return (target, fullPath, hashContext)
