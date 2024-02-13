@@ -58,11 +58,23 @@ extension TestsStorageTests {
         localPodFrameworkUnitTests.underlyingName = "LocalPod-framework-Unit-Tests"
         localPodFrameworkUnitTests.hash = "b64104e"
         localPodFrameworkUnitTests.hashContext = "b64104e_hashContext"
+        localPodFrameworkUnitTests.product = .init(
+            name: "LocalPod-framework-Unit-Tests",
+            moduleName: nil,
+            type: .unitTestBundle,
+            parentFolderName: nil
+        )
         let localPodLibraryUnitTests = IInternalTargetMock()
         localPodLibraryUnitTests.underlyingUuid = "localPodLibraryUnitTests_uuid"
         localPodLibraryUnitTests.underlyingName = "LocalPod-library-Unit-Tests"
         localPodLibraryUnitTests.hash = "1417ca1"
         localPodLibraryUnitTests.hashContext = "1417ca1_hashContext"
+        localPodLibraryUnitTests.product = .init(
+            name: "LocalPod-library-Unit-Tests",
+            moduleName: nil,
+            type: .unitTestBundle,
+            parentFolderName: nil
+        )
         let targets: TargetsMap = [
             localPodFrameworkUnitTests.uuid: localPodFrameworkUnitTests,
             localPodLibraryUnitTests.uuid: localPodLibraryUnitTests
@@ -103,11 +115,23 @@ extension TestsStorageTests {
         localPodFrameworkUnitTests.name = "LocalPod-framework-Unit-Tests"
         localPodFrameworkUnitTests.hash = "b64104e"
         localPodFrameworkUnitTests.hashContext = "b64104e_hashContext"
+        localPodFrameworkUnitTests.product = .init(
+            name: "LocalPod-framework-Unit-Tests",
+            moduleName: nil,
+            type: .unitTestBundle,
+            parentFolderName: nil
+        )
         let localPodLibraryUnitTests = IInternalTargetMock()
         localPodLibraryUnitTests.uuid = "localPodLibraryUnitTests_uuid"
         localPodLibraryUnitTests.name = "LocalPod-library-Unit-Tests"
         localPodLibraryUnitTests.hash = "1417ca1"
         localPodLibraryUnitTests.hashContext = "1417ca1_hashContext"
+        localPodLibraryUnitTests.product = .init(
+            name: "LocalPod-library-Unit-Tests",
+            moduleName: nil,
+            type: .unitTestBundle,
+            parentFolderName: nil
+        )
         let targets: TargetsMap = [
             localPodFrameworkUnitTests.uuid: localPodFrameworkUnitTests,
             localPodLibraryUnitTests.uuid: localPodLibraryUnitTests
