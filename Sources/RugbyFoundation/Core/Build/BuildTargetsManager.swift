@@ -5,10 +5,20 @@ import Foundation
 protocol IBuildTargetsManager: AnyObject {
     func findTargets(
         _ targets: NSRegularExpression?,
-        exceptTargets: NSRegularExpression?
+        exceptTargets: NSRegularExpression?,
+        includingTests: Bool
     ) async throws -> TargetsMap
 
     func createTarget(dependencies: TargetsMap) async throws -> IInternalTarget
+}
+
+extension IBuildTargetsManager {
+    func findTargets(
+        _ targets: NSRegularExpression?,
+        exceptTargets: NSRegularExpression?
+    ) async throws -> TargetsMap {
+        try await findTargets(targets, exceptTargets: exceptTargets, includingTests: false)
+    }
 }
 
 // MARK: - Implementation
@@ -23,14 +33,18 @@ final class BuildTargetsManager {
 }
 
 extension BuildTargetsManager: IBuildTargetsManager {
-    func findTargets(_ targets: NSRegularExpression?,
-                     exceptTargets: NSRegularExpression?) async throws -> TargetsMap {
+    func findTargets(
+        _ targets: NSRegularExpression?,
+        exceptTargets: NSRegularExpression?,
+        includingTests: Bool
+    ) async throws -> TargetsMap {
         try await xcodeProject.findTargets(
             by: targets,
             except: exceptTargets,
             includingDependencies: true
         ).filter { _, target in
-            target.isNative && !target.isTests && !target.isPodsUmbrella
+            guard target.isNative, !target.isPodsUmbrella else { return false }
+            return includingTests || !target.isTests
         }
     }
 

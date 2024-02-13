@@ -125,7 +125,7 @@ extension BuildManagerTests {
 
     func test_build_cantFindBuildTargets() async throws {
         rugbyXcodeProject.isAlreadyUsingRugbyReturnValue = false
-        buildTargetsManager.findTargetsExceptTargetsReturnValue = [:]
+        buildTargetsManager.findTargetsExceptTargetsIncludingTestsReturnValue = [:]
 
         // Act
         var resultError: Error?
@@ -144,7 +144,7 @@ extension BuildManagerTests {
         // Assert
         XCTAssertEqual(environmentCollector.logXcodeVersionCallsCount, 1)
         XCTAssertEqual(rugbyXcodeProject.isAlreadyUsingRugbyCallsCount, 1)
-        XCTAssertEqual(buildTargetsManager.findTargetsExceptTargetsCallsCount, 1)
+        XCTAssertEqual(buildTargetsManager.findTargetsExceptTargetsIncludingTestsCallsCount, 1)
         XCTAssertEqual(resultError as? BuildError, .cantFindBuildTargets)
         XCTAssertEqual(resultError?.localizedDescription, "Couldn\'t find any build targets.")
     }
@@ -164,7 +164,7 @@ extension BuildManagerTests {
             snapkit.uuid: snapkit,
             moya.uuid: moya
         ]
-        buildTargetsManager.findTargetsExceptTargetsReturnValue = targets
+        buildTargetsManager.findTargetsExceptTargetsIncludingTestsReturnValue = targets
         binariesStorage.findBinariesOfTargetsBuildOptionsReturnValue = (targets, [:])
         let buildOptions: XcodeBuildOptions = .mock()
 
@@ -189,8 +189,10 @@ extension BuildManagerTests {
         XCTAssertNil(loggerBlockInvocations[0].metricKey)
         XCTAssertEqual(loggerBlockInvocations[0].level, .compact)
         XCTAssertEqual(loggerBlockInvocations[0].output, .all)
-        XCTAssertEqual(buildTargetsManager.findTargetsExceptTargetsCallsCount, 1)
-        let findTargetsArguments = try XCTUnwrap(buildTargetsManager.findTargetsExceptTargetsReceivedArguments)
+        XCTAssertEqual(buildTargetsManager.findTargetsExceptTargetsIncludingTestsCallsCount, 1)
+        let findTargetsArguments = try XCTUnwrap(
+            buildTargetsManager.findTargetsExceptTargetsIncludingTestsReceivedArguments
+        )
         XCTAssertEqual(findTargetsArguments.targets, targetsRegex)
         XCTAssertEqual(findTargetsArguments.exceptTargets, exceptTargetsRegex)
 
@@ -270,7 +272,7 @@ extension BuildManagerTests {
             snapkit.uuid: snapkit,
             moya.uuid: moya
         ]
-        buildTargetsManager.findTargetsExceptTargetsReturnValue = targets
+        buildTargetsManager.findTargetsExceptTargetsIncludingTestsReturnValue = targets
         binariesStorage.findBinariesOfTargetsBuildOptionsReturnValue = (
             [alamofire.uuid: alamofire],
             [snapkit.uuid: snapkit, moya.uuid: moya]
@@ -307,8 +309,10 @@ extension BuildManagerTests {
         XCTAssertNil(loggerBlockInvocations[0].metricKey)
         XCTAssertEqual(loggerBlockInvocations[0].level, .compact)
         XCTAssertEqual(loggerBlockInvocations[0].output, .all)
-        XCTAssertEqual(buildTargetsManager.findTargetsExceptTargetsCallsCount, 1)
-        let findTargetsArguments = try XCTUnwrap(buildTargetsManager.findTargetsExceptTargetsReceivedArguments)
+        XCTAssertEqual(buildTargetsManager.findTargetsExceptTargetsIncludingTestsCallsCount, 1)
+        let findTargetsArguments = try XCTUnwrap(
+            buildTargetsManager.findTargetsExceptTargetsIncludingTestsReceivedArguments
+        )
         XCTAssertEqual(findTargetsArguments.targets, targetsRegex)
         XCTAssertEqual(findTargetsArguments.exceptTargets, exceptTargetsRegex)
 
@@ -445,7 +449,7 @@ extension BuildManagerTests {
             snapkit.uuid: snapkit,
             moya.uuid: moya
         ]
-        buildTargetsManager.findTargetsExceptTargetsReturnValue = targets
+        buildTargetsManager.findTargetsExceptTargetsIncludingTestsReturnValue = targets
         binariesStorage.findBinariesOfTargetsBuildOptionsReturnValue = (
             [alamofire.uuid: alamofire],
             [snapkit.uuid: snapkit, moya.uuid: moya]
@@ -491,8 +495,10 @@ extension BuildManagerTests {
         XCTAssertNil(loggerBlockInvocations[0].metricKey)
         XCTAssertEqual(loggerBlockInvocations[0].level, .compact)
         XCTAssertEqual(loggerBlockInvocations[0].output, .all)
-        XCTAssertEqual(buildTargetsManager.findTargetsExceptTargetsCallsCount, 1)
-        let findTargetsArguments = try XCTUnwrap(buildTargetsManager.findTargetsExceptTargetsReceivedArguments)
+        XCTAssertEqual(buildTargetsManager.findTargetsExceptTargetsIncludingTestsCallsCount, 1)
+        let findTargetsArguments = try XCTUnwrap(
+            buildTargetsManager.findTargetsExceptTargetsIncludingTestsReceivedArguments
+        )
         XCTAssertEqual(findTargetsArguments.targets, targetsRegex)
         XCTAssertEqual(findTargetsArguments.exceptTargets, exceptTargetsRegex)
 
@@ -659,7 +665,7 @@ extension BuildManagerTests {
             snapkit.uuid: snapkit,
             moya.uuid: moya
         ]
-        buildTargetsManager.findTargetsExceptTargetsReturnValue = targets
+        buildTargetsManager.findTargetsExceptTargetsIncludingTestsReturnValue = targets
         binariesStorage.findBinariesOfTargetsBuildOptionsReturnValue = (
             [alamofire.uuid: alamofire],
             [snapkit.uuid: snapkit, moya.uuid: moya]
@@ -700,8 +706,10 @@ extension BuildManagerTests {
         XCTAssertNil(loggerBlockInvocations[0].metricKey)
         XCTAssertEqual(loggerBlockInvocations[0].level, .compact)
         XCTAssertEqual(loggerBlockInvocations[0].output, .all)
-        XCTAssertEqual(buildTargetsManager.findTargetsExceptTargetsCallsCount, 1)
-        let findTargetsArguments = try XCTUnwrap(buildTargetsManager.findTargetsExceptTargetsReceivedArguments)
+        XCTAssertEqual(buildTargetsManager.findTargetsExceptTargetsIncludingTestsCallsCount, 1)
+        let findTargetsArguments = try XCTUnwrap(
+            buildTargetsManager.findTargetsExceptTargetsIncludingTestsReceivedArguments
+        )
         XCTAssertEqual(findTargetsArguments.targets, targetsRegex)
         XCTAssertEqual(findTargetsArguments.exceptTargets, exceptTargetsRegex)
 
@@ -872,7 +880,7 @@ extension BuildManagerTests {
         let snapkit = IInternalTargetMock()
         snapkit.underlyingUuid = "test_snapkit_uuid"
         rugbyXcodeProject.isAlreadyUsingRugbyReturnValue = false
-        buildTargetsManager.findTargetsExceptTargetsReturnValue = [snapkit.uuid: snapkit]
+        buildTargetsManager.findTargetsExceptTargetsIncludingTestsReturnValue = [snapkit.uuid: snapkit]
 
         // Act
         _ = try await sut.prepare(
@@ -892,8 +900,10 @@ extension BuildManagerTests {
         XCTAssertNil(loggerBlockInvocations[0].metricKey)
         XCTAssertEqual(loggerBlockInvocations[0].level, .compact)
         XCTAssertEqual(loggerBlockInvocations[0].output, .all)
-        XCTAssertEqual(buildTargetsManager.findTargetsExceptTargetsCallsCount, 1)
-        let findTargetsArguments = try XCTUnwrap(buildTargetsManager.findTargetsExceptTargetsReceivedArguments)
+        XCTAssertEqual(buildTargetsManager.findTargetsExceptTargetsIncludingTestsCallsCount, 1)
+        let findTargetsArguments = try XCTUnwrap(
+            buildTargetsManager.findTargetsExceptTargetsIncludingTestsReceivedArguments
+        )
         XCTAssertEqual(findTargetsArguments.targets, targetsRegex)
         XCTAssertEqual(findTargetsArguments.exceptTargets, exceptTargetsRegex)
 

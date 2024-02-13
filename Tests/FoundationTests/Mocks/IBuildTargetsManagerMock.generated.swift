@@ -10,25 +10,25 @@ final class IBuildTargetsManagerMock: IBuildTargetsManager {
 
     // MARK: - findTargets
 
-    var findTargetsExceptTargetsThrowableError: Error?
-    var findTargetsExceptTargetsCallsCount = 0
-    var findTargetsExceptTargetsCalled: Bool { findTargetsExceptTargetsCallsCount > 0 }
-    var findTargetsExceptTargetsReceivedArguments: (targets: NSRegularExpression?, exceptTargets: NSRegularExpression?)?
-    var findTargetsExceptTargetsReceivedInvocations: [(targets: NSRegularExpression?, exceptTargets: NSRegularExpression?)] = []
-    var findTargetsExceptTargetsReturnValue: TargetsMap!
-    var findTargetsExceptTargetsClosure: ((NSRegularExpression?, NSRegularExpression?) async throws -> TargetsMap)?
+    var findTargetsExceptTargetsIncludingTestsThrowableError: Error?
+    var findTargetsExceptTargetsIncludingTestsCallsCount = 0
+    var findTargetsExceptTargetsIncludingTestsCalled: Bool { findTargetsExceptTargetsIncludingTestsCallsCount > 0 }
+    var findTargetsExceptTargetsIncludingTestsReceivedArguments: (targets: NSRegularExpression?, exceptTargets: NSRegularExpression?, includingTests: Bool)?
+    var findTargetsExceptTargetsIncludingTestsReceivedInvocations: [(targets: NSRegularExpression?, exceptTargets: NSRegularExpression?, includingTests: Bool)] = []
+    var findTargetsExceptTargetsIncludingTestsReturnValue: TargetsMap!
+    var findTargetsExceptTargetsIncludingTestsClosure: ((NSRegularExpression?, NSRegularExpression?, Bool) async throws -> TargetsMap)?
 
-    func findTargets(_ targets: NSRegularExpression?, exceptTargets: NSRegularExpression?) async throws -> TargetsMap {
-        if let error = findTargetsExceptTargetsThrowableError {
+    func findTargets(_ targets: NSRegularExpression?, exceptTargets: NSRegularExpression?, includingTests: Bool) async throws -> TargetsMap {
+        findTargetsExceptTargetsIncludingTestsCallsCount += 1
+        findTargetsExceptTargetsIncludingTestsReceivedArguments = (targets: targets, exceptTargets: exceptTargets, includingTests: includingTests)
+        findTargetsExceptTargetsIncludingTestsReceivedInvocations.append((targets: targets, exceptTargets: exceptTargets, includingTests: includingTests))
+        if let error = findTargetsExceptTargetsIncludingTestsThrowableError {
             throw error
         }
-        findTargetsExceptTargetsCallsCount += 1
-        findTargetsExceptTargetsReceivedArguments = (targets: targets, exceptTargets: exceptTargets)
-        findTargetsExceptTargetsReceivedInvocations.append((targets: targets, exceptTargets: exceptTargets))
-        if let findTargetsExceptTargetsClosure = findTargetsExceptTargetsClosure {
-            return try await findTargetsExceptTargetsClosure(targets, exceptTargets)
+        if let findTargetsExceptTargetsIncludingTestsClosure = findTargetsExceptTargetsIncludingTestsClosure {
+            return try await findTargetsExceptTargetsIncludingTestsClosure(targets, exceptTargets, includingTests)
         } else {
-            return findTargetsExceptTargetsReturnValue
+            return findTargetsExceptTargetsIncludingTestsReturnValue
         }
     }
 

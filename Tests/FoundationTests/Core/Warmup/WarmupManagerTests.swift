@@ -106,7 +106,7 @@ extension WarmupManagerTests {
 
     func test_cantFindBuildTargets() async throws {
         rugbyXcodeProject.isAlreadyUsingRugbyReturnValue = false
-        buildTargetsManager.findTargetsExceptTargetsReturnValue = [:]
+        buildTargetsManager.findTargetsExceptTargetsIncludingTestsReturnValue = [:]
 
         // Act
         var resultError: Error?
@@ -138,7 +138,7 @@ extension WarmupManagerTests {
         let snapkit = IInternalTargetMock()
         snapkit.underlyingUuid = "test_snapkit_uuid"
         rugbyXcodeProject.isAlreadyUsingRugbyReturnValue = false
-        buildTargetsManager.findTargetsExceptTargetsReturnValue = [
+        buildTargetsManager.findTargetsExceptTargetsIncludingTestsReturnValue = [
             alamofire.uuid: alamofire,
             snapkit.uuid: snapkit
         ]
@@ -160,9 +160,12 @@ extension WarmupManagerTests {
         // Assert
         XCTAssertEqual(loggerBlockInvocations.count, 3)
 
-        XCTAssertEqual(buildTargetsManager.findTargetsExceptTargetsCallsCount, 1)
-        XCTAssertEqual(buildTargetsManager.findTargetsExceptTargetsReceivedArguments?.targets, targetsRegex)
-        XCTAssertEqual(buildTargetsManager.findTargetsExceptTargetsReceivedArguments?.exceptTargets, exceptTargetsRegex)
+        XCTAssertEqual(buildTargetsManager.findTargetsExceptTargetsIncludingTestsCallsCount, 1)
+        let findTargetsArguments = try XCTUnwrap(
+            buildTargetsManager.findTargetsExceptTargetsIncludingTestsReceivedArguments
+        )
+        XCTAssertEqual(findTargetsArguments.targets, targetsRegex)
+        XCTAssertEqual(findTargetsArguments.exceptTargets, exceptTargetsRegex)
         XCTAssertEqual(loggerBlockInvocations[0].header, "Finding Build Targets")
         XCTAssertNil(loggerBlockInvocations[0].footer)
         XCTAssertNil(loggerBlockInvocations[0].metricKey)
@@ -208,7 +211,7 @@ extension WarmupManagerTests {
         let moya = IInternalTargetMock()
         moya.underlyingUuid = "test_moya_uuid"
         rugbyXcodeProject.isAlreadyUsingRugbyReturnValue = false
-        buildTargetsManager.findTargetsExceptTargetsReturnValue = [
+        buildTargetsManager.findTargetsExceptTargetsIncludingTestsReturnValue = [
             alamofire.uuid: alamofire,
             snapkit.uuid: snapkit
         ]
@@ -240,9 +243,12 @@ extension WarmupManagerTests {
         // Assert
         XCTAssertEqual(loggerBlockInvocations.count, 3)
 
-        XCTAssertEqual(buildTargetsManager.findTargetsExceptTargetsCallsCount, 1)
-        XCTAssertEqual(buildTargetsManager.findTargetsExceptTargetsReceivedArguments?.targets, targetsRegex)
-        XCTAssertEqual(buildTargetsManager.findTargetsExceptTargetsReceivedArguments?.exceptTargets, exceptTargetsRegex)
+        XCTAssertEqual(buildTargetsManager.findTargetsExceptTargetsIncludingTestsCallsCount, 1)
+        let findTargetsArguments = try XCTUnwrap(
+            buildTargetsManager.findTargetsExceptTargetsIncludingTestsReceivedArguments
+        )
+        XCTAssertEqual(findTargetsArguments.targets, targetsRegex)
+        XCTAssertEqual(findTargetsArguments.exceptTargets, exceptTargetsRegex)
         XCTAssertEqual(loggerBlockInvocations[0].header, "Finding Build Targets")
         XCTAssertNil(loggerBlockInvocations[0].footer)
         XCTAssertNil(loggerBlockInvocations[0].metricKey)
@@ -306,7 +312,7 @@ extension WarmupManagerTests {
         let moya = IInternalTargetMock()
         moya.underlyingUuid = "test_moya_uuid"
         rugbyXcodeProject.isAlreadyUsingRugbyReturnValue = false
-        buildTargetsManager.findTargetsExceptTargetsReturnValue = [
+        buildTargetsManager.findTargetsExceptTargetsIncludingTestsReturnValue = [
             alamofire.uuid: alamofire,
             snapkit.uuid: snapkit,
             moya.uuid: moya
@@ -360,9 +366,12 @@ extension WarmupManagerTests {
         XCTAssertEqual(logger.logLevelOutputReceivedInvocations.count, 4)
         XCTAssertEqual(logger.logListLevelOutputReceivedInvocations.count, 1)
 
-        XCTAssertEqual(buildTargetsManager.findTargetsExceptTargetsCallsCount, 1)
-        XCTAssertEqual(buildTargetsManager.findTargetsExceptTargetsReceivedArguments?.targets, targetsRegex)
-        XCTAssertEqual(buildTargetsManager.findTargetsExceptTargetsReceivedArguments?.exceptTargets, exceptTargetsRegex)
+        XCTAssertEqual(buildTargetsManager.findTargetsExceptTargetsIncludingTestsCallsCount, 1)
+        let findTargetsArguments = try XCTUnwrap(
+            buildTargetsManager.findTargetsExceptTargetsIncludingTestsReceivedArguments
+        )
+        XCTAssertEqual(findTargetsArguments.targets, targetsRegex)
+        XCTAssertEqual(findTargetsArguments.exceptTargets, exceptTargetsRegex)
         XCTAssertEqual(loggerBlockInvocations[0].header, "Finding Build Targets")
         XCTAssertNil(loggerBlockInvocations[0].footer)
         XCTAssertNil(loggerBlockInvocations[0].metricKey)
@@ -465,7 +474,7 @@ extension WarmupManagerTests {
         let localPod = IInternalTargetMock()
         localPod.underlyingUuid = "test_localPod_uuid"
         rugbyXcodeProject.isAlreadyUsingRugbyReturnValue = false
-        buildTargetsManager.findTargetsExceptTargetsReturnValue = [
+        buildTargetsManager.findTargetsExceptTargetsIncludingTestsReturnValue = [
             alamofire.uuid: alamofire,
             snapkit.uuid: snapkit,
             moya.uuid: moya,
@@ -535,9 +544,12 @@ extension WarmupManagerTests {
         XCTAssertEqual(logger.logLevelOutputReceivedInvocations.count, 5)
         XCTAssertEqual(logger.logListLevelOutputReceivedInvocations.count, 1)
 
-        XCTAssertEqual(buildTargetsManager.findTargetsExceptTargetsCallsCount, 1)
-        XCTAssertEqual(buildTargetsManager.findTargetsExceptTargetsReceivedArguments?.targets, targetsRegex)
-        XCTAssertEqual(buildTargetsManager.findTargetsExceptTargetsReceivedArguments?.exceptTargets, exceptTargetsRegex)
+        XCTAssertEqual(buildTargetsManager.findTargetsExceptTargetsIncludingTestsCallsCount, 1)
+        let findTargetsArguments = try XCTUnwrap(
+            buildTargetsManager.findTargetsExceptTargetsIncludingTestsReceivedArguments
+        )
+        XCTAssertEqual(findTargetsArguments.targets, targetsRegex)
+        XCTAssertEqual(findTargetsArguments.exceptTargets, exceptTargetsRegex)
         XCTAssertEqual(loggerBlockInvocations[0].header, "Finding Build Targets")
         XCTAssertNil(loggerBlockInvocations[0].footer)
         XCTAssertNil(loggerBlockInvocations[0].metricKey)
