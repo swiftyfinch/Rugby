@@ -133,4 +133,7 @@ extension IEnvironment {}
 //// sourcery: AutoMockable, imports = ["RugbyFoundation"]
 extension ITargetTreePainter {}
 
+//// sourcery: AutoMockable, imports = ["RugbyFoundation"]
+extension ITestsStorage {}
+
 // TODO: Needs to improve Sourcery template to generate mocks automatically w/o manual editing
