@@ -84,7 +84,7 @@ extension TestManager: ITestManager {
             return
         }
 
-        await log("Affected Test Targets") {
+        await log("Affected Test Targets (\(missingTestTargets.count))") {
             for target in missingTestTargets {
                 guard let hash = target.hash else { continue }
                 await log("\(target.name) (\(hash))", level: .result)
