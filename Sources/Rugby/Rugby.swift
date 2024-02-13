@@ -40,6 +40,7 @@ struct Rugby: AsyncParsableCommand {
             Use.self,
             Delete.self,
             Warmup.self,
+            Test.self,
             Rollback.self,
             Plan.self,
             Clear.self,
