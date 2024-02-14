@@ -41,28 +41,39 @@ extension BuildTargetsManagerTests {
         alamofire.underlyingIsNative = true
         alamofire.underlyingIsTests = false
         alamofire.underlyingIsPodsUmbrella = false
+        alamofire.underlyingIsApplication = false
         let localPodTests = IInternalTargetMock()
         localPodTests.underlyingUuid = "test_localPodTests_uuid"
         localPodTests.underlyingIsNative = true
         localPodTests.underlyingIsTests = true
         localPodTests.underlyingIsPodsUmbrella = false
+        localPodTests.underlyingIsApplication = false
         let realm = IInternalTargetMock()
         realm.underlyingUuid = "test_realm_uuid"
         realm.underlyingIsNative = false
         realm.underlyingIsTests = false
         realm.underlyingIsPodsUmbrella = false
+        realm.underlyingIsApplication = false
         let pods = IInternalTargetMock()
         pods.underlyingUuid = "test_pods_uuid"
         pods.underlyingIsNative = true
         pods.underlyingIsPodsUmbrella = true
         pods.underlyingIsTests = false
+        pods.underlyingIsApplication = false
+        let application = IInternalTargetMock()
+        application.underlyingUuid = "test_application_uuid"
+        application.underlyingIsNative = true
+        application.underlyingIsPodsUmbrella = false
+        application.underlyingIsTests = false
+        application.underlyingIsApplication = true
         let targetsRegex = try NSRegularExpression(pattern: "^Alamofire$")
         let exceptTargetsRegex = try NSRegularExpression(pattern: "^SnapKit$")
         xcodeProject.findTargetsByExceptIncludingDependenciesReturnValue = [
             alamofire.uuid: alamofire,
             localPodTests.uuid: localPodTests,
             realm.uuid: realm,
-            pods.uuid: pods
+            pods.uuid: pods,
+            application.uuid: application
         ]
 
         // Act
