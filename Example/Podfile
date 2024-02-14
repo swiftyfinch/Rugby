@@ -12,7 +12,6 @@ target 'ExampleFrameworks' do
 
   target 'ExampleFrameworksTests' do
     inherit! :search_paths
-    pod 'AutoMate'
   end
 end
 
@@ -27,7 +26,6 @@ target 'ExampleLibs' do
 
   target 'ExampleLibsTests' do
     inherit! :search_paths
-    pod 'AutoMate'
   end
 end
 

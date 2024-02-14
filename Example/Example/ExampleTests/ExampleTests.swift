@@ -1,5 +1,4 @@
 import Alamofire
-import AutoMate
 import KeyboardLayoutGuide
 import Kingfisher
 import Moya
