@@ -45,6 +45,11 @@ final class IInternalTargetMock: IInternalTarget {
         set(value) { underlyingIsTests = value }
     }
     var underlyingIsTests: Bool!
+    var isApplication: Bool {
+        get { return underlyingIsApplication }
+        set(value) { underlyingIsApplication = value }
+    }
+    var underlyingIsApplication: Bool!
     var dependencies: TargetsMap = [:]
     var product: Product?
     var buildRules: [BuildRule] = []
