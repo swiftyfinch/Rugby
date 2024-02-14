@@ -1,5 +1,5 @@
 import Foundation
-import Zip
+import ZIPFoundation
 
 // MARK: - Interface
 
@@ -9,11 +9,12 @@ protocol IDecompressor: AnyObject {
 
 // MARK: - Implementation
 
-final class Decompressor {}
+final class Decompressor {
+    private let fileManager = FileManager.default
+}
 
 extension Decompressor: IDecompressor {
     func unzipFile(_ zipFilePath: URL, destination: URL) throws {
-        Zip.addCustomFileExtension(zipFilePath.pathExtension)
-        try Zip.unzipFile(zipFilePath, destination: destination, overwrite: true, password: nil)
+        try fileManager.unzipItem(at: zipFilePath, to: destination)
     }
 }
