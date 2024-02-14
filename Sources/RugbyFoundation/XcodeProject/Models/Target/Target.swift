@@ -14,6 +14,7 @@ final class Target: IInternalTarget {
     private(set) lazy var isPodsUmbrella = pbxTarget.name.hasPrefix("Pods-")
     private(set) lazy var isNative = pbxTarget is PBXNativeTarget
     private(set) lazy var isTests = pbxTarget.isTests
+    private(set) lazy var isApplication = (pbxTarget.productType == .application)
 
     /// All dependencies including implicit ones
     private(set) lazy var dependencies = collectDependencies()
