@@ -34,7 +34,7 @@
 
 ## Discussion
 
-In the new 🏈 Rugby, you can build your Pods project without the step of integrating binaries into the project.\
+In the new 🏉 Rugby, you can build your Pods project without the step of integrating binaries into the project.\
 It allows us to build many times with different configurations and in the end use them all at once.
 ```sh
 > rugby build --arch arm64 --sdk sim

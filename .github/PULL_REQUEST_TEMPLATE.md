@@ -26,4 +26,4 @@
 - [ ] 👮🏻‍♂️ Run `make lint` and fixed all warnings
 - [ ] ✅ Run `make test` and fixed all tests
 
-❤️ Thanks for contributing to the 🏈 Rugby!
+❤️ Thanks for contributing to the 🏉 Rugby!

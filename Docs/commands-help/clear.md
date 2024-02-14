@@ -35,7 +35,7 @@
 
 ## Discussion
 
-By default, 🏈 Rugby cleans shared binaries and the build folder if they take about 50 GB.\
+By default, 🏉 Rugby cleans shared binaries and the build folder if they take about 50 GB.\
 If you want to clean them up by yourself, call `clear` command or its subcommands.
 
 You can delete specific modules binaries:

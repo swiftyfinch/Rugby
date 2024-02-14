@@ -16,7 +16,7 @@ struct Doctor: AsyncParsableCommand {
         After each one, you need to repeat your usual workflow.
         \("(⌘ + double click on the url)".yellow) to open it in a browser.
 
-        1. Update 🏈 Rugby to the latest version: \("rugby update".yellow)
+        1. Update 🏉 Rugby to the latest version: \("rugby update".yellow)
            \(Links.commandsHelp("update.md"))
         2. Check that you're building the proper configuration.
            Sometimes projects don't have the default \("Debug".yellow) config.
@@ -28,7 +28,7 @@ struct Doctor: AsyncParsableCommand {
         4. Try \("rugby clear".yellow) before repeating your usual workflow.
            \(Links.commandsHelp("clear.md"))
         5. Try to clean up your \("DerivedData".yellow) and use \("rugby clear".yellow) together.
-        6. Check that the Pods project builds successfully without 🏈 Rugby.
+        6. Check that the Pods project builds successfully without 🏉 Rugby.
 
         By the way, you can try to investigate building logs by yourself.
         \("Last ones saved in folder: \(lastLogsPath.yellow)")

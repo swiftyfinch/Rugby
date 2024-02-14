@@ -24,7 +24,7 @@
 
 ## Discussion
 
-🏈 Rugby always must be used after `pod install` command.\
+🏉 Rugby always must be used after `pod install` command.\
 But in huge projects, this command can take several minutes.
 
 If you just want to deintegrate Rugby, call this:

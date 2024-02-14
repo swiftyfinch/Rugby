@@ -1,5 +1,5 @@
 <p align="center">
-  <img src="https://user-images.githubusercontent.com/64660122/140398205-9328806e-897d-483d-a898-c90f66840196.png" width=600 />
+  <img src="logo.png" width=600 />
   <br>
   <img src="https://img.shields.io/badge/Platform-macOS-2679eb" />
   <a href="https://swiftpackageindex.com/swiftyfinch/Rugby"><img src="https://img.shields.io/endpoint?url=https%3A%2F%2Fswiftpackageindex.com%2Fapi%2Fpackages%2Fswiftyfinch%2FRugby%2Fbadge%3Ftype%3Dswift-versions" /></a>
@@ -32,7 +32,7 @@ More in the 📖 [foundation](https://swiftyfinch.github.io/en/2021-03-09-rugby-
 
 ## Description
 
-🏈 `Rugby` is CLI tool that was developed to solve the above problems:\
+🏉 `Rugby` is CLI tool that was developed to solve the above problems:\
 `+` Cache all pods dependencies and remove their targets from the Pods project;\
 `+` Rebuild only changed pods or even download them;\
 `+` Delete any unneeded targets with sources from a project and reduce its size.
@@ -75,7 +75,7 @@ If you already have Rugby, which version is at least `2.0.0b2`, you can use such
 Read more in the guide [how to install](Docs/how-to-install.md) it.\
 If you look for the legacy `Rugby 1.x`, visit [this page](https://github.com/swiftyfinch/Rugby/tree/1.23.0#how-to-install-).
 
-## How to use 🏈
+## How to use 🏉
 
 <details><summary>Preconditions</summary>
 <p>
@@ -108,7 +108,7 @@ Deintegrate it with the [rollback](Docs/commands-help/rollback.md) command:
 ```
 
 Also, you can write a custom [plan](Docs/commands-help/plan.md) (sequence of commands).\
-Use 🏈 [RugbyPlanner](https://github.com/swiftyfinch/RugbyPlanner) for visualizing changes in your project without applying them.\
+Use 🏉 [RugbyPlanner](https://github.com/swiftyfinch/RugbyPlanner) for visualizing changes in your project without applying them.\
 For advanced usage, please read the documentation below.
 
 ## 📚 Documentation
@@ -138,7 +138,7 @@ If you want to support this project, you can do some of these:\
 `2)` <ins><b>Share</b></ins> the project 🌍 somewhere with somebody;\
 `3)` <ins><b>Leave feedback</b></ins> in the discussions 💬 section.
 
-Let's Roll-oll 🏈
+Let's Roll-oll 🏉
 <br>
 
 <img title="Views since 30.11.2023 + 6k after migration" src="https://komarev.com/ghpvc/?username=swiftyfinch-rugby&label=Views&format=true&base=6000">

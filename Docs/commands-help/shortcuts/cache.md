@@ -1,6 +1,6 @@
 [< 📍 Shortcuts](../shortcuts.md)
 
-# 🏈 Cache
+# 🏉 Cache
 
 ```sh
 > rugby shortcuts cache --help

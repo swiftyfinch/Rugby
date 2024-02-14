@@ -80,7 +80,7 @@ Read more about [umbrella](shortcuts/umbrella.md) command.
 
 ### Application
 
-You can use 🏈 [RugbyPlanner](https://github.com/swiftyfinch/RugbyPlanner) application for visualizing changes in your project without applying them.\
+You can use 🏉 [RugbyPlanner](https://github.com/swiftyfinch/RugbyPlanner) application for visualizing changes in your project without applying them.\
 It can significantly improve your experience working on your plans.
 
 <br>

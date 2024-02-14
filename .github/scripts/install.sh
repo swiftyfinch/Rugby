@@ -11,7 +11,7 @@ warning() {
 }
 
 if command -v rugby &> /dev/null; then
-	warning "🏈 Rugby has already been installed."; exit
+	warning "🏉 Rugby has already been installed."; exit
 fi
 
 # Get the latest version of Rugby
@@ -31,7 +31,7 @@ rm -rf "$RUGBY_CLT_PATH/downloads" && mkdir -p "$RUGBY_CLT_PATH/downloads" && cd
 curl -sSLO "https://github.com/swiftyfinch/Rugby/releases/download/$LATEST_VERSION/$ARCH.zip"
 unzip -q "$ARCH.zip"
 cp rugby $RUGBY_CLT_PATH && rm -rf "$RUGBY_CLT_PATH/downloads"
-success "🏈 Rugby has been installed ✓"
+success "🏉 Rugby has been installed ✓"
 
 # Check if Rugby is in $PATH
 if [[ ":${PATH}:" != *":$RUGBY_CLT_PATH:"* ]]; then

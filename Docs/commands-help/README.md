@@ -33,7 +33,7 @@
 | :---: | :---: | :---: |
 | 🏗️ [Build](build.md) | 📍 [Shortcuts](shortcuts.md) | 🧼 [Clear](clear.md) |
 | 🎯 [Use](use.md) | ⛱️ [Umbrella](shortcuts/umbrella.md) | 📦 [Update](update.md) |
-| 🗑️ [Delete](delete.md) | 🏈 [Cache](shortcuts/cache.md) | 🚑 [Doctor](doctor.md) |
+| 🗑️ [Delete](delete.md) | 🏉 [Cache](shortcuts/cache.md) | 🚑 [Doctor](doctor.md) |
 | 🐳 [Warmup](warmup.md) | ✈️ [Plan](plan.md) | 🐚 [Shell](shell.md) |
 | ♻️ [Rollback](rollback.md) | | 🌍 [Env](env.md) |
 
@@ -87,7 +87,7 @@ flowchart LR
    📍 Shortcuts
    (default)
    ")
-    B --> BA("🏈 Cache")
+    B --> BA("🏉 Cache")
     BA --> BAA("
     ♻️ Rollback
     🏗️ Prebuild
@@ -128,7 +128,7 @@ flowchart TD
     click AA "https://github.com/swiftyfinch/Rugby/blob/main/Docs/commands-help/shortcuts.md" _blank
 
     AA --> AAB["
-    🏈 Cache<hr>Run the build and use commands
+    🏉 Cache<hr>Run the build and use commands
     "]
     style AAB color:#539bf5
     click AAB "https://github.com/swiftyfinch/Rugby/blob/main/Docs/commands-help/shortcuts/cache.md" _blank

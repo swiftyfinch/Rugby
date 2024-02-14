@@ -22,7 +22,7 @@
 
 ## 🐳 Upload Cache
 
-After each [`rugby build`](commands-help/build.md) (or [`rugby cache`](commands-help/shortcuts/cache.md), which includes `build`) command, 🏈 Rugby creates the file with changes.\
+After each [`rugby build`](commands-help/build.md) (or [`rugby cache`](commands-help/shortcuts/cache.md), which includes `build`) command, 🏉 Rugby creates the file with changes.\
 You can find it here: `~/.rugby/bin/+latest`.
 
 This file contains something like:

@@ -8,7 +8,7 @@ enum RugbyError: LocalizedError {
     var errorDescription: String? {
         switch self {
         case .alreadyUseRugby:
-            return "The project is already using 🏈 Rugby.\n".red
+            return "The project is already using 🏉 Rugby.\n".red
                 + "🚑 Call \(#""rugby rollback""#) or \(#""pod install""#).".yellow
         }
     }

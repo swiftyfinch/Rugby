@@ -76,7 +76,7 @@ extension TestManagerTests {
         XCTAssertEqual(
             resultError?.localizedDescription,
             """
-            The project is already using 🏈 Rugby.
+            The project is already using 🏉 Rugby.
             🚑 Call "rugby rollback" or "pod install".
             """
         )
@@ -167,7 +167,7 @@ extension TestManagerTests {
         XCTAssertEqual(
             resultError?.localizedDescription,
             """
-            The project is already using 🏈 Rugby.
+            The project is already using 🏉 Rugby.
             🚑 Call "rugby rollback" or "pod install".
             """
         )

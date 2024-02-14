@@ -24,12 +24,12 @@
 | Subcommands |
 | :---: |
 | ⛱️ [Umbrella](shortcuts/umbrella.md) |
-| 🏈 [Cache](shortcuts/cache.md) |
+| 🏉 [Cache](shortcuts/cache.md) |
 
 <br>
 
 # Discussion
 
-The main goal of this command is to simplify 🏈 Rugby usage.\
+The main goal of this command is to simplify 🏉 Rugby usage.\
 It's a combination of base commands with usual behavior for most users.\
 Read subcommands help pages for more information.

@@ -142,7 +142,7 @@ rugby cache
 Some options and flags haven’t been remade yet.
 
 Documentation:\
-🏈 [Cache](commands-help/shortcuts/cache.md)\
+🏉 [Cache](commands-help/shortcuts/cache.md)\
 🏗️ [Build](commands-help/build.md)\
 🎯 [Use](commands-help/use.md)
 
