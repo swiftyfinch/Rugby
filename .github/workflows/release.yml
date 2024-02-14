@@ -20,7 +20,7 @@ jobs:
     runs-on: macos-latest
     steps:
       # Checkout with custom token for pushin to protected branch
-      - uses: actions/checkout@v3
+      - uses: actions/checkout@v4
         with:
           token: ${{ secrets.CUSTOM_GITHUB_TOKEN }}
 

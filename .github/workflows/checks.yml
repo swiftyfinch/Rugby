@@ -12,21 +12,21 @@ jobs:
     name: SwiftFormat
     runs-on: macos-latest
     steps:
-    - uses: actions/checkout@v3
+    - uses: actions/checkout@v4
     - run: swiftformat . --lint --quiet --reporter github-actions-log
 
   swiftlint:
     name: SwiftLint
     runs-on: macos-latest
     steps:
-    - uses: actions/checkout@v3
+    - uses: actions/checkout@v4
     - run: swiftlint --strict --quiet --reporter github-actions-logging
 
   install:
     name: Install Script
     runs-on: macos-latest
     steps:
-    - uses: actions/checkout@v3
+    - uses: actions/checkout@v4
     - name: Install Rugby
       run: |
         curl -Ls curl -Ls https://swiftyfinch.github.io/rugby/install.sh | bash
@@ -37,8 +37,8 @@ jobs:
     name: Build Binary
     runs-on: macos-latest
     steps:
-    - uses: actions/checkout@v3
-    - uses: actions/cache@v3
+    - uses: actions/checkout@v4
+    - uses: actions/cache@v4
       with:
         path: .build
         key: ${{ runner.os }}-spm-${{ hashFiles('Package.resolved') }}
@@ -55,9 +55,9 @@ jobs:
       PROFDATA_FOLDER: .build/debug/codecov/default.profdata
       IGNORE_FILENAME_REGEX: .build|Tests
     steps:
-    - uses: actions/checkout@v3
+    - uses: actions/checkout@v4
     - run: brew install xcbeautify
-    - uses: actions/cache@v3
+    - uses: actions/cache@v4
       with:
         path: .build
         key: ${{ runner.os }}-spm-${{ hashFiles('Package.resolved') }}
@@ -73,7 +73,7 @@ jobs:
           -format="lcov" \
           --use-color
     - name: Upload coverage reports to Codecov
-      uses: codecov/codecov-action@v3
+      uses: codecov/codecov-action@v4
       env:
         CODECOV_TOKEN: ${{ secrets.CODECOV_TOKEN }}
 
@@ -82,7 +82,7 @@ jobs:
         RUGBY_PATH=`swift build --show-bin-path`/rugby
         strip -rSTx $RUGBY_PATH
         echo "RUGBY_PATH=$RUGBY_PATH" >> $GITHUB_ENV
-    - uses: actions/upload-artifact@v3
+    - uses: actions/upload-artifact@v4
       with:
         name: rugby
         path: ${{ env.RUGBY_PATH }}
@@ -92,13 +92,13 @@ jobs:
     needs: tests
     runs-on: macos-latest
     steps:
-    - uses: actions/checkout@v3
-    - uses: actions/download-artifact@v3
+    - uses: actions/checkout@v4
+    - uses: actions/download-artifact@v4
       with: { name: rugby }
     - run: chmod +x rugby && echo `pwd` >> $GITHUB_PATH
     - run: rugby --version
 
-    - uses: actions/cache@v3
+    - uses: actions/cache@v4
       with:
         path: Example/Pods
         key: ${{ runner.os }}-pods-${{ hashFiles('Example/Podfile.lock') }}
@@ -130,13 +130,13 @@ jobs:
     needs: tests
     runs-on: macos-latest
     steps:
-    - uses: actions/checkout@v3
-    - uses: actions/download-artifact@v3
+    - uses: actions/checkout@v4
+    - uses: actions/download-artifact@v4
       with: { name: rugby }
     - run: chmod +x rugby && echo `pwd` >> $GITHUB_PATH
     - run: rugby --version
     
-    - uses: actions/cache@v3
+    - uses: actions/cache@v4
       with:
         path: Example/Pods
         key: ${{ runner.os }}-pods-${{ hashFiles('Example/Podfile.lock') }}
