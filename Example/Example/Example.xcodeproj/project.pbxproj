@@ -213,7 +213,6 @@
 				230878282A8D3E3A00AEB6A7 /* Sources */,
 				230878292A8D3E3A00AEB6A7 /* Frameworks */,
 				2308782A2A8D3E3A00AEB6A7 /* Resources */,
-				D6FF114F4C4DB27F3E913981 /* [CP] Embed Pods Frameworks */,
 			);
 			buildRules = (
 			);
@@ -252,7 +251,6 @@
 				2322FDE82AD4696D00F56303 /* Sources */,
 				2322FDEA2AD4696D00F56303 /* Frameworks */,
 				2322FDEC2AD4696D00F56303 /* Resources */,
-				70EACFF8425A8FB45710E1B7 /* [CP] Copy Pods Resources */,
 			);
 			buildRules = (
 			);
@@ -417,23 +415,6 @@
 			shellScript = "\"${PODS_ROOT}/Target Support Files/Pods-ExampleFrameworks/Pods-ExampleFrameworks-frameworks.sh\"\n";
 			showEnvVarsInLog = 0;
 		};
-		70EACFF8425A8FB45710E1B7 /* [CP] Copy Pods Resources */ = {
-			isa = PBXShellScriptBuildPhase;
-			buildActionMask = 2147483647;
-			files = (
-			);
-			inputFileListPaths = (
-				"${PODS_ROOT}/Target Support Files/Pods-ExampleLibsTests/Pods-ExampleLibsTests-resources-${CONFIGURATION}-input-files.xcfilelist",
-			);
-			name = "[CP] Copy Pods Resources";
-			outputFileListPaths = (
-				"${PODS_ROOT}/Target Support Files/Pods-ExampleLibsTests/Pods-ExampleLibsTests-resources-${CONFIGURATION}-output-files.xcfilelist",
-			);
-			runOnlyForDeploymentPostprocessing = 0;
-			shellPath = /bin/sh;
-			shellScript = "\"${PODS_ROOT}/Target Support Files/Pods-ExampleLibsTests/Pods-ExampleLibsTests-resources.sh\"\n";
-			showEnvVarsInLog = 0;
-		};
 		9FE67ADA4DDC9B3DCE39540B /* [CP] Check Pods Manifest.lock */ = {
 			isa = PBXShellScriptBuildPhase;
 			buildActionMask = 2147483647;
@@ -493,23 +474,6 @@
 			runOnlyForDeploymentPostprocessing = 0;
 			shellPath = /bin/sh;
 			shellScript = "\"${PODS_ROOT}/Target Support Files/Pods-ExampleFrameworks/Pods-ExampleFrameworks-resources.sh\"\n";
-			showEnvVarsInLog = 0;
-		};
-		D6FF114F4C4DB27F3E913981 /* [CP] Embed Pods Frameworks */ = {
-			isa = PBXShellScriptBuildPhase;
-			buildActionMask = 2147483647;
-			files = (
-			);
-			inputFileListPaths = (
-				"${PODS_ROOT}/Target Support Files/Pods-ExampleFrameworksTests/Pods-ExampleFrameworksTests-frameworks-${CONFIGURATION}-input-files.xcfilelist",
-			);
-			name = "[CP] Embed Pods Frameworks";
-			outputFileListPaths = (
-				"${PODS_ROOT}/Target Support Files/Pods-ExampleFrameworksTests/Pods-ExampleFrameworksTests-frameworks-${CONFIGURATION}-output-files.xcfilelist",
-			);
-			runOnlyForDeploymentPostprocessing = 0;
-			shellPath = /bin/sh;
-			shellScript = "\"${PODS_ROOT}/Target Support Files/Pods-ExampleFrameworksTests/Pods-ExampleFrameworksTests-frameworks.sh\"\n";
 			showEnvVarsInLog = 0;
 		};
 /* End PBXShellScriptBuildPhase section */
