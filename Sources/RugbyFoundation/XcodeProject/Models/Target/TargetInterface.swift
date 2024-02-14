@@ -18,6 +18,7 @@ protocol IInternalTarget: ITarget {
     var isPodsUmbrella: Bool { get }
     var isNative: Bool { get }
     var isTests: Bool { get }
+    var isApplication: Bool { get }
 
     /// All dependencies including implicit ones
     var dependencies: TargetsMap { get }
