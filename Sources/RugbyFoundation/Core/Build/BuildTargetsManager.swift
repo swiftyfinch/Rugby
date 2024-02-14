@@ -43,7 +43,7 @@ extension BuildTargetsManager: IBuildTargetsManager {
             except: exceptTargets,
             includingDependencies: true
         ).filter { _, target in
-            guard target.isNative, !target.isPodsUmbrella else { return false }
+            guard target.isNative, !target.isPodsUmbrella, !target.isApplication else { return false }
             return includingTests || !target.isTests
         }
     }
