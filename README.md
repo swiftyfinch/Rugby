@@ -124,6 +124,8 @@ For advanced usage, please read the documentation below.
 
 - [x] 👨🏻‍🔧 Increase Code Coverage up to `50%` [#236](https://github.com/swiftyfinch/Rugby/issues/236)
 - [ ] 🧪 Test impact or even run tests by impact
+    - [x] `(Beta)` Add impact command [#323](https://github.com/swiftyfinch/Rugby/pull/323)
+    - [ ] Add run tests command?
 
 ## 🤝 Contribution
 
