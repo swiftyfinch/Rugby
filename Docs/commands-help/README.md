@@ -14,6 +14,7 @@
 │ use        * Use already built binaries instead of sources.          │
 │ delete     * Delete targets from the project.                        │
 │ warmup     * Download remote binaries for targets from Pods project. │
+│ _test      * (Beta) Analyse test targets.                            │
 │ rollback   * Restore projects state before the last Rugby usage.     │
 │ plan       * Run sequence of Rugby commands.                         │
 │ clear      * Clear modules cache.                                    │
@@ -35,7 +36,8 @@
 | 🎯 [Use](use.md) | ⛱️ [Umbrella](shortcuts/umbrella.md) | 📦 [Update](update.md) |
 | 🗑️ [Delete](delete.md) | 🏈 [Cache](shortcuts/cache.md) | 🚑 [Doctor](doctor.md) |
 | 🐳 [Warmup](warmup.md) | ✈️ [Plan](plan.md) | 🐚 [Shell](shell.md) |
-| ♻️ [Rollback](rollback.md) | | 🌍 [Env](env.md) |
+| 🧪 [Test](test.md) | | 🌍 [Env](env.md) |
+| ♻️ [Rollback](rollback.md) | | |
 
 ## Basic
 
@@ -70,12 +72,18 @@ flowchart LR
     style AD color:#539bf5
     click AD "https://github.com/swiftyfinch/Rugby/blob/main/Docs/commands-help/warmup.md" _blank
 
-    A --> AE(["♻️ Rollback"]) -.-> AEA["
+    A --> AE(["🧪 Test"]) -.-> AEA["
+    Print affected test targets
+    "]
+    style AE color:#539bf5
+    click AE "https://github.com/swiftyfinch/Rugby/blob/main/Docs/commands-help/test.md" _blank
+
+    A --> AF(["♻️ Rollback"]) -.-> AFA["
     Restore projects state
     before the last Rugby usage
     "]
-    style AE color:#539bf5
-    click AE "https://github.com/swiftyfinch/Rugby/blob/main/Docs/commands-help/rollback.md" _blank
+    style AF color:#539bf5
+    click AF "https://github.com/swiftyfinch/Rugby/blob/main/Docs/commands-help/rollback.md" _blank
 ```
 
 ## Mixed
@@ -111,7 +119,8 @@ flowchart LR
     A --> G("🎯 Use")
     A --> H("🗑️ Delete")
     A --> E("🐳 Warmup")
-    A --> J("♻️ Rollback")
+    A --> J("🧪 Test")
+    A --> K("♻️ Rollback")
     click B "https://github.com/swiftyfinch/Rugby/blob/main/Docs/commands-help/shortcuts.md" _blank
 ```
 
