@@ -2,7 +2,7 @@ import Fish
 @testable import RugbyFoundation
 import XCTest
 
-final class СleanerTests: XCTestCase {
+final class CleanerTests: XCTestCase {
     private var sut: ICleaner!
     private var sharedRugbyFolder: IFolder!
     private var buildFolder: IFolder!
@@ -28,7 +28,7 @@ final class СleanerTests: XCTestCase {
     }
 }
 
-extension СleanerTests {
+extension CleanerTests {
     func test_deleteSharedBinaries() async throws {
         try sharedRugbyFolder.createFolder(named: "Alamofire")
             .createFile(named: "Content", contents: "test_alamofire_content")
