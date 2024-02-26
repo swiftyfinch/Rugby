@@ -31,11 +31,37 @@ final class BuildLogFormatter {
     // MARK: - Private
 
     private func parse(completion: @escaping (String, OutputType) throws -> Void) throws {
-        guard var formatted = parser.parse(line: buffer.removeFirst()) else { return }
+        guard let parsed = parser.parse(line: buffer.removeFirst()) else { return }
+        var formatted: String? = parsed
         if parser.outputType == .error {
-            formatted = formatError(formatted)
+            formatted = formatError(parsed)
+        } else if [.test, .testCase].contains(parser.outputType) {
+            formatted = formatTest(line: parsed, type: parser.outputType)
         }
-        try completion(formatted, parser.outputType)
+        if let formatted {
+            try completion(formatted, parser.outputType)
+        }
+    }
+
+    private func formatTest(line: String, type: OutputType) -> String? {
+        var line = line.removingStyle(.bold)
+        switch type {
+        case .test:
+            guard line.raw != "All tests" else { return nil }
+            if line.hasSuffix(".xctest") {
+                line = String(line.dropLast(".xctest".count))
+                line = "\("⚑".yellow) \(line.green)"
+            } else {
+                line = "  \(line):".green
+            }
+            return line
+        case .testCase:
+            line = line.replacingOccurrences(of: "✔", with: "✓")
+            line = String(line.dropFirst(2))
+            return line
+        default:
+            return nil
+        }
     }
 
     private func formatError(_ error: String) -> String {
