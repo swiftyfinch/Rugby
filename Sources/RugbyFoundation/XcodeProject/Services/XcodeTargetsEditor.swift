@@ -5,12 +5,12 @@ final class XcodeTargetsEditor: Loggable {
 
     private let projectDataSource: XcodeProjectDataSource
     private let targetsDataSource: XcodeTargetsDataSource
-    private let schemesEditor: XcodeProjectSchemesEditor
+    private let schemesEditor: IXcodeProjectSchemesEditor
 
     init(logger: ILogger,
          projectDataSource: XcodeProjectDataSource,
          targetsDataSource: XcodeTargetsDataSource,
-         schemesEditor: XcodeProjectSchemesEditor) {
+         schemesEditor: IXcodeProjectSchemesEditor) {
         self.logger = logger
         self.projectDataSource = projectDataSource
         self.targetsDataSource = targetsDataSource

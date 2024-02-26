@@ -14,7 +14,11 @@ protocol IBuildTargetsManager: AnyObject {
         includingTests: Bool
     ) -> TargetsMap
 
-    func createTarget(dependencies: TargetsMap) async throws -> IInternalTarget
+    func createTarget(
+        dependencies: TargetsMap,
+        buildConfiguration: String?,
+        testplanPath: String?
+    ) async throws -> IInternalTarget
 }
 
 extension IBuildTargetsManager {
@@ -27,6 +31,10 @@ extension IBuildTargetsManager {
 
     func filterTargets(_ targets: TargetsMap) -> TargetsMap {
         filterTargets(targets, includingTests: false)
+    }
+
+    func createTarget(dependencies: TargetsMap) async throws -> IInternalTarget {
+        try await createTarget(dependencies: dependencies, buildConfiguration: nil, testplanPath: nil)
     }
 }
 
@@ -62,7 +70,15 @@ extension BuildTargetsManager: IBuildTargetsManager {
         }
     }
 
-    func createTarget(dependencies: TargetsMap) async throws -> IInternalTarget {
-        try await xcodeProject.createAggregatedTarget(name: buildTargetName, dependencies: dependencies)
+    func createTarget(
+        dependencies: TargetsMap,
+        buildConfiguration: String?,
+        testplanPath: String?
+    ) async throws -> IInternalTarget {
+        let target = try await xcodeProject.createAggregatedTarget(name: buildTargetName, dependencies: dependencies)
+        if let buildConfiguration, let testplanPath {
+            xcodeProject.createTestingScheme(target, buildConfiguration: buildConfiguration, testplanPath: testplanPath)
+        }
+        return target
     }
 }

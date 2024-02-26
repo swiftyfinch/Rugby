@@ -57,10 +57,13 @@ public final class XcodeVault {
                                                targetsDataSource: targetsDataSource,
                                                schemesEditor: schemesEditor)
         let buildSettingsEditor = XcodeBuildSettingsEditor(projectDataSource: projectDataSource)
+        let xcodeWorkspaceEditor = XcodeWorkspaceEditor(workingDirectory: router.workingDirectory)
         let xcodeProject = XcodeProject(projectDataSource: projectDataSource,
                                         targetsFinder: targetsFinder,
                                         targetsEditor: targetsEditor,
-                                        buildSettingsEditor: buildSettingsEditor)
+                                        buildSettingsEditor: buildSettingsEditor,
+                                        schemesEditor: schemesEditor,
+                                        workspaceEditor: xcodeWorkspaceEditor)
         xcodeProjectsCache[projectPath] = xcodeProject
         return xcodeProject
     }

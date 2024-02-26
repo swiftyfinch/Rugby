@@ -54,25 +54,25 @@ final class IBuildTargetsManagerMock: IBuildTargetsManager {
 
     // MARK: - createTarget
 
-    var createTargetDependenciesThrowableError: Error?
-    var createTargetDependenciesCallsCount = 0
-    var createTargetDependenciesCalled: Bool { createTargetDependenciesCallsCount > 0 }
-    var createTargetDependenciesReceivedDependencies: TargetsMap?
-    var createTargetDependenciesReceivedInvocations: [TargetsMap] = []
-    var createTargetDependenciesReturnValue: IInternalTarget!
-    var createTargetDependenciesClosure: ((TargetsMap) async throws -> IInternalTarget)?
+    var createTargetDependenciesBuildConfigurationTestplanPathThrowableError: Error?
+    var createTargetDependenciesBuildConfigurationTestplanPathCallsCount = 0
+    var createTargetDependenciesBuildConfigurationTestplanPathCalled: Bool { createTargetDependenciesBuildConfigurationTestplanPathCallsCount > 0 }
+    var createTargetDependenciesBuildConfigurationTestplanPathReceivedArguments: (dependencies: TargetsMap, buildConfiguration: String?, testplanPath: String?)?
+    var createTargetDependenciesBuildConfigurationTestplanPathReceivedInvocations: [(dependencies: TargetsMap, buildConfiguration: String?, testplanPath: String?)] = []
+    var createTargetDependenciesBuildConfigurationTestplanPathReturnValue: IInternalTarget!
+    var createTargetDependenciesBuildConfigurationTestplanPathClosure: ((TargetsMap, String?, String?) async throws -> IInternalTarget)?
 
-    func createTarget(dependencies: TargetsMap) async throws -> IInternalTarget {
-        createTargetDependenciesCallsCount += 1
-        createTargetDependenciesReceivedDependencies = dependencies
-        createTargetDependenciesReceivedInvocations.append(dependencies)
-        if let error = createTargetDependenciesThrowableError {
+    func createTarget(dependencies: TargetsMap, buildConfiguration: String?, testplanPath: String?) async throws -> IInternalTarget {
+        createTargetDependenciesBuildConfigurationTestplanPathCallsCount += 1
+        createTargetDependenciesBuildConfigurationTestplanPathReceivedArguments = (dependencies: dependencies, buildConfiguration: buildConfiguration, testplanPath: testplanPath)
+        createTargetDependenciesBuildConfigurationTestplanPathReceivedInvocations.append((dependencies: dependencies, buildConfiguration: buildConfiguration, testplanPath: testplanPath))
+        if let error = createTargetDependenciesBuildConfigurationTestplanPathThrowableError {
             throw error
         }
-        if let createTargetDependenciesClosure = createTargetDependenciesClosure {
-            return try await createTargetDependenciesClosure(dependencies)
+        if let createTargetDependenciesBuildConfigurationTestplanPathClosure = createTargetDependenciesBuildConfigurationTestplanPathClosure {
+            return try await createTargetDependenciesBuildConfigurationTestplanPathClosure(dependencies, buildConfiguration, testplanPath)
         } else {
-            return createTargetDependenciesReturnValue
+            return createTargetDependenciesBuildConfigurationTestplanPathReturnValue
         }
     }
 }

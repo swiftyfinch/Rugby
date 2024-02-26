@@ -101,6 +101,41 @@ final class IInternalXcodeProjectMock: IInternalXcodeProject {
         try await deleteTargetsKeepGroupsClosure?(targetsForRemove, keepGroups)
     }
 
+    // MARK: - createTestingScheme
+
+    var createTestingSchemeBuildConfigurationTestplanPathCallsCount = 0
+    var createTestingSchemeBuildConfigurationTestplanPathCalled: Bool { createTestingSchemeBuildConfigurationTestplanPathCallsCount > 0 }
+    var createTestingSchemeBuildConfigurationTestplanPathReceivedArguments: (target: IInternalTarget, buildConfiguration: String, testplanPath: String)?
+    var createTestingSchemeBuildConfigurationTestplanPathReceivedInvocations: [(target: IInternalTarget, buildConfiguration: String, testplanPath: String)] = []
+    var createTestingSchemeBuildConfigurationTestplanPathClosure: ((IInternalTarget, String, String) -> Void)?
+
+    func createTestingScheme(_ target: IInternalTarget, buildConfiguration: String, testplanPath: String) {
+        createTestingSchemeBuildConfigurationTestplanPathCallsCount += 1
+        createTestingSchemeBuildConfigurationTestplanPathReceivedArguments = (target: target, buildConfiguration: buildConfiguration, testplanPath: testplanPath)
+        createTestingSchemeBuildConfigurationTestplanPathReceivedInvocations.append((target: target, buildConfiguration: buildConfiguration, testplanPath: testplanPath))
+        createTestingSchemeBuildConfigurationTestplanPathClosure?(target, buildConfiguration, testplanPath)
+    }
+
+    // MARK: - readWorkspaceProjectPaths
+
+    var readWorkspaceProjectPathsThrowableError: Error?
+    var readWorkspaceProjectPathsCallsCount = 0
+    var readWorkspaceProjectPathsCalled: Bool { readWorkspaceProjectPathsCallsCount > 0 }
+    var readWorkspaceProjectPathsReturnValue: [String]!
+    var readWorkspaceProjectPathsClosure: (() throws -> [String])?
+
+    func readWorkspaceProjectPaths() throws -> [String] {
+        if let error = readWorkspaceProjectPathsThrowableError {
+            throw error
+        }
+        readWorkspaceProjectPathsCallsCount += 1
+        if let readWorkspaceProjectPathsClosure = readWorkspaceProjectPathsClosure {
+            return try readWorkspaceProjectPathsClosure()
+        } else {
+            return readWorkspaceProjectPathsReturnValue
+        }
+    }
+
     // MARK: - folderPaths
 
     public var folderPathsThrowableError: Error?
