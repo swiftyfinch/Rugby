@@ -25,7 +25,6 @@ final class XcodeWorkspaceEditorTests: XCTestCase {
 
 extension XcodeWorkspaceEditorTests {
     func test_readProjectPaths_notFound() throws {
-        // Act
         let paths = try sut.readProjectPaths()
 
         // Assert

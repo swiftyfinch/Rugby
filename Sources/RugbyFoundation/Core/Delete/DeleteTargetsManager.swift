@@ -54,8 +54,12 @@ extension DeleteTargetsManager: IDeleteTargetsManager {
         guard shouldBeRemoved.isNotEmpty else { return await log("Skip") }
 
         try await log("Backuping", level: .info, auto: await backupManager.backup(xcodeProject, kind: .original))
-        try await log("Deleting Targets (\(shouldBeRemoved.count))",
-                      auto: await xcodeProject.deleteTargets(shouldBeRemoved, keepGroups: !deleteSources))
+        try await log("Deleting Targets (\(shouldBeRemoved.count))", block: {
+            for target in shouldBeRemoved.values {
+                await log(target.name, level: .info)
+            }
+            try await xcodeProject.deleteTargets(shouldBeRemoved, keepGroups: !deleteSources)
+        })
         try await log("Saving Project", auto: await xcodeProject.save())
     }
 }

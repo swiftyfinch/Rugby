@@ -136,4 +136,10 @@ extension ITargetTreePainter {}
 //// sourcery: AutoMockable, imports = ["RugbyFoundation"]
 extension ITestsStorage {}
 
+//// sourcery: AutoMockable, imports = ["RugbyFoundation"]
+extension IInternalXcodeProject {}
+
+//// sourcery: AutoMockable, imports = ["RugbyFoundation"]
+extension IInternalBuildManager {}
+
 // TODO: Needs to improve Sourcery template to generate mocks automatically w/o manual editing
