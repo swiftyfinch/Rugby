@@ -29,9 +29,9 @@ final class XcodeBuildTests: XCTestCase {
 }
 
 extension XcodeBuildTests {
-    func test_general() throws {
+    func test_general() async throws {
         fishSharedStorage.createFolderAtReturnValue = IFolderMock()
-        try sut.build(
+        try await sut.build(
             target: "Rugby",
             options: XcodeBuildOptions(
                 sdk: .ios,
@@ -61,13 +61,13 @@ extension XcodeBuildTests {
         XCTAssertEqual(
             arguments.args as? [[String]],
             [[
-                "-project /Users/swiftyfinch/Developer/Repos/Rugby/Example/Pods/Pods.xcodeproj",
                 "-target Rugby",
                 "-sdk iphoneos",
                 "-config Debug",
                 "ARCHS=x86_64",
-                "SYMROOT=/Users/swiftyfinch/Developer/Repos/Rugby/Example/.rugby/build",
                 "-parallelizeTargets",
+                "-project /Users/swiftyfinch/Developer/Repos/Rugby/Example/Pods/Pods.xcodeproj",
+                "SYMROOT=/Users/swiftyfinch/Developer/Repos/Rugby/Example/.rugby/build",
                 "-resultBundlePath build.xcresult",
                 "COMPILER_INDEX_STORE_ENABLE=NO",
                 "SWIFT_COMPILATION_MODE=wholemodule",
@@ -79,9 +79,9 @@ extension XcodeBuildTests {
         )
     }
 
-    func test_spaceInPaths() throws {
+    func test_spaceInPaths() async throws {
         fishSharedStorage.createFolderAtReturnValue = IFolderMock()
-        try sut.build(
+        try await sut.build(
             target: "RugbyPods",
             options: XcodeBuildOptions(
                 sdk: .sim,
@@ -111,13 +111,13 @@ extension XcodeBuildTests {
         XCTAssertEqual(
             arguments.args as? [[String]],
             [[
-                "-project /Users/swiftyfinch/Developer/Repos/Rugby/Exa\\ mple/Pods/Pods.xcodeproj",
                 "-target RugbyPods",
                 "-sdk iphonesimulator",
                 "-config QA\\ Release",
                 "ARCHS=arm64",
-                "SYMROOT=/Users/swiftyfinch/Developer/Repos/Rugby/Exa\\ mple/.rugby/build",
                 "-parallelizeTargets",
+                "-project /Users/swiftyfinch/Developer/Repos/Rugby/Exa\\ mple/Pods/Pods.xcodeproj",
+                "SYMROOT=/Users/swiftyfinch/Developer/Repos/Rugby/Exa\\ mple/.rugby/build",
                 "COMPILER_INDEX_STORE_ENABLE=NO",
                 "SWIFT_COMPILATION_MODE=wholemodule"
             ]]

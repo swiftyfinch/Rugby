@@ -1,4 +1,5 @@
 import Fish
+import Rainbow
 
 /// The main container of Rugby stuff.
 public final class Vault {
@@ -135,6 +136,17 @@ public final class Vault {
         logsRotator: logsRotator,
         router: router
     )
+
+    func xcodeBuild() -> XcodeBuild {
+        let logFormatter = BuildLogFormatter(workingDirectory: router.workingDirectory,
+                                             colored: Rainbow.enabled)
+        let xcodeBuildExecutor = XcodeBuildExecutor(
+            logger: logger,
+            shellExecutor: shellExecutor,
+            logFormatter: logFormatter
+        )
+        return XcodeBuild(xcodeBuildExecutor: xcodeBuildExecutor)
+    }
 }
 
 // MARK: - Keys

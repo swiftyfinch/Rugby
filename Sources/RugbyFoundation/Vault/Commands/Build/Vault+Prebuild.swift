@@ -3,11 +3,12 @@ import Fish
 public extension Vault {
     /// The manager to prebuild CocoaPods project.
     func prebuildManager() -> IPrebuildManager {
-        PrebuildManager(
+        let xcodeProject = xcode.project(projectPath: router.podsProjectPath)
+        return PrebuildManager(
             logger: logger,
             xcodePhaseEditor: XcodePhaseEditor(),
             buildManager: internalBuildManager(),
-            xcodeProject: xcode.project(projectPath: router.podsProjectPath),
+            xcodeProject: xcodeProject,
             binariesStorage: binariesStorage
         )
     }
