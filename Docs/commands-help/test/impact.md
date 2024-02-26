@@ -8,7 +8,7 @@
 
 ```sh
 
- > (Beta) Print affected test targets.
+ > (Experimental) Print affected test targets.
 
  Options:
 ╭───────────────────────────────────────────────────────────────────────────────╮

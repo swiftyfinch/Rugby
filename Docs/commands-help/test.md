@@ -8,13 +8,13 @@
 
 ```sh
 
- > (Beta) Analyse test targets.
+ > (Experimental) Analyse test targets.
 
  Subcommands:
-╭───────────────────────────────────────────────╮
-│ impact  * (Beta) Print affected test targets. │
-│ pass    * (Beta) Mark test targets as passed. │
-╰───────────────────────────────────────────────╯
+╭───────────────────────────────────────────────────────╮
+│ impact  * (Experimental) Print affected test targets. │
+│ pass    * (Experimental) Mark test targets as passed. │
+╰───────────────────────────────────────────────────────╯
  Flags:
 ╭──────────────────────────────────────╮
 │ -h, --help  * Show help information. │

@@ -14,7 +14,7 @@
 │ use        * Use already built binaries instead of sources.          │
 │ delete     * Delete targets from the project.                        │
 │ warmup     * Download remote binaries for targets from Pods project. │
-│ _test      * (Beta) Analyse test targets.                            │
+│ _test      * (Experimental) Analyse test targets.                    │
 │ rollback   * Restore projects state before the last Rugby usage.     │
 │ plan       * Run sequence of Rugby commands.                         │
 │ clear      * Clear modules cache.                                    │
