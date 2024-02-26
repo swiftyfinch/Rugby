@@ -34,10 +34,10 @@ final class ITestsStorageMock: ITestsStorage {
     var findMissingTestsOfBuildOptionsCalled: Bool { findMissingTestsOfBuildOptionsCallsCount > 0 }
     var findMissingTestsOfBuildOptionsReceivedArguments: (targets: TargetsMap, buildOptions: XcodeBuildOptions)?
     var findMissingTestsOfBuildOptionsReceivedInvocations: [(targets: TargetsMap, buildOptions: XcodeBuildOptions)] = []
-    var findMissingTestsOfBuildOptionsReturnValue: [IInternalTarget]!
-    var findMissingTestsOfBuildOptionsClosure: ((TargetsMap, XcodeBuildOptions) async throws -> [IInternalTarget])?
+    var findMissingTestsOfBuildOptionsReturnValue: TargetsMap!
+    var findMissingTestsOfBuildOptionsClosure: ((TargetsMap, XcodeBuildOptions) async throws -> TargetsMap)?
 
-    func findMissingTests(of targets: TargetsMap, buildOptions: XcodeBuildOptions) async throws -> [IInternalTarget] {
+    func findMissingTests(of targets: TargetsMap, buildOptions: XcodeBuildOptions) async throws -> TargetsMap {
         if let error = findMissingTestsOfBuildOptionsThrowableError {
             throw error
         }

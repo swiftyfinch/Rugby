@@ -12,7 +12,7 @@ protocol ITestsStorage {
     func findMissingTests(
         of targets: TargetsMap,
         buildOptions: XcodeBuildOptions
-    ) async throws -> [IInternalTarget]
+    ) async throws -> TargetsMap
 }
 
 // MARK: - Implementation
@@ -65,13 +65,16 @@ extension TestsStorage: ITestsStorage {
     func findMissingTests(
         of targets: TargetsMap,
         buildOptions: XcodeBuildOptions
-    ) async throws -> [IInternalTarget] {
+    ) async throws -> TargetsMap {
         try await log("Finding Tests in Cache", block: {
             try await findTestsCachePaths(for: targets, buildOptions: buildOptions)
                 .concurrentCompactMap { target, fullPath, _ in
                     let isFileExist = File.isExist(at: fullPath.path)
-                    await self.logPlain("\(isFileExist ? "+" : "-") \(fullPath)", output: .file)
+                    await self.logPlain("\(isFileExist ? "+" : "-") \(fullPath.path)", output: .file)
                     return isFileExist ? nil : target
+                }
+                .reduce(into: [:]) { map, target in
+                    map[target.uuid] = target
                 }
         })
     }
