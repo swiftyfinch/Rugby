@@ -429,5 +429,132 @@ extension BuildLogFormatterTests {
     }
 }
 
+// MARK: - Tests
+
+extension BuildLogFormatterTests {
+    func test_tests() throws {
+        let sut = makeSut(colored: false)
+        let input = """
+        Testing started
+        Test Suite 'All tests' started at 2024-02-25 23:06:26.677.
+        Test Suite 'LocalPod-framework-Unit-Tests.xctest' started at 2024-02-25 23:06:26.677.
+        Test Suite 'ResourcesBundleTests' started at 2024-02-25 23:06:26.677.
+        Test Case '-[LocalPod_framework_Unit_Tests.ResourcesBundleTests testAccessToResourcesBundle]' started.
+        Test Case '-[LocalPod_framework_Unit_Tests.ResourcesBundleTests testAccessToResourcesBundle]' passed (0.002 seconds).
+        Test Case '-[LocalPod_framework_Unit_Tests.ResourcesBundleTests testAccessToTestResourcesBundle]' started.
+        Test Case '-[LocalPod_framework_Unit_Tests.ResourcesBundleTests testAccessToTestResourcesBundle]' passed (0.001 seconds).
+        Test Suite 'ResourcesBundleTests' passed at 2024-02-25 23:06:26.681.
+             Executed 2 tests, with 0 failures (0 unexpected) in 0.003 (0.004) seconds
+        Test Suite 'LocalPod-framework-Unit-Tests.xctest' passed at 2024-02-25 23:06:26.681.
+             Executed 2 tests, with 0 failures (0 unexpected) in 0.003 (0.004) seconds
+        Test Suite 'All tests' passed at 2024-02-25 23:06:26.681.
+             Executed 2 tests, with 0 failures (0 unexpected) in 0.003 (0.005) seconds
+        Test Suite 'All tests' started at 2024-02-25 23:06:28.041.
+        Test Suite 'LocalPod-framework-Unit-ResourceBundleTests.xctest' started at 2024-02-25 23:06:28.042.
+        Test Suite 'ResourceBundleTests' started at 2024-02-25 23:06:28.042.
+        Test Case '-[LocalPod_framework_Unit_ResourceBundleTests.ResourceBundleTests testAccessToResourcesBundle]' started.
+        Test Case '-[LocalPod_framework_Unit_ResourceBundleTests.ResourceBundleTests testAccessToResourcesBundle]' passed (0.002 seconds).
+        Test Case '-[LocalPod_framework_Unit_ResourceBundleTests.ResourceBundleTests testAccessToTestResourcesBundle]' started.
+        Test Case '-[LocalPod_framework_Unit_ResourceBundleTests.ResourceBundleTests testAccessToTestResourcesBundle]' passed (0.001 seconds).
+        Test Suite 'ResourceBundleTests' passed at 2024-02-25 23:06:28.045.
+             Executed 2 tests, with 0 failures (0 unexpected) in 0.003 (0.003) seconds
+        Test Suite 'LocalPod-framework-Unit-ResourceBundleTests.xctest' passed at 2024-02-25 23:06:28.045.
+             Executed 2 tests, with 0 failures (0 unexpected) in 0.003 (0.003) seconds
+        Test Suite 'All tests' passed at 2024-02-25 23:06:28.045.
+             Executed 2 tests, with 0 failures (0 unexpected) in 0.003 (0.004) seconds
+
+        Test session results, code coverage, and logs:
+            /Users/swiftyfinch/Library/Developer/Xcode/DerivedData/Pods-guuswvdxibpkovaskeldlnpbgyfo/Logs/Test/Test-RugbyPods-2024.02.25_23-05-40-+0500.xcresult
+        """
+
+        // Act
+        let output = try act(sut: sut, input: input)
+
+        // Assert
+        XCTAssertEqual(output.count, 8)
+        let outputText = output.map(\.text).joined(separator: "\n")
+        XCTAssertEqual(
+            outputText,
+            """
+            ⚑ LocalPod-framework-Unit-Tests
+              ResourcesBundleTests:
+              ✓ testAccessToResourcesBundle (0.002 seconds)
+              ✓ testAccessToTestResourcesBundle (0.001 seconds)
+            ⚑ LocalPod-framework-Unit-ResourceBundleTests
+              ResourceBundleTests:
+              ✓ testAccessToResourcesBundle (0.002 seconds)
+              ✓ testAccessToTestResourcesBundle (0.001 seconds)
+            """
+        )
+
+        XCTAssertEqual(output[0].type, .test)
+        XCTAssertEqual(output[1].type, .test)
+        XCTAssertEqual(output[2].type, .testCase)
+        XCTAssertEqual(output[3].type, .testCase)
+        XCTAssertEqual(output[4].type, .test)
+        XCTAssertEqual(output[5].type, .test)
+        XCTAssertEqual(output[6].type, .testCase)
+        XCTAssertEqual(output[7].type, .testCase)
+    }
+
+    func test_tests_colored() throws {
+        let sut = makeSut(colored: true)
+        let input = """
+        Testing started
+        Test Suite 'All tests' started at 2024-02-25 23:06:26.677.
+        Test Suite 'LocalPod-framework-Unit-Tests.xctest' started at 2024-02-25 23:06:26.677.
+        Test Suite 'ResourcesBundleTests' started at 2024-02-25 23:06:26.677.
+        Test Case '-[LocalPod_framework_Unit_Tests.ResourcesBundleTests testAccessToResourcesBundle]' started.
+        Test Case '-[LocalPod_framework_Unit_Tests.ResourcesBundleTests testAccessToResourcesBundle]' passed (0.002 seconds).
+        Test Case '-[LocalPod_framework_Unit_Tests.ResourcesBundleTests testAccessToTestResourcesBundle]' started.
+        Test Case '-[LocalPod_framework_Unit_Tests.ResourcesBundleTests testAccessToTestResourcesBundle]' passed (0.001 seconds).
+        Test Suite 'ResourcesBundleTests' passed at 2024-02-25 23:06:26.681.
+             Executed 2 tests, with 0 failures (0 unexpected) in 0.003 (0.004) seconds
+        Test Suite 'LocalPod-framework-Unit-Tests.xctest' passed at 2024-02-25 23:06:26.681.
+             Executed 2 tests, with 0 failures (0 unexpected) in 0.003 (0.004) seconds
+        Test Suite 'All tests' passed at 2024-02-25 23:06:26.681.
+             Executed 2 tests, with 0 failures (0 unexpected) in 0.003 (0.005) seconds
+        Test Suite 'All tests' started at 2024-02-25 23:06:28.041.
+        Test Suite 'LocalPod-framework-Unit-ResourceBundleTests.xctest' started at 2024-02-25 23:06:28.042.
+        Test Suite 'ResourceBundleTests' started at 2024-02-25 23:06:28.042.
+        Test Case '-[LocalPod_framework_Unit_ResourceBundleTests.ResourceBundleTests testAccessToResourcesBundle]' started.
+        Test Case '-[LocalPod_framework_Unit_ResourceBundleTests.ResourceBundleTests testAccessToResourcesBundle]' passed (0.002 seconds).
+        Test Case '-[LocalPod_framework_Unit_ResourceBundleTests.ResourceBundleTests testAccessToTestResourcesBundle]' started.
+        Test Case '-[LocalPod_framework_Unit_ResourceBundleTests.ResourceBundleTests testAccessToTestResourcesBundle]' passed (0.001 seconds).
+        Test Suite 'ResourceBundleTests' passed at 2024-02-25 23:06:28.045.
+             Executed 2 tests, with 0 failures (0 unexpected) in 0.003 (0.003) seconds
+        Test Suite 'LocalPod-framework-Unit-ResourceBundleTests.xctest' passed at 2024-02-25 23:06:28.045.
+             Executed 2 tests, with 0 failures (0 unexpected) in 0.003 (0.003) seconds
+        Test Suite 'All tests' passed at 2024-02-25 23:06:28.045.
+             Executed 2 tests, with 0 failures (0 unexpected) in 0.003 (0.004) seconds
+
+        Test session results, code coverage, and logs:
+            /Users/swiftyfinch/Library/Developer/Xcode/DerivedData/Pods-guuswvdxibpkovaskeldlnpbgyfo/Logs/Test/Test-RugbyPods-2024.02.25_23-05-40-+0500.xcresult
+        """
+
+        // Act
+        let output = try act(sut: sut, input: input)
+
+        // Assert
+        XCTAssertEqual(output.count, 8)
+        XCTAssertEqual(output[0].text, "\("⚑".yellow) \("LocalPod-framework-Unit-Tests".green)")
+        XCTAssertEqual(output[0].type, .test)
+        XCTAssertEqual(output[1].text, "  ResourcesBundleTests:".green)
+        XCTAssertEqual(output[1].type, .test)
+        XCTAssertEqual(output[2].text, "  \("✓".green)\(" testAccessToResourcesBundle (0.002 seconds)".applyingStyle(.default))")
+        XCTAssertEqual(output[2].type, .testCase)
+        XCTAssertEqual(output[3].text, "  \("✓".green)\(" testAccessToTestResourcesBundle (0.001 seconds)".applyingStyle(.default))")
+        XCTAssertEqual(output[3].type, .testCase)
+        XCTAssertEqual(output[4].text, "\("⚑".yellow) \("LocalPod-framework-Unit-ResourceBundleTests".green)")
+        XCTAssertEqual(output[4].type, .test)
+        XCTAssertEqual(output[5].text, "  ResourceBundleTests:".green)
+        XCTAssertEqual(output[5].type, .test)
+        XCTAssertEqual(output[6].text, "  \("✓".green)\(" testAccessToResourcesBundle (0.002 seconds)".applyingStyle(.default))")
+        XCTAssertEqual(output[6].type, .testCase)
+        XCTAssertEqual(output[7].text, "  \("✓".green)\(" testAccessToTestResourcesBundle (0.001 seconds)".applyingStyle(.default))")
+        XCTAssertEqual(output[7].type, .testCase)
+    }
+}
+
 // swiftlint:enable line_length
 // swiftlint:enable file_length
