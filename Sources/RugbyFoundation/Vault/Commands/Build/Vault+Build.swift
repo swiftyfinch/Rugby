@@ -10,12 +10,6 @@ extension Vault {
     // MARK: - Internal
 
     func internalBuildManager() -> IInternalBuildManager {
-        let logFormatter = BuildLogFormatter(workingDirectory: router.workingDirectory,
-                                             colored: Rainbow.enabled)
-        let xcodeBuildExecutor = XcodeBuildExecutor(
-            shellExecutor: shellExecutor,
-            logFormatter: logFormatter
-        )
         let xcodeProject = xcode.project(projectPath: router.podsProjectPath)
         let buildTargetsManager = BuildTargetsManager(xcodeProject: xcodeProject)
         let useBinariesManager = useBinariesManager(xcodeProject: xcodeProject,
@@ -28,7 +22,6 @@ extension Vault {
             localRugbyFolderPath: router.rugbyPath,
             buildFolderPath: router.buildPath
         )
-        let xcodeBuild = XcodeBuild(xcodeBuildExecutor: xcodeBuildExecutor)
         return BuildManager(logger: logger,
                             buildTargetsManager: buildTargetsManager,
                             librariesPatcher: LibrariesPatcher(logger: logger),
@@ -36,7 +29,7 @@ extension Vault {
                             rugbyXcodeProject: RugbyXcodeProject(xcodeProject: xcodeProject),
                             backupManager: backupManager(),
                             processMonitor: processMonitor,
-                            xcodeBuild: xcodeBuild,
+                            xcodeBuild: xcodeBuild(),
                             binariesStorage: binariesStorage,
                             targetsHasher: targetsHasher(),
                             useBinariesManager: useBinariesManager,

@@ -171,7 +171,7 @@ extension BuildManager: IInternalBuildManager {
                 processInterruptionTask.cancel()
                 cleanup()
             }
-            try self.xcodeBuild.build(target: target.name, options: options, paths: paths)
+            try await xcodeBuild.build(target: target.name, options: options, paths: paths)
         })
     }
 }

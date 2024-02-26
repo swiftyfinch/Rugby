@@ -5,7 +5,7 @@ import Fish
 protocol IXcodeBuild: AnyObject {
     func build(target: String,
                options: XcodeBuildOptions,
-               paths: XcodeBuildPaths) throws
+               paths: XcodeBuildPaths) async throws
 }
 
 /// Xcode build options.
@@ -81,31 +81,47 @@ final class XcodeBuild {
     init(xcodeBuildExecutor: IXcodeBuildExecutor) {
         self.xcodeBuildExecutor = xcodeBuildExecutor
     }
-}
 
-extension XcodeBuild: IXcodeBuild {
-    func build(target: String,
-               options: XcodeBuildOptions,
-               paths: XcodeBuildPaths) throws {
+    private func run(
+        arguments: [String],
+        options: XcodeBuildOptions,
+        paths: XcodeBuildPaths
+    ) async throws {
         let command = "NSUnbufferedIO=YES xcodebuild"
-        var arguments = [
+        var arguments = arguments
+        arguments.append(contentsOf: [
             "-project \(paths.project.shellFriendly)",
-            "-target \(target)",
-            "-sdk \(options.sdk.xcodebuild)",
-            "-config \(options.config.shellFriendly)",
-            "ARCHS=\(options.arch)",
-            "SYMROOT=\(paths.symroot.shellFriendly)",
-            "-parallelizeTargets"
-        ]
+            "SYMROOT=\(paths.symroot.shellFriendly)"
+        ])
         options.resultBundlePath.map {
             arguments.append("-resultBundlePath \($0.shellFriendly)")
         }
         arguments.append(contentsOf: options.xcargs)
 
         try Folder.create(at: paths.symroot)
-        try xcodeBuildExecutor.run(command,
-                                   rawLogPath: paths.rawLog,
-                                   logPath: paths.beautifiedLog,
-                                   args: arguments)
+        try await xcodeBuildExecutor.run(command,
+                                         rawLogPath: paths.rawLog,
+                                         logPath: paths.beautifiedLog,
+                                         args: arguments)
+    }
+}
+
+// MARK: - IXcodeBuild
+
+extension XcodeBuild: IXcodeBuild {
+    func build(target: String,
+               options: XcodeBuildOptions,
+               paths: XcodeBuildPaths) async throws {
+        try await run(
+            arguments: [
+                "-target \(target)",
+                "-sdk \(options.sdk.xcodebuild)",
+                "-config \(options.config.shellFriendly)",
+                "ARCHS=\(options.arch)",
+                "-parallelizeTargets"
+            ],
+            options: options,
+            paths: paths
+        )
     }
 }

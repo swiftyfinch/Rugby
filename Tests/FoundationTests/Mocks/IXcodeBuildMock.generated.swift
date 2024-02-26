@@ -15,16 +15,35 @@ final class IXcodeBuildMock: IXcodeBuild {
     var buildTargetOptionsPathsCalled: Bool { buildTargetOptionsPathsCallsCount > 0 }
     var buildTargetOptionsPathsReceivedArguments: (target: String, options: XcodeBuildOptions, paths: XcodeBuildPaths)?
     var buildTargetOptionsPathsReceivedInvocations: [(target: String, options: XcodeBuildOptions, paths: XcodeBuildPaths)] = []
-    var buildTargetOptionsPathsClosure: ((String, XcodeBuildOptions, XcodeBuildPaths) throws -> Void)?
+    var buildTargetOptionsPathsClosure: ((String, XcodeBuildOptions, XcodeBuildPaths) async throws -> Void)?
 
-    func build(target: String, options: XcodeBuildOptions, paths: XcodeBuildPaths) throws {
+    func build(target: String, options: XcodeBuildOptions, paths: XcodeBuildPaths) async throws {
         buildTargetOptionsPathsCallsCount += 1
         buildTargetOptionsPathsReceivedArguments = (target: target, options: options, paths: paths)
         buildTargetOptionsPathsReceivedInvocations.append((target: target, options: options, paths: paths))
         if let error = buildTargetOptionsPathsThrowableError {
             throw error
         }
-        try buildTargetOptionsPathsClosure?(target, options, paths)
+        try await buildTargetOptionsPathsClosure?(target, options, paths)
+    }
+
+    // MARK: - test
+
+    var testSchemeTestPlanSimulatorNameOptionsPathsThrowableError: Error?
+    var testSchemeTestPlanSimulatorNameOptionsPathsCallsCount = 0
+    var testSchemeTestPlanSimulatorNameOptionsPathsCalled: Bool { testSchemeTestPlanSimulatorNameOptionsPathsCallsCount > 0 }
+    var testSchemeTestPlanSimulatorNameOptionsPathsReceivedArguments: (scheme: String, testPlan: String, simulatorName: String, options: XcodeBuildOptions, paths: XcodeBuildPaths)?
+    var testSchemeTestPlanSimulatorNameOptionsPathsReceivedInvocations: [(scheme: String, testPlan: String, simulatorName: String, options: XcodeBuildOptions, paths: XcodeBuildPaths)] = []
+    var testSchemeTestPlanSimulatorNameOptionsPathsClosure: ((String, String, String, XcodeBuildOptions, XcodeBuildPaths) async throws -> Void)?
+
+    func test(scheme: String, testPlan: String, simulatorName: String, options: XcodeBuildOptions, paths: XcodeBuildPaths) async throws {
+        if let error = testSchemeTestPlanSimulatorNameOptionsPathsThrowableError {
+            throw error
+        }
+        testSchemeTestPlanSimulatorNameOptionsPathsCallsCount += 1
+        testSchemeTestPlanSimulatorNameOptionsPathsReceivedArguments = (scheme: scheme, testPlan: testPlan, simulatorName: simulatorName, options: options, paths: paths)
+        testSchemeTestPlanSimulatorNameOptionsPathsReceivedInvocations.append((scheme: scheme, testPlan: testPlan, simulatorName: simulatorName, options: options, paths: paths))
+        try await testSchemeTestPlanSimulatorNameOptionsPathsClosure?(scheme, testPlan, simulatorName, options, paths)
     }
 }
 

@@ -6,6 +6,7 @@ import XCTest
 
 final class XcodeBuildExecutorTests: XCTestCase {
     private var sut: XcodeBuildExecutor!
+    private var logger: ILoggerMock!
     private var shellExecutor: IShellExecutorMock!
     private var buildLogFormatter: IBuildLogFormatterMock!
     private var fishSharedStorage: IFilesManagerMock!
@@ -20,9 +21,11 @@ final class XcodeBuildExecutorTests: XCTestCase {
             Fish.sharedStorage = backupFishSharedStorage
         }
 
+        logger = ILoggerMock()
         shellExecutor = IShellExecutorMock()
         buildLogFormatter = IBuildLogFormatterMock()
         sut = XcodeBuildExecutor(
+            logger: logger,
             shellExecutor: shellExecutor,
             logFormatter: buildLogFormatter
         )
@@ -31,6 +34,7 @@ final class XcodeBuildExecutorTests: XCTestCase {
     override func tearDown() {
         super.tearDown()
         sut = nil
+        logger = nil
         shellExecutor = nil
         buildLogFormatter = nil
         fishSharedStorage = nil
@@ -38,7 +42,7 @@ final class XcodeBuildExecutorTests: XCTestCase {
 }
 
 extension XcodeBuildExecutorTests {
-    func test_taskInLog() throws {
+    func test_taskInLog() async throws {
         let createFileMock = IFileMock()
         fishSharedStorage.createFileAtContentsReturnValue = createFileMock
         let createFolderMock = IFolderMock()
@@ -64,7 +68,7 @@ extension XcodeBuildExecutorTests {
         }
 
         // Act
-        try sut.run(
+        try await sut.run(
             "test_command",
             rawLogPath: test_rawLogPath,
             logPath: test_logPath,
@@ -94,7 +98,7 @@ extension XcodeBuildExecutorTests {
         XCTAssertEqual(createFileMock.appendReceivedInvocations, [expectedContent + "\n"])
     }
 
-    func test_errorsInLog() throws {
+    func test_errorsInLog() async throws {
         let createFileMock = IFileMock()
         fishSharedStorage.createFileAtContentsReturnValue = createFileMock
         let createFolderMock = IFolderMock()
@@ -125,14 +129,16 @@ extension XcodeBuildExecutorTests {
 
         // Act
         var resultError: Error?
-        try XCTAssertThrowsError(
-            sut.run(
+        do {
+            try await sut.run(
                 "test_command",
                 rawLogPath: test_rawLogPath,
                 logPath: test_logPath,
                 args: "arg0", "arg1"
             )
-        ) { resultError = $0 }
+        } catch {
+            resultError = error
+        }
 
         // Assert
         XCTAssertEqual(
