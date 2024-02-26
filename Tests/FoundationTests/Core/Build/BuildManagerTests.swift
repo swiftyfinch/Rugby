@@ -884,15 +884,14 @@ extension BuildManagerTests {
 
         // Act
         _ = try await sut.prepare(
-            targetsRegex: targetsRegex,
-            exceptTargetsRegex: exceptTargetsRegex,
+            targets: .filter(regex: targetsRegex, exceptRegex: exceptTargetsRegex),
             freeSpaceIfNeeded: false,
             patchLibraries: false
         )
 
         // Assert
-        XCTAssertEqual(environmentCollector.logXcodeVersionCallsCount, 1)
-        XCTAssertEqual(rugbyXcodeProject.isAlreadyUsingRugbyCallsCount, 1)
+        XCTAssertFalse(environmentCollector.logXcodeVersionCalled)
+        XCTAssertFalse(rugbyXcodeProject.isAlreadyUsingRugbyCalled)
         XCTAssertEqual(loggerBlockInvocations.count, 2)
 
         XCTAssertEqual(loggerBlockInvocations[0].header, "Finding Build Targets")

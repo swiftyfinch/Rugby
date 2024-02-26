@@ -9,6 +9,11 @@ protocol IBuildTargetsManager: AnyObject {
         includingTests: Bool
     ) async throws -> TargetsMap
 
+    func filterTargets(
+        _ targets: TargetsMap,
+        includingTests: Bool
+    ) -> TargetsMap
+
     func createTarget(dependencies: TargetsMap) async throws -> IInternalTarget
 }
 
@@ -18,6 +23,10 @@ extension IBuildTargetsManager {
         exceptTargets: NSRegularExpression?
     ) async throws -> TargetsMap {
         try await findTargets(targets, exceptTargets: exceptTargets, includingTests: false)
+    }
+
+    func filterTargets(_ targets: TargetsMap) -> TargetsMap {
+        filterTargets(targets, includingTests: false)
     }
 }
 
@@ -38,11 +47,16 @@ extension BuildTargetsManager: IBuildTargetsManager {
         exceptTargets: NSRegularExpression?,
         includingTests: Bool
     ) async throws -> TargetsMap {
-        try await xcodeProject.findTargets(
+        let foundTargets = try await xcodeProject.findTargets(
             by: targets,
             except: exceptTargets,
             includingDependencies: true
-        ).filter { _, target in
+        )
+        return filterTargets(foundTargets, includingTests: includingTests)
+    }
+
+    func filterTargets(_ targets: TargetsMap, includingTests: Bool) -> TargetsMap {
+        targets.filter { _, target in
             guard target.isNative, !target.isPodsUmbrella, !target.isApplication else { return false }
             return includingTests || !target.isTests
         }

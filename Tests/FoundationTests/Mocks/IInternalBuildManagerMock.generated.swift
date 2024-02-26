@@ -10,25 +10,25 @@ final class IInternalBuildManagerMock: IInternalBuildManager {
 
     // MARK: - prepare
 
-    var prepareTargetsRegexExceptTargetsRegexFreeSpaceIfNeededPatchLibrariesThrowableError: Error?
-    var prepareTargetsRegexExceptTargetsRegexFreeSpaceIfNeededPatchLibrariesCallsCount = 0
-    var prepareTargetsRegexExceptTargetsRegexFreeSpaceIfNeededPatchLibrariesCalled: Bool { prepareTargetsRegexExceptTargetsRegexFreeSpaceIfNeededPatchLibrariesCallsCount > 0 }
-    var prepareTargetsRegexExceptTargetsRegexFreeSpaceIfNeededPatchLibrariesReceivedArguments: (targetsRegex: NSRegularExpression?, exceptTargetsRegex: NSRegularExpression?, freeSpaceIfNeeded: Bool, patchLibraries: Bool)?
-    var prepareTargetsRegexExceptTargetsRegexFreeSpaceIfNeededPatchLibrariesReceivedInvocations: [(targetsRegex: NSRegularExpression?, exceptTargetsRegex: NSRegularExpression?, freeSpaceIfNeeded: Bool, patchLibraries: Bool)] = []
-    var prepareTargetsRegexExceptTargetsRegexFreeSpaceIfNeededPatchLibrariesReturnValue: TargetsMap!
-    var prepareTargetsRegexExceptTargetsRegexFreeSpaceIfNeededPatchLibrariesClosure: ((NSRegularExpression?, NSRegularExpression?, Bool, Bool) async throws -> TargetsMap)?
+    var prepareTargetsFreeSpaceIfNeededPatchLibrariesThrowableError: Error?
+    var prepareTargetsFreeSpaceIfNeededPatchLibrariesCallsCount = 0
+    var prepareTargetsFreeSpaceIfNeededPatchLibrariesCalled: Bool { prepareTargetsFreeSpaceIfNeededPatchLibrariesCallsCount > 0 }
+    var prepareTargetsFreeSpaceIfNeededPatchLibrariesReceivedArguments: (targets: TargetsScope, freeSpaceIfNeeded: Bool, patchLibraries: Bool)?
+    var prepareTargetsFreeSpaceIfNeededPatchLibrariesReceivedInvocations: [(targets: TargetsScope, freeSpaceIfNeeded: Bool, patchLibraries: Bool)] = []
+    var prepareTargetsFreeSpaceIfNeededPatchLibrariesReturnValue: TargetsMap!
+    var prepareTargetsFreeSpaceIfNeededPatchLibrariesClosure: ((TargetsScope, Bool, Bool) async throws -> TargetsMap)?
 
-    func prepare(targetsRegex: NSRegularExpression?, exceptTargetsRegex: NSRegularExpression?, freeSpaceIfNeeded: Bool, patchLibraries: Bool) async throws -> TargetsMap {
-        if let error = prepareTargetsRegexExceptTargetsRegexFreeSpaceIfNeededPatchLibrariesThrowableError {
+    func prepare(targets: TargetsScope, freeSpaceIfNeeded: Bool, patchLibraries: Bool) async throws -> TargetsMap {
+        if let error = prepareTargetsFreeSpaceIfNeededPatchLibrariesThrowableError {
             throw error
         }
-        prepareTargetsRegexExceptTargetsRegexFreeSpaceIfNeededPatchLibrariesCallsCount += 1
-        prepareTargetsRegexExceptTargetsRegexFreeSpaceIfNeededPatchLibrariesReceivedArguments = (targetsRegex: targetsRegex, exceptTargetsRegex: exceptTargetsRegex, freeSpaceIfNeeded: freeSpaceIfNeeded, patchLibraries: patchLibraries)
-        prepareTargetsRegexExceptTargetsRegexFreeSpaceIfNeededPatchLibrariesReceivedInvocations.append((targetsRegex: targetsRegex, exceptTargetsRegex: exceptTargetsRegex, freeSpaceIfNeeded: freeSpaceIfNeeded, patchLibraries: patchLibraries))
-        if let prepareTargetsRegexExceptTargetsRegexFreeSpaceIfNeededPatchLibrariesClosure = prepareTargetsRegexExceptTargetsRegexFreeSpaceIfNeededPatchLibrariesClosure {
-            return try await prepareTargetsRegexExceptTargetsRegexFreeSpaceIfNeededPatchLibrariesClosure(targetsRegex, exceptTargetsRegex, freeSpaceIfNeeded, patchLibraries)
+        prepareTargetsFreeSpaceIfNeededPatchLibrariesCallsCount += 1
+        prepareTargetsFreeSpaceIfNeededPatchLibrariesReceivedArguments = (targets: targets, freeSpaceIfNeeded: freeSpaceIfNeeded, patchLibraries: patchLibraries)
+        prepareTargetsFreeSpaceIfNeededPatchLibrariesReceivedInvocations.append((targets: targets, freeSpaceIfNeeded: freeSpaceIfNeeded, patchLibraries: patchLibraries))
+        if let prepareTargetsFreeSpaceIfNeededPatchLibrariesClosure = prepareTargetsFreeSpaceIfNeededPatchLibrariesClosure {
+            return try await prepareTargetsFreeSpaceIfNeededPatchLibrariesClosure(targets, freeSpaceIfNeeded, patchLibraries)
         } else {
-            return prepareTargetsRegexExceptTargetsRegexFreeSpaceIfNeededPatchLibrariesReturnValue
+            return prepareTargetsFreeSpaceIfNeededPatchLibrariesReturnValue
         }
     }
 
@@ -73,6 +73,25 @@ final class IInternalBuildManagerMock: IInternalBuildManager {
         buildOptionsPathsReceivedArguments = (target: target, options: options, paths: paths)
         buildOptionsPathsReceivedInvocations.append((target: target, options: options, paths: paths))
         try await buildOptionsPathsClosure?(target, options, paths)
+    }
+
+    // MARK: - build
+
+    var buildTargetsOptionsPathsIgnoreCacheThrowableError: Error?
+    var buildTargetsOptionsPathsIgnoreCacheCallsCount = 0
+    var buildTargetsOptionsPathsIgnoreCacheCalled: Bool { buildTargetsOptionsPathsIgnoreCacheCallsCount > 0 }
+    var buildTargetsOptionsPathsIgnoreCacheReceivedArguments: (targets: TargetsScope, options: XcodeBuildOptions, paths: XcodeBuildPaths, ignoreCache: Bool)?
+    var buildTargetsOptionsPathsIgnoreCacheReceivedInvocations: [(targets: TargetsScope, options: XcodeBuildOptions, paths: XcodeBuildPaths, ignoreCache: Bool)] = []
+    var buildTargetsOptionsPathsIgnoreCacheClosure: ((TargetsScope, XcodeBuildOptions, XcodeBuildPaths, Bool) async throws -> Void)?
+
+    func build(targets: TargetsScope, options: XcodeBuildOptions, paths: XcodeBuildPaths, ignoreCache: Bool) async throws {
+        if let error = buildTargetsOptionsPathsIgnoreCacheThrowableError {
+            throw error
+        }
+        buildTargetsOptionsPathsIgnoreCacheCallsCount += 1
+        buildTargetsOptionsPathsIgnoreCacheReceivedArguments = (targets: targets, options: options, paths: paths, ignoreCache: ignoreCache)
+        buildTargetsOptionsPathsIgnoreCacheReceivedInvocations.append((targets: targets, options: options, paths: paths, ignoreCache: ignoreCache))
+        try await buildTargetsOptionsPathsIgnoreCacheClosure?(targets, options, paths, ignoreCache)
     }
 
     // MARK: - build

@@ -19,16 +19,36 @@ final class IBuildTargetsManagerMock: IBuildTargetsManager {
     var findTargetsExceptTargetsIncludingTestsClosure: ((NSRegularExpression?, NSRegularExpression?, Bool) async throws -> TargetsMap)?
 
     func findTargets(_ targets: NSRegularExpression?, exceptTargets: NSRegularExpression?, includingTests: Bool) async throws -> TargetsMap {
-        findTargetsExceptTargetsIncludingTestsCallsCount += 1
-        findTargetsExceptTargetsIncludingTestsReceivedArguments = (targets: targets, exceptTargets: exceptTargets, includingTests: includingTests)
-        findTargetsExceptTargetsIncludingTestsReceivedInvocations.append((targets: targets, exceptTargets: exceptTargets, includingTests: includingTests))
         if let error = findTargetsExceptTargetsIncludingTestsThrowableError {
             throw error
         }
+        findTargetsExceptTargetsIncludingTestsCallsCount += 1
+        findTargetsExceptTargetsIncludingTestsReceivedArguments = (targets: targets, exceptTargets: exceptTargets, includingTests: includingTests)
+        findTargetsExceptTargetsIncludingTestsReceivedInvocations.append((targets: targets, exceptTargets: exceptTargets, includingTests: includingTests))
         if let findTargetsExceptTargetsIncludingTestsClosure = findTargetsExceptTargetsIncludingTestsClosure {
             return try await findTargetsExceptTargetsIncludingTestsClosure(targets, exceptTargets, includingTests)
         } else {
             return findTargetsExceptTargetsIncludingTestsReturnValue
+        }
+    }
+
+    // MARK: - filterTargets
+
+    var filterTargetsIncludingTestsCallsCount = 0
+    var filterTargetsIncludingTestsCalled: Bool { filterTargetsIncludingTestsCallsCount > 0 }
+    var filterTargetsIncludingTestsReceivedArguments: (targets: TargetsMap, includingTests: Bool)?
+    var filterTargetsIncludingTestsReceivedInvocations: [(targets: TargetsMap, includingTests: Bool)] = []
+    var filterTargetsIncludingTestsReturnValue: TargetsMap!
+    var filterTargetsIncludingTestsClosure: ((TargetsMap, Bool) -> TargetsMap)?
+
+    func filterTargets(_ targets: TargetsMap, includingTests: Bool) -> TargetsMap {
+        filterTargetsIncludingTestsCallsCount += 1
+        filterTargetsIncludingTestsReceivedArguments = (targets: targets, includingTests: includingTests)
+        filterTargetsIncludingTestsReceivedInvocations.append((targets: targets, includingTests: includingTests))
+        if let filterTargetsIncludingTestsClosure = filterTargetsIncludingTestsClosure {
+            return filterTargetsIncludingTestsClosure(targets, includingTests)
+        } else {
+            return filterTargetsIncludingTestsReturnValue
         }
     }
 

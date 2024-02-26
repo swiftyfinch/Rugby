@@ -9,7 +9,9 @@ public extension Vault {
             xcodePhaseEditor: XcodePhaseEditor(),
             buildManager: internalBuildManager(),
             xcodeProject: xcodeProject,
-            binariesStorage: binariesStorage
+            binariesStorage: binariesStorage,
+            rugbyXcodeProject: RugbyXcodeProject(xcodeProject: xcodeProject),
+            environmentCollector: environmentCollector
         )
     }
 }

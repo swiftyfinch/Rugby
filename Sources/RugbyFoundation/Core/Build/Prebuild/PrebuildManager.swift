@@ -27,19 +27,25 @@ final class PrebuildManager: Loggable {
     private let buildManager: IInternalBuildManager
     private let xcodeProject: IInternalXcodeProject
     private let binariesStorage: IBinariesStorage
+    private let rugbyXcodeProject: IRugbyXcodeProject
+    private let environmentCollector: IEnvironmentCollector
 
     init(
         logger: ILogger,
         xcodePhaseEditor: IXcodePhaseEditor,
         buildManager: IInternalBuildManager,
         xcodeProject: IInternalXcodeProject,
-        binariesStorage: IBinariesStorage
+        binariesStorage: IBinariesStorage,
+        rugbyXcodeProject: IRugbyXcodeProject,
+        environmentCollector: IEnvironmentCollector
     ) {
         self.logger = logger
         self.xcodePhaseEditor = xcodePhaseEditor
         self.buildManager = buildManager
         self.xcodeProject = xcodeProject
         self.binariesStorage = binariesStorage
+        self.rugbyXcodeProject = rugbyXcodeProject
+        self.environmentCollector = environmentCollector
     }
 }
 
@@ -50,10 +56,14 @@ extension PrebuildManager: IPrebuildManager {
         options: XcodeBuildOptions,
         paths: XcodeBuildPaths
     ) async throws {
-        let targets = try await buildManager.prepare(targetsRegex: targetsRegex,
-                                                     exceptTargetsRegex: exceptTargetsRegex,
-                                                     freeSpaceIfNeeded: false,
-                                                     patchLibraries: false)
+        try await environmentCollector.logXcodeVersion()
+        guard try await !rugbyXcodeProject.isAlreadyUsingRugby() else { throw RugbyError.alreadyUseRugby }
+
+        let targets = try await buildManager.prepare(
+            targets: .filter(regex: targetsRegex, exceptRegex: exceptTargetsRegex),
+            freeSpaceIfNeeded: false,
+            patchLibraries: false
+        )
 
         let targetsTree = targets.merging(targets.flatMapValues(\.dependencies))
         await log("Removing Build Phases") {
