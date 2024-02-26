@@ -8,11 +8,11 @@ enum BuildError: LocalizedError, Equatable {
         switch self {
         case let .buildFailed(errors, buildLogPath, rawBuildLogPath):
             return """
-            \("Build failed.".red)
+            \("Xcodebuild failed.".red)
             \(errors.map(formatBuildError).joined(separator: "\n").white)
             \("🚑 More information in build logs:".yellow)
-            \("[Beautified]".yellow) \("cat \(buildLogPath.homeFinderRelativePath())".white)
-            \("[Raw]".yellow) \("open \(rawBuildLogPath.homeFinderRelativePath())".white)
+            \("[Beautified]".yellow) \("cat \(buildLogPath.homeFinderRelativePath())".white.applyingStyle(.default))
+            \("[Raw]".yellow) \("open \(rawBuildLogPath.homeFinderRelativePath())".white.applyingStyle(.default))
             """
         case .cantFindBuildTargets:
             return "Couldn't find any build targets."
@@ -20,7 +20,8 @@ enum BuildError: LocalizedError, Equatable {
     }
 
     private func formatBuildError(_ errorText: String) -> String {
-        "\("\u{2716}\u{0000FE0E}".red) \(errorText)"
+        let errorText = errorText.raw.hasPrefix("✖") ? errorText : "\("✖".red) \(errorText)"
+        return errorText
             .components(separatedBy: "\n")
             .map { " \($0)" }
             .joined(separator: "\n")
