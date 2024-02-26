@@ -279,7 +279,7 @@ extension BuildManagerTests {
         )
         env.underlyingPrintMissingBinaries = true
         targetTreePainter.paintTargetsReturnValue = "test_paintTargets"
-        buildTargetsManager.createTargetDependenciesThrowableError = TestError.test
+        buildTargetsManager.createTargetDependenciesBuildConfigurationTestplanPathThrowableError = TestError.test
         let buildOptions: XcodeBuildOptions = .mock()
 
         // Act
@@ -422,8 +422,10 @@ extension BuildManagerTests {
         XCTAssertNil(loggerBlockInvocations[8].metricKey)
         XCTAssertEqual(loggerBlockInvocations[8].level, .compact)
         XCTAssertEqual(loggerBlockInvocations[8].output, .all)
-        XCTAssertEqual(buildTargetsManager.createTargetDependenciesCallsCount, 1)
-        let createTargetDependencies = try XCTUnwrap(buildTargetsManager.createTargetDependenciesReceivedDependencies)
+        XCTAssertEqual(buildTargetsManager.createTargetDependenciesBuildConfigurationTestplanPathCallsCount, 1)
+        let createTargetDependencies = try XCTUnwrap(
+            buildTargetsManager.createTargetDependenciesBuildConfigurationTestplanPathReceivedArguments?.dependencies
+        )
         XCTAssertEqual(createTargetDependencies.count, 2)
         XCTAssertTrue(createTargetDependencies.contains(moya.uuid))
         XCTAssertTrue(createTargetDependencies.contains(snapkit.uuid))
@@ -462,7 +464,7 @@ extension BuildManagerTests {
             snapkit.uuid: snapkit,
             moya.uuid: moya
         ]
-        buildTargetsManager.createTargetDependenciesReturnValue = buildTarget
+        buildTargetsManager.createTargetDependenciesBuildConfigurationTestplanPathReturnValue = buildTarget
         xcodeBuild.buildTargetOptionsPathsThrowableError = TestError.test
         processMonitor.runOnInterruptionReturnValue = ProcessInterruptionTask(job: {})
         let buildOptions: XcodeBuildOptions = .mock()
@@ -608,8 +610,10 @@ extension BuildManagerTests {
         XCTAssertNil(loggerBlockInvocations[8].metricKey)
         XCTAssertEqual(loggerBlockInvocations[8].level, .compact)
         XCTAssertEqual(loggerBlockInvocations[8].output, .all)
-        XCTAssertEqual(buildTargetsManager.createTargetDependenciesCallsCount, 1)
-        let createTargetDependencies = try XCTUnwrap(buildTargetsManager.createTargetDependenciesReceivedDependencies)
+        XCTAssertEqual(buildTargetsManager.createTargetDependenciesBuildConfigurationTestplanPathCallsCount, 1)
+        let createTargetDependencies = try XCTUnwrap(
+            buildTargetsManager.createTargetDependenciesBuildConfigurationTestplanPathReceivedArguments?.dependencies
+        )
         XCTAssertEqual(createTargetDependencies.count, 2)
         XCTAssertTrue(createTargetDependencies.contains(moya.uuid))
         XCTAssertTrue(createTargetDependencies.contains(snapkit.uuid))
@@ -678,7 +682,7 @@ extension BuildManagerTests {
             snapkit.uuid: snapkit,
             moya.uuid: moya
         ]
-        buildTargetsManager.createTargetDependenciesReturnValue = buildTarget
+        buildTargetsManager.createTargetDependenciesBuildConfigurationTestplanPathReturnValue = buildTarget
         var interruptionTaskCallsCount = 0
         processMonitor.runOnInterruptionReturnValue = ProcessInterruptionTask(job: { interruptionTaskCallsCount += 1 })
         let buildOptions: XcodeBuildOptions = .mock()
@@ -819,8 +823,10 @@ extension BuildManagerTests {
         XCTAssertNil(loggerBlockInvocations[8].metricKey)
         XCTAssertEqual(loggerBlockInvocations[8].level, .compact)
         XCTAssertEqual(loggerBlockInvocations[8].output, .all)
-        XCTAssertEqual(buildTargetsManager.createTargetDependenciesCallsCount, 1)
-        let createTargetDependencies = try XCTUnwrap(buildTargetsManager.createTargetDependenciesReceivedDependencies)
+        XCTAssertEqual(buildTargetsManager.createTargetDependenciesBuildConfigurationTestplanPathCallsCount, 1)
+        let createTargetDependencies = try XCTUnwrap(
+            buildTargetsManager.createTargetDependenciesBuildConfigurationTestplanPathReceivedArguments?.dependencies
+        )
         XCTAssertEqual(createTargetDependencies.count, 2)
         XCTAssertTrue(createTargetDependencies.contains(moya.uuid))
         XCTAssertTrue(createTargetDependencies.contains(snapkit.uuid))
@@ -919,7 +925,7 @@ extension BuildManagerTests {
     func test_makeBuildTarget_saveProjectError() async throws {
         let snapkit = IInternalTargetMock()
         snapkit.underlyingUuid = "test_snapkit_uuid"
-        buildTargetsManager.createTargetDependenciesReturnValue = IInternalTargetMock()
+        buildTargetsManager.createTargetDependenciesBuildConfigurationTestplanPathReturnValue = IInternalTargetMock()
         xcodeProject.saveThrowableError = TestError.test
 
         // Act

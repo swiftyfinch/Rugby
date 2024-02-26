@@ -29,6 +29,14 @@ protocol IInternalXcodeProject: IXcodeProject {
         _ targetsForRemove: TargetsMap,
         keepGroups: Bool
     ) async throws
+
+    func createTestingScheme(
+        _ target: IInternalTarget,
+        buildConfiguration: String,
+        testplanPath: String
+    )
+
+    func readWorkspaceProjectPaths() throws -> [String]
 }
 
 // MARK: - Implementation
@@ -55,15 +63,21 @@ final class XcodeProject {
     private let targetsFinder: XcodeTargetsFinder
     private let targetsEditor: XcodeTargetsEditor
     private let buildSettingsEditor: XcodeBuildSettingsEditor
+    private let schemesEditor: IXcodeProjectSchemesEditor
+    private let workspaceEditor: IXcodeWorkspaceEditor
 
     init(projectDataSource: XcodeProjectDataSource,
          targetsFinder: XcodeTargetsFinder,
          targetsEditor: XcodeTargetsEditor,
-         buildSettingsEditor: XcodeBuildSettingsEditor) {
+         buildSettingsEditor: XcodeBuildSettingsEditor,
+         schemesEditor: IXcodeProjectSchemesEditor,
+         workspaceEditor: IXcodeWorkspaceEditor) {
         self.projectDataSource = projectDataSource
         self.targetsFinder = targetsFinder
         self.targetsEditor = targetsEditor
         self.buildSettingsEditor = buildSettingsEditor
+        self.schemesEditor = schemesEditor
+        self.workspaceEditor = workspaceEditor
     }
 }
 
@@ -115,5 +129,17 @@ extension XcodeProject: IInternalXcodeProject {
 
     func deleteTargets(_ targetsForRemove: TargetsMap, keepGroups: Bool = true) async throws {
         try await targetsEditor.deleteTargets(targetsForRemove, keepGroups: keepGroups)
+    }
+
+    // MARK: - Create Schemes
+
+    func createTestingScheme(_ target: IInternalTarget, buildConfiguration: String, testplanPath: String) {
+        schemesEditor.createTestingScheme(target, buildConfiguration: buildConfiguration, testplanPath: testplanPath)
+    }
+
+    // MARK: - Workspaces
+
+    func readWorkspaceProjectPaths() throws -> [String] {
+        try workspaceEditor.readProjectPaths()
     }
 }
