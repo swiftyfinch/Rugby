@@ -1,6 +1,9 @@
 platform :ios, '16.0'
 project 'Example/Example.xcodeproj'
 
+install! 'cocoapods',
+         generate_multiple_pod_projects: false
+
 target 'ExampleFrameworks' do
   use_frameworks!
 
@@ -30,16 +33,18 @@ target 'ExampleLibs' do
 end
 
 post_install do |installer|
-  installer.pods_project.targets.each do |target|
-    if target.name.include? 'LocalPod'
-      target.build_configurations.each do |config|
-        config.build_settings['SWIFT_TREAT_WARNINGS_AS_ERRORS'] = 'YES'
-        config.build_settings['GCC_TREAT_WARNINGS_AS_ERRORS'] = 'YES'
+  installer.generated_projects.each do |project|
+    project.targets.each do |target|
+      if target.name.include? 'LocalPod'
+        target.build_configurations.each do |config|
+          config.build_settings['SWIFT_TREAT_WARNINGS_AS_ERRORS'] = 'YES'
+          config.build_settings['GCC_TREAT_WARNINGS_AS_ERRORS'] = 'YES'
+        end
       end
-    end
-
-    target.build_configurations.each do |config|
-      config.build_settings['IPHONEOS_DEPLOYMENT_TARGET'] = '16.0'
+      
+      target.build_configurations.each do |config|
+        config.build_settings['IPHONEOS_DEPLOYMENT_TARGET'] = '16.0'
+      end
     end
   end
 end
