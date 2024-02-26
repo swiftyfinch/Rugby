@@ -8,7 +8,7 @@
 
 ```sh
 
- > (Beta) Mark test targets as passed.
+ > (Experimental) Mark test targets as passed.
 
  Options:
 ╭───────────────────────────────────────────────────────────────────────────────╮

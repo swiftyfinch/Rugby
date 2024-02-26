@@ -3,7 +3,7 @@ import ArgumentParser
 struct Test: AsyncParsableCommand {
     static var configuration = CommandConfiguration(
         commandName: "_test",
-        abstract: "\("(Beta)".yellow) Analyse test targets.",
+        abstract: "\("(Experimental)".yellow) Analyse and run tests.",
         discussion: Links.commandsHelp("test.md"),
         subcommands: [Impact.self, Passed.self]
     )
@@ -18,7 +18,7 @@ private extension Test {
     struct Impact: RunnableCommand {
         static var configuration = CommandConfiguration(
             commandName: "impact",
-            abstract: "\("(Beta)".yellow) Print affected test targets.",
+            abstract: "\("(Experimental)".yellow) Print affected test targets.",
             discussion: Links.commandsHelp("test/impact.md")
         )
 
@@ -55,7 +55,7 @@ private extension Test {
     struct Passed: RunnableCommand {
         static var configuration = CommandConfiguration(
             commandName: "pass",
-            abstract: "\("(Beta)".yellow) Mark test targets as passed.",
+            abstract: "\("(Experimental)".yellow) Mark test targets as passed.",
             discussion: Links.commandsHelp("test/pass.md")
         )
 
