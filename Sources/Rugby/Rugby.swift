@@ -72,7 +72,7 @@ struct Rugby: AsyncParsableCommand {
 
     private static func prepareDependencies() {
         let env = Environment()
-        return Vault.setupShared(
+        Vault.setupShared(
             env: env,
             logger: Logger(clock: Clock()),
             router: Router(
@@ -80,6 +80,7 @@ struct Rugby: AsyncParsableCommand {
                 sharedFolderPath: env.sharedFolderParentPath
             )
         )
+        Vault.shared.processMonitor.monitor()
     }
 
     private static func printHelp() throws -> Bool {

@@ -41,7 +41,6 @@ extension Build {
         }
 
         func body() async throws {
-            dependencies.processMonitor.monitor()
             try await dependencies.buildManager().build(
                 targetsRegex: regex(
                     patterns: buildOptions.targetsOptions.targetsAsRegex,
@@ -82,7 +81,6 @@ extension Build {
         }
 
         func body() async throws {
-            dependencies.processMonitor.monitor()
             try await dependencies.prebuildManager().prebuild(
                 targetsRegex: regex(
                     patterns: buildOptions.targetsOptions.targetsAsRegex,

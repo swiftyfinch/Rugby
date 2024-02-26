@@ -72,7 +72,6 @@ extension Update {
 
 extension Update: RunnableCommand {
     func body() async throws {
-        dependencies.processMonitor.monitor()
         try await dependencies.rugbyUpdater.update(
             to: .init(
                 newVersion: (version == Update.latestVersion) ? .latest : .some(version),
