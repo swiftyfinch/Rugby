@@ -152,6 +152,6 @@ extension TestsStorageTests {
 
         // Assert
         XCTAssertEqual(foundTargets.count, 1)
-        XCTAssertEqual(foundTargets[0].uuid, localPodLibraryUnitTests.uuid)
+        XCTAssertTrue(foundTargets.contains(localPodLibraryUnitTests.uuid))
     }
 }

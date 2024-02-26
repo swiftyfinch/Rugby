@@ -35,7 +35,7 @@ private extension Test {
         }
 
         func body() async throws {
-            try await dependencies.testManager()
+            try await dependencies.testImpactManager()
                 .impact(
                     targetsRegex: regex(
                         patterns: buildOptions.targetsOptions.targetsAsRegex,
@@ -72,7 +72,7 @@ private extension Test {
         }
 
         func body() async throws {
-            try await dependencies.testManager()
+            try await dependencies.testImpactManager()
                 .markAsPassed(
                     targetsRegex: regex(
                         patterns: buildOptions.targetsOptions.targetsAsRegex,

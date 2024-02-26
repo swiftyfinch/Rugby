@@ -2,7 +2,7 @@ import Rainbow
 @testable import RugbyFoundation
 import XCTest
 
-final class TestManagerTests: XCTestCase {
+final class TestImpactManagerTests: XCTestCase {
     private var logger: ILoggerMock!
     private var loggerBlockInvocations: [
         (header: String, footer: String?, metricKey: String?, level: LogLevel, output: LoggerOutput)
@@ -13,7 +13,7 @@ final class TestManagerTests: XCTestCase {
     private var buildTargetsManager: IBuildTargetsManagerMock!
     private var targetsHasher: ITargetsHasherMock!
     private var testsStorage: ITestsStorageMock!
-    private var sut: ITestManager!
+    private var sut: ITestImpactManager!
 
     override func setUp() {
         super.setUp()
@@ -30,7 +30,7 @@ final class TestManagerTests: XCTestCase {
         buildTargetsManager = IBuildTargetsManagerMock()
         targetsHasher = ITargetsHasherMock()
         testsStorage = ITestsStorageMock()
-        sut = TestManager(
+        sut = TestImpactManager(
             logger: logger,
             environmentCollector: environmentCollector,
             rugbyXcodeProject: rugbyXcodeProject,
@@ -53,7 +53,7 @@ final class TestManagerTests: XCTestCase {
     }
 }
 
-extension TestManagerTests {
+extension TestImpactManagerTests {
     func test_markAsPassed_isAlreadyUsingRugby() async throws {
         rugbyXcodeProject.isAlreadyUsingRugbyReturnValue = true
 
@@ -144,7 +144,7 @@ extension TestManagerTests {
     }
 }
 
-extension TestManagerTests {
+extension TestImpactManagerTests {
     func test_impact_isAlreadyUsingRugby() async throws {
         rugbyXcodeProject.isAlreadyUsingRugbyReturnValue = true
 
@@ -200,7 +200,9 @@ extension TestManagerTests {
             localPodFramework.uuid: localPodFramework,
             localPodLibraryUnitTests.uuid: localPodLibraryUnitTests
         ]
-        testsStorage.findMissingTestsOfBuildOptionsReturnValue = [localPodLibraryUnitTests]
+        testsStorage.findMissingTestsOfBuildOptionsReturnValue = [
+            localPodLibraryUnitTests.uuid: localPodLibraryUnitTests
+        ]
 
         // Act
         try await sut.impact(
@@ -275,7 +277,7 @@ extension TestManagerTests {
             localPodFramework.uuid: localPodFramework,
             localPodLibraryUnitTests.uuid: localPodLibraryUnitTests
         ]
-        testsStorage.findMissingTestsOfBuildOptionsReturnValue = []
+        testsStorage.findMissingTestsOfBuildOptionsReturnValue = [:]
 
         // Act
         try await sut.impact(

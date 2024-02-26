@@ -3,7 +3,7 @@ import Foundation
 // MARK: - Interface
 
 /// The protocol describing a manager to analyse test targets in CocoaPods project.
-public protocol ITestManager {
+public protocol ITestImpactManager {
     /// Prints affected test targets.
     /// - Parameters:
     ///   - targetsRegex: A RegEx to select targets.
@@ -25,7 +25,7 @@ public protocol ITestManager {
 
 // MARK: - Implementation
 
-final class TestManager: Loggable {
+final class TestImpactManager: Loggable {
     let logger: ILogger
     private let environmentCollector: IEnvironmentCollector
     private let rugbyXcodeProject: IRugbyXcodeProject
@@ -48,10 +48,19 @@ final class TestManager: Loggable {
     }
 }
 
-extension TestManager {
-    private func fetchTestTargets(_ targetsRegex: NSRegularExpression?,
-                                  exceptTargetsRegex: NSRegularExpression?,
-                                  buildOptions: XcodeBuildOptions) async throws -> TargetsMap {
+protocol IInternalTestImpactManager: ITestImpactManager {
+    func fetchTestTargets(_ targetsRegex: NSRegularExpression?,
+                          exceptTargetsRegex: NSRegularExpression?,
+                          buildOptions: XcodeBuildOptions) async throws -> TargetsMap
+    func missingTargets(_ targetsRegex: NSRegularExpression?,
+                        exceptTargetsRegex: NSRegularExpression?,
+                        buildOptions: XcodeBuildOptions) async throws -> TargetsMap
+}
+
+extension TestImpactManager: IInternalTestImpactManager {
+    func fetchTestTargets(_ targetsRegex: NSRegularExpression?,
+                          exceptTargetsRegex: NSRegularExpression?,
+                          buildOptions: XcodeBuildOptions) async throws -> TargetsMap {
         let targets = try await log(
             "Finding Targets",
             auto: await buildTargetsManager.findTargets(
@@ -63,9 +72,20 @@ extension TestManager {
         try await log("Hashing Targets", auto: await targetsHasher.hash(targets, xcargs: buildOptions.xcargs))
         return targets.filter(\.value.isTests)
     }
+
+    func missingTargets(_ targetsRegex: NSRegularExpression?,
+                        exceptTargetsRegex: NSRegularExpression?,
+                        buildOptions: XcodeBuildOptions) async throws -> TargetsMap {
+        let targets = try await fetchTestTargets(
+            targetsRegex,
+            exceptTargetsRegex: exceptTargetsRegex,
+            buildOptions: buildOptions
+        )
+        return try await testsStorage.findMissingTests(of: targets, buildOptions: buildOptions)
+    }
 }
 
-extension TestManager: ITestManager {
+extension TestImpactManager: ITestImpactManager {
     func impact(targetsRegex: NSRegularExpression?,
                 exceptTargetsRegex: NSRegularExpression?,
                 buildOptions: XcodeBuildOptions) async throws {
@@ -85,7 +105,7 @@ extension TestManager: ITestManager {
         }
 
         await log("Affected Test Targets (\(missingTestTargets.count))") {
-            for target in missingTestTargets {
+            for target in missingTestTargets.values {
                 guard let hash = target.hash else { continue }
                 await log("\(target.name) (\(hash))", level: .result)
             }

@@ -13,8 +13,8 @@ public protocol IRouter {
     /// The path to the binaries folder.
     var binFolderPath: String { get }
 
-    /// The path to the tests folder.
-    var testsFolderPath: String { get }
+    /// The path to the tests impact folder.
+    var testsImpactFolderPath: String { get }
 
     /// The path to the logs folder.
     var logsFolderPath: String { get }
@@ -50,7 +50,7 @@ public final class Router: IRouter {
     public let workingDirectory: IFolder
     public let rugbySharedFolderPath: String
     public let binFolderPath: String
-    public let testsFolderPath: String
+    public let testsImpactFolderPath: String
     public let logsFolderPath: String
 
     /// Creates a router.
@@ -64,7 +64,7 @@ public final class Router: IRouter {
         self.workingDirectory = workingDirectory
         rugbySharedFolderPath = sharedFolderPath.subpath(.rugby)
         binFolderPath = sharedFolderPath.subpath(.rugby, .bin)
-        testsFolderPath = sharedFolderPath.subpath(.rugby, .tests)
+        testsImpactFolderPath = sharedFolderPath.subpath(.rugby, .tests)
         logsFolderPath = sharedFolderPath.subpath(.rugby, .logs)
     }
 }
