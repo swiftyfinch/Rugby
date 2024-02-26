@@ -5,7 +5,7 @@
       location = "group:ExampleLibs.xctestplan">
    </FileRef>
    <FileRef
-      location = "group:ExampleFramework.xctestplan">
+      location = "group:ExampleFrameworks.xctestplan">
    </FileRef>
    <FileRef
       location = "group:Example/Example.xcodeproj">
