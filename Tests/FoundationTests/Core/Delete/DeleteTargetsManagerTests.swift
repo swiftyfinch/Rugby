@@ -122,11 +122,14 @@ extension DeleteTargetsManagerTests {
     func test_keepExceptedTargetsDependencies() async throws {
         let alamofire = IInternalTargetMock()
         alamofire.underlyingUuid = "test_alamofire_uuid"
+        alamofire.underlyingName = "Alamofire"
         let moya = IInternalTargetMock()
         moya.underlyingUuid = "test_moya_uuid"
+        moya.underlyingName = "Moya"
         moya.dependencies = [alamofire.uuid: alamofire]
         let snapkit = IInternalTargetMock()
         snapkit.underlyingUuid = "test_snapkit_uuid"
+        snapkit.underlyingName = "Snapkit"
         let exceptTargetsRegex = try NSRegularExpression(pattern: "^Moya$")
         xcodeProject.findTargetsByExceptIncludingDependenciesClosure = { regex, exceptRegex, includingDependencies in
             switch (regex, exceptRegex, includingDependencies) {
