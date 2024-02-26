@@ -21,7 +21,6 @@ struct Shell: RunnableCommand {
     }
 
     func body() async throws {
-        dependencies.processMonitor.monitor()
         switch commonOptions.output {
         case .fold:
             guard let output = try dependencies.shellExecutor.throwingShell(command) else { return }
