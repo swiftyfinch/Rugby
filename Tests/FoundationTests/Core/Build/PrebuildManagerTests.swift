@@ -9,6 +9,8 @@ final class PrebuildManagerTests: XCTestCase {
     private var buildManager: IInternalBuildManagerMock!
     private var xcodeProject: IInternalXcodeProjectMock!
     private var binariesStorage: IBinariesStorageMock!
+    private var rugbyXcodeProject: IRugbyXcodeProjectMock!
+    private var environmentCollector: IEnvironmentCollectorMock!
 
     override func setUp() {
         super.setUp()
@@ -17,12 +19,16 @@ final class PrebuildManagerTests: XCTestCase {
         buildManager = IInternalBuildManagerMock()
         xcodeProject = IInternalXcodeProjectMock()
         binariesStorage = IBinariesStorageMock()
+        rugbyXcodeProject = IRugbyXcodeProjectMock()
+        environmentCollector = IEnvironmentCollectorMock()
         sut = PrebuildManager(
             logger: logger,
             xcodePhaseEditor: xcodePhaseEditor,
             buildManager: buildManager,
             xcodeProject: xcodeProject,
-            binariesStorage: binariesStorage
+            binariesStorage: binariesStorage,
+            rugbyXcodeProject: rugbyXcodeProject,
+            environmentCollector: environmentCollector
         )
         Rainbow.enabled = true
     }
@@ -35,6 +41,8 @@ final class PrebuildManagerTests: XCTestCase {
         buildManager = nil
         xcodeProject = nil
         binariesStorage = nil
+        rugbyXcodeProject = nil
+        environmentCollector = nil
     }
 }
 
@@ -61,6 +69,7 @@ extension PrebuildManagerTests {
 
 extension PrebuildManagerTests {
     func test_zeroTargets() async throws {
+        rugbyXcodeProject.isAlreadyUsingRugbyReturnValue = false
         var logReceivedInvocations: [
             (header: String, footer: String?, metricKey: String?, level: LogLevel, output: LoggerOutput)
         ] = []
@@ -68,7 +77,7 @@ extension PrebuildManagerTests {
             logReceivedInvocations.append((header, footer, metricKey, level, output))
             return try await block()
         }
-        buildManager.prepareTargetsRegexExceptTargetsRegexFreeSpaceIfNeededPatchLibrariesReturnValue = [:]
+        buildManager.prepareTargetsFreeSpaceIfNeededPatchLibrariesReturnValue = [:]
         let targetsRegex = try NSRegularExpression(pattern: ".*")
         let exceptTargetsRegex = try NSRegularExpression(pattern: ".?")
 
@@ -81,12 +90,18 @@ extension PrebuildManagerTests {
         )
 
         // Assert
-        XCTAssertEqual(buildManager.prepareTargetsRegexExceptTargetsRegexFreeSpaceIfNeededPatchLibrariesCallsCount, 1)
-        let buildArgs = try XCTUnwrap(
-            buildManager.prepareTargetsRegexExceptTargetsRegexFreeSpaceIfNeededPatchLibrariesReceivedArguments
-        )
-        XCTAssertEqual(buildArgs.targetsRegex, targetsRegex)
-        XCTAssertEqual(buildArgs.exceptTargetsRegex, exceptTargetsRegex)
+        XCTAssertEqual(buildManager.prepareTargetsFreeSpaceIfNeededPatchLibrariesCallsCount, 1)
+        let buildArgs = try XCTUnwrap(buildManager.prepareTargetsFreeSpaceIfNeededPatchLibrariesReceivedArguments)
+        var targetsRegexBuildArgs: NSRegularExpression?
+        var exceptTargetsRegexBuildArgs: NSRegularExpression?
+        switch buildArgs.targets {
+        case .exact: break
+        case let .filter(regex, exceptRegex):
+            targetsRegexBuildArgs = regex
+            exceptTargetsRegexBuildArgs = exceptRegex
+        }
+        XCTAssertEqual(targetsRegexBuildArgs, targetsRegex)
+        XCTAssertEqual(exceptTargetsRegexBuildArgs, exceptTargetsRegex)
         XCTAssertFalse(buildArgs.patchLibraries)
         XCTAssertFalse(buildArgs.freeSpaceIfNeeded)
 
@@ -112,6 +127,7 @@ extension PrebuildManagerTests {
     }
 
     func test_build() async throws {
+        rugbyXcodeProject.isAlreadyUsingRugbyReturnValue = false
         let dependencyTarget = IInternalTargetMock()
         dependencyTarget.uuid = "test_dependencyTarget"
         let target0 = IInternalTargetMock()
@@ -120,7 +136,7 @@ extension PrebuildManagerTests {
         target0.dependencies = [dependencyTarget.uuid: dependencyTarget]
         let target1 = IInternalTargetMock()
         target1.underlyingUuid = "test_target1"
-        buildManager.prepareTargetsRegexExceptTargetsRegexFreeSpaceIfNeededPatchLibrariesReturnValue = [
+        buildManager.prepareTargetsFreeSpaceIfNeededPatchLibrariesReturnValue = [
             target0.uuid: target0,
             target1.uuid: target1
         ]

@@ -4,12 +4,12 @@ extension Vault {
     /// The manager to use built binaries instead of targets in CocoaPods project.
     public func useBinariesManager() -> IUseBinariesManager {
         let xcodeProject = xcode.project(projectPath: router.podsProjectPath)
-        return useBinariesManager(xcodeProject: xcodeProject,
-                                  buildTargetsManager: BuildTargetsManager(xcodeProject: xcodeProject))
+        return internalUseBinariesManager(xcodeProject: xcodeProject,
+                                          buildTargetsManager: BuildTargetsManager(xcodeProject: xcodeProject))
     }
 
-    func useBinariesManager(xcodeProject: IInternalXcodeProject,
-                            buildTargetsManager: IBuildTargetsManager) -> IUseBinariesManager {
+    func internalUseBinariesManager(xcodeProject: IInternalXcodeProject,
+                                    buildTargetsManager: IBuildTargetsManager) -> IInternalUseBinariesManager {
         UseBinariesManager(logger: logger,
                            buildTargetsManager: buildTargetsManager,
                            librariesPatcher: LibrariesPatcher(logger: logger),

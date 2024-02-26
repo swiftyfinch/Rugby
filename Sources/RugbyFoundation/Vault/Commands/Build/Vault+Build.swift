@@ -12,8 +12,8 @@ extension Vault {
     func internalBuildManager() -> IInternalBuildManager {
         let xcodeProject = xcode.project(projectPath: router.podsProjectPath)
         let buildTargetsManager = BuildTargetsManager(xcodeProject: xcodeProject)
-        let useBinariesManager = useBinariesManager(xcodeProject: xcodeProject,
-                                                    buildTargetsManager: buildTargetsManager)
+        let useBinariesManager = internalUseBinariesManager(xcodeProject: xcodeProject,
+                                                            buildTargetsManager: buildTargetsManager)
         let binariesCleaner = BinariesCleaner(
             logger: logger,
             limit: settings.storageUsedLimit,

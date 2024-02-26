@@ -23,6 +23,12 @@ public protocol IUseBinariesManager {
              keepGroups: Bool) async throws
 }
 
+protocol IInternalUseBinariesManager: IUseBinariesManager {
+    func use(targets: TargetsScope,
+             xcargs: [String],
+             deleteSources: Bool) async throws
+}
+
 // MARK: - Implementation
 
 final class UseBinariesManager: Loggable {
@@ -64,6 +70,20 @@ final class UseBinariesManager: Loggable {
 // MARK: - File Replacements
 
 extension UseBinariesManager {
+    private func findTargets(targets: TargetsScope) async throws -> TargetsMap {
+        let exactTargets: TargetsMap
+        switch targets {
+        case let .exact(targets):
+            exactTargets = buildTargetsManager.filterTargets(targets)
+        case let .filter(regex, exceptRegex):
+            exactTargets = try await log(
+                "Finding Build Targets",
+                auto: await buildTargetsManager.findTargets(regex, exceptTargets: exceptRegex)
+            )
+        }
+        return exactTargets
+    }
+
     private func patchProductFiles(binaryTargets: TargetsMap) async throws -> TargetsMap {
         let binaryUsers = try await findBinaryUsers(binaryTargets)
         try binaryUsers.values.forEach { target in
@@ -135,18 +155,13 @@ private extension String {
     static let binaryPathKey = "BINARY_PATH"
 }
 
-// MARK: - IUseBinariesManager
+// MARK: - IInternalUseBinariesManager
 
-extension UseBinariesManager: IUseBinariesManager {
-    public func use(targetsRegex: NSRegularExpression?,
-                    exceptTargetsRegex: NSRegularExpression?,
-                    xcargs: [String],
-                    deleteSources: Bool) async throws {
-        guard try await !rugbyXcodeProject.isAlreadyUsingRugby() else { throw RugbyError.alreadyUseRugby }
-        let binaryTargets = try await log(
-            "Finding Build Targets",
-            auto: await buildTargetsManager.findTargets(targetsRegex, exceptTargets: exceptTargetsRegex)
-        )
+extension UseBinariesManager: IInternalUseBinariesManager {
+    func use(targets: TargetsScope,
+             xcargs: [String],
+             deleteSources: Bool) async throws {
+        let binaryTargets = try await findTargets(targets: targets)
         guard binaryTargets.isNotEmpty else { return await log("Skip") }
 
         try await log("Backuping", level: .info, auto: await backupManager.backup(xcodeProject, kind: .original))
@@ -155,6 +170,23 @@ extension UseBinariesManager: IUseBinariesManager {
         try await use(targets: binaryTargets, keepGroups: !deleteSources)
         try await rugbyXcodeProject.markAsUsingRugby()
         try await log("Saving Project", auto: await xcodeProject.save())
+    }
+}
+
+// MARK: - IUseBinariesManager
+
+extension UseBinariesManager: IUseBinariesManager {
+    public func use(targetsRegex: NSRegularExpression?,
+                    exceptTargetsRegex: NSRegularExpression?,
+                    xcargs: [String],
+                    deleteSources: Bool) async throws {
+        guard try await !rugbyXcodeProject.isAlreadyUsingRugby() else { throw RugbyError.alreadyUseRugby }
+
+        try await use(
+            targets: .filter(regex: targetsRegex, exceptRegex: exceptTargetsRegex),
+            xcargs: xcargs,
+            deleteSources: deleteSources
+        )
     }
 
     public func use(targets: [String: ITarget], keepGroups: Bool) async throws {
