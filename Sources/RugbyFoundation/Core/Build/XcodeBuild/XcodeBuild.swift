@@ -6,6 +6,12 @@ protocol IXcodeBuild: AnyObject {
     func build(target: String,
                options: XcodeBuildOptions,
                paths: XcodeBuildPaths) async throws
+
+    func test(scheme: String,
+              testPlan: String,
+              simulatorName: String,
+              options: XcodeBuildOptions,
+              paths: XcodeBuildPaths) async throws
 }
 
 /// Xcode build options.
@@ -106,8 +112,6 @@ final class XcodeBuild {
     }
 }
 
-// MARK: - IXcodeBuild
-
 extension XcodeBuild: IXcodeBuild {
     func build(target: String,
                options: XcodeBuildOptions,
@@ -119,6 +123,23 @@ extension XcodeBuild: IXcodeBuild {
                 "-config \(options.config.shellFriendly)",
                 "ARCHS=\(options.arch)",
                 "-parallelizeTargets"
+            ],
+            options: options,
+            paths: paths
+        )
+    }
+
+    func test(scheme: String,
+              testPlan: String,
+              simulatorName: String,
+              options: XcodeBuildOptions,
+              paths: XcodeBuildPaths) async throws {
+        try await run(
+            arguments: [
+                "-scheme \(scheme.shellFriendly)",
+                "-testPlan \(testPlan.shellFriendly)",
+                "-destination 'platform=iOS Simulator,name=\(simulatorName)'",
+                "test"
             ],
             options: options,
             paths: paths
