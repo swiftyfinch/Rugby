@@ -4,6 +4,7 @@ import XcodeProj
 enum AddDependencyError: LocalizedError {
     case missingProjectReference(String)
     case emptyProjectPath(String?)
+    case cantCreateGroup(String)
 
     var errorDescription: String? {
         switch self {
@@ -11,6 +12,8 @@ enum AddDependencyError: LocalizedError {
             return "Missing project reference '\(name)'."
         case let .emptyProjectPath(name):
             return "Empty project path '\(name ?? "Unknown")'."
+        case let .cantCreateGroup(groupName):
+            return "Can't create group '\(groupName)'."
         }
     }
 }
@@ -32,9 +35,10 @@ extension PBXProj {
                 containerPortal = .fileReference(existingReference)
             } else {
                 add(object: reference)
+
                 // Add project dependency to root Dependencies group
-                let dependenciesGroup = groups.first(where: { $0.name == .dependenciesGroup && $0.parent?.path == nil })
-                dependenciesGroup?.children.append(reference)
+                let dependenciesGroup = try createGroupIfNeeded(groupName: .dependenciesGroup)
+                dependenciesGroup.children.append(reference)
                 rootObject?.projects.append([.projectRefKey: reference])
                 containerPortal = .fileReference(reference)
             }
@@ -73,6 +77,20 @@ extension PBXProj {
         }
         target.pbxTarget.dependencies.removeAll(where: pbxDependencies.contains)
         target.deleteDependencies(dependencies)
+    }
+}
+
+extension PBXProj {
+    private func createGroupIfNeeded(groupName: String) throws -> PBXGroup {
+        guard let rootGroup = try rootGroup() else { throw AddDependencyError.cantCreateGroup(groupName) }
+        if let group = rootGroup.children.first(where: { $0.name == groupName }) as? PBXGroup {
+            return group
+        } else if let group = try rootGroup.addGroup(named: groupName, options: .withoutFolder).first {
+            add(object: group)
+            return group
+        } else {
+            throw AddDependencyError.cantCreateGroup(groupName)
+        }
     }
 }
 
