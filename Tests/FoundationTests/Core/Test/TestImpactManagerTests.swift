@@ -2,6 +2,8 @@ import Rainbow
 @testable import RugbyFoundation
 import XCTest
 
+// swiftlint:disable file_length
+
 final class TestImpactManagerTests: XCTestCase {
     private var logger: ILoggerMock!
     private var loggerBlockInvocations: [
@@ -13,6 +15,7 @@ final class TestImpactManagerTests: XCTestCase {
     private var buildTargetsManager: IBuildTargetsManagerMock!
     private var targetsHasher: ITargetsHasherMock!
     private var testsStorage: ITestsStorageMock!
+    private var git: IGitMock!
     private var sut: ITestImpactManager!
 
     override func setUp() {
@@ -30,13 +33,15 @@ final class TestImpactManagerTests: XCTestCase {
         buildTargetsManager = IBuildTargetsManagerMock()
         targetsHasher = ITargetsHasherMock()
         testsStorage = ITestsStorageMock()
+        git = IGitMock()
         sut = TestImpactManager(
             logger: logger,
             environmentCollector: environmentCollector,
             rugbyXcodeProject: rugbyXcodeProject,
             buildTargetsManager: buildTargetsManager,
             targetsHasher: targetsHasher,
-            testsStorage: testsStorage
+            testsStorage: testsStorage,
+            git: git
         )
     }
 
@@ -49,6 +54,7 @@ final class TestImpactManagerTests: XCTestCase {
         buildTargetsManager = nil
         targetsHasher = nil
         testsStorage = nil
+        git = nil
         sut = nil
     }
 }
@@ -63,7 +69,8 @@ extension TestImpactManagerTests {
             try await sut.markAsPassed(
                 targetsRegex: nil,
                 exceptTargetsRegex: nil,
-                buildOptions: .mock()
+                buildOptions: .mock(),
+                upToDateBranch: nil
             )
         } catch {
             resultError = error
@@ -108,10 +115,121 @@ extension TestImpactManagerTests {
         try await sut.markAsPassed(
             targetsRegex: targetsRegex,
             exceptTargetsRegex: exceptTargetsRegex,
-            buildOptions: buildOptions
+            buildOptions: buildOptions,
+            upToDateBranch: nil
         )
 
         // Assert
+        XCTAssertEqual(loggerBlockInvocations.count, 3)
+
+        XCTAssertEqual(buildTargetsManager.findTargetsExceptTargetsIncludingTestsCallsCount, 1)
+        let findTargets = try XCTUnwrap(buildTargetsManager.findTargetsExceptTargetsIncludingTestsReceivedArguments)
+        XCTAssertEqual(findTargets.targets, targetsRegex)
+        XCTAssertEqual(findTargets.exceptTargets, exceptTargetsRegex)
+        XCTAssertTrue(findTargets.includingTests)
+        XCTAssertEqual(loggerBlockInvocations[0].header, "Finding Targets")
+        XCTAssertEqual(loggerBlockInvocations[0].level, .compact)
+        XCTAssertEqual(loggerBlockInvocations[0].output, .all)
+
+        XCTAssertEqual(targetsHasher.hashXcargsCallsCount, 1)
+        let hashArguments = try XCTUnwrap(targetsHasher.hashXcargsReceivedArguments)
+        XCTAssertEqual(hashArguments.targets.count, 2)
+        XCTAssertTrue(hashArguments.targets.contains(localPodFrameworkUnitTests.uuid))
+        XCTAssertTrue(hashArguments.targets.contains(localPodFramework.uuid))
+        XCTAssertEqual(hashArguments.xcargs, buildOptions.xcargs)
+        XCTAssertEqual(loggerBlockInvocations[1].header, "Hashing Targets")
+        XCTAssertEqual(loggerBlockInvocations[1].level, .compact)
+        XCTAssertEqual(loggerBlockInvocations[1].output, .all)
+
+        XCTAssertEqual(testsStorage.saveTestsOfBuildOptionsCallsCount, 1)
+        let saveTestsArguments = try XCTUnwrap(testsStorage.saveTestsOfBuildOptionsReceivedArguments)
+        XCTAssertEqual(saveTestsArguments.buildOptions, buildOptions)
+        XCTAssertEqual(saveTestsArguments.targets.count, 1)
+        XCTAssertTrue(saveTestsArguments.targets.contains(localPodFrameworkUnitTests.uuid))
+        XCTAssertEqual(loggerBlockInvocations[2].header, "Marking Tests as Passed")
+        XCTAssertEqual(loggerBlockInvocations[2].level, .compact)
+        XCTAssertEqual(loggerBlockInvocations[2].output, .all)
+    }
+
+    func test_markAsPassed_upToDateBranch_hasUncommittedChanges() async throws {
+        git.hasUncommittedChangesReturnValue = true
+
+        // Act
+        try await sut.markAsPassed(
+            targetsRegex: nil,
+            exceptTargetsRegex: nil,
+            buildOptions: .mock(),
+            upToDateBranch: "main"
+        )
+
+        // Assert
+        XCTAssertTrue(git.hasUncommittedChangesCalled)
+        XCTAssertFalse(git.isBehindBranchCalled)
+        XCTAssertTrue(loggerBlockInvocations.isEmpty)
+        XCTAssertFalse(buildTargetsManager.findTargetsExceptTargetsIncludingTestsCalled)
+        XCTAssertFalse(targetsHasher.hashXcargsCalled)
+        XCTAssertFalse(testsStorage.saveTestsOfBuildOptionsCalled)
+    }
+
+    func test_markAsPassed_upToDateBranch_isBehind() async throws {
+        git.hasUncommittedChangesReturnValue = false
+        git.isBehindBranchReturnValue = true
+
+        // Act
+        try await sut.markAsPassed(
+            targetsRegex: nil,
+            exceptTargetsRegex: nil,
+            buildOptions: .mock(),
+            upToDateBranch: "main"
+        )
+
+        // Assert
+        XCTAssertTrue(git.hasUncommittedChangesCalled)
+        XCTAssertTrue(git.isBehindBranchCalled)
+        XCTAssertEqual(git.isBehindBranchReceivedBranch, "main")
+        XCTAssertTrue(loggerBlockInvocations.isEmpty)
+        XCTAssertFalse(buildTargetsManager.findTargetsExceptTargetsIncludingTestsCalled)
+        XCTAssertFalse(targetsHasher.hashXcargsCalled)
+        XCTAssertFalse(testsStorage.saveTestsOfBuildOptionsCalled)
+    }
+
+    func test_markAsPassed_upToDateBranch() async throws {
+        git.hasUncommittedChangesReturnValue = false
+        git.isBehindBranchReturnValue = false
+        let targetsRegex = try NSRegularExpression(pattern: "test_targetsRegex")
+        let exceptTargetsRegex = try NSRegularExpression(pattern: "test_exceptTargetsRegex")
+        let buildOptions = XcodeBuildOptions(
+            sdk: .sim,
+            config: "Debug",
+            arch: "arm64",
+            xcargs: ["COMPILER_INDEX_STORE_ENABLE=NO", "SWIFT_COMPILATION_MODE=wholemodule"],
+            resultBundlePath: nil
+        )
+        rugbyXcodeProject.isAlreadyUsingRugbyReturnValue = false
+        let localPodFramework = IInternalTargetMock()
+        localPodFramework.underlyingUuid = "localPodFramework_uuid"
+        localPodFramework.underlyingIsTests = false
+        let localPodFrameworkUnitTests = IInternalTargetMock()
+        localPodFrameworkUnitTests.underlyingUuid = "localPodFrameworkUnitTests_uuid"
+        localPodFrameworkUnitTests.underlyingIsTests = true
+        buildTargetsManager.findTargetsExceptTargetsIncludingTestsReturnValue = [
+            localPodFrameworkUnitTests.uuid: localPodFrameworkUnitTests,
+            localPodFramework.uuid: localPodFramework
+        ]
+
+        // Act
+        try await sut.markAsPassed(
+            targetsRegex: targetsRegex,
+            exceptTargetsRegex: exceptTargetsRegex,
+            buildOptions: buildOptions,
+            upToDateBranch: "dev"
+        )
+
+        // Assert
+        XCTAssertTrue(git.hasUncommittedChangesCalled)
+        XCTAssertTrue(git.isBehindBranchCalled)
+        XCTAssertEqual(git.isBehindBranchReceivedBranch, "dev")
+
         XCTAssertEqual(loggerBlockInvocations.count, 3)
 
         XCTAssertEqual(buildTargetsManager.findTargetsExceptTargetsIncludingTestsCallsCount, 1)
@@ -321,3 +439,5 @@ extension TestImpactManagerTests {
         XCTAssertEqual(logger.logLevelOutputReceivedInvocations[0].output, .all)
     }
 }
+
+// swiftlint:enable file_length

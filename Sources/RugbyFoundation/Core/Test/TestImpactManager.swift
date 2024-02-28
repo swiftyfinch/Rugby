@@ -18,9 +18,11 @@ public protocol ITestImpactManager {
     ///   - targetsRegex: A RegEx to select targets.
     ///   - exceptTargetsRegex: A RegEx to exclude targets.
     ///   - options: Xcode build options.
+    ///   - upToDateBranch: Skip if the current branch is not up-to-date to target one.
     func markAsPassed(targetsRegex: NSRegularExpression?,
                       exceptTargetsRegex: NSRegularExpression?,
-                      buildOptions: XcodeBuildOptions) async throws
+                      buildOptions: XcodeBuildOptions,
+                      upToDateBranch: String?) async throws
 }
 
 // MARK: - Implementation
@@ -32,19 +34,22 @@ final class TestImpactManager: Loggable {
     private let buildTargetsManager: IBuildTargetsManager
     private let targetsHasher: ITargetsHasher
     private let testsStorage: ITestsStorage
+    private let git: IGit
 
     init(logger: ILogger,
          environmentCollector: IEnvironmentCollector,
          rugbyXcodeProject: IRugbyXcodeProject,
          buildTargetsManager: IBuildTargetsManager,
          targetsHasher: ITargetsHasher,
-         testsStorage: ITestsStorage) {
+         testsStorage: ITestsStorage,
+         git: IGit) {
         self.logger = logger
         self.environmentCollector = environmentCollector
         self.rugbyXcodeProject = rugbyXcodeProject
         self.buildTargetsManager = buildTargetsManager
         self.targetsHasher = targetsHasher
         self.testsStorage = testsStorage
+        self.git = git
     }
 }
 
@@ -114,7 +119,17 @@ extension TestImpactManager: ITestImpactManager {
 
     func markAsPassed(targetsRegex: NSRegularExpression?,
                       exceptTargetsRegex: NSRegularExpression?,
-                      buildOptions: XcodeBuildOptions) async throws {
+                      buildOptions: XcodeBuildOptions,
+                      upToDateBranch: String?) async throws {
+        if let branch = upToDateBranch {
+            guard try !git.hasUncommittedChanges() else {
+                return await log("Skip: the current branch has uncommitted changes.")
+            }
+            guard try !git.isBehind(branch: branch) else {
+                return await log("Skip: the current branch is behind \(branch).")
+            }
+        }
+
         try await environmentCollector.logXcodeVersion()
         guard try await !rugbyXcodeProject.isAlreadyUsingRugby() else { throw RugbyError.alreadyUseRugby }
 

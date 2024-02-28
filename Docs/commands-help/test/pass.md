@@ -11,16 +11,17 @@
  > (Experimental) Mark test targets as passed.
 
  Options:
-╭───────────────────────────────────────────────────────────────────────────────╮
-│ -s, --sdk                  * Build SDK: sim or ios.                           │
-│ -a, --arch                 * Build architecture: auto, x86_64 or arm64.       │
-│ -c, --config               * Build configuration. (Debug)                     │
-│ -t, --targets []           * Target names to select. Empty means all targets. │
-│ -g, --targets-as-regex []  * Regular expression patterns to select targets.   │
-│ -e, --except []            * Target names to exclude.                         │
-│ -x, --except-as-regex []   * Regular expression patterns to exclude targets.  │
-│ -o, --output               * Output mode: fold, multiline, silent, raw.       │
-╰───────────────────────────────────────────────────────────────────────────────╯
+╭──────────────────────────────────────────────────────────────────────────────────────────╮
+│ -u, --up-to-date-branch    * Skip if the current branch is not up-to-date to target one. │
+│ -s, --sdk                  * Build SDK: sim or ios.                                      │
+│ -a, --arch                 * Build architecture: auto, x86_64 or arm64.                  │
+│ -c, --config               * Build configuration. (Debug)                                │
+│ -t, --targets []           * Target names to select. Empty means all targets.            │
+│ -g, --targets-as-regex []  * Regular expression patterns to select targets.              │
+│ -e, --except []            * Target names to exclude.                                    │
+│ -x, --except-as-regex []   * Regular expression patterns to exclude targets.             │
+│ -o, --output               * Output mode: fold, multiline, silent, raw.                  │
+╰──────────────────────────────────────────────────────────────────────────────────────────╯
  Flags:
 ╭──────────────────────────────────────────────────╮
 │ --strip           * Build without debug symbols. │
