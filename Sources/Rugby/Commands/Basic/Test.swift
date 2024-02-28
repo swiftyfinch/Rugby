@@ -59,6 +59,9 @@ private extension Test {
             discussion: Links.commandsHelp("test/pass.md")
         )
 
+        @Option(name: .shortAndLong, help: "Skip if the current branch is not up-to-date to \("target one".yellow).")
+        var upToDateBranch: String?
+
         @OptionGroup
         var buildOptions: BuildOptions
 
@@ -82,7 +85,8 @@ private extension Test {
                         patterns: buildOptions.targetsOptions.exceptAsRegex,
                         exactMatches: buildOptions.targetsOptions.exceptTargets
                     ),
-                    buildOptions: buildOptions.xcodeBuildOptions()
+                    buildOptions: buildOptions.xcodeBuildOptions(),
+                    upToDateBranch: upToDateBranch
                 )
         }
     }

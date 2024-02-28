@@ -18,7 +18,8 @@ public extension Vault {
                 logger: logger,
                 binariesStorage: binariesStorage,
                 sharedPath: router.testsImpactFolderPath
-            )
+            ),
+            git: git
         )
     }
 }
