@@ -10,6 +10,7 @@ final class EnvironmentCollectorTests: XCTestCase {
     private var swiftVersionProvider: ISwiftVersionProviderMock!
     private var architectureProvider: IArchitectureProviderMock!
     private var xcodeCLTVersionProvider: IXcodeCLTVersionProviderMock!
+    private var git: IGitMock!
 
     override func setUp() {
         super.setUp()
@@ -19,13 +20,15 @@ final class EnvironmentCollectorTests: XCTestCase {
         swiftVersionProvider = ISwiftVersionProviderMock()
         architectureProvider = IArchitectureProviderMock()
         xcodeCLTVersionProvider = IXcodeCLTVersionProviderMock()
+        git = IGitMock()
         sut = EnvironmentCollector(
             logger: logger,
             workingDirectory: workingDirectory,
             shellExecutor: shellExecutor,
             swiftVersionProvider: swiftVersionProvider,
             architectureProvider: architectureProvider,
-            xcodeCLTVersionProvider: xcodeCLTVersionProvider
+            xcodeCLTVersionProvider: xcodeCLTVersionProvider,
+            git: git
         )
     }
 
@@ -37,6 +40,7 @@ final class EnvironmentCollectorTests: XCTestCase {
         swiftVersionProvider = nil
         architectureProvider = nil
         xcodeCLTVersionProvider = nil
+        git = nil
         sut = nil
     }
 }
@@ -62,6 +66,7 @@ extension EnvironmentCollectorTests {
             "RUGBY_KEEP_HASH_YAMLS": "YES",
             "RUGBY_PRINT_MISSING_BINARIES": "NO"
         ]
+        git.currentBranchReturnValue = "main"
 
         // Act
         let env = try await sut.env(
