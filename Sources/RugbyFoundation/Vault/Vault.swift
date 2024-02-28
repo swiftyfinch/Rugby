@@ -80,7 +80,8 @@ public final class Vault {
         shellExecutor: shellExecutor,
         swiftVersionProvider: swiftVersionProvider,
         architectureProvider: architectureProvider,
-        xcodeCLTVersionProvider: XcodeCLTVersionProvider(shellExecutor: shellExecutor)
+        xcodeCLTVersionProvider: XcodeCLTVersionProvider(shellExecutor: shellExecutor),
+        git: git
     )
 
     // MARK: - Logs
@@ -93,6 +94,7 @@ public final class Vault {
 
     // MARK: - Common
 
+    private(set) lazy var git = Git(shellExecutor: shellExecutor)
     private(set) lazy var binariesStorage = BinariesStorage(
         logger: logger,
         sharedPath: router.binFolderPath,

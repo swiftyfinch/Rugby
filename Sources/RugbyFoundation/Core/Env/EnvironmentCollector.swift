@@ -42,19 +42,22 @@ final class EnvironmentCollector: Loggable {
     private let swiftVersionProvider: ISwiftVersionProvider
     private let architectureProvider: IArchitectureProvider
     private let xcodeCLTVersionProvider: IXcodeCLTVersionProvider
+    private let git: IGit
 
     init(logger: ILogger,
          workingDirectory: IFolder,
          shellExecutor: IShellExecutor,
          swiftVersionProvider: ISwiftVersionProvider,
          architectureProvider: IArchitectureProvider,
-         xcodeCLTVersionProvider: IXcodeCLTVersionProvider) {
+         xcodeCLTVersionProvider: IXcodeCLTVersionProvider,
+         git: IGit) {
         self.logger = logger
         self.workingDirectory = workingDirectory
         self.shellExecutor = shellExecutor
         self.swiftVersionProvider = swiftVersionProvider
         self.architectureProvider = architectureProvider
         self.xcodeCLTVersionProvider = xcodeCLTVersionProvider
+        self.git = git
     }
 
     // MARK: - Private
@@ -78,8 +81,7 @@ final class EnvironmentCollector: Loggable {
     }
 
     private func getGitBranch() -> String {
-        let branch = try? shellExecutor.throwingShell("git branch --show-current")?
-            .trimmingCharacters(in: .newlines)
+        let branch = try? git.currentBranch()
         return "Git branch: \(branch ?? .unknown)"
     }
 
