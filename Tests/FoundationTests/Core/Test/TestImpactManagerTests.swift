@@ -77,6 +77,7 @@ extension TestImpactManagerTests {
         }
 
         // Assert
+        XCTAssertFalse(logger.logLevelOutputCalled)
         XCTAssertEqual(environmentCollector.logXcodeVersionCallsCount, 1)
         XCTAssertEqual(rugbyXcodeProject.isAlreadyUsingRugbyCallsCount, 1)
         XCTAssertEqual(resultError as? RugbyError, .alreadyUseRugby)
@@ -121,6 +122,7 @@ extension TestImpactManagerTests {
 
         // Assert
         XCTAssertEqual(loggerBlockInvocations.count, 3)
+        XCTAssertFalse(logger.logLevelOutputCalled)
 
         XCTAssertEqual(buildTargetsManager.findTargetsExceptTargetsIncludingTestsCallsCount, 1)
         let findTargets = try XCTUnwrap(buildTargetsManager.findTargetsExceptTargetsIncludingTestsReceivedArguments)
@@ -165,6 +167,13 @@ extension TestImpactManagerTests {
         // Assert
         XCTAssertTrue(git.hasUncommittedChangesCalled)
         XCTAssertFalse(git.isBehindBranchCalled)
+
+        XCTAssertEqual(logger.logLevelOutputCallsCount, 1)
+        XCTAssertEqual(logger.logLevelOutputReceivedArguments?.level, .compact)
+        XCTAssertEqual(logger.logLevelOutputReceivedArguments?.output, .all)
+        XCTAssertEqual(logger.logLevelOutputReceivedArguments?.text,
+                       "Skip: The current branch has uncommitted changes.")
+
         XCTAssertTrue(loggerBlockInvocations.isEmpty)
         XCTAssertFalse(buildTargetsManager.findTargetsExceptTargetsIncludingTestsCalled)
         XCTAssertFalse(targetsHasher.hashXcargsCalled)
@@ -187,6 +196,13 @@ extension TestImpactManagerTests {
         XCTAssertTrue(git.hasUncommittedChangesCalled)
         XCTAssertTrue(git.isBehindBranchCalled)
         XCTAssertEqual(git.isBehindBranchReceivedBranch, "main")
+
+        XCTAssertEqual(logger.logLevelOutputCallsCount, 1)
+        XCTAssertEqual(logger.logLevelOutputReceivedArguments?.level, .compact)
+        XCTAssertEqual(logger.logLevelOutputReceivedArguments?.output, .all)
+        XCTAssertEqual(logger.logLevelOutputReceivedArguments?.text,
+                       "Skip: The current branch is behind main.")
+
         XCTAssertTrue(loggerBlockInvocations.isEmpty)
         XCTAssertFalse(buildTargetsManager.findTargetsExceptTargetsIncludingTestsCalled)
         XCTAssertFalse(targetsHasher.hashXcargsCalled)
@@ -231,6 +247,7 @@ extension TestImpactManagerTests {
         XCTAssertEqual(git.isBehindBranchReceivedBranch, "dev")
 
         XCTAssertEqual(loggerBlockInvocations.count, 3)
+        XCTAssertFalse(logger.logLevelOutputCalled)
 
         XCTAssertEqual(buildTargetsManager.findTargetsExceptTargetsIncludingTestsCallsCount, 1)
         let findTargets = try XCTUnwrap(buildTargetsManager.findTargetsExceptTargetsIncludingTestsReceivedArguments)
