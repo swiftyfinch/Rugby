@@ -123,10 +123,10 @@ extension TestImpactManager: ITestImpactManager {
                       upToDateBranch: String?) async throws {
         if let branch = upToDateBranch {
             guard try !git.hasUncommittedChanges() else {
-                return await log("Skip: the current branch has uncommitted changes.")
+                return await log("Skip: The current branch has uncommitted changes.")
             }
             guard try !git.isBehind(branch: branch) else {
-                return await log("Skip: the current branch is behind \(branch).")
+                return await log("Skip: The current branch is behind \(branch).")
             }
         }
 
