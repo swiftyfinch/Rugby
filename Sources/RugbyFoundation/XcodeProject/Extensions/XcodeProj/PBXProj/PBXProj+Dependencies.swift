@@ -34,6 +34,7 @@ extension PBXProj {
             if let existingReference = projectReferences().first(where: { $0.name == reference.name }) {
                 containerPortal = .fileReference(existingReference)
             } else {
+                reference.fixRelativeProjectPath()
                 add(object: reference)
 
                 // Add project dependency to root Dependencies group
@@ -77,6 +78,14 @@ extension PBXProj {
         }
         target.pbxTarget.dependencies.removeAll(where: pbxDependencies.contains)
         target.deleteDependencies(dependencies)
+    }
+}
+
+private extension PBXFileReference {
+    func fixRelativeProjectPath() {
+        // Sometimes a project path is relative to the project:
+        // For example, '../../Pods/SnapKit.xcodeproj' should be 'SnapKit.xcodeproj'.
+        path = path.map(URL.init(fileURLWithPath:))?.lastPathComponent
     }
 }
 
