@@ -142,4 +142,7 @@ extension IInternalXcodeProject {}
 //// sourcery: AutoMockable, imports = ["RugbyFoundation"]
 extension IInternalBuildManager {}
 
+//// sourcery: AutoMockable, imports = ["RugbyFoundation"]
+extension IGit {}
+
 // TODO: Needs to improve Sourcery template to generate mocks automatically w/o manual editing
