@@ -89,7 +89,7 @@ extension RunnableCommand {
 
     private func prepareLogger(outputType: OutputType, logLevel: LogLevel) async throws {
         let logFolder = try dependencies.logsRotator.currentLogFolder()
-        let logFile = try logFolder.createFile(named: "rugby.log")
+        let logFile = try logFolder.createFile(named: dependencies.router.logName)
         let filePrinter = FilePrinter(file: logFile)
 
         var outputType = outputType

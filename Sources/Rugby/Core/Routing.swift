@@ -8,4 +8,5 @@ extension IRouter {
     }
 
     var plansRelativePath: String { ".rugby/plans.yml" }
+    var logName: String { "rugby.log" }
 }
