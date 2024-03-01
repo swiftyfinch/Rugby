@@ -44,13 +44,19 @@ final class TestplanEditor {
     }
 
     private func addTargets(_ targets: TargetsMap, _ json: inout [String: Any]) {
+        guard let testTargetsJSON = json["testTargets"] as? [[String: Any]] else { return }
+        let testTargets = testTargetsJSON.reduce(into: [:]) { targets, json in
+            guard let name = (json["target"] as? [String: String])?["name"] else { return }
+            targets[name] = (json["parallelizable"] as? Int == 1)
+        }
         json["testTargets"] = targets.values.map { target in
             [
                 "target": [
                     "containerPath": "container:\(URL(fileURLWithPath: target.project.path).lastPathComponent)",
                     "identifier": target.uuid,
                     "name": target.name
-                ]
+                ],
+                "parallelizable": testTargets[target.name] ?? false
             ]
         }
     }

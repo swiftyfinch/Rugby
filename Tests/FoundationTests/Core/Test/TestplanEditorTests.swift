@@ -48,6 +48,7 @@ extension TestplanEditorTests {
           },
           "testTargets" : [
             {
+              "parallelizable" : true,
               "target" : {
                 "containerPath" : "container:Pods.xcodeproj",
                 "identifier" : "localPodFrameworkUnitTests_uuid",
