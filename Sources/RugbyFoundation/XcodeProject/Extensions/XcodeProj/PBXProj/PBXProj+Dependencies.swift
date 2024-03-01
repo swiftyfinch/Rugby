@@ -34,14 +34,16 @@ extension PBXProj {
             if let existingReference = projectReferences().first(where: { $0.name == reference.name }) {
                 containerPortal = .fileReference(existingReference)
             } else {
-                reference.fixRelativeProjectPath()
-                add(object: reference)
+                let newReference = reference.copy()
+                newReference.fixRelativeProjectPath()
+                add(object: newReference)
 
                 // Add project dependency to root Dependencies group
                 let dependenciesGroup = try createGroupIfNeeded(groupName: .dependenciesGroup)
-                dependenciesGroup.children.append(reference)
-                rootObject?.projects.append([.projectRefKey: reference])
-                containerPortal = .fileReference(reference)
+                dependenciesGroup.children.append(newReference)
+                rootObject?.projects.append([.projectRefKey: newReference])
+
+                containerPortal = .fileReference(newReference)
             }
             proxyType = .reference
         } else {
@@ -86,6 +88,26 @@ private extension PBXFileReference {
         // Sometimes a project path is relative to the project:
         // For example, '../../Pods/SnapKit.xcodeproj' should be 'SnapKit.xcodeproj'.
         path = path.map(URL.init(fileURLWithPath:))?.lastPathComponent
+    }
+
+    func copy() -> PBXFileReference {
+        PBXFileReference(
+            sourceTree: sourceTree,
+            name: name,
+            fileEncoding: fileEncoding,
+            explicitFileType: explicitFileType,
+            lastKnownFileType: lastKnownFileType,
+            path: path,
+            includeInIndex: includeInIndex,
+            wrapsLines: wrapsLines,
+            usesTabs: usesTabs,
+            indentWidth: indentWidth,
+            tabWidth: tabWidth,
+            lineEnding: lineEnding,
+            languageSpecificationIdentifier: languageSpecificationIdentifier,
+            xcLanguageSpecificationIdentifier: xcLanguageSpecificationIdentifier,
+            plistStructureDefinitionIdentifier: plistStructureDefinitionIdentifier
+        )
     }
 }
 
