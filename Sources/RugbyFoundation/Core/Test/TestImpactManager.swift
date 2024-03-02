@@ -119,7 +119,7 @@ extension TestImpactManager: ITestImpactManager {
         }
 
         await log("Affected Test Targets (\(missingTestTargets.count))") {
-            for target in missingTestTargets.values {
+            for target in missingTestTargets.caseInsensitiveSortedByName() {
                 guard let hash = target.hash else { continue }
                 await log("\(target.name) (\(hash))", level: .result)
             }
