@@ -31,6 +31,8 @@ public extension IRouter {
     var buildPath: String { workingDirectory.subpath(.rugby, .build) }
     /// The path to backup folder.
     var backupPath: String { workingDirectory.subpath(.rugby, .backup) }
+    /// The path to tests folder.
+    var testsPath: String { workingDirectory.subpath(.rugby, .tests) }
 
     /// Returns a path to rawBuild.log which contained subpath.
     func rawLogPath(subpath: String) -> String {

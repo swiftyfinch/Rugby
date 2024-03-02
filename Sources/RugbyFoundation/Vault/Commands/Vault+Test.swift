@@ -22,4 +22,31 @@ public extension Vault {
             git: git
         )
     }
+
+    /// The manager to test in CocoaPods project.
+    func testManager() -> ITestManager {
+        let xcodeProject = xcode.project(projectPath: router.podsProjectPath)
+        let buildTargetsManager = BuildTargetsManager(xcodeProject: xcodeProject)
+        return TestManager(
+            logger: logger,
+            environmentCollector: environmentCollector,
+            rugbyXcodeProject: RugbyXcodeProject(xcodeProject: xcodeProject),
+            buildTargetsManager: buildTargetsManager,
+            useBinariesManager: internalUseBinariesManager(
+                xcodeProject: xcodeProject,
+                buildTargetsManager: buildTargetsManager
+            ),
+            buildManager: internalBuildManager(),
+            xcodeProject: xcodeProject,
+            testplanEditor: TestplanEditor(
+                xcodeProject: xcodeProject,
+                workingDirectory: router.workingDirectory
+            ),
+            xcodeBuild: xcodeBuild(),
+            testImpactManager: internalTestImpactManager(xcodeProject: xcodeProject),
+            backupManager: backupManager(),
+            processMonitor: processMonitor,
+            testsFolderPath: router.testsPath
+        )
+    }
 }
