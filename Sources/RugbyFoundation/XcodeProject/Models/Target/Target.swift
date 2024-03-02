@@ -94,3 +94,13 @@ extension Target {
             .compactMap { $0.excludingExtension() }
     }
 }
+
+// MARK: - Dependencies
+
+extension TargetsMap {
+    func caseInsensitiveSortedByName() -> [IInternalTarget] {
+        values.sorted { lhs, rhs in
+            lhs.name.localizedCaseInsensitiveCompare(rhs.name) == .orderedAscending
+        }
+    }
+}
