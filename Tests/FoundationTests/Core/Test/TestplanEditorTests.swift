@@ -140,7 +140,7 @@ extension TestplanEditorTests {
         )
 
         // Assert
-        XCTAssertEqual(testplanPath?.path, "\(workingDirectory.path)/tests/Rugby.xctestplan")
+        XCTAssertEqual(testplanPath.path, "\(workingDirectory.path)/tests/Rugby.xctestplan")
         let testplan = try testsFolder.file(named: "Rugby.xctestplan")
         XCTAssertEqual(try testplan.readData(), expectedTestplanData)
     }

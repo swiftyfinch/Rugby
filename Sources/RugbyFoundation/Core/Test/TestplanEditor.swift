@@ -2,12 +2,14 @@ import Fish
 import Foundation
 import XcodeProj
 
+// MARK: - Interface
+
 protocol ITestplanEditor {
     func createTestplan(
         withRelativeTemplatePath relativeTemplatePath: String,
         testTargets: TargetsMap,
         inFolderPath folderPath: String
-    ) throws -> URL?
+    ) throws -> URL
 }
 
 enum TestplanEditorError: LocalizedError {
@@ -20,6 +22,8 @@ enum TestplanEditorError: LocalizedError {
         }
     }
 }
+
+// MARK: - Implementation
 
 final class TestplanEditor {
     private typealias Error = TestplanEditorError
@@ -104,7 +108,7 @@ extension TestplanEditor: ITestplanEditor {
         withRelativeTemplatePath relativeTemplatePath: String,
         testTargets: TargetsMap,
         inFolderPath folderPath: String
-    ) throws -> URL? {
+    ) throws -> URL {
         let projectPaths = try xcodeProject.readWorkspaceProjectPaths()
 
         let templatePath = workingDirectory.subpath(relativeTemplatePath)
