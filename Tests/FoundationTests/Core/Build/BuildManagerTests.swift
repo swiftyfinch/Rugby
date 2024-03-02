@@ -683,8 +683,7 @@ extension BuildManagerTests {
             moya.uuid: moya
         ]
         buildTargetsManager.createTargetDependenciesBuildConfigurationTestplanPathReturnValue = buildTarget
-        var interruptionTaskCallsCount = 0
-        processMonitor.runOnInterruptionReturnValue = ProcessInterruptionTask(job: { interruptionTaskCallsCount += 1 })
+        processMonitor.runOnInterruptionReturnValue = ProcessInterruptionTask(job: {})
         let buildOptions: XcodeBuildOptions = .mock()
         let buildPaths: XcodeBuildPaths = .mock()
 
