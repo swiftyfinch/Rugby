@@ -199,7 +199,6 @@ extension BuildManager: IInternalBuildManager {
 
         try await log(
             "Saving binaries (\(buildTarget.explicitDependencies.count))",
-            level: .result,
             auto: await binariesStorage.saveBinaries(ofTargets: buildTarget.explicitDependencies,
                                                      buildOptions: options,
                                                      buildPaths: paths)
