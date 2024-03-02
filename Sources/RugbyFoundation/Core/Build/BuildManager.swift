@@ -157,7 +157,8 @@ extension BuildManager: IInternalBuildManager {
     }
 
     func build(_ target: IInternalTarget, options: XcodeBuildOptions, paths: XcodeBuildPaths) async throws {
-        let title = "\(options.config): \(options.sdk.string)-\(options.arch) (\(target.explicitDependencies.count))"
+        let dependenciesCount = target.explicitDependencies.count
+        let title = "Build \(options.config): \(options.sdk.string)-\(options.arch) (\(dependenciesCount))"
         await log(
             "\(title)\n\(target.explicitDependencies.values.map { "* \($0.name)" }.sorted().joined(separator: "\n"))",
             level: .info
