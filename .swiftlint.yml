@@ -100,4 +100,4 @@ included:
 large_tuple: 4
 nesting:
   type_level: 2
-function_parameter_count: 6
+function_parameter_count: 8

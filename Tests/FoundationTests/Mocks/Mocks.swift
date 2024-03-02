@@ -145,4 +145,13 @@ extension IInternalBuildManager {}
 //// sourcery: AutoMockable, imports = ["RugbyFoundation"]
 extension IGit {}
 
+//// sourcery: AutoMockable, imports = ["RugbyFoundation"]
+extension IInternalUseBinariesManager {}
+
+//// sourcery: AutoMockable, imports = ["RugbyFoundation"]
+extension ITestplanEditor {}
+
+//// sourcery: AutoMockable, imports = ["RugbyFoundation"]
+extension IInternalTestImpactManager {}
+
 // TODO: Needs to improve Sourcery template to generate mocks automatically w/o manual editing

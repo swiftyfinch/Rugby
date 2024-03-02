@@ -103,4 +103,8 @@ extension TargetsMap {
             lhs.name.localizedCaseInsensitiveCompare(rhs.name) == .orderedAscending
         }
     }
+
+    func dependenciesMap() -> TargetsMap {
+        Dictionary(flatMap(\.value.dependencies), uniquingKeysWith: { _, rhs in rhs })
+    }
 }
