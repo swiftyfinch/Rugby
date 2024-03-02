@@ -24,7 +24,7 @@ final class XcodeProjectDataSource: Loggable {
             let subprojects: [IProject]
             let xcodeprojFileReferences = try await rootProject.pbxProj.projectReferences()
             if xcodeprojFileReferences.isNotEmpty {
-                subprojects = try await log("Reading Subprojects", block: {
+                subprojects = try await log("Reading Subprojects", level: .info, block: {
                     try await xcodeprojFileReferences.concurrentMap { reference in
                         try Project(path: .reference(reference))
                     }

@@ -864,7 +864,7 @@ extension BuildManagerTests {
         XCTAssertEqual(loggerBlockInvocations[11].header, "Saving binaries (2)")
         XCTAssertNil(loggerBlockInvocations[11].footer)
         XCTAssertNil(loggerBlockInvocations[11].metricKey)
-        XCTAssertEqual(loggerBlockInvocations[11].level, .result)
+        XCTAssertEqual(loggerBlockInvocations[11].level, .compact)
         XCTAssertEqual(loggerBlockInvocations[11].output, .all)
         XCTAssertEqual(binariesStorage.saveBinariesOfTargetsBuildOptionsBuildPathsCallsCount, 1)
         let saveBinariesArguments = try XCTUnwrap(

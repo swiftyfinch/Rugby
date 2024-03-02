@@ -192,11 +192,9 @@ extension UseBinariesManager: IUseBinariesManager {
     public func use(targets: [String: ITarget], keepGroups: Bool) async throws {
         let internalTargets = targets.compactMapValues { $0 as? IInternalTarget }
         let binaryTargets = try await log("Patching Product Files",
-                                          level: .result,
                                           auto: await patchProductFiles(binaryTargets: internalTargets))
         try await log(
             "Deleting Targets (\(binaryTargets.count))",
-            level: .result,
             auto: await xcodeProject.deleteTargets(binaryTargets, keepGroups: keepGroups)
         )
     }
