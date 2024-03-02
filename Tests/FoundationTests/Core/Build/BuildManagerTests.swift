@@ -627,7 +627,7 @@ extension BuildManagerTests {
         XCTAssertEqual(
             logger.logLevelOutputReceivedInvocations[2].text,
             """
-            Debug: sim-arm64 (2)
+            Build Debug: sim-arm64 (2)
             * Moya
             * SnapKit
             """
@@ -635,7 +635,7 @@ extension BuildManagerTests {
         XCTAssertEqual(logger.logLevelOutputReceivedInvocations[2].level, .info)
         XCTAssertEqual(logger.logLevelOutputReceivedInvocations[2].output, .all)
 
-        XCTAssertEqual(loggerBlockInvocations[10].header, "Debug: sim-arm64 (2)")
+        XCTAssertEqual(loggerBlockInvocations[10].header, "Build Debug: sim-arm64 (2)")
         XCTAssertNil(loggerBlockInvocations[10].footer)
         XCTAssertEqual(loggerBlockInvocations[10].metricKey, "xcodebuild")
         XCTAssertEqual(loggerBlockInvocations[10].level, .result)
@@ -840,7 +840,7 @@ extension BuildManagerTests {
         XCTAssertEqual(
             logger.logLevelOutputReceivedInvocations[2].text,
             """
-            Debug: sim-arm64 (2)
+            Build Debug: sim-arm64 (2)
             * Moya
             * SnapKit
             """
@@ -848,7 +848,7 @@ extension BuildManagerTests {
         XCTAssertEqual(logger.logLevelOutputReceivedInvocations[2].level, .info)
         XCTAssertEqual(logger.logLevelOutputReceivedInvocations[2].output, .all)
 
-        XCTAssertEqual(loggerBlockInvocations[10].header, "Debug: sim-arm64 (2)")
+        XCTAssertEqual(loggerBlockInvocations[10].header, "Build Debug: sim-arm64 (2)")
         XCTAssertNil(loggerBlockInvocations[10].footer)
         XCTAssertEqual(loggerBlockInvocations[10].metricKey, "xcodebuild")
         XCTAssertEqual(loggerBlockInvocations[10].level, .result)
