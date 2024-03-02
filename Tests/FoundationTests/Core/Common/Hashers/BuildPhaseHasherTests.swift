@@ -94,7 +94,6 @@ extension BuildPhaseHasherTests {
         let anyHashContext = try await sut.hashContext(target: target)
 
         // Assert
-        print(anyHashContext)
         let hashContext = try XCTUnwrap((anyHashContext as? [[String: Any]])?.first)
         XCTAssertEqual(hashContext["name"] as? String, "[CP] Copy XCFrameworks")
         XCTAssertEqual(hashContext["type"] as? String, "runScript")
