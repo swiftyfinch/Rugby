@@ -56,35 +56,43 @@ final class TestImpactManager: Loggable {
 protocol IInternalTestImpactManager: ITestImpactManager {
     func fetchTestTargets(_ targetsRegex: NSRegularExpression?,
                           exceptTargetsRegex: NSRegularExpression?,
-                          buildOptions: XcodeBuildOptions) async throws -> TargetsMap
+                          buildOptions: XcodeBuildOptions,
+                          quiet: Bool) async throws -> TargetsMap
     func missingTargets(_ targetsRegex: NSRegularExpression?,
                         exceptTargetsRegex: NSRegularExpression?,
-                        buildOptions: XcodeBuildOptions) async throws -> TargetsMap
+                        buildOptions: XcodeBuildOptions,
+                        quiet: Bool) async throws -> TargetsMap
 }
 
 extension TestImpactManager: IInternalTestImpactManager {
     func fetchTestTargets(_ targetsRegex: NSRegularExpression?,
                           exceptTargetsRegex: NSRegularExpression?,
-                          buildOptions: XcodeBuildOptions) async throws -> TargetsMap {
+                          buildOptions: XcodeBuildOptions,
+                          quiet: Bool) async throws -> TargetsMap {
         let targets = try await log(
             "Finding Targets",
+            level: quiet ? .info : .compact,
             auto: await buildTargetsManager.findTargets(
                 targetsRegex,
                 exceptTargets: exceptTargetsRegex,
                 includingTests: true
             )
         )
-        try await log("Hashing Targets", auto: await targetsHasher.hash(targets, xcargs: buildOptions.xcargs))
+        try await log("Hashing Targets",
+                      level: quiet ? .info : .compact,
+                      auto: await targetsHasher.hash(targets, xcargs: buildOptions.xcargs))
         return targets.filter(\.value.isTests)
     }
 
     func missingTargets(_ targetsRegex: NSRegularExpression?,
                         exceptTargetsRegex: NSRegularExpression?,
-                        buildOptions: XcodeBuildOptions) async throws -> TargetsMap {
+                        buildOptions: XcodeBuildOptions,
+                        quiet: Bool) async throws -> TargetsMap {
         let targets = try await fetchTestTargets(
             targetsRegex,
             exceptTargetsRegex: exceptTargetsRegex,
-            buildOptions: buildOptions
+            buildOptions: buildOptions,
+            quiet: quiet
         )
         return try await testsStorage.findMissingTests(of: targets, buildOptions: buildOptions)
     }
@@ -100,7 +108,8 @@ extension TestImpactManager: ITestImpactManager {
         let targets = try await fetchTestTargets(
             targetsRegex,
             exceptTargetsRegex: exceptTargetsRegex,
-            buildOptions: buildOptions
+            buildOptions: buildOptions,
+            quiet: false
         )
 
         let missingTestTargets = try await testsStorage.findMissingTests(of: targets, buildOptions: buildOptions)
@@ -136,7 +145,8 @@ extension TestImpactManager: ITestImpactManager {
         let targets = try await fetchTestTargets(
             targetsRegex,
             exceptTargetsRegex: exceptTargetsRegex,
-            buildOptions: buildOptions
+            buildOptions: buildOptions,
+            quiet: false
         )
         try await log(
             "Marking Tests as Passed",

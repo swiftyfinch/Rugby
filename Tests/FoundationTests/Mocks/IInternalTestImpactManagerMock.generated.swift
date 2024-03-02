@@ -1,0 +1,98 @@
+// Generated using Sourcery 2.1.1 — https://github.com/krzysztofzablocki/Sourcery
+// DO NOT EDIT
+
+// swiftlint:disable all
+
+import Foundation
+@testable import RugbyFoundation
+
+final class IInternalTestImpactManagerMock: IInternalTestImpactManager {
+
+    // MARK: - fetchTestTargets
+
+    var fetchTestTargetsExceptTargetsRegexBuildOptionsQuietThrowableError: Error?
+    var fetchTestTargetsExceptTargetsRegexBuildOptionsQuietCallsCount = 0
+    var fetchTestTargetsExceptTargetsRegexBuildOptionsQuietCalled: Bool { fetchTestTargetsExceptTargetsRegexBuildOptionsQuietCallsCount > 0 }
+    var fetchTestTargetsExceptTargetsRegexBuildOptionsQuietReceivedArguments: (targetsRegex: NSRegularExpression?, exceptTargetsRegex: NSRegularExpression?, buildOptions: XcodeBuildOptions, quiet: Bool)?
+    var fetchTestTargetsExceptTargetsRegexBuildOptionsQuietReceivedInvocations: [(targetsRegex: NSRegularExpression?, exceptTargetsRegex: NSRegularExpression?, buildOptions: XcodeBuildOptions, quiet: Bool)] = []
+    var fetchTestTargetsExceptTargetsRegexBuildOptionsQuietReturnValue: TargetsMap!
+    var fetchTestTargetsExceptTargetsRegexBuildOptionsQuietClosure: ((NSRegularExpression?, NSRegularExpression?, XcodeBuildOptions, Bool) async throws -> TargetsMap)?
+
+    func fetchTestTargets(_ targetsRegex: NSRegularExpression?, exceptTargetsRegex: NSRegularExpression?, buildOptions: XcodeBuildOptions, quiet: Bool) async throws -> TargetsMap {
+        if let error = fetchTestTargetsExceptTargetsRegexBuildOptionsQuietThrowableError {
+            throw error
+        }
+        fetchTestTargetsExceptTargetsRegexBuildOptionsQuietCallsCount += 1
+        fetchTestTargetsExceptTargetsRegexBuildOptionsQuietReceivedArguments = (targetsRegex: targetsRegex, exceptTargetsRegex: exceptTargetsRegex, buildOptions: buildOptions, quiet: quiet)
+        fetchTestTargetsExceptTargetsRegexBuildOptionsQuietReceivedInvocations.append((targetsRegex: targetsRegex, exceptTargetsRegex: exceptTargetsRegex, buildOptions: buildOptions, quiet: quiet))
+        if let fetchTestTargetsExceptTargetsRegexBuildOptionsQuietClosure = fetchTestTargetsExceptTargetsRegexBuildOptionsQuietClosure {
+            return try await fetchTestTargetsExceptTargetsRegexBuildOptionsQuietClosure(targetsRegex, exceptTargetsRegex, buildOptions, quiet)
+        } else {
+            return fetchTestTargetsExceptTargetsRegexBuildOptionsQuietReturnValue
+        }
+    }
+
+    // MARK: - missingTargets
+
+    var missingTargetsExceptTargetsRegexBuildOptionsQuietThrowableError: Error?
+    var missingTargetsExceptTargetsRegexBuildOptionsQuietCallsCount = 0
+    var missingTargetsExceptTargetsRegexBuildOptionsQuietCalled: Bool { missingTargetsExceptTargetsRegexBuildOptionsQuietCallsCount > 0 }
+    var missingTargetsExceptTargetsRegexBuildOptionsQuietReceivedArguments: (targetsRegex: NSRegularExpression?, exceptTargetsRegex: NSRegularExpression?, buildOptions: XcodeBuildOptions, quiet: Bool)?
+    var missingTargetsExceptTargetsRegexBuildOptionsQuietReceivedInvocations: [(targetsRegex: NSRegularExpression?, exceptTargetsRegex: NSRegularExpression?, buildOptions: XcodeBuildOptions, quiet: Bool)] = []
+    var missingTargetsExceptTargetsRegexBuildOptionsQuietReturnValue: TargetsMap!
+    var missingTargetsExceptTargetsRegexBuildOptionsQuietClosure: ((NSRegularExpression?, NSRegularExpression?, XcodeBuildOptions, Bool) async throws -> TargetsMap)?
+
+    func missingTargets(_ targetsRegex: NSRegularExpression?, exceptTargetsRegex: NSRegularExpression?, buildOptions: XcodeBuildOptions, quiet: Bool) async throws -> TargetsMap {
+        if let error = missingTargetsExceptTargetsRegexBuildOptionsQuietThrowableError {
+            throw error
+        }
+        missingTargetsExceptTargetsRegexBuildOptionsQuietCallsCount += 1
+        missingTargetsExceptTargetsRegexBuildOptionsQuietReceivedArguments = (targetsRegex: targetsRegex, exceptTargetsRegex: exceptTargetsRegex, buildOptions: buildOptions, quiet: quiet)
+        missingTargetsExceptTargetsRegexBuildOptionsQuietReceivedInvocations.append((targetsRegex: targetsRegex, exceptTargetsRegex: exceptTargetsRegex, buildOptions: buildOptions, quiet: quiet))
+        if let missingTargetsExceptTargetsRegexBuildOptionsQuietClosure = missingTargetsExceptTargetsRegexBuildOptionsQuietClosure {
+            return try await missingTargetsExceptTargetsRegexBuildOptionsQuietClosure(targetsRegex, exceptTargetsRegex, buildOptions, quiet)
+        } else {
+            return missingTargetsExceptTargetsRegexBuildOptionsQuietReturnValue
+        }
+    }
+
+    // MARK: - impact
+
+    public var impactTargetsRegexExceptTargetsRegexBuildOptionsThrowableError: Error?
+    public var impactTargetsRegexExceptTargetsRegexBuildOptionsCallsCount = 0
+    public var impactTargetsRegexExceptTargetsRegexBuildOptionsCalled: Bool { impactTargetsRegexExceptTargetsRegexBuildOptionsCallsCount > 0 }
+    public var impactTargetsRegexExceptTargetsRegexBuildOptionsReceivedArguments: (targetsRegex: NSRegularExpression?, exceptTargetsRegex: NSRegularExpression?, buildOptions: XcodeBuildOptions)?
+    public var impactTargetsRegexExceptTargetsRegexBuildOptionsReceivedInvocations: [(targetsRegex: NSRegularExpression?, exceptTargetsRegex: NSRegularExpression?, buildOptions: XcodeBuildOptions)] = []
+    public var impactTargetsRegexExceptTargetsRegexBuildOptionsClosure: ((NSRegularExpression?, NSRegularExpression?, XcodeBuildOptions) async throws -> Void)?
+
+    public func impact(targetsRegex: NSRegularExpression?, exceptTargetsRegex: NSRegularExpression?, buildOptions: XcodeBuildOptions) async throws {
+        if let error = impactTargetsRegexExceptTargetsRegexBuildOptionsThrowableError {
+            throw error
+        }
+        impactTargetsRegexExceptTargetsRegexBuildOptionsCallsCount += 1
+        impactTargetsRegexExceptTargetsRegexBuildOptionsReceivedArguments = (targetsRegex: targetsRegex, exceptTargetsRegex: exceptTargetsRegex, buildOptions: buildOptions)
+        impactTargetsRegexExceptTargetsRegexBuildOptionsReceivedInvocations.append((targetsRegex: targetsRegex, exceptTargetsRegex: exceptTargetsRegex, buildOptions: buildOptions))
+        try await impactTargetsRegexExceptTargetsRegexBuildOptionsClosure?(targetsRegex, exceptTargetsRegex, buildOptions)
+    }
+
+    // MARK: - markAsPassed
+
+    public var markAsPassedTargetsRegexExceptTargetsRegexBuildOptionsUpToDateBranchThrowableError: Error?
+    public var markAsPassedTargetsRegexExceptTargetsRegexBuildOptionsUpToDateBranchCallsCount = 0
+    public var markAsPassedTargetsRegexExceptTargetsRegexBuildOptionsUpToDateBranchCalled: Bool { markAsPassedTargetsRegexExceptTargetsRegexBuildOptionsUpToDateBranchCallsCount > 0 }
+    public var markAsPassedTargetsRegexExceptTargetsRegexBuildOptionsUpToDateBranchReceivedArguments: (targetsRegex: NSRegularExpression?, exceptTargetsRegex: NSRegularExpression?, buildOptions: XcodeBuildOptions, upToDateBranch: String?)?
+    public var markAsPassedTargetsRegexExceptTargetsRegexBuildOptionsUpToDateBranchReceivedInvocations: [(targetsRegex: NSRegularExpression?, exceptTargetsRegex: NSRegularExpression?, buildOptions: XcodeBuildOptions, upToDateBranch: String?)] = []
+    public var markAsPassedTargetsRegexExceptTargetsRegexBuildOptionsUpToDateBranchClosure: ((NSRegularExpression?, NSRegularExpression?, XcodeBuildOptions, String?) async throws -> Void)?
+
+    public func markAsPassed(targetsRegex: NSRegularExpression?, exceptTargetsRegex: NSRegularExpression?, buildOptions: XcodeBuildOptions, upToDateBranch: String?) async throws {
+        if let error = markAsPassedTargetsRegexExceptTargetsRegexBuildOptionsUpToDateBranchThrowableError {
+            throw error
+        }
+        markAsPassedTargetsRegexExceptTargetsRegexBuildOptionsUpToDateBranchCallsCount += 1
+        markAsPassedTargetsRegexExceptTargetsRegexBuildOptionsUpToDateBranchReceivedArguments = (targetsRegex: targetsRegex, exceptTargetsRegex: exceptTargetsRegex, buildOptions: buildOptions, upToDateBranch: upToDateBranch)
+        markAsPassedTargetsRegexExceptTargetsRegexBuildOptionsUpToDateBranchReceivedInvocations.append((targetsRegex: targetsRegex, exceptTargetsRegex: exceptTargetsRegex, buildOptions: buildOptions, upToDateBranch: upToDateBranch))
+        try await markAsPassedTargetsRegexExceptTargetsRegexBuildOptionsUpToDateBranchClosure?(targetsRegex, exceptTargetsRegex, buildOptions, upToDateBranch)
+    }
+}
+
+// swiftlint:enable all
