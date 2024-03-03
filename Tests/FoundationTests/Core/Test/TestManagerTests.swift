@@ -25,6 +25,7 @@ final class TestManagerTests: XCTestCase {
     private var backupManager: IBackupManagerMock!
     private var processMonitor: IProcessMonitorMock!
     private var simCTL: ISimCTLMock!
+    private var testsStorage: ITestsStorageMock!
     private var workingDirectory: IFolder!
 
     override func setUp() async throws {
@@ -52,6 +53,7 @@ final class TestManagerTests: XCTestCase {
         backupManager = IBackupManagerMock()
         processMonitor = IProcessMonitorMock()
         simCTL = ISimCTLMock()
+        testsStorage = ITestsStorageMock()
         sut = TestManager(
             logger: logger,
             environmentCollector: environmentCollector,
@@ -66,6 +68,7 @@ final class TestManagerTests: XCTestCase {
             backupManager: backupManager,
             processMonitor: processMonitor,
             simCTL: simCTL,
+            testsStorage: testsStorage,
             testsFolderPath: workingDirectory.path
         )
     }
@@ -87,6 +90,7 @@ final class TestManagerTests: XCTestCase {
         backupManager = nil
         processMonitor = nil
         simCTL = nil
+        testsStorage = nil
         workingDirectory = nil
     }
 }
@@ -106,7 +110,8 @@ extension TestManagerTests {
                 testPaths: .mock(),
                 testplanTemplatePath: "test_testplanTemplatePath",
                 simulatorName: "iPhone 99",
-                byImpact: true
+                byImpact: true,
+                markPassed: true
             )
         } catch {
             resultError = error
@@ -133,7 +138,8 @@ extension TestManagerTests {
                 testPaths: .mock(),
                 testplanTemplatePath: "test_testplanTemplatePath",
                 simulatorName: simulatorName,
-                byImpact: true
+                byImpact: true,
+                markPassed: true
             )
         } catch {
             resultError = error
@@ -178,7 +184,8 @@ extension TestManagerTests {
             testPaths: .mock(),
             testplanTemplatePath: testplanTemplatePath,
             simulatorName: simulatorName,
-            byImpact: true
+            byImpact: true,
+            markPassed: true
         )
 
         // Assert
@@ -259,7 +266,8 @@ extension TestManagerTests {
             testPaths: .mock(),
             testplanTemplatePath: testplanTemplatePath,
             simulatorName: simulatorName,
-            byImpact: true
+            byImpact: true,
+            markPassed: true
         )
 
         // Assert
@@ -277,7 +285,7 @@ extension TestManagerTests {
         XCTAssertTrue(missingTargetsInvocations[1].quiet)
 
         let loggerBlockInvocations = try XCTUnwrap(loggerBlockInvocations)
-        XCTAssertEqual(loggerBlockInvocations.count, 10)
+        XCTAssertEqual(loggerBlockInvocations.count, 11)
         XCTAssertEqual(loggerBlockInvocations[0].header, "Selecting Targets")
         XCTAssertNil(loggerBlockInvocations[0].footer)
         XCTAssertNil(loggerBlockInvocations[0].metricKey)
@@ -389,6 +397,12 @@ extension TestManagerTests {
         XCTAssertEqual(loggerBlockInvocations[9].level, .result)
         XCTAssertEqual(loggerBlockInvocations[9].output, .all)
 
+        XCTAssertEqual(loggerBlockInvocations[10].header, "Marking Tests as Passed")
+        XCTAssertNil(loggerBlockInvocations[10].footer)
+        XCTAssertNil(loggerBlockInvocations[10].metricKey)
+        XCTAssertEqual(loggerBlockInvocations[10].level, .compact)
+        XCTAssertEqual(loggerBlockInvocations[10].output, .all)
+
         XCTAssertEqual(logger.logLevelOutputReceivedInvocations.count, 4)
         XCTAssertEqual(logger.logLevelOutputReceivedInvocations[0].text, "LocalPod-framework-Unit-Tests")
         XCTAssertEqual(logger.logLevelOutputReceivedInvocations[0].output, .all)
@@ -436,7 +450,8 @@ extension TestManagerTests {
             testPaths: .mock(),
             testplanTemplatePath: testplanTemplatePath,
             simulatorName: simulatorName,
-            byImpact: false
+            byImpact: false,
+            markPassed: false
         )
 
         // Assert
@@ -517,7 +532,8 @@ extension TestManagerTests {
             testPaths: .mock(),
             testplanTemplatePath: testplanTemplatePath,
             simulatorName: simulatorName,
-            byImpact: false
+            byImpact: false,
+            markPassed: false
         )
 
         // Assert

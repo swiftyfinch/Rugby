@@ -14,6 +14,7 @@ public protocol ITestManager {
     ///   - testplanTemplatePath: A testplan template to make the specific testplan.
     ///   - simulatorName: A name of simulator.
     ///   - byImpact: A flag to select test targets by impact.
+    ///   - markPassed: Mark test targets as passed if all tests are succeed.
     func test(targetsRegex: NSRegularExpression?,
               exceptTargetsRegex: NSRegularExpression?,
               buildOptions: XcodeBuildOptions,
@@ -21,7 +22,8 @@ public protocol ITestManager {
               testPaths: XcodeBuildPaths,
               testplanTemplatePath: String,
               simulatorName: String,
-              byImpact: Bool) async throws
+              byImpact: Bool,
+              markPassed: Bool) async throws
 }
 
 enum TestManagerError: LocalizedError {
@@ -53,6 +55,7 @@ final class TestManager: Loggable {
     private let backupManager: IBackupManager
     private let processMonitor: IProcessMonitor
     private let simCTL: ISimCTL
+    private let testsStorage: ITestsStorage
     private let testsFolderPath: String
 
     init(logger: ILogger,
@@ -68,6 +71,7 @@ final class TestManager: Loggable {
          backupManager: IBackupManager,
          processMonitor: IProcessMonitor,
          simCTL: ISimCTL,
+         testsStorage: ITestsStorage,
          testsFolderPath: String) {
         self.logger = logger
         self.environmentCollector = environmentCollector
@@ -82,6 +86,7 @@ final class TestManager: Loggable {
         self.backupManager = backupManager
         self.processMonitor = processMonitor
         self.simCTL = simCTL
+        self.testsStorage = testsStorage
         self.testsFolderPath = testsFolderPath
     }
 
@@ -228,7 +233,8 @@ extension TestManager: ITestManager {
               testPaths: XcodeBuildPaths,
               testplanTemplatePath: String,
               simulatorName: String,
-              byImpact: Bool) async throws {
+              byImpact: Bool,
+              markPassed: Bool) async throws {
         let testplanTemplatePath = try testplanEditor.expandTestplanPath(testplanTemplatePath)
         try validateSimulatorName(simulatorName)
         try await environmentCollector.logXcodeVersion()
@@ -266,5 +272,12 @@ extension TestManager: ITestManager {
                 paths: testPaths
             )
         })
+
+        if markPassed {
+            try await log(
+                "Marking Tests as Passed",
+                auto: await testsStorage.saveTests(of: updatedTestTargets, buildOptions: buildOptions)
+            )
+        }
     }
 }
