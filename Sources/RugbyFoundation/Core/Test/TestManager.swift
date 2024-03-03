@@ -52,6 +52,7 @@ final class TestManager: Loggable {
     private let testImpactManager: IInternalTestImpactManager
     private let backupManager: IBackupManager
     private let processMonitor: IProcessMonitor
+    private let simCTL: ISimCTL
     private let testsFolderPath: String
 
     init(logger: ILogger,
@@ -66,6 +67,7 @@ final class TestManager: Loggable {
          testImpactManager: IInternalTestImpactManager,
          backupManager: IBackupManager,
          processMonitor: IProcessMonitor,
+         simCTL: ISimCTL,
          testsFolderPath: String) {
         self.logger = logger
         self.environmentCollector = environmentCollector
@@ -79,7 +81,15 @@ final class TestManager: Loggable {
         self.testImpactManager = testImpactManager
         self.backupManager = backupManager
         self.processMonitor = processMonitor
+        self.simCTL = simCTL
         self.testsFolderPath = testsFolderPath
+    }
+
+    private func validateSimulatorName(_ name: String) throws {
+        let availableDevices = try simCTL.availableDevices()
+        guard availableDevices.contains(where: { $0.name == name }) else {
+            throw Error.cantFindSimulator(name)
+        }
     }
 
     private func test(
@@ -188,6 +198,7 @@ extension TestManager: ITestManager {
               simulatorName: String,
               byImpact: Bool) async throws {
         let testplanTemplatePath = try testplanEditor.expandTestplanPath(testplanTemplatePath)
+        try validateSimulatorName(simulatorName)
         try await environmentCollector.logXcodeVersion()
         guard try await !rugbyXcodeProject.isAlreadyUsingRugby() else { throw RugbyError.alreadyUseRugby }
 
