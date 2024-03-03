@@ -32,6 +32,7 @@
 | :---: |
 | 🧼 [Build](clear/build.md) |
 | 🧼 [Shared](clear/shared.md) |
+| 🧼 [Tests](clear/tests.md) |
 
 ## Discussion
 
