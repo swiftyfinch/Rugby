@@ -95,6 +95,7 @@ public final class Vault {
     // MARK: - Common
 
     private(set) lazy var git = Git(shellExecutor: shellExecutor)
+    private(set) lazy var simCTL = SimCTL(shellExecutor: shellExecutor)
     private(set) lazy var binariesStorage = BinariesStorage(
         logger: logger,
         sharedPath: router.binFolderPath,
