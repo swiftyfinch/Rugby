@@ -47,6 +47,11 @@ public extension Vault {
             backupManager: backupManager(),
             processMonitor: processMonitor,
             simCTL: simCTL,
+            testsStorage: TestsStorage(
+                logger: logger,
+                binariesStorage: binariesStorage,
+                sharedPath: router.testsImpactFolderPath
+            ),
             testsFolderPath: router.testsPath
         )
     }
