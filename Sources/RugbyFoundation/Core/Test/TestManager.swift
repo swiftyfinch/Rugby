@@ -142,9 +142,7 @@ final class TestManager: Loggable {
             )
         })
     }
-}
 
-extension TestManager: ITestManager {
     private func selectingTargets(
         targetsRegex: NSRegularExpression?,
         exceptTargetsRegex: NSRegularExpression?,
@@ -189,6 +187,40 @@ extension TestManager: ITestManager {
         return missingTestTargets
     }
 
+    private func cache(targetsRegex: NSRegularExpression?,
+                       exceptTargetsRegex: NSRegularExpression?,
+                       testTargets: TargetsMap,
+                       buildOptions: XcodeBuildOptions,
+                       buildPaths: XcodeBuildPaths,
+                       byImpact: Bool) async throws -> TargetsMap {
+        try await log(
+            "Building",
+            auto: await buildManager.build(
+                targets: .exact(testTargets.dependenciesMap()),
+                options: buildOptions,
+                paths: buildPaths,
+                ignoreCache: false
+            )
+        )
+        return try await log("Using Binaries", block: {
+            let updatedTestTargets = try await selectingTargets(
+                targetsRegex: targetsRegex,
+                exceptTargetsRegex: exceptTargetsRegex,
+                buildOptions: buildOptions,
+                byImpact: byImpact,
+                quiet: true
+            )
+            try await useBinariesManager.use(
+                targets: .exact(updatedTestTargets.dependenciesMap()),
+                xcargs: buildOptions.xcargs,
+                deleteSources: false
+            )
+            return updatedTestTargets
+        })
+    }
+}
+
+extension TestManager: ITestManager {
     func test(targetsRegex: NSRegularExpression?,
               exceptTargetsRegex: NSRegularExpression?,
               buildOptions: XcodeBuildOptions,
@@ -202,42 +234,28 @@ extension TestManager: ITestManager {
         try await environmentCollector.logXcodeVersion()
         guard try await !rugbyXcodeProject.isAlreadyUsingRugby() else { throw RugbyError.alreadyUseRugby }
 
-        let testTargets = try await log("Selecting Targets", block: {
-            try await selectingTargets(
+        let testTargets = try await log(
+            "Selecting Targets",
+            auto: await selectingTargets(
                 targetsRegex: targetsRegex,
                 exceptTargetsRegex: exceptTargetsRegex,
                 buildOptions: buildOptions,
                 byImpact: byImpact
             )
-        })
+        )
         guard testTargets.isNotEmpty else { return }
 
-        let updatedTestTargets = try await log("Caching Targets", block: {
-            try await log(
-                "Building",
-                auto: await buildManager.build(
-                    targets: .exact(testTargets.dependenciesMap()),
-                    options: buildOptions,
-                    paths: buildPaths,
-                    ignoreCache: false
-                )
+        let updatedTestTargets = try await log(
+            "Caching Targets",
+            auto: await cache(
+                targetsRegex: targetsRegex,
+                exceptTargetsRegex: exceptTargetsRegex,
+                testTargets: testTargets,
+                buildOptions: buildOptions,
+                buildPaths: buildPaths,
+                byImpact: byImpact
             )
-            return try await log("Using Binaries", block: {
-                let updatedTestTargets = try await selectingTargets(
-                    targetsRegex: targetsRegex,
-                    exceptTargetsRegex: exceptTargetsRegex,
-                    buildOptions: buildOptions,
-                    byImpact: byImpact,
-                    quiet: true
-                )
-                try await useBinariesManager.use(
-                    targets: .exact(updatedTestTargets.dependenciesMap()),
-                    xcargs: buildOptions.xcargs,
-                    deleteSources: false
-                )
-                return updatedTestTargets
-            })
-        })
+        )
 
         try await log("Testing", block: {
             try await test(
