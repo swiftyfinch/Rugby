@@ -46,6 +46,7 @@ public extension Vault {
             testImpactManager: internalTestImpactManager(xcodeProject: xcodeProject),
             backupManager: backupManager(),
             processMonitor: processMonitor,
+            simCTL: simCTL,
             testsFolderPath: router.testsPath
         )
     }

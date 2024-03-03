@@ -24,6 +24,7 @@ final class TestManagerTests: XCTestCase {
     private var testImpactManager: IInternalTestImpactManagerMock!
     private var backupManager: IBackupManagerMock!
     private var processMonitor: IProcessMonitorMock!
+    private var simCTL: ISimCTLMock!
     private var workingDirectory: IFolder!
 
     override func setUp() async throws {
@@ -50,6 +51,7 @@ final class TestManagerTests: XCTestCase {
         testImpactManager = IInternalTestImpactManagerMock()
         backupManager = IBackupManagerMock()
         processMonitor = IProcessMonitorMock()
+        simCTL = ISimCTLMock()
         sut = TestManager(
             logger: logger,
             environmentCollector: environmentCollector,
@@ -63,6 +65,7 @@ final class TestManagerTests: XCTestCase {
             testImpactManager: testImpactManager,
             backupManager: backupManager,
             processMonitor: processMonitor,
+            simCTL: simCTL,
             testsFolderPath: workingDirectory.path
         )
     }
@@ -83,6 +86,7 @@ final class TestManagerTests: XCTestCase {
         testImpactManager = nil
         backupManager = nil
         processMonitor = nil
+        simCTL = nil
         workingDirectory = nil
     }
 }
@@ -112,6 +116,37 @@ extension TestManagerTests {
         XCTAssertEqual(resultError as? TestError, .test)
         XCTAssertTrue(testplanEditor.expandTestplanPathCalled)
     }
+
+    func test_simulatorName_error() async throws {
+        testplanEditor.expandTestplanPathReturnValue = "OK"
+        simCTL.availableDevicesReturnValue = []
+        let simulatorName = "iPhone 99"
+
+        // Act
+        var resultError: Error?
+        do {
+            try await sut.test(
+                targetsRegex: nil,
+                exceptTargetsRegex: nil,
+                buildOptions: .mock(),
+                buildPaths: .mock(),
+                testPaths: .mock(),
+                testplanTemplatePath: "test_testplanTemplatePath",
+                simulatorName: simulatorName,
+                byImpact: true
+            )
+        } catch {
+            resultError = error
+        }
+
+        // Assert
+        XCTAssertEqual(
+            (resultError as? TestManagerError)?.localizedDescription,
+            "Can't find iOS simulator with name: \(simulatorName)"
+        )
+        XCTAssertTrue(testplanEditor.expandTestplanPathCalled)
+        XCTAssertTrue(simCTL.availableDevicesCalled)
+    }
 }
 
 extension TestManagerTests {
@@ -121,6 +156,16 @@ extension TestManagerTests {
         let buildOptions: XcodeBuildOptions = .mock()
         let testplanTemplatePath = "test_testplanTemplate"
         testplanEditor.expandTestplanPathReturnValue = testplanTemplatePath
+        let simulatorName = "iPhone 99"
+        simCTL.availableDevicesReturnValue = [
+            Device(
+                udid: "test_udid",
+                isAvailable: true,
+                state: "test_state",
+                name: simulatorName,
+                runtime: "test_runtime"
+            )
+        ]
         rugbyXcodeProject.isAlreadyUsingRugbyReturnValue = false
         testImpactManager.missingTargetsExceptTargetsRegexBuildOptionsQuietReturnValue = [:]
 
@@ -132,7 +177,7 @@ extension TestManagerTests {
             buildPaths: .mock(),
             testPaths: .mock(),
             testplanTemplatePath: testplanTemplatePath,
-            simulatorName: "iPhone 99",
+            simulatorName: simulatorName,
             byImpact: true
         )
 
@@ -170,6 +215,15 @@ extension TestManagerTests {
         let testplanTemplatePath = "test_testplanTemplate"
         testplanEditor.expandTestplanPathReturnValue = testplanTemplatePath
         let simulatorName = "iPhone 99"
+        simCTL.availableDevicesReturnValue = [
+            Device(
+                udid: "test_udid",
+                isAvailable: true,
+                state: "test_state",
+                name: simulatorName,
+                runtime: "test_runtime"
+            )
+        ]
         rugbyXcodeProject.isAlreadyUsingRugbyReturnValue = false
         let localPod = IInternalTargetMock()
         localPod.underlyingUuid = "localPod_uuid"
@@ -359,6 +413,16 @@ extension TestManagerTests {
         let exceptTargetsRegex = try NSRegularExpression(pattern: "test_exceptTargetsRegex")
         let buildOptions: XcodeBuildOptions = .mock()
         let testplanTemplatePath = "test_testplanTemplate"
+        let simulatorName = "iPhone 99"
+        simCTL.availableDevicesReturnValue = [
+            Device(
+                udid: "test_udid",
+                isAvailable: true,
+                state: "test_state",
+                name: simulatorName,
+                runtime: "test_runtime"
+            )
+        ]
         testplanEditor.expandTestplanPathReturnValue = testplanTemplatePath
         rugbyXcodeProject.isAlreadyUsingRugbyReturnValue = false
         testImpactManager.fetchTestTargetsExceptTargetsRegexBuildOptionsQuietReturnValue = [:]
@@ -371,7 +435,7 @@ extension TestManagerTests {
             buildPaths: .mock(),
             testPaths: .mock(),
             testplanTemplatePath: testplanTemplatePath,
-            simulatorName: "iPhone 99",
+            simulatorName: simulatorName,
             byImpact: false
         )
 
@@ -409,6 +473,15 @@ extension TestManagerTests {
         let testplanTemplatePath = "test_testplanTemplate"
         testplanEditor.expandTestplanPathReturnValue = testplanTemplatePath
         let simulatorName = "iPhone 99"
+        simCTL.availableDevicesReturnValue = [
+            Device(
+                udid: "test_udid",
+                isAvailable: true,
+                state: "test_state",
+                name: simulatorName,
+                runtime: "test_runtime"
+            )
+        ]
         rugbyXcodeProject.isAlreadyUsingRugbyReturnValue = false
         let localPod = IInternalTargetMock()
         localPod.underlyingUuid = "localPod_uuid"
