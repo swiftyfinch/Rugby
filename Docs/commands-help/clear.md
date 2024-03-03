@@ -42,7 +42,7 @@ If you want to clean them up by yourself, call `clear` command or its subcommand
 
 You can delete specific modules binaries:
 ```sh
-> rugby clear --modules PodA PodB
+> rugby clear --modules TargetA TargetB
 ```
 
 Or you can delete all binaries:
