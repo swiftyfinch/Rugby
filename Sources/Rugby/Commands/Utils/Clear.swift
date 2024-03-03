@@ -7,7 +7,7 @@ struct Clear: AsyncParsableCommand {
         commandName: "clear",
         abstract: "Clear modules cache.",
         discussion: Links.commandsHelp("clear.md"),
-        subcommands: [Clear.Build.self, Clear.Shared.self]
+        subcommands: [Build.self, Shared.self, Tests.self]
     )
 
     @Option(name: .shortAndLong, parsing: .upToNextOption, help: "List of modules for deletion.")
@@ -38,6 +38,7 @@ extension Clear: RunnableCommand {
                 }
             }
             group.addTask { try await cleaner.deleteBuildFolder() }
+            group.addTask { try await cleaner.deleteTestsFolder() }
             try await group.waitForAll()
         }
     }
@@ -93,6 +94,33 @@ extension Clear {
         func body() async throws {
             let cleaner = dependencies.cleaner()
             try await cleaner.deleteAllSharedBinaries()
+        }
+    }
+}
+
+// MARK: - Tests Subcommand
+
+extension Clear {
+    private struct Tests: RunnableCommand {
+        static var configuration = CommandConfiguration(
+            commandName: "tests",
+            abstract: "Delete .rugby/tests folder.",
+            discussion: Links.commandsHelp("clear/tests.md")
+        )
+
+        @OptionGroup
+        var commonOptions: CommonOptions
+
+        func run() async throws {
+            try await run(body,
+                          outputType: commonOptions.output,
+                          logLevel: commonOptions.logLevel,
+                          muteSound: true)
+        }
+
+        func body() async throws {
+            let cleaner = dependencies.cleaner()
+            try await cleaner.deleteTestsFolder()
         }
     }
 }
