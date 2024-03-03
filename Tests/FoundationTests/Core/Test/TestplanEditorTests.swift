@@ -26,6 +26,48 @@ final class TestplanEditorTests: XCTestCase {
 }
 
 extension TestplanEditorTests {
+    func test_expandTestplanPath_error() throws {
+        let path = workingDirectory.subpath("Rugby")
+
+        // Act
+        var resultError: Error?
+        do {
+            _ = try sut.expandTestplanPath(path)
+        } catch {
+            resultError = error
+        }
+
+        // Assert
+        XCTAssertEqual(
+            (resultError as? TestplanEditorError)?.localizedDescription,
+            "Incorrect testplan path: \(path)"
+        )
+    }
+
+    func test_expandTestplanPath() throws {
+        let path0 = try workingDirectory.createFolder(named: "Test").createFile(named: "Rugby.xctestplan").path
+        let path1 = try workingDirectory.createFolder(named: "Test2").createFile(named: "Rugby").path
+        let path2 = try workingDirectory.createFile(named: "Rugby.xctestplan").path
+
+        // Assert
+        XCTAssertEqual(
+            try sut.expandTestplanPath(path0),
+            workingDirectory.subpath("Test/Rugby.xctestplan")
+        )
+        XCTAssertEqual(
+            try sut.expandTestplanPath(URL(fileURLWithPath: path0).deletingPathExtension().path),
+            workingDirectory.subpath("Test/Rugby.xctestplan")
+        )
+        XCTAssertEqual(
+            try sut.expandTestplanPath(path1),
+            workingDirectory.subpath("Test2/Rugby")
+        )
+        XCTAssertEqual(
+            try sut.expandTestplanPath(path2),
+            workingDirectory.subpath("Rugby.xctestplan")
+        )
+    }
+
     func test_createTestplan() throws {
         let expectedRawTestplanData: Data! = """
         {
@@ -66,9 +108,9 @@ extension TestplanEditorTests {
         )
 
         let testsFolder = try workingDirectory.createFolder(named: "tests")
-        let relativeTemplatePath = "ExampleFrameworks.xctestplan"
-        try workingDirectory.createFile(
-            named: relativeTemplatePath,
+        let templateName = "ExampleFrameworks.xctestplan"
+        let testplanTemplate = try workingDirectory.createFile(
+            named: templateName,
             contents: """
             {
               "configurations" : [
@@ -134,7 +176,7 @@ extension TestplanEditorTests {
 
         // Act
         let testplanPath = try sut.createTestplan(
-            withRelativeTemplatePath: relativeTemplatePath,
+            testplanTemplatePath: testplanTemplate.path,
             testTargets: testTargets,
             inFolderPath: testsFolder.path
         )

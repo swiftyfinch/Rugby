@@ -5,18 +5,23 @@ import XcodeProj
 // MARK: - Interface
 
 protocol ITestplanEditor {
+    func expandTestplanPath(_ path: String) throws -> String
+
     func createTestplan(
-        withRelativeTemplatePath relativeTemplatePath: String,
+        testplanTemplatePath: String,
         testTargets: TargetsMap,
         inFolderPath folderPath: String
     ) throws -> URL
 }
 
 enum TestplanEditorError: LocalizedError {
+    case incorrectTestplanPath(String)
     case incorrectTestplanFormat
 
     var errorDescription: String? {
         switch self {
+        case let .incorrectTestplanPath(path):
+            return "Incorrect testplan path: \(path)"
         case .incorrectTestplanFormat:
             return "Incorrect testplan format."
         }
@@ -104,15 +109,28 @@ final class TestplanEditor {
 }
 
 extension TestplanEditor: ITestplanEditor {
+    func expandTestplanPath(_ path: String) throws -> String {
+        let resolvedPath = NSString(string: path).expandingTildeInPath
+        let pathURL = URL(fileURLWithPath: resolvedPath)
+        if File.isExist(at: pathURL.path) {
+            return pathURL.path
+        } else if pathURL.pathExtension.isEmpty {
+            let pathWithExtension = pathURL.appendingPathExtension("xctestplan")
+            if File.isExist(at: pathWithExtension.path) {
+                return pathWithExtension.path
+            }
+        }
+        throw Error.incorrectTestplanPath(pathURL.path)
+    }
+
     func createTestplan(
-        withRelativeTemplatePath relativeTemplatePath: String,
+        testplanTemplatePath: String,
         testTargets: TargetsMap,
         inFolderPath folderPath: String
     ) throws -> URL {
         let projectPaths = try xcodeProject.readWorkspaceProjectPaths()
 
-        let templatePath = workingDirectory.subpath(relativeTemplatePath)
-        var json = try readTestplan(path: templatePath)
+        var json = try readTestplan(path: testplanTemplatePath)
         patchAllEnvironmentVariables(projectPaths: projectPaths, &json)
         addTargets(testTargets, &json)
 
