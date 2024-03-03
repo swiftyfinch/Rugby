@@ -18,7 +18,6 @@
   },
   "testTargets" : [
     {
-      "parallelizable" : true,
       "target" : {
         "containerPath" : "container:Example.xcodeproj",
         "identifier" : "2308782B2A8D3E3A00AEB6A7",
@@ -26,7 +25,6 @@
       }
     },
     {
-      "parallelizable" : true,
       "target" : {
         "containerPath" : "container:..\/Pods\/Pods.xcodeproj",
         "identifier" : "9FC54710DA1E4DFE1328C2E13F374466",

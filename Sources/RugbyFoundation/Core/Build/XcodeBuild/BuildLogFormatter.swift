@@ -52,7 +52,7 @@ final class BuildLogFormatter {
                 line = String(line.dropLast(".xctest".count))
                 line = "\("⚑".yellow) \(line.green)"
             } else {
-                line = "  \(line):".green
+                line = "  \(line):".raw.green
             }
             return line
         case .testCase:
