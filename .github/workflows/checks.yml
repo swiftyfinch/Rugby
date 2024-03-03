@@ -118,12 +118,12 @@ jobs:
         set -o pipefail && env NSUnbufferedIO=YES xcodebuild test \
           -workspace Example.xcworkspace \
           -scheme ExampleFrameworks \
-          -configuration Debug \
+          -testPlan ExampleFrameworks \
           -destination 'platform=iOS Simulator,name=iPhone 14' \
-          -derivedDataPath build \
           COMPILER_INDEX_STORE_ENABLE=NO \
           SWIFT_COMPILATION_MODE=wholemodule \
-          | xcbeautify
+          CODE_SIGNING_ALLOWED=NO \
+          | xcbeautify --renderer github-actions
 
   smoke-libs:
     name: Smoke (Libraries)
@@ -156,9 +156,9 @@ jobs:
         set -o pipefail && env NSUnbufferedIO=YES xcodebuild test \
           -workspace Example.xcworkspace \
           -scheme ExampleLibs \
-          -configuration Debug \
+          -testPlan ExampleLibs \
           -destination 'platform=iOS Simulator,name=iPhone 14' \
-          -derivedDataPath build \
           COMPILER_INDEX_STORE_ENABLE=NO \
           SWIFT_COMPILATION_MODE=wholemodule \
-          | xcbeautify
+          CODE_SIGNING_ALLOWED=NO \
+          | xcbeautify --renderer github-actions
