@@ -14,6 +14,9 @@ public protocol ICleaner {
 
     /// Deletes build folder.
     func deleteBuildFolder() async throws
+
+    /// Deletes tests folder.
+    func deleteTestsFolder() async throws
 }
 
 // MARK: - Implementation
@@ -21,11 +24,14 @@ public protocol ICleaner {
 final class Cleaner {
     private let sharedBinariesPath: String
     private let buildFolderPath: String
+    private let testsFolderPath: String
 
     init(sharedBinariesPath: String,
-         buildFolderPath: String) {
+         buildFolderPath: String,
+         testsFolderPath: String) {
         self.sharedBinariesPath = sharedBinariesPath
         self.buildFolderPath = buildFolderPath
+        self.testsFolderPath = testsFolderPath
     }
 
     private func deleteFolder(atPath path: String) async throws {
@@ -42,17 +48,21 @@ final class Cleaner {
 // MARK: - IСleaner
 
 extension Cleaner: ICleaner {
-    public func deleteSharedBinaries(names: [String]) async throws {
+    func deleteSharedBinaries(names: [String]) async throws {
         try await names.concurrentForEach { name in
             try await self.deleteFolder(atPath: "\(self.sharedBinariesPath)/\(name)")
         }
     }
 
-    public func deleteAllSharedBinaries() async throws {
+    func deleteAllSharedBinaries() async throws {
         try await deleteFolder(atPath: sharedBinariesPath)
     }
 
-    public func deleteBuildFolder() async throws {
+    func deleteBuildFolder() async throws {
         try await deleteFolder(atPath: buildFolderPath)
+    }
+
+    func deleteTestsFolder() async throws {
+        try await deleteFolder(atPath: testsFolderPath)
     }
 }
