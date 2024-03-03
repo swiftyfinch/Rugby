@@ -46,7 +46,7 @@ jobs:
     - name: Build
       run: swift build -c release
 
-  tests:
+  unit-tests:
     name: Unit Tests
     runs-on: macos-latest
     env:
@@ -87,9 +87,9 @@ jobs:
         name: rugby
         path: ${{ env.RUGBY_PATH }}
 
-  smoke-frameworks:
-    name: Smoke (Frameworks)
-    needs: tests
+  smoke-build-frameworks:
+    name: Smoke Build (Frameworks)
+    needs: unit-tests
     runs-on: macos-latest
     steps:
     - uses: actions/checkout@v4
@@ -125,9 +125,9 @@ jobs:
           CODE_SIGNING_ALLOWED=NO \
           | xcbeautify --renderer github-actions
 
-  smoke-libs:
-    name: Smoke (Libraries)
-    needs: tests
+  smoke-build-libs:
+    name: Smoke Build (Libraries)
+    needs: unit-tests
     runs-on: macos-latest
     steps:
     - uses: actions/checkout@v4
@@ -162,3 +162,59 @@ jobs:
           SWIFT_COMPILATION_MODE=wholemodule \
           CODE_SIGNING_ALLOWED=NO \
           | xcbeautify --renderer github-actions
+
+  smoke-test-multiproj:
+    name: Smoke Test (Multiproj)
+    needs: unit-tests
+    runs-on: macos-latest
+    steps:
+    - uses: actions/checkout@v4
+    - uses: actions/download-artifact@v4
+      with: { name: rugby }
+    - run: chmod +x rugby && echo `pwd` >> $GITHUB_PATH
+    - run: rugby --version
+
+    - uses: actions/cache@v4
+      with:
+        path: Example/Pods
+        key: ${{ runner.os }}-pods-${{ hashFiles('Example/Podfile.lock') }}
+        restore-keys: ${{ runner.os }}-pods-
+    - name: CocoaPods
+      working-directory: ./Example
+      run: MULTIPLE_PROJECTS=true pod install --repo-update
+
+    - run: brew install xcbeautify
+    - name: Rugby
+      working-directory: ./Example
+      run: |
+        rugby _test --targets-as-regex framework \
+                    --simulator-name 'iPhone 14' \
+                    --testplan-template-path ExampleFrameworks
+
+  smoke-test:
+    name: Smoke Test (Frameworks)
+    needs: unit-tests
+    runs-on: macos-latest
+    steps:
+    - uses: actions/checkout@v4
+    - uses: actions/download-artifact@v4
+      with: { name: rugby }
+    - run: chmod +x rugby && echo `pwd` >> $GITHUB_PATH
+    - run: rugby --version
+
+    - uses: actions/cache@v4
+      with:
+        path: Example/Pods
+        key: ${{ runner.os }}-pods-${{ hashFiles('Example/Podfile.lock') }}
+        restore-keys: ${{ runner.os }}-pods-
+    - name: CocoaPods
+      working-directory: ./Example
+      run: pod install --repo-update
+
+    - run: brew install xcbeautify
+    - name: Rugby
+      working-directory: ./Example
+      run: |
+        rugby _test --targets-as-regex framework \
+                    --simulator-name 'iPhone 14' \
+                    --testplan-template-path ExampleFrameworks
