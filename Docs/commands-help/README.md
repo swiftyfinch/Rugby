@@ -73,7 +73,7 @@ flowchart LR
     click AD "https://github.com/swiftyfinch/Rugby/blob/main/Docs/commands-help/warmup.md" _blank
 
     A --> AE(["🧪 Test"]) -.-> AEA["
-    Print affected test targets
+    Analyse and run tests
     "]
     style AE color:#539bf5
     click AE "https://github.com/swiftyfinch/Rugby/blob/main/Docs/commands-help/test.md" _blank

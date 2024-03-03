@@ -8,10 +8,11 @@
 
 ```sh
 
- > (Experimental) Analyse test targets.
+ > (Experimental) Analyse and run tests.
 
  Subcommands:
 ╭───────────────────────────────────────────────────────╮
+│ run     * (Experimental) Run tests by impact or not.  │
 │ impact  * (Experimental) Print affected test targets. │
 │ pass    * (Experimental) Mark test targets as passed. │
 ╰───────────────────────────────────────────────────────╯
@@ -23,5 +24,6 @@
 
 | Subcommands |
 | :---: |
+| 🧪 [Run](test/run.md) |
 | 🧪 [Impact](test/impact.md) |
 | 🧪 [Pass](test/pass.md) |
