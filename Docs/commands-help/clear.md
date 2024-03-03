@@ -8,12 +8,13 @@
 
 ```sh
 
- > Clear modules cache.
+ > Delete different Rugby folders.
 
  Subcommands:
 ╭───────────────────────────────────────╮
 │ build   * Delete .rugby/build folder. │
 │ shared  * Delete .rugby/bin folder.   │
+│ tests   * Delete .rugby/tests folder. │
 ╰───────────────────────────────────────╯
  Options:
 ╭────────────────────────────────────────────────────────────────╮

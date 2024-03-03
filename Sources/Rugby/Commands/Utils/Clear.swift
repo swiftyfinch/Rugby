@@ -5,7 +5,7 @@ import Foundation
 struct Clear: AsyncParsableCommand {
     static var configuration = CommandConfiguration(
         commandName: "clear",
-        abstract: "Clear modules cache.",
+        abstract: "Delete different Rugby folders.",
         discussion: Links.commandsHelp("clear.md"),
         subcommands: [Build.self, Shared.self, Tests.self]
     )
