@@ -6,6 +6,8 @@ import XCTest
 // swiftlint:disable file_length line_length
 
 final class TestManagerTests: XCTestCase {
+    private enum TestError: Error { case test }
+
     private var sut: ITestManager!
     private var logger: ILoggerMock!
     private var loggerBlockInvocations: [
@@ -86,10 +88,39 @@ final class TestManagerTests: XCTestCase {
 }
 
 extension TestManagerTests {
+    func test_testplanTemplatePath_error() async throws {
+        testplanEditor.expandTestplanPathThrowableError = TestError.test
+
+        // Act
+        var resultError: Error?
+        do {
+            try await sut.test(
+                targetsRegex: nil,
+                exceptTargetsRegex: nil,
+                buildOptions: .mock(),
+                buildPaths: .mock(),
+                testPaths: .mock(),
+                testplanTemplatePath: "test_testplanTemplatePath",
+                simulatorName: "iPhone 99",
+                byImpact: true
+            )
+        } catch {
+            resultError = error
+        }
+
+        // Assert
+        XCTAssertEqual(resultError as? TestError, .test)
+        XCTAssertTrue(testplanEditor.expandTestplanPathCalled)
+    }
+}
+
+extension TestManagerTests {
     func test_impact_noAffectedTestTargets() async throws {
         let targetsRegex = try NSRegularExpression(pattern: "test_targetsRegex")
         let exceptTargetsRegex = try NSRegularExpression(pattern: "test_exceptTargetsRegex")
         let buildOptions: XcodeBuildOptions = .mock()
+        let testplanTemplatePath = "test_testplanTemplate"
+        testplanEditor.expandTestplanPathReturnValue = testplanTemplatePath
         rugbyXcodeProject.isAlreadyUsingRugbyReturnValue = false
         testImpactManager.missingTargetsExceptTargetsRegexBuildOptionsQuietReturnValue = [:]
 
@@ -100,7 +131,7 @@ extension TestManagerTests {
             buildOptions: buildOptions,
             buildPaths: .mock(),
             testPaths: .mock(),
-            testplanTemplate: "test_testplanTemplate",
+            testplanTemplatePath: testplanTemplatePath,
             simulatorName: "iPhone 99",
             byImpact: true
         )
@@ -136,7 +167,8 @@ extension TestManagerTests {
         let exceptTargetsRegex = try NSRegularExpression(pattern: "test_exceptTargetsRegex")
         let buildOptions: XcodeBuildOptions = .mock()
         let buildPaths: XcodeBuildPaths = .mock()
-        let testplanTemplate = "test_testplanTemplate"
+        let testplanTemplatePath = "test_testplanTemplate"
+        testplanEditor.expandTestplanPathReturnValue = testplanTemplatePath
         let simulatorName = "iPhone 99"
         rugbyXcodeProject.isAlreadyUsingRugbyReturnValue = false
         let localPod = IInternalTargetMock()
@@ -154,7 +186,7 @@ extension TestManagerTests {
         ]
         testImpactManager.missingTargetsExceptTargetsRegexBuildOptionsQuietReturnValue = missingTargets
         let testplanURL = URL(fileURLWithPath: "tests/Rugby.xctestplan")
-        testplanEditor.createTestplanWithRelativeTemplatePathTestTargetsInFolderPathReturnValue = testplanURL
+        testplanEditor.createTestplanTestplanTemplatePathTestTargetsInFolderPathReturnValue = testplanURL
         let testsTarget = IInternalTargetMock()
         testsTarget.underlyingName = "RugbyPods"
         testsTarget.explicitDependencies = [
@@ -171,7 +203,7 @@ extension TestManagerTests {
             buildOptions: buildOptions,
             buildPaths: buildPaths,
             testPaths: .mock(),
-            testplanTemplate: testplanTemplate,
+            testplanTemplatePath: testplanTemplatePath,
             simulatorName: simulatorName,
             byImpact: true
         )
@@ -240,13 +272,13 @@ extension TestManagerTests {
         XCTAssertEqual(loggerBlockInvocations[3].level, .compact)
         XCTAssertEqual(loggerBlockInvocations[3].output, .all)
 
-        XCTAssertEqual(testplanEditor.createTestplanWithRelativeTemplatePathTestTargetsInFolderPathCallsCount, 1)
+        XCTAssertEqual(testplanEditor.createTestplanTestplanTemplatePathTestTargetsInFolderPathCallsCount, 1)
         let createTestplanArguments = try XCTUnwrap(
-            testplanEditor.createTestplanWithRelativeTemplatePathTestTargetsInFolderPathReceivedArguments
+            testplanEditor.createTestplanTestplanTemplatePathTestTargetsInFolderPathReceivedArguments
         )
         XCTAssertEqual(createTestplanArguments.testTargets.count, 2)
         XCTAssertEqual(createTestplanArguments.folderPath, workingDirectory.path)
-        XCTAssertEqual(createTestplanArguments.relativeTemplatePath, testplanTemplate)
+        XCTAssertEqual(createTestplanArguments.testplanTemplatePath, testplanTemplatePath)
 
         XCTAssertEqual(loggerBlockInvocations[4].header, "Using Binaries")
         XCTAssertNil(loggerBlockInvocations[4].footer)
@@ -326,6 +358,8 @@ extension TestManagerTests {
         let targetsRegex = try NSRegularExpression(pattern: "test_targetsRegex")
         let exceptTargetsRegex = try NSRegularExpression(pattern: "test_exceptTargetsRegex")
         let buildOptions: XcodeBuildOptions = .mock()
+        let testplanTemplatePath = "test_testplanTemplate"
+        testplanEditor.expandTestplanPathReturnValue = testplanTemplatePath
         rugbyXcodeProject.isAlreadyUsingRugbyReturnValue = false
         testImpactManager.fetchTestTargetsExceptTargetsRegexBuildOptionsQuietReturnValue = [:]
 
@@ -336,7 +370,7 @@ extension TestManagerTests {
             buildOptions: buildOptions,
             buildPaths: .mock(),
             testPaths: .mock(),
-            testplanTemplate: "test_testplanTemplate",
+            testplanTemplatePath: testplanTemplatePath,
             simulatorName: "iPhone 99",
             byImpact: false
         )
@@ -372,7 +406,8 @@ extension TestManagerTests {
         let exceptTargetsRegex = try NSRegularExpression(pattern: "test_exceptTargetsRegex")
         let buildOptions: XcodeBuildOptions = .mock()
         let buildPaths: XcodeBuildPaths = .mock()
-        let testplanTemplate = "test_testplanTemplate"
+        let testplanTemplatePath = "test_testplanTemplate"
+        testplanEditor.expandTestplanPathReturnValue = testplanTemplatePath
         let simulatorName = "iPhone 99"
         rugbyXcodeProject.isAlreadyUsingRugbyReturnValue = false
         let localPod = IInternalTargetMock()
@@ -390,7 +425,7 @@ extension TestManagerTests {
         ]
         testImpactManager.fetchTestTargetsExceptTargetsRegexBuildOptionsQuietReturnValue = missingTargets
         let testplanURL = URL(fileURLWithPath: "tests/Rugby.xctestplan")
-        testplanEditor.createTestplanWithRelativeTemplatePathTestTargetsInFolderPathReturnValue = testplanURL
+        testplanEditor.createTestplanTestplanTemplatePathTestTargetsInFolderPathReturnValue = testplanURL
         let testsTarget = IInternalTargetMock()
         testsTarget.underlyingName = "RugbyPods"
         testsTarget.explicitDependencies = [
@@ -407,7 +442,7 @@ extension TestManagerTests {
             buildOptions: buildOptions,
             buildPaths: buildPaths,
             testPaths: .mock(),
-            testplanTemplate: testplanTemplate,
+            testplanTemplatePath: testplanTemplatePath,
             simulatorName: simulatorName,
             byImpact: false
         )
@@ -477,13 +512,13 @@ extension TestManagerTests {
         XCTAssertEqual(loggerBlockInvocations[3].level, .compact)
         XCTAssertEqual(loggerBlockInvocations[3].output, .all)
 
-        XCTAssertEqual(testplanEditor.createTestplanWithRelativeTemplatePathTestTargetsInFolderPathCallsCount, 1)
+        XCTAssertEqual(testplanEditor.createTestplanTestplanTemplatePathTestTargetsInFolderPathCallsCount, 1)
         let createTestplanArguments = try XCTUnwrap(
-            testplanEditor.createTestplanWithRelativeTemplatePathTestTargetsInFolderPathReceivedArguments
+            testplanEditor.createTestplanTestplanTemplatePathTestTargetsInFolderPathReceivedArguments
         )
         XCTAssertEqual(createTestplanArguments.testTargets.count, 2)
         XCTAssertEqual(createTestplanArguments.folderPath, workingDirectory.path)
-        XCTAssertEqual(createTestplanArguments.relativeTemplatePath, testplanTemplate)
+        XCTAssertEqual(createTestplanArguments.testplanTemplatePath, testplanTemplatePath)
 
         XCTAssertEqual(loggerBlockInvocations[4].header, "Using Binaries")
         XCTAssertNil(loggerBlockInvocations[4].footer)
