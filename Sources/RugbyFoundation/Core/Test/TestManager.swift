@@ -11,7 +11,7 @@ public protocol ITestManager {
     ///   - buildOptions: Xcode build options.
     ///   - buildPaths: A collection of Xcode build paths.
     ///   - testPaths: A collection of Xcode tests paths.
-    ///   - testplanTemplate: A testplan template to make the specific testplan.
+    ///   - testplanTemplatePath: A testplan template to make the specific testplan.
     ///   - simulatorName: A name of simulator.
     ///   - byImpact: A flag to select test targets by impact.
     func test(targetsRegex: NSRegularExpression?,
@@ -19,14 +19,27 @@ public protocol ITestManager {
               buildOptions: XcodeBuildOptions,
               buildPaths: XcodeBuildPaths,
               testPaths: XcodeBuildPaths,
-              testplanTemplate: String,
+              testplanTemplatePath: String,
               simulatorName: String,
               byImpact: Bool) async throws
+}
+
+enum TestManagerError: LocalizedError {
+    case cantFindSimulator(String)
+
+    var errorDescription: String? {
+        switch self {
+        case let .cantFindSimulator(name):
+            return "Can't find iOS simulator with name: \(name)"
+        }
+    }
 }
 
 // MARK: - Implementation
 
 final class TestManager: Loggable {
+    typealias Error = TestManagerError
+
     let logger: ILogger
     private let environmentCollector: IEnvironmentCollector
     private let rugbyXcodeProject: IRugbyXcodeProject
@@ -71,14 +84,14 @@ final class TestManager: Loggable {
 
     private func test(
         testTargets: TargetsMap,
-        testplanTemplate: String,
+        testplanTemplatePath: String,
         simulatorName: String,
         options: XcodeBuildOptions,
         paths: XcodeBuildPaths
     ) async throws {
         let testplanPath = try await log("Creating Test Plan", block: {
             try testplanEditor.createTestplan(
-                withRelativeTemplatePath: testplanTemplate,
+                testplanTemplatePath: testplanTemplatePath,
                 testTargets: testTargets,
                 inFolderPath: testsFolderPath
             )
@@ -171,9 +184,10 @@ extension TestManager: ITestManager {
               buildOptions: XcodeBuildOptions,
               buildPaths: XcodeBuildPaths,
               testPaths: XcodeBuildPaths,
-              testplanTemplate: String,
+              testplanTemplatePath: String,
               simulatorName: String,
               byImpact: Bool) async throws {
+        let testplanTemplatePath = try testplanEditor.expandTestplanPath(testplanTemplatePath)
         try await environmentCollector.logXcodeVersion()
         guard try await !rugbyXcodeProject.isAlreadyUsingRugby() else { throw RugbyError.alreadyUseRugby }
 
@@ -217,7 +231,7 @@ extension TestManager: ITestManager {
         try await log("Testing", block: {
             try await test(
                 testTargets: updatedTestTargets,
-                testplanTemplate: testplanTemplate,
+                testplanTemplatePath: testplanTemplatePath,
                 simulatorName: simulatorName,
                 options: buildOptions,
                 paths: testPaths
