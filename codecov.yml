@@ -4,5 +4,5 @@ ignore:
 - "Sources/RugbyFoundation/Vault"
 - "Sources/RugbyFoundation/Core/Warmup/Decompressor.swift"
 - "Sources/RugbyFoundation/Core/Warmup/URLSession.swift"
-- "Sources/RugbyFoundation/Core/Common/ShellExecuter.swift"
+- "Sources/RugbyFoundation/Core/Common/Shell/ShellExecuter.swift"
 - "Sources/RugbyFoundation/Core/Common/ProcessMonitor/ProcessMonitor.swift"
