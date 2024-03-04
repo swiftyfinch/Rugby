@@ -3,8 +3,8 @@
 
 // swiftlint:disable all
 
-@testable import RugbyFoundation
 import Foundation
+@testable import RugbyFoundation
 
 final class IXcodeBuildExecutorMock: IXcodeBuildExecutor {
 

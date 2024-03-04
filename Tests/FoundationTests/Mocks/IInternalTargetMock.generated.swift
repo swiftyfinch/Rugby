@@ -4,8 +4,8 @@
 // swiftlint:disable all
 
 import Foundation
-@testable import RugbyFoundation
 import XcodeProj
+@testable import RugbyFoundation
 
 final class IInternalTargetMock: IInternalTarget {
     var name: String {

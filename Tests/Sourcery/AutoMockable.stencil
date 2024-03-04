@@ -192,6 +192,9 @@ import Foundation
 {% for import in type.annotations.imports %}
 import {{ import }}
 {% endfor %}
+{% for import in type.annotations.testableImports %}
+@testable import {{ import }}
+{% endfor %}
 
 {% call accessLevel type.accessLevel %}final class {{ type.name }}Mock: {{ type.name }} {
 {% if type.accessLevel == "public" %}
