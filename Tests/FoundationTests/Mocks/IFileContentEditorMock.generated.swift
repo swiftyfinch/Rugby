@@ -18,12 +18,12 @@ final class IFileContentEditorMock: IFileContentEditor {
     var replaceRegexFilePathClosure: (([String: String], NSRegularExpression, String) throws -> Void)?
 
     func replace(_ replacements: [String: String], regex: NSRegularExpression, filePath: String) throws {
-        if let error = replaceRegexFilePathThrowableError {
-            throw error
-        }
         replaceRegexFilePathCallsCount += 1
         replaceRegexFilePathReceivedArguments = (replacements: replacements, regex: regex, filePath: filePath)
         replaceRegexFilePathReceivedInvocations.append((replacements: replacements, regex: regex, filePath: filePath))
+        if let error = replaceRegexFilePathThrowableError {
+            throw error
+        }
         try replaceRegexFilePathClosure?(replacements, regex, filePath)
     }
 }

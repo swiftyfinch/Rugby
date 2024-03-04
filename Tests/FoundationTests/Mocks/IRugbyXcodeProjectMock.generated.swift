@@ -17,10 +17,10 @@ final class IRugbyXcodeProjectMock: IRugbyXcodeProject {
     var isAlreadyUsingRugbyClosure: (() async throws -> Bool)?
 
     func isAlreadyUsingRugby() async throws -> Bool {
+        isAlreadyUsingRugbyCallsCount += 1
         if let error = isAlreadyUsingRugbyThrowableError {
             throw error
         }
-        isAlreadyUsingRugbyCallsCount += 1
         if let isAlreadyUsingRugbyClosure = isAlreadyUsingRugbyClosure {
             return try await isAlreadyUsingRugbyClosure()
         } else {
@@ -36,10 +36,10 @@ final class IRugbyXcodeProjectMock: IRugbyXcodeProject {
     var markAsUsingRugbyClosure: (() async throws -> Void)?
 
     func markAsUsingRugby() async throws {
+        markAsUsingRugbyCallsCount += 1
         if let error = markAsUsingRugbyThrowableError {
             throw error
         }
-        markAsUsingRugbyCallsCount += 1
         try await markAsUsingRugbyClosure?()
     }
 }

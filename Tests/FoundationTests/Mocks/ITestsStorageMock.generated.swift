@@ -18,12 +18,12 @@ final class ITestsStorageMock: ITestsStorage {
     var saveTestsOfBuildOptionsClosure: ((TargetsMap, XcodeBuildOptions) async throws -> Void)?
 
     func saveTests(of targets: TargetsMap, buildOptions: XcodeBuildOptions) async throws {
-        if let error = saveTestsOfBuildOptionsThrowableError {
-            throw error
-        }
         saveTestsOfBuildOptionsCallsCount += 1
         saveTestsOfBuildOptionsReceivedArguments = (targets: targets, buildOptions: buildOptions)
         saveTestsOfBuildOptionsReceivedInvocations.append((targets: targets, buildOptions: buildOptions))
+        if let error = saveTestsOfBuildOptionsThrowableError {
+            throw error
+        }
         try await saveTestsOfBuildOptionsClosure?(targets, buildOptions)
     }
 
@@ -38,12 +38,12 @@ final class ITestsStorageMock: ITestsStorage {
     var findMissingTestsOfBuildOptionsClosure: ((TargetsMap, XcodeBuildOptions) async throws -> TargetsMap)?
 
     func findMissingTests(of targets: TargetsMap, buildOptions: XcodeBuildOptions) async throws -> TargetsMap {
-        if let error = findMissingTestsOfBuildOptionsThrowableError {
-            throw error
-        }
         findMissingTestsOfBuildOptionsCallsCount += 1
         findMissingTestsOfBuildOptionsReceivedArguments = (targets: targets, buildOptions: buildOptions)
         findMissingTestsOfBuildOptionsReceivedInvocations.append((targets: targets, buildOptions: buildOptions))
+        if let error = findMissingTestsOfBuildOptionsThrowableError {
+            throw error
+        }
         if let findMissingTestsOfBuildOptionsClosure = findMissingTestsOfBuildOptionsClosure {
             return try await findMissingTestsOfBuildOptionsClosure(targets, buildOptions)
         } else {

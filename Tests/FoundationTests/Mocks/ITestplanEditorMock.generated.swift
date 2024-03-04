@@ -43,12 +43,12 @@ final class ITestplanEditorMock: ITestplanEditor {
     var createTestplanTestplanTemplatePathTestTargetsInFolderPathClosure: ((String, TargetsMap, String) throws -> URL)?
 
     func createTestplan(testplanTemplatePath: String, testTargets: TargetsMap, inFolderPath folderPath: String) throws -> URL {
-        if let error = createTestplanTestplanTemplatePathTestTargetsInFolderPathThrowableError {
-            throw error
-        }
         createTestplanTestplanTemplatePathTestTargetsInFolderPathCallsCount += 1
         createTestplanTestplanTemplatePathTestTargetsInFolderPathReceivedArguments = (testplanTemplatePath: testplanTemplatePath, testTargets: testTargets, folderPath: folderPath)
         createTestplanTestplanTemplatePathTestTargetsInFolderPathReceivedInvocations.append((testplanTemplatePath: testplanTemplatePath, testTargets: testTargets, folderPath: folderPath))
+        if let error = createTestplanTestplanTemplatePathTestTargetsInFolderPathThrowableError {
+            throw error
+        }
         if let createTestplanTestplanTemplatePathTestTargetsInFolderPathClosure = createTestplanTestplanTemplatePathTestTargetsInFolderPathClosure {
             return try createTestplanTestplanTemplatePathTestTargetsInFolderPathClosure(testplanTemplatePath, testTargets, folderPath)
         } else {

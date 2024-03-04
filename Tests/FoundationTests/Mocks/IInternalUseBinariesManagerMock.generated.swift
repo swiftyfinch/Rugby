@@ -18,12 +18,12 @@ final class IInternalUseBinariesManagerMock: IInternalUseBinariesManager {
     var useTargetsXcargsDeleteSourcesClosure: ((TargetsScope, [String], Bool) async throws -> Void)?
 
     func use(targets: TargetsScope, xcargs: [String], deleteSources: Bool) async throws {
-        if let error = useTargetsXcargsDeleteSourcesThrowableError {
-            throw error
-        }
         useTargetsXcargsDeleteSourcesCallsCount += 1
         useTargetsXcargsDeleteSourcesReceivedArguments = (targets: targets, xcargs: xcargs, deleteSources: deleteSources)
         useTargetsXcargsDeleteSourcesReceivedInvocations.append((targets: targets, xcargs: xcargs, deleteSources: deleteSources))
+        if let error = useTargetsXcargsDeleteSourcesThrowableError {
+            throw error
+        }
         try await useTargetsXcargsDeleteSourcesClosure?(targets, xcargs, deleteSources)
     }
 
@@ -37,12 +37,12 @@ final class IInternalUseBinariesManagerMock: IInternalUseBinariesManager {
     public var useTargetsRegexExceptTargetsRegexXcargsDeleteSourcesClosure: ((NSRegularExpression?, NSRegularExpression?, [String], Bool) async throws -> Void)?
 
     public func use(targetsRegex: NSRegularExpression?, exceptTargetsRegex: NSRegularExpression?, xcargs: [String], deleteSources: Bool) async throws {
-        if let error = useTargetsRegexExceptTargetsRegexXcargsDeleteSourcesThrowableError {
-            throw error
-        }
         useTargetsRegexExceptTargetsRegexXcargsDeleteSourcesCallsCount += 1
         useTargetsRegexExceptTargetsRegexXcargsDeleteSourcesReceivedArguments = (targetsRegex: targetsRegex, exceptTargetsRegex: exceptTargetsRegex, xcargs: xcargs, deleteSources: deleteSources)
         useTargetsRegexExceptTargetsRegexXcargsDeleteSourcesReceivedInvocations.append((targetsRegex: targetsRegex, exceptTargetsRegex: exceptTargetsRegex, xcargs: xcargs, deleteSources: deleteSources))
+        if let error = useTargetsRegexExceptTargetsRegexXcargsDeleteSourcesThrowableError {
+            throw error
+        }
         try await useTargetsRegexExceptTargetsRegexXcargsDeleteSourcesClosure?(targetsRegex, exceptTargetsRegex, xcargs, deleteSources)
     }
 
@@ -56,12 +56,12 @@ final class IInternalUseBinariesManagerMock: IInternalUseBinariesManager {
     public var useTargetsKeepGroupsClosure: (([String: ITarget], Bool) async throws -> Void)?
 
     public func use(targets: [String: ITarget], keepGroups: Bool) async throws {
-        if let error = useTargetsKeepGroupsThrowableError {
-            throw error
-        }
         useTargetsKeepGroupsCallsCount += 1
         useTargetsKeepGroupsReceivedArguments = (targets: targets, keepGroups: keepGroups)
         useTargetsKeepGroupsReceivedInvocations.append((targets: targets, keepGroups: keepGroups))
+        if let error = useTargetsKeepGroupsThrowableError {
+            throw error
+        }
         try await useTargetsKeepGroupsClosure?(targets, keepGroups)
     }
 }

@@ -17,10 +17,10 @@ final class IGitMock: IGit {
     var currentBranchClosure: (() throws -> String?)?
 
     func currentBranch() throws -> String? {
+        currentBranchCallsCount += 1
         if let error = currentBranchThrowableError {
             throw error
         }
-        currentBranchCallsCount += 1
         if let currentBranchClosure = currentBranchClosure {
             return try currentBranchClosure()
         } else {
@@ -37,10 +37,10 @@ final class IGitMock: IGit {
     var hasUncommittedChangesClosure: (() throws -> Bool)?
 
     func hasUncommittedChanges() throws -> Bool {
+        hasUncommittedChangesCallsCount += 1
         if let error = hasUncommittedChangesThrowableError {
             throw error
         }
-        hasUncommittedChangesCallsCount += 1
         if let hasUncommittedChangesClosure = hasUncommittedChangesClosure {
             return try hasUncommittedChangesClosure()
         } else {
@@ -59,12 +59,12 @@ final class IGitMock: IGit {
     var isBehindBranchClosure: ((String) throws -> Bool)?
 
     func isBehind(branch: String) throws -> Bool {
-        if let error = isBehindBranchThrowableError {
-            throw error
-        }
         isBehindBranchCallsCount += 1
         isBehindBranchReceivedBranch = branch
         isBehindBranchReceivedInvocations.append(branch)
+        if let error = isBehindBranchThrowableError {
+            throw error
+        }
         if let isBehindBranchClosure = isBehindBranchClosure {
             return try isBehindBranchClosure(branch)
         } else {

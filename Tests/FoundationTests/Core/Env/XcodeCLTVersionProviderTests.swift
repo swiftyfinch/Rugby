@@ -148,6 +148,6 @@ extension XcodeCLTVersionProviderTests {
         // Assert
         let unwrappedError = try XCTUnwrap(resultError as? XcodeCLTVersionProviderError)
         XCTAssertEqual(unwrappedError, .unknownXcodeCLT)
-        XCTAssertEqual(shellExecutorMock.throwingShellArgsCallsCount, 0)
+        XCTAssertTrue(shellExecutorMock.throwingShellArgsCalled)
     }
 }

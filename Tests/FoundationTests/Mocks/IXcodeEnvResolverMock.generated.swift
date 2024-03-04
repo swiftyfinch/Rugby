@@ -20,10 +20,10 @@ final class IXcodeEnvResolverMock: IXcodeEnvResolver {
     var resolvePathAdditionalEnvClosure: ((String, [String: String]) async throws -> String)?
 
     func resolve(path: String, additionalEnv: [String: String]) async throws -> String {
+        resolvePathAdditionalEnvCallsCount += 1
         if let error = resolvePathAdditionalEnvThrowableError {
             throw error
         }
-        resolvePathAdditionalEnvCallsCount += 1
         resolvePathAdditionalEnvReceivedArguments = (path: path, additionalEnv: additionalEnv)
         resolvePathAdditionalEnvReceivedInvocationsLock.withLock {
             resolvePathAdditionalEnvReceivedInvocations.append((path: path, additionalEnv: additionalEnv))

@@ -79,10 +79,10 @@ final class IInternalTargetMock: IInternalTarget {
     var resourceBundleNamesClosure: (() throws -> [String])?
 
     func resourceBundleNames() throws -> [String] {
+        resourceBundleNamesCallsCount += 1
         if let error = resourceBundleNamesThrowableError {
             throw error
         }
-        resourceBundleNamesCallsCount += 1
         if let resourceBundleNamesClosure = resourceBundleNamesClosure {
             return try resourceBundleNamesClosure()
         } else {

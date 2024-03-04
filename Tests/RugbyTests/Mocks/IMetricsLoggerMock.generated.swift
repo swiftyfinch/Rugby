@@ -48,10 +48,10 @@ public final class IMetricsLoggerMock: IMetricsLogger {
     public var saveClosure: (() throws -> Void)?
 
     public func save() throws {
+        saveCallsCount += 1
         if let error = saveThrowableError {
             throw error
         }
-        saveCallsCount += 1
         try saveClosure?()
     }
 }

@@ -20,10 +20,10 @@ final class IBuildRulesHasherMock: IBuildRulesHasher {
     var hashContextClosure: (([BuildRule]) async throws -> [Any])?
 
     func hashContext(_ buildRules: [BuildRule]) async throws -> [Any] {
+        hashContextCallsCount += 1
         if let error = hashContextThrowableError {
             throw error
         }
-        hashContextCallsCount += 1
         hashContextReceivedBuildRules = buildRules
         hashContextReceivedInvocationsLock.withLock {
             hashContextReceivedInvocations.append(buildRules)

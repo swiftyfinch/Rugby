@@ -19,12 +19,12 @@ final class ISupportFilesPatcherMock: ISupportFilesPatcher {
     var prepareReplacementsForTargetClosure: ((IInternalTarget) throws -> [FileReplacement])?
 
     func prepareReplacements(forTarget target: IInternalTarget) throws -> [FileReplacement] {
-        if let error = prepareReplacementsForTargetThrowableError {
-            throw error
-        }
         prepareReplacementsForTargetCallsCount += 1
         prepareReplacementsForTargetReceivedTarget = target
         prepareReplacementsForTargetReceivedInvocations.append(target)
+        if let error = prepareReplacementsForTargetThrowableError {
+            throw error
+        }
         if let prepareReplacementsForTargetClosure = prepareReplacementsForTargetClosure {
             return try prepareReplacementsForTargetClosure(target)
         } else {

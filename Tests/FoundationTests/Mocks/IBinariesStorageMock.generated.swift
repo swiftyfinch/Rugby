@@ -24,12 +24,12 @@ final class IBinariesStorageMock: IBinariesStorage {
     var binaryRelativePathBuildOptionsClosure: ((IInternalTarget, XcodeBuildOptions) throws -> String)?
 
     func binaryRelativePath(_ target: IInternalTarget, buildOptions: XcodeBuildOptions) throws -> String {
-        if let error = binaryRelativePathBuildOptionsThrowableError {
-            throw error
-        }
         binaryRelativePathBuildOptionsCallsCount += 1
         binaryRelativePathBuildOptionsReceivedArguments = (target: target, buildOptions: buildOptions)
         binaryRelativePathBuildOptionsReceivedInvocations.append((target: target, buildOptions: buildOptions))
+        if let error = binaryRelativePathBuildOptionsThrowableError {
+            throw error
+        }
         if let binaryRelativePathBuildOptionsClosure = binaryRelativePathBuildOptionsClosure {
             return try binaryRelativePathBuildOptionsClosure(target, buildOptions)
         } else {
@@ -48,12 +48,12 @@ final class IBinariesStorageMock: IBinariesStorage {
     var finderBinaryFolderPathBuildOptionsClosure: ((IInternalTarget, XcodeBuildOptions) throws -> String)?
 
     func finderBinaryFolderPath(_ target: IInternalTarget, buildOptions: XcodeBuildOptions) throws -> String {
-        if let error = finderBinaryFolderPathBuildOptionsThrowableError {
-            throw error
-        }
         finderBinaryFolderPathBuildOptionsCallsCount += 1
         finderBinaryFolderPathBuildOptionsReceivedArguments = (target: target, buildOptions: buildOptions)
         finderBinaryFolderPathBuildOptionsReceivedInvocations.append((target: target, buildOptions: buildOptions))
+        if let error = finderBinaryFolderPathBuildOptionsThrowableError {
+            throw error
+        }
         if let finderBinaryFolderPathBuildOptionsClosure = finderBinaryFolderPathBuildOptionsClosure {
             return try finderBinaryFolderPathBuildOptionsClosure(target, buildOptions)
         } else {
@@ -72,12 +72,12 @@ final class IBinariesStorageMock: IBinariesStorage {
     var xcodeBinaryFolderPathClosure: ((IInternalTarget) throws -> String)?
 
     func xcodeBinaryFolderPath(_ target: IInternalTarget) throws -> String {
-        if let error = xcodeBinaryFolderPathThrowableError {
-            throw error
-        }
         xcodeBinaryFolderPathCallsCount += 1
         xcodeBinaryFolderPathReceivedTarget = target
         xcodeBinaryFolderPathReceivedInvocations.append(target)
+        if let error = xcodeBinaryFolderPathThrowableError {
+            throw error
+        }
         if let xcodeBinaryFolderPathClosure = xcodeBinaryFolderPathClosure {
             return try xcodeBinaryFolderPathClosure(target)
         } else {
@@ -115,12 +115,12 @@ final class IBinariesStorageMock: IBinariesStorage {
     var saveBinariesOfTargetsBuildOptionsBuildPathsClosure: ((TargetsMap, XcodeBuildOptions, XcodeBuildPaths) async throws -> Void)?
 
     func saveBinaries(ofTargets targets: TargetsMap, buildOptions: XcodeBuildOptions, buildPaths: XcodeBuildPaths) async throws {
-        if let error = saveBinariesOfTargetsBuildOptionsBuildPathsThrowableError {
-            throw error
-        }
         saveBinariesOfTargetsBuildOptionsBuildPathsCallsCount += 1
         saveBinariesOfTargetsBuildOptionsBuildPathsReceivedArguments = (targets: targets, buildOptions: buildOptions, buildPaths: buildPaths)
         saveBinariesOfTargetsBuildOptionsBuildPathsReceivedInvocations.append((targets: targets, buildOptions: buildOptions, buildPaths: buildPaths))
+        if let error = saveBinariesOfTargetsBuildOptionsBuildPathsThrowableError {
+            throw error
+        }
         try await saveBinariesOfTargetsBuildOptionsBuildPathsClosure?(targets, buildOptions, buildPaths)
     }
 
@@ -135,12 +135,12 @@ final class IBinariesStorageMock: IBinariesStorage {
     var findBinariesOfTargetsBuildOptionsClosure: ((TargetsMap, XcodeBuildOptions) throws -> (found: TargetsMap, notFound: TargetsMap))?
 
     func findBinaries(ofTargets targets: TargetsMap, buildOptions: XcodeBuildOptions) throws -> (found: TargetsMap, notFound: TargetsMap) {
-        if let error = findBinariesOfTargetsBuildOptionsThrowableError {
-            throw error
-        }
         findBinariesOfTargetsBuildOptionsCallsCount += 1
         findBinariesOfTargetsBuildOptionsReceivedArguments = (targets: targets, buildOptions: buildOptions)
         findBinariesOfTargetsBuildOptionsReceivedInvocations.append((targets: targets, buildOptions: buildOptions))
+        if let error = findBinariesOfTargetsBuildOptionsThrowableError {
+            throw error
+        }
         if let findBinariesOfTargetsBuildOptionsClosure = findBinariesOfTargetsBuildOptionsClosure {
             return try findBinariesOfTargetsBuildOptionsClosure(targets, buildOptions)
         } else {

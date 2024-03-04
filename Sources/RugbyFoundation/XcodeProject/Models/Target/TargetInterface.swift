@@ -25,7 +25,7 @@ protocol IInternalTarget: ITarget {
 
     var product: Product? { get }
     var buildRules: [BuildRule] { get }
-    var buildPhases: [BuildPhase] { get }
+    var buildPhases: [RugbyFoundation.BuildPhase] { get }
     var xcconfigPaths: [String] { get }
 
     var configurations: [String: Configuration]? { get }

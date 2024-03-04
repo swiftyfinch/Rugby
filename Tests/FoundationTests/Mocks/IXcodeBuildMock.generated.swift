@@ -37,12 +37,12 @@ final class IXcodeBuildMock: IXcodeBuild {
     var testSchemeTestPlanSimulatorNameOptionsPathsClosure: ((String, String, String, XcodeBuildOptions, XcodeBuildPaths) async throws -> Void)?
 
     func test(scheme: String, testPlan: String, simulatorName: String, options: XcodeBuildOptions, paths: XcodeBuildPaths) async throws {
-        if let error = testSchemeTestPlanSimulatorNameOptionsPathsThrowableError {
-            throw error
-        }
         testSchemeTestPlanSimulatorNameOptionsPathsCallsCount += 1
         testSchemeTestPlanSimulatorNameOptionsPathsReceivedArguments = (scheme: scheme, testPlan: testPlan, simulatorName: simulatorName, options: options, paths: paths)
         testSchemeTestPlanSimulatorNameOptionsPathsReceivedInvocations.append((scheme: scheme, testPlan: testPlan, simulatorName: simulatorName, options: options, paths: paths))
+        if let error = testSchemeTestPlanSimulatorNameOptionsPathsThrowableError {
+            throw error
+        }
         try await testSchemeTestPlanSimulatorNameOptionsPathsClosure?(scheme, testPlan, simulatorName, options, paths)
     }
 }

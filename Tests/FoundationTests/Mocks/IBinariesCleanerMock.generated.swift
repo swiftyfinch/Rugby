@@ -16,10 +16,10 @@ final class IBinariesCleanerMock: IBinariesCleaner {
     var freeSpaceClosure: (() async throws -> Void)?
 
     func freeSpace() async throws {
+        freeSpaceCallsCount += 1
         if let error = freeSpaceThrowableError {
             throw error
         }
-        freeSpaceCallsCount += 1
         try await freeSpaceClosure?()
     }
 }

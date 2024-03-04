@@ -20,10 +20,10 @@ final class IConfigurationsHasherMock: IConfigurationsHasher {
     var hashContextClosure: ((IInternalTarget) throws -> [Any])?
 
     func hashContext(_ target: IInternalTarget) throws -> [Any] {
+        hashContextCallsCount += 1
         if let error = hashContextThrowableError {
             throw error
         }
-        hashContextCallsCount += 1
         hashContextReceivedTarget = target
         hashContextReceivedInvocationsLock.withLock {
             hashContextReceivedInvocations.append(target)

@@ -21,12 +21,12 @@ public final class IEnvironmentCollectorMock: IEnvironmentCollector {
     public var envRugbyVersionRugbyEnvironmentClosure: ((String, [String: String]) async throws -> [String])?
 
     public func env(rugbyVersion: String, rugbyEnvironment: [String: String]) async throws -> [String] {
-        if let error = envRugbyVersionRugbyEnvironmentThrowableError {
-            throw error
-        }
         envRugbyVersionRugbyEnvironmentCallsCount += 1
         envRugbyVersionRugbyEnvironmentReceivedArguments = (rugbyVersion: rugbyVersion, rugbyEnvironment: rugbyEnvironment)
         envRugbyVersionRugbyEnvironmentReceivedInvocations.append((rugbyVersion: rugbyVersion, rugbyEnvironment: rugbyEnvironment))
+        if let error = envRugbyVersionRugbyEnvironmentThrowableError {
+            throw error
+        }
         if let envRugbyVersionRugbyEnvironmentClosure = envRugbyVersionRugbyEnvironmentClosure {
             return try await envRugbyVersionRugbyEnvironmentClosure(rugbyVersion, rugbyEnvironment)
         } else {
@@ -44,12 +44,12 @@ public final class IEnvironmentCollectorMock: IEnvironmentCollector {
     public var writeRugbyVersionCommandRugbyEnvironmentClosure: ((String, Any, [String: String]) async throws -> Void)?
 
     public func write<Command>(rugbyVersion: String, command: Command, rugbyEnvironment: [String: String]) async throws {
-        if let error = writeRugbyVersionCommandRugbyEnvironmentThrowableError {
-            throw error
-        }
         writeRugbyVersionCommandRugbyEnvironmentCallsCount += 1
         writeRugbyVersionCommandRugbyEnvironmentReceivedArguments = (rugbyVersion: rugbyVersion, command: command, rugbyEnvironment: rugbyEnvironment)
         writeRugbyVersionCommandRugbyEnvironmentReceivedInvocations.append((rugbyVersion: rugbyVersion, command: command, rugbyEnvironment: rugbyEnvironment))
+        if let error = writeRugbyVersionCommandRugbyEnvironmentThrowableError {
+            throw error
+        }
         try await writeRugbyVersionCommandRugbyEnvironmentClosure?(rugbyVersion, command, rugbyEnvironment)
     }
 
@@ -61,10 +61,10 @@ public final class IEnvironmentCollectorMock: IEnvironmentCollector {
     public var logXcodeVersionClosure: (() async throws -> Void)?
 
     public func logXcodeVersion() async throws {
+        logXcodeVersionCallsCount += 1
         if let error = logXcodeVersionThrowableError {
             throw error
         }
-        logXcodeVersionCallsCount += 1
         try await logXcodeVersionClosure?()
     }
 

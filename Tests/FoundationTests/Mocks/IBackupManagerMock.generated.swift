@@ -20,12 +20,12 @@ public final class IBackupManagerMock: IBackupManager {
     public var backupKindClosure: ((IXcodeProject, BackupKind) async throws -> Void)?
 
     public func backup(_ xcodeProject: IXcodeProject, kind: BackupKind) async throws {
-        if let error = backupKindThrowableError {
-            throw error
-        }
         backupKindCallsCount += 1
         backupKindReceivedArguments = (xcodeProject: xcodeProject, kind: kind)
         backupKindReceivedInvocations.append((xcodeProject: xcodeProject, kind: kind))
+        if let error = backupKindThrowableError {
+            throw error
+        }
         try await backupKindClosure?(xcodeProject, kind)
     }
 
@@ -39,12 +39,12 @@ public final class IBackupManagerMock: IBackupManager {
     public var asyncRestoreClosure: ((BackupKind) async throws -> Void)?
 
     public func asyncRestore(_ kind: BackupKind) async throws {
-        if let error = asyncRestoreThrowableError {
-            throw error
-        }
         asyncRestoreCallsCount += 1
         asyncRestoreReceivedKind = kind
         asyncRestoreReceivedInvocations.append(kind)
+        if let error = asyncRestoreThrowableError {
+            throw error
+        }
         try await asyncRestoreClosure?(kind)
     }
 
@@ -58,12 +58,12 @@ public final class IBackupManagerMock: IBackupManager {
     public var restoreClosure: ((BackupKind) throws -> Void)?
 
     public func restore(_ kind: BackupKind) throws {
-        if let error = restoreThrowableError {
-            throw error
-        }
         restoreCallsCount += 1
         restoreReceivedKind = kind
         restoreReceivedInvocations.append(kind)
+        if let error = restoreThrowableError {
+            throw error
+        }
         try restoreClosure?(kind)
     }
 }

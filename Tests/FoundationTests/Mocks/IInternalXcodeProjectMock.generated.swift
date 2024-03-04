@@ -27,10 +27,10 @@ final class IInternalXcodeProjectMock: IInternalXcodeProject {
     var saveClosure: (() async throws -> Void)?
 
     func save() async throws {
+        saveCallsCount += 1
         if let error = saveThrowableError {
             throw error
         }
-        saveCallsCount += 1
         try await saveClosure?()
     }
 
@@ -45,12 +45,12 @@ final class IInternalXcodeProjectMock: IInternalXcodeProject {
     var findTargetsByExceptIncludingDependenciesClosure: ((NSRegularExpression?, NSRegularExpression?, Bool) async throws -> TargetsMap)?
 
     func findTargets(by regex: NSRegularExpression?, except exceptRegex: NSRegularExpression?, includingDependencies: Bool) async throws -> TargetsMap {
-        if let error = findTargetsByExceptIncludingDependenciesThrowableError {
-            throw error
-        }
         findTargetsByExceptIncludingDependenciesCallsCount += 1
         findTargetsByExceptIncludingDependenciesReceivedArguments = (regex: regex, exceptRegex: exceptRegex, includingDependencies: includingDependencies)
         findTargetsByExceptIncludingDependenciesReceivedInvocations.append((regex: regex, exceptRegex: exceptRegex, includingDependencies: includingDependencies))
+        if let error = findTargetsByExceptIncludingDependenciesThrowableError {
+            throw error
+        }
         if let findTargetsByExceptIncludingDependenciesClosure = findTargetsByExceptIncludingDependenciesClosure {
             return try await findTargetsByExceptIncludingDependenciesClosure(regex, exceptRegex, includingDependencies)
         } else {
@@ -69,12 +69,12 @@ final class IInternalXcodeProjectMock: IInternalXcodeProject {
     var createAggregatedTargetNameDependenciesClosure: ((String, TargetsMap) async throws -> IInternalTarget)?
 
     func createAggregatedTarget(name: String, dependencies: TargetsMap) async throws -> IInternalTarget {
-        if let error = createAggregatedTargetNameDependenciesThrowableError {
-            throw error
-        }
         createAggregatedTargetNameDependenciesCallsCount += 1
         createAggregatedTargetNameDependenciesReceivedArguments = (name: name, dependencies: dependencies)
         createAggregatedTargetNameDependenciesReceivedInvocations.append((name: name, dependencies: dependencies))
+        if let error = createAggregatedTargetNameDependenciesThrowableError {
+            throw error
+        }
         if let createAggregatedTargetNameDependenciesClosure = createAggregatedTargetNameDependenciesClosure {
             return try await createAggregatedTargetNameDependenciesClosure(name, dependencies)
         } else {
@@ -92,12 +92,12 @@ final class IInternalXcodeProjectMock: IInternalXcodeProject {
     var deleteTargetsKeepGroupsClosure: ((TargetsMap, Bool) async throws -> Void)?
 
     func deleteTargets(_ targetsForRemove: TargetsMap, keepGroups: Bool) async throws {
-        if let error = deleteTargetsKeepGroupsThrowableError {
-            throw error
-        }
         deleteTargetsKeepGroupsCallsCount += 1
         deleteTargetsKeepGroupsReceivedArguments = (targetsForRemove: targetsForRemove, keepGroups: keepGroups)
         deleteTargetsKeepGroupsReceivedInvocations.append((targetsForRemove: targetsForRemove, keepGroups: keepGroups))
+        if let error = deleteTargetsKeepGroupsThrowableError {
+            throw error
+        }
         try await deleteTargetsKeepGroupsClosure?(targetsForRemove, keepGroups)
     }
 
@@ -125,10 +125,10 @@ final class IInternalXcodeProjectMock: IInternalXcodeProject {
     var readWorkspaceProjectPathsClosure: (() throws -> [String])?
 
     func readWorkspaceProjectPaths() throws -> [String] {
+        readWorkspaceProjectPathsCallsCount += 1
         if let error = readWorkspaceProjectPathsThrowableError {
             throw error
         }
-        readWorkspaceProjectPathsCallsCount += 1
         if let readWorkspaceProjectPathsClosure = readWorkspaceProjectPathsClosure {
             return try readWorkspaceProjectPathsClosure()
         } else {
@@ -145,10 +145,10 @@ final class IInternalXcodeProjectMock: IInternalXcodeProject {
     public var folderPathsClosure: (() async throws -> [String])?
 
     public func folderPaths() async throws -> [String] {
+        folderPathsCallsCount += 1
         if let error = folderPathsThrowableError {
             throw error
         }
-        folderPathsCallsCount += 1
         if let folderPathsClosure = folderPathsClosure {
             return try await folderPathsClosure()
         } else {
@@ -167,12 +167,12 @@ final class IInternalXcodeProjectMock: IInternalXcodeProject {
     public var containsBuildSettingsKeyClosure: ((String) async throws -> Bool)?
 
     public func contains(buildSettingsKey: String) async throws -> Bool {
-        if let error = containsBuildSettingsKeyThrowableError {
-            throw error
-        }
         containsBuildSettingsKeyCallsCount += 1
         containsBuildSettingsKeyReceivedBuildSettingsKey = buildSettingsKey
         containsBuildSettingsKeyReceivedInvocations.append(buildSettingsKey)
+        if let error = containsBuildSettingsKeyThrowableError {
+            throw error
+        }
         if let containsBuildSettingsKeyClosure = containsBuildSettingsKeyClosure {
             return try await containsBuildSettingsKeyClosure(buildSettingsKey)
         } else {
@@ -190,12 +190,12 @@ final class IInternalXcodeProjectMock: IInternalXcodeProject {
     public var setBuildSettingsKeyValueClosure: ((String, Any) async throws -> Void)?
 
     public func set(buildSettingsKey: String, value: Any) async throws {
-        if let error = setBuildSettingsKeyValueThrowableError {
-            throw error
-        }
         setBuildSettingsKeyValueCallsCount += 1
         setBuildSettingsKeyValueReceivedArguments = (buildSettingsKey: buildSettingsKey, value: value)
         setBuildSettingsKeyValueReceivedInvocations.append((buildSettingsKey: buildSettingsKey, value: value))
+        if let error = setBuildSettingsKeyValueThrowableError {
+            throw error
+        }
         try await setBuildSettingsKeyValueClosure?(buildSettingsKey, value)
     }
 }
