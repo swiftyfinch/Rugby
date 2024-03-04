@@ -4,8 +4,8 @@
 // swiftlint:disable all
 
 import Foundation
-@testable import RugbyFoundation
 import SwiftShell
+@testable import RugbyFoundation
 
 public final class IProcessMonitorMock: IProcessMonitor {
 

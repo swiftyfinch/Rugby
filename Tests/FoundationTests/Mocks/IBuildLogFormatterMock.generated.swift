@@ -4,8 +4,8 @@
 // swiftlint:disable all
 
 import Foundation
-@testable import RugbyFoundation
 import XcbeautifyLib
+@testable import RugbyFoundation
 
 final class IBuildLogFormatterMock: IBuildLogFormatter {
 
