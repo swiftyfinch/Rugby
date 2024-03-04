@@ -16,12 +16,15 @@ final class IBuildLogFormatterMock: IBuildLogFormatter {
     var formatLineOutputCalled: Bool { formatLineOutputCallsCount > 0 }
     var formatLineOutputReceivedArguments: (line: String, output: (String, OutputType) throws -> Void)?
     var formatLineOutputReceivedInvocations: [(line: String, output: (String, OutputType) throws -> Void)] = []
+    private let formatLineOutputReceivedInvocationsLock = NSRecursiveLock()
     var formatLineOutputClosure: ((String, @escaping (String, OutputType) throws -> Void) throws -> Void)?
 
     func format(line: String, output: @escaping (String, OutputType) throws -> Void) throws {
         formatLineOutputCallsCount += 1
         formatLineOutputReceivedArguments = (line: line, output: output)
-        formatLineOutputReceivedInvocations.append((line: line, output: output))
+        formatLineOutputReceivedInvocationsLock.withLock {
+            formatLineOutputReceivedInvocations.append((line: line, output: output))
+        }
         if let error = formatLineOutputThrowableError {
             throw error
         }
@@ -35,12 +38,15 @@ final class IBuildLogFormatterMock: IBuildLogFormatter {
     var finishOutputCalled: Bool { finishOutputCallsCount > 0 }
     var finishOutputReceivedOutput: ((String, OutputType) throws -> Void)?
     var finishOutputReceivedInvocations: [((String, OutputType) throws -> Void)] = []
+    private let finishOutputReceivedInvocationsLock = NSRecursiveLock()
     var finishOutputClosure: ((@escaping (String, OutputType) throws -> Void) throws -> Void)?
 
     func finish(output: @escaping (String, OutputType) throws -> Void) throws {
         finishOutputCallsCount += 1
         finishOutputReceivedOutput = output
-        finishOutputReceivedInvocations.append(output)
+        finishOutputReceivedInvocationsLock.withLock {
+            finishOutputReceivedInvocations.append(output)
+        }
         if let error = finishOutputThrowableError {
             throw error
         }

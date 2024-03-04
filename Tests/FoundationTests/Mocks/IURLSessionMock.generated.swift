@@ -15,13 +15,16 @@ final class IURLSessionMock: IURLSession {
     var dataForCalled: Bool { dataForCallsCount > 0 }
     var dataForReceivedRequest: URLRequest?
     var dataForReceivedInvocations: [URLRequest] = []
+    private let dataForReceivedInvocationsLock = NSRecursiveLock()
     var dataForReturnValue: (Data, URLResponse)!
     var dataForClosure: ((URLRequest) async throws -> (Data, URLResponse))?
 
     func data(for request: URLRequest) async throws -> (Data, URLResponse) {
         dataForCallsCount += 1
         dataForReceivedRequest = request
-        dataForReceivedInvocations.append(request)
+        dataForReceivedInvocationsLock.withLock {
+            dataForReceivedInvocations.append(request)
+        }
         if let error = dataForThrowableError {
             throw error
         }
@@ -39,13 +42,16 @@ final class IURLSessionMock: IURLSession {
     var downloadForCalled: Bool { downloadForCallsCount > 0 }
     var downloadForReceivedRequest: URLRequest?
     var downloadForReceivedInvocations: [URLRequest] = []
+    private let downloadForReceivedInvocationsLock = NSRecursiveLock()
     var downloadForReturnValue: URL!
     var downloadForClosure: ((URLRequest) async throws -> URL)?
 
     func download(for request: URLRequest) async throws -> URL {
         downloadForCallsCount += 1
         downloadForReceivedRequest = request
-        downloadForReceivedInvocations.append(request)
+        downloadForReceivedInvocationsLock.withLock {
+            downloadForReceivedInvocations.append(request)
+        }
         if let error = downloadForThrowableError {
             throw error
         }

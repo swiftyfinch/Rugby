@@ -15,13 +15,16 @@ final class IFileContentHasherMock: IFileContentHasher {
     var hashContextPathsCalled: Bool { hashContextPathsCallsCount > 0 }
     var hashContextPathsReceivedPaths: [String]?
     var hashContextPathsReceivedInvocations: [[String]] = []
+    private let hashContextPathsReceivedInvocationsLock = NSRecursiveLock()
     var hashContextPathsReturnValue: [String]!
     var hashContextPathsClosure: (([String]) async throws -> [String])?
 
     func hashContext(paths: [String]) async throws -> [String] {
         hashContextPathsCallsCount += 1
         hashContextPathsReceivedPaths = paths
-        hashContextPathsReceivedInvocations.append(paths)
+        hashContextPathsReceivedInvocationsLock.withLock {
+            hashContextPathsReceivedInvocations.append(paths)
+        }
         if let error = hashContextPathsThrowableError {
             throw error
         }

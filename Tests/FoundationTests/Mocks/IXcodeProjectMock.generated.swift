@@ -37,13 +37,16 @@ public final class IXcodeProjectMock: IXcodeProject {
     public var containsBuildSettingsKeyCalled: Bool { containsBuildSettingsKeyCallsCount > 0 }
     public var containsBuildSettingsKeyReceivedBuildSettingsKey: String?
     public var containsBuildSettingsKeyReceivedInvocations: [String] = []
+    private let containsBuildSettingsKeyReceivedInvocationsLock = NSRecursiveLock()
     public var containsBuildSettingsKeyReturnValue: Bool!
     public var containsBuildSettingsKeyClosure: ((String) async throws -> Bool)?
 
     public func contains(buildSettingsKey: String) async throws -> Bool {
         containsBuildSettingsKeyCallsCount += 1
         containsBuildSettingsKeyReceivedBuildSettingsKey = buildSettingsKey
-        containsBuildSettingsKeyReceivedInvocations.append(buildSettingsKey)
+        containsBuildSettingsKeyReceivedInvocationsLock.withLock {
+            containsBuildSettingsKeyReceivedInvocations.append(buildSettingsKey)
+        }
         if let error = containsBuildSettingsKeyThrowableError {
             throw error
         }
@@ -61,12 +64,15 @@ public final class IXcodeProjectMock: IXcodeProject {
     public var setBuildSettingsKeyValueCalled: Bool { setBuildSettingsKeyValueCallsCount > 0 }
     public var setBuildSettingsKeyValueReceivedArguments: (buildSettingsKey: String, value: Any)?
     public var setBuildSettingsKeyValueReceivedInvocations: [(buildSettingsKey: String, value: Any)] = []
+    private let setBuildSettingsKeyValueReceivedInvocationsLock = NSRecursiveLock()
     public var setBuildSettingsKeyValueClosure: ((String, Any) async throws -> Void)?
 
     public func set(buildSettingsKey: String, value: Any) async throws {
         setBuildSettingsKeyValueCallsCount += 1
         setBuildSettingsKeyValueReceivedArguments = (buildSettingsKey: buildSettingsKey, value: value)
-        setBuildSettingsKeyValueReceivedInvocations.append((buildSettingsKey: buildSettingsKey, value: value))
+        setBuildSettingsKeyValueReceivedInvocationsLock.withLock {
+            setBuildSettingsKeyValueReceivedInvocations.append((buildSettingsKey: buildSettingsKey, value: value))
+        }
         if let error = setBuildSettingsKeyValueThrowableError {
             throw error
         }

@@ -15,13 +15,16 @@ final class IReachabilityCheckerMock: IReachabilityChecker {
     var checkIfURLIsReachableCalled: Bool { checkIfURLIsReachableCallsCount > 0 }
     var checkIfURLIsReachableReceivedUrl: URL?
     var checkIfURLIsReachableReceivedInvocations: [URL] = []
+    private let checkIfURLIsReachableReceivedInvocationsLock = NSRecursiveLock()
     var checkIfURLIsReachableReturnValue: Bool!
     var checkIfURLIsReachableClosure: ((URL) async throws -> Bool)?
 
     func checkIfURLIsReachable(_ url: URL) async throws -> Bool {
         checkIfURLIsReachableCallsCount += 1
         checkIfURLIsReachableReceivedUrl = url
-        checkIfURLIsReachableReceivedInvocations.append(url)
+        checkIfURLIsReachableReceivedInvocationsLock.withLock {
+            checkIfURLIsReachableReceivedInvocations.append(url)
+        }
         if let error = checkIfURLIsReachableThrowableError {
             throw error
         }

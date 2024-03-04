@@ -15,16 +15,19 @@ final class IXcodeBuildExecutorMock: IXcodeBuildExecutor {
     var runRawLogPathLogPathArgsCalled: Bool { runRawLogPathLogPathArgsCallsCount > 0 }
     var runRawLogPathLogPathArgsReceivedArguments: (command: String, rawLogPath: String, logPath: String, args: Any)?
     var runRawLogPathLogPathArgsReceivedInvocations: [(command: String, rawLogPath: String, logPath: String, args: Any)] = []
-    var runRawLogPathLogPathArgsClosure: ((String, String, String, Any) throws -> Void)?
+    private let runRawLogPathLogPathArgsReceivedInvocationsLock = NSRecursiveLock()
+    var runRawLogPathLogPathArgsClosure: ((String, String, String, Any) async throws -> Void)?
 
-    func run(_ command: String, rawLogPath: String, logPath: String, args: Any...) throws {
+    func run(_ command: String, rawLogPath: String, logPath: String, args: Any...) async throws {
         runRawLogPathLogPathArgsCallsCount += 1
+        runRawLogPathLogPathArgsReceivedArguments = (command: command, rawLogPath: rawLogPath, logPath: logPath, args: args)
+        runRawLogPathLogPathArgsReceivedInvocationsLock.withLock {
+            runRawLogPathLogPathArgsReceivedInvocations.append((command: command, rawLogPath: rawLogPath, logPath: logPath, args: args))
+        }
         if let error = runRawLogPathLogPathArgsThrowableError {
             throw error
         }
-        runRawLogPathLogPathArgsReceivedArguments = (command: command, rawLogPath: rawLogPath, logPath: logPath, args: args)
-        runRawLogPathLogPathArgsReceivedInvocations.append((command: command, rawLogPath: rawLogPath, logPath: logPath, args: args))
-        try runRawLogPathLogPathArgsClosure?(command, rawLogPath, logPath, args)
+        try await runRawLogPathLogPathArgsClosure?(command, rawLogPath, logPath, args)
     }
 }
 

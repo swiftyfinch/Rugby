@@ -17,12 +17,15 @@ public final class IUseBinariesManagerMock: IUseBinariesManager {
     public var useTargetsRegexExceptTargetsRegexXcargsDeleteSourcesCalled: Bool { useTargetsRegexExceptTargetsRegexXcargsDeleteSourcesCallsCount > 0 }
     public var useTargetsRegexExceptTargetsRegexXcargsDeleteSourcesReceivedArguments: (targetsRegex: NSRegularExpression?, exceptTargetsRegex: NSRegularExpression?, xcargs: [String], deleteSources: Bool)?
     public var useTargetsRegexExceptTargetsRegexXcargsDeleteSourcesReceivedInvocations: [(targetsRegex: NSRegularExpression?, exceptTargetsRegex: NSRegularExpression?, xcargs: [String], deleteSources: Bool)] = []
+    private let useTargetsRegexExceptTargetsRegexXcargsDeleteSourcesReceivedInvocationsLock = NSRecursiveLock()
     public var useTargetsRegexExceptTargetsRegexXcargsDeleteSourcesClosure: ((NSRegularExpression?, NSRegularExpression?, [String], Bool) async throws -> Void)?
 
     public func use(targetsRegex: NSRegularExpression?, exceptTargetsRegex: NSRegularExpression?, xcargs: [String], deleteSources: Bool) async throws {
         useTargetsRegexExceptTargetsRegexXcargsDeleteSourcesCallsCount += 1
         useTargetsRegexExceptTargetsRegexXcargsDeleteSourcesReceivedArguments = (targetsRegex: targetsRegex, exceptTargetsRegex: exceptTargetsRegex, xcargs: xcargs, deleteSources: deleteSources)
-        useTargetsRegexExceptTargetsRegexXcargsDeleteSourcesReceivedInvocations.append((targetsRegex: targetsRegex, exceptTargetsRegex: exceptTargetsRegex, xcargs: xcargs, deleteSources: deleteSources))
+        useTargetsRegexExceptTargetsRegexXcargsDeleteSourcesReceivedInvocationsLock.withLock {
+            useTargetsRegexExceptTargetsRegexXcargsDeleteSourcesReceivedInvocations.append((targetsRegex: targetsRegex, exceptTargetsRegex: exceptTargetsRegex, xcargs: xcargs, deleteSources: deleteSources))
+        }
         if let error = useTargetsRegexExceptTargetsRegexXcargsDeleteSourcesThrowableError {
             throw error
         }
@@ -36,12 +39,15 @@ public final class IUseBinariesManagerMock: IUseBinariesManager {
     public var useTargetsKeepGroupsCalled: Bool { useTargetsKeepGroupsCallsCount > 0 }
     public var useTargetsKeepGroupsReceivedArguments: (targets: [String: ITarget], keepGroups: Bool)?
     public var useTargetsKeepGroupsReceivedInvocations: [(targets: [String: ITarget], keepGroups: Bool)] = []
+    private let useTargetsKeepGroupsReceivedInvocationsLock = NSRecursiveLock()
     public var useTargetsKeepGroupsClosure: (([String: ITarget], Bool) async throws -> Void)?
 
     public func use(targets: [String: ITarget], keepGroups: Bool) async throws {
         useTargetsKeepGroupsCallsCount += 1
         useTargetsKeepGroupsReceivedArguments = (targets: targets, keepGroups: keepGroups)
-        useTargetsKeepGroupsReceivedInvocations.append((targets: targets, keepGroups: keepGroups))
+        useTargetsKeepGroupsReceivedInvocationsLock.withLock {
+            useTargetsKeepGroupsReceivedInvocations.append((targets: targets, keepGroups: keepGroups))
+        }
         if let error = useTargetsKeepGroupsThrowableError {
             throw error
         }

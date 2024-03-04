@@ -14,19 +14,19 @@ final class IBuildPhaseHasherMock: IBuildPhaseHasher {
     var hashContextTargetCallsCount = 0
     var hashContextTargetCalled: Bool { hashContextTargetCallsCount > 0 }
     var hashContextTargetReceivedTarget: IInternalTarget?
-    let hashContextTargetReceivedInvocationsLock = NSRecursiveLock()
     var hashContextTargetReceivedInvocations: [IInternalTarget] = []
+    private let hashContextTargetReceivedInvocationsLock = NSRecursiveLock()
     var hashContextTargetReturnValue: Any!
     var hashContextTargetClosure: ((IInternalTarget) async throws -> Any)?
 
     func hashContext(target: IInternalTarget) async throws -> Any {
         hashContextTargetCallsCount += 1
-        if let error = hashContextTargetThrowableError {
-            throw error
-        }
         hashContextTargetReceivedTarget = target
         hashContextTargetReceivedInvocationsLock.withLock {
             hashContextTargetReceivedInvocations.append(target)
+        }
+        if let error = hashContextTargetThrowableError {
+            throw error
         }
         if let hashContextTargetClosure = hashContextTargetClosure {
             return try await hashContextTargetClosure(target)

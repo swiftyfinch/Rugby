@@ -15,13 +15,16 @@ final class IInternalTestImpactManagerMock: IInternalTestImpactManager {
     var fetchTestTargetsExceptTargetsRegexBuildOptionsQuietCalled: Bool { fetchTestTargetsExceptTargetsRegexBuildOptionsQuietCallsCount > 0 }
     var fetchTestTargetsExceptTargetsRegexBuildOptionsQuietReceivedArguments: (targetsRegex: NSRegularExpression?, exceptTargetsRegex: NSRegularExpression?, buildOptions: XcodeBuildOptions, quiet: Bool)?
     var fetchTestTargetsExceptTargetsRegexBuildOptionsQuietReceivedInvocations: [(targetsRegex: NSRegularExpression?, exceptTargetsRegex: NSRegularExpression?, buildOptions: XcodeBuildOptions, quiet: Bool)] = []
+    private let fetchTestTargetsExceptTargetsRegexBuildOptionsQuietReceivedInvocationsLock = NSRecursiveLock()
     var fetchTestTargetsExceptTargetsRegexBuildOptionsQuietReturnValue: TargetsMap!
     var fetchTestTargetsExceptTargetsRegexBuildOptionsQuietClosure: ((NSRegularExpression?, NSRegularExpression?, XcodeBuildOptions, Bool) async throws -> TargetsMap)?
 
     func fetchTestTargets(_ targetsRegex: NSRegularExpression?, exceptTargetsRegex: NSRegularExpression?, buildOptions: XcodeBuildOptions, quiet: Bool) async throws -> TargetsMap {
         fetchTestTargetsExceptTargetsRegexBuildOptionsQuietCallsCount += 1
         fetchTestTargetsExceptTargetsRegexBuildOptionsQuietReceivedArguments = (targetsRegex: targetsRegex, exceptTargetsRegex: exceptTargetsRegex, buildOptions: buildOptions, quiet: quiet)
-        fetchTestTargetsExceptTargetsRegexBuildOptionsQuietReceivedInvocations.append((targetsRegex: targetsRegex, exceptTargetsRegex: exceptTargetsRegex, buildOptions: buildOptions, quiet: quiet))
+        fetchTestTargetsExceptTargetsRegexBuildOptionsQuietReceivedInvocationsLock.withLock {
+            fetchTestTargetsExceptTargetsRegexBuildOptionsQuietReceivedInvocations.append((targetsRegex: targetsRegex, exceptTargetsRegex: exceptTargetsRegex, buildOptions: buildOptions, quiet: quiet))
+        }
         if let error = fetchTestTargetsExceptTargetsRegexBuildOptionsQuietThrowableError {
             throw error
         }
@@ -39,13 +42,16 @@ final class IInternalTestImpactManagerMock: IInternalTestImpactManager {
     var missingTargetsExceptTargetsRegexBuildOptionsQuietCalled: Bool { missingTargetsExceptTargetsRegexBuildOptionsQuietCallsCount > 0 }
     var missingTargetsExceptTargetsRegexBuildOptionsQuietReceivedArguments: (targetsRegex: NSRegularExpression?, exceptTargetsRegex: NSRegularExpression?, buildOptions: XcodeBuildOptions, quiet: Bool)?
     var missingTargetsExceptTargetsRegexBuildOptionsQuietReceivedInvocations: [(targetsRegex: NSRegularExpression?, exceptTargetsRegex: NSRegularExpression?, buildOptions: XcodeBuildOptions, quiet: Bool)] = []
+    private let missingTargetsExceptTargetsRegexBuildOptionsQuietReceivedInvocationsLock = NSRecursiveLock()
     var missingTargetsExceptTargetsRegexBuildOptionsQuietReturnValue: TargetsMap!
     var missingTargetsExceptTargetsRegexBuildOptionsQuietClosure: ((NSRegularExpression?, NSRegularExpression?, XcodeBuildOptions, Bool) async throws -> TargetsMap)?
 
     func missingTargets(_ targetsRegex: NSRegularExpression?, exceptTargetsRegex: NSRegularExpression?, buildOptions: XcodeBuildOptions, quiet: Bool) async throws -> TargetsMap {
         missingTargetsExceptTargetsRegexBuildOptionsQuietCallsCount += 1
         missingTargetsExceptTargetsRegexBuildOptionsQuietReceivedArguments = (targetsRegex: targetsRegex, exceptTargetsRegex: exceptTargetsRegex, buildOptions: buildOptions, quiet: quiet)
-        missingTargetsExceptTargetsRegexBuildOptionsQuietReceivedInvocations.append((targetsRegex: targetsRegex, exceptTargetsRegex: exceptTargetsRegex, buildOptions: buildOptions, quiet: quiet))
+        missingTargetsExceptTargetsRegexBuildOptionsQuietReceivedInvocationsLock.withLock {
+            missingTargetsExceptTargetsRegexBuildOptionsQuietReceivedInvocations.append((targetsRegex: targetsRegex, exceptTargetsRegex: exceptTargetsRegex, buildOptions: buildOptions, quiet: quiet))
+        }
         if let error = missingTargetsExceptTargetsRegexBuildOptionsQuietThrowableError {
             throw error
         }
@@ -63,12 +69,15 @@ final class IInternalTestImpactManagerMock: IInternalTestImpactManager {
     public var impactTargetsRegexExceptTargetsRegexBuildOptionsCalled: Bool { impactTargetsRegexExceptTargetsRegexBuildOptionsCallsCount > 0 }
     public var impactTargetsRegexExceptTargetsRegexBuildOptionsReceivedArguments: (targetsRegex: NSRegularExpression?, exceptTargetsRegex: NSRegularExpression?, buildOptions: XcodeBuildOptions)?
     public var impactTargetsRegexExceptTargetsRegexBuildOptionsReceivedInvocations: [(targetsRegex: NSRegularExpression?, exceptTargetsRegex: NSRegularExpression?, buildOptions: XcodeBuildOptions)] = []
+    private let impactTargetsRegexExceptTargetsRegexBuildOptionsReceivedInvocationsLock = NSRecursiveLock()
     public var impactTargetsRegexExceptTargetsRegexBuildOptionsClosure: ((NSRegularExpression?, NSRegularExpression?, XcodeBuildOptions) async throws -> Void)?
 
     public func impact(targetsRegex: NSRegularExpression?, exceptTargetsRegex: NSRegularExpression?, buildOptions: XcodeBuildOptions) async throws {
         impactTargetsRegexExceptTargetsRegexBuildOptionsCallsCount += 1
         impactTargetsRegexExceptTargetsRegexBuildOptionsReceivedArguments = (targetsRegex: targetsRegex, exceptTargetsRegex: exceptTargetsRegex, buildOptions: buildOptions)
-        impactTargetsRegexExceptTargetsRegexBuildOptionsReceivedInvocations.append((targetsRegex: targetsRegex, exceptTargetsRegex: exceptTargetsRegex, buildOptions: buildOptions))
+        impactTargetsRegexExceptTargetsRegexBuildOptionsReceivedInvocationsLock.withLock {
+            impactTargetsRegexExceptTargetsRegexBuildOptionsReceivedInvocations.append((targetsRegex: targetsRegex, exceptTargetsRegex: exceptTargetsRegex, buildOptions: buildOptions))
+        }
         if let error = impactTargetsRegexExceptTargetsRegexBuildOptionsThrowableError {
             throw error
         }
@@ -82,12 +91,15 @@ final class IInternalTestImpactManagerMock: IInternalTestImpactManager {
     public var markAsPassedTargetsRegexExceptTargetsRegexBuildOptionsUpToDateBranchCalled: Bool { markAsPassedTargetsRegexExceptTargetsRegexBuildOptionsUpToDateBranchCallsCount > 0 }
     public var markAsPassedTargetsRegexExceptTargetsRegexBuildOptionsUpToDateBranchReceivedArguments: (targetsRegex: NSRegularExpression?, exceptTargetsRegex: NSRegularExpression?, buildOptions: XcodeBuildOptions, upToDateBranch: String?)?
     public var markAsPassedTargetsRegexExceptTargetsRegexBuildOptionsUpToDateBranchReceivedInvocations: [(targetsRegex: NSRegularExpression?, exceptTargetsRegex: NSRegularExpression?, buildOptions: XcodeBuildOptions, upToDateBranch: String?)] = []
+    private let markAsPassedTargetsRegexExceptTargetsRegexBuildOptionsUpToDateBranchReceivedInvocationsLock = NSRecursiveLock()
     public var markAsPassedTargetsRegexExceptTargetsRegexBuildOptionsUpToDateBranchClosure: ((NSRegularExpression?, NSRegularExpression?, XcodeBuildOptions, String?) async throws -> Void)?
 
     public func markAsPassed(targetsRegex: NSRegularExpression?, exceptTargetsRegex: NSRegularExpression?, buildOptions: XcodeBuildOptions, upToDateBranch: String?) async throws {
         markAsPassedTargetsRegexExceptTargetsRegexBuildOptionsUpToDateBranchCallsCount += 1
         markAsPassedTargetsRegexExceptTargetsRegexBuildOptionsUpToDateBranchReceivedArguments = (targetsRegex: targetsRegex, exceptTargetsRegex: exceptTargetsRegex, buildOptions: buildOptions, upToDateBranch: upToDateBranch)
-        markAsPassedTargetsRegexExceptTargetsRegexBuildOptionsUpToDateBranchReceivedInvocations.append((targetsRegex: targetsRegex, exceptTargetsRegex: exceptTargetsRegex, buildOptions: buildOptions, upToDateBranch: upToDateBranch))
+        markAsPassedTargetsRegexExceptTargetsRegexBuildOptionsUpToDateBranchReceivedInvocationsLock.withLock {
+            markAsPassedTargetsRegexExceptTargetsRegexBuildOptionsUpToDateBranchReceivedInvocations.append((targetsRegex: targetsRegex, exceptTargetsRegex: exceptTargetsRegex, buildOptions: buildOptions, upToDateBranch: upToDateBranch))
+        }
         if let error = markAsPassedTargetsRegexExceptTargetsRegexBuildOptionsUpToDateBranchThrowableError {
             throw error
         }

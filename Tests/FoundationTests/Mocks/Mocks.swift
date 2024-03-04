@@ -34,7 +34,7 @@ extension IFolder {}
 // sourcery: AutoMockable, imports = ["Fish"]
 extension IFile {}
 
-//// sourcery: AutoMockable, testableImports = ["RugbyFoundation"]
+// sourcery: AutoMockable, testableImports = ["RugbyFoundation"]
 extension IXcodeBuildExecutor {}
 
 //// sourcery: AutoMockable, testableImports = ["RugbyFoundation"]
@@ -46,19 +46,19 @@ extension IFileContentHasher {}
 //// sourcery: AutoMockable, testableImports = ["RugbyFoundation"]
 extension IBuildPhaseHasher {}
 
-//// sourcery: AutoMockable, testableImports = ["RugbyFoundation"]
+// sourcery: AutoMockable, testableImports = ["RugbyFoundation"]
 extension ICocoaPodsScriptsHasher {}
 
-//// sourcery: AutoMockable, testableImports = ["RugbyFoundation"]
+// sourcery: AutoMockable, testableImports = ["RugbyFoundation"]
 extension IConfigurationsHasher {}
 
 // sourcery: AutoMockable, testableImports = ["RugbyFoundation"]
 extension IProductHasher {}
 
-//// sourcery: AutoMockable, testableImports = ["RugbyFoundation"]
+// sourcery: AutoMockable, testableImports = ["RugbyFoundation"]
 extension IBuildRulesHasher {}
 
-//// sourcery: AutoMockable, testableImports = ["RugbyFoundation"]
+// sourcery: AutoMockable, testableImports = ["RugbyFoundation"]
 extension IXcodeEnvResolver {}
 
 //// sourcery: AutoMockable, testableImports = ["RugbyFoundation"]
@@ -85,19 +85,19 @@ extension IRugbyXcodeProject {}
 // sourcery: AutoMockable, testableImports = ["RugbyFoundation"]
 extension IReachabilityChecker {}
 
-//// sourcery: AutoMockable, testableImports = ["RugbyFoundation"]
+// sourcery: AutoMockable, testableImports = ["RugbyFoundation"]
 extension IURLSession {}
 
-//// sourcery: AutoMockable, testableImports = ["RugbyFoundation"]
+// sourcery: AutoMockable, testableImports = ["RugbyFoundation"]
 extension IDecompressor {}
 
-//// sourcery: AutoMockable, testableImports = ["RugbyFoundation"]
+// sourcery: AutoMockable, testableImports = ["RugbyFoundation"]
 extension IBuildTargetsManager {}
 
 // sourcery: AutoMockable, testableImports = ["RugbyFoundation"]
 extension ITargetsHasher {}
 
-//// sourcery: AutoMockable, testableImports = ["RugbyFoundation"]
+// sourcery: AutoMockable, testableImports = ["RugbyFoundation"]
 extension ICacheDownloader {}
 
 // sourcery: AutoMockable, imports = ["RugbyFoundation"]
@@ -115,7 +115,7 @@ extension IFileContentEditor {}
 // sourcery: AutoMockable, testableImports = ["RugbyFoundation"], imports = ["SwiftShell"]
 extension IProcessMonitor {}
 
-//// sourcery: AutoMockable, testableImports = ["RugbyFoundation"]
+// sourcery: AutoMockable, testableImports = ["RugbyFoundation"]
 extension IXcodeBuild {}
 
 // sourcery: AutoMockable, imports = ["RugbyFoundation"]
@@ -148,13 +148,13 @@ extension IGit {}
 // sourcery: AutoMockable, testableImports = ["RugbyFoundation"]
 extension IInternalUseBinariesManager {}
 
-//// sourcery: AutoMockable, testableImports = ["RugbyFoundation"]
+// sourcery: AutoMockable, testableImports = ["RugbyFoundation"]
 extension ITestplanEditor {}
 
 // sourcery: AutoMockable, testableImports = ["RugbyFoundation"]
 extension IInternalTestImpactManager {}
 
-//// sourcery: AutoMockable, testableImports = ["RugbyFoundation"]
+// sourcery: AutoMockable, testableImports = ["RugbyFoundation"]
 extension ISimCTL {}
 
 // TODO: Needs to improve Sourcery template to generate mocks automatically w/o manual editing

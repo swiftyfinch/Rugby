@@ -28,12 +28,15 @@ public final class IProcessMonitorMock: IProcessMonitor {
     public var addProcessCalled: Bool { addProcessCallsCount > 0 }
     public var addProcessReceivedProcess: PrintedAsyncCommand?
     public var addProcessReceivedInvocations: [PrintedAsyncCommand] = []
+    private let addProcessReceivedInvocationsLock = NSRecursiveLock()
     public var addProcessClosure: ((PrintedAsyncCommand) -> Void)?
 
     public func addProcess(_ process: PrintedAsyncCommand) {
         addProcessCallsCount += 1
         addProcessReceivedProcess = process
-        addProcessReceivedInvocations.append(process)
+        addProcessReceivedInvocationsLock.withLock {
+            addProcessReceivedInvocations.append(process)
+        }
         addProcessClosure?(process)
     }
 
@@ -43,6 +46,7 @@ public final class IProcessMonitorMock: IProcessMonitor {
     public var runOnInterruptionCalled: Bool { runOnInterruptionCallsCount > 0 }
     public var runOnInterruptionReceivedJob: (() -> Void)?
     public var runOnInterruptionReceivedInvocations: [(() -> Void)] = []
+    private let runOnInterruptionReceivedInvocationsLock = NSRecursiveLock()
     public var runOnInterruptionReturnValue: ProcessInterruptionTask!
     public var runOnInterruptionClosure: ((@escaping () -> Void) -> ProcessInterruptionTask)?
 
@@ -50,7 +54,9 @@ public final class IProcessMonitorMock: IProcessMonitor {
     public func runOnInterruption(_ job: @escaping () -> Void) -> ProcessInterruptionTask {
         runOnInterruptionCallsCount += 1
         runOnInterruptionReceivedJob = job
-        runOnInterruptionReceivedInvocations.append(job)
+        runOnInterruptionReceivedInvocationsLock.withLock {
+            runOnInterruptionReceivedInvocations.append(job)
+        }
         if let runOnInterruptionClosure = runOnInterruptionClosure {
             return runOnInterruptionClosure(job)
         } else {

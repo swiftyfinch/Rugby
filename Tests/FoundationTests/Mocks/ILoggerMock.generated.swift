@@ -16,12 +16,15 @@ public final class ILoggerMock: ILogger {
     public var configureScreenPrinterFilePrinterProgressPrinterMetricsLoggerCalled: Bool { configureScreenPrinterFilePrinterProgressPrinterMetricsLoggerCallsCount > 0 }
     public var configureScreenPrinterFilePrinterProgressPrinterMetricsLoggerReceivedArguments: (screenPrinter: Printer?, filePrinter: Printer?, progressPrinter: IProgressPrinter?, metricsLogger: IMetricsLogger?)?
     public var configureScreenPrinterFilePrinterProgressPrinterMetricsLoggerReceivedInvocations: [(screenPrinter: Printer?, filePrinter: Printer?, progressPrinter: IProgressPrinter?, metricsLogger: IMetricsLogger?)] = []
+    private let configureScreenPrinterFilePrinterProgressPrinterMetricsLoggerReceivedInvocationsLock = NSRecursiveLock()
     public var configureScreenPrinterFilePrinterProgressPrinterMetricsLoggerClosure: ((Printer?, Printer?, IProgressPrinter?, IMetricsLogger?) async -> Void)?
 
     public func configure(screenPrinter: Printer?, filePrinter: Printer?, progressPrinter: IProgressPrinter?, metricsLogger: IMetricsLogger?) async {
         configureScreenPrinterFilePrinterProgressPrinterMetricsLoggerCallsCount += 1
         configureScreenPrinterFilePrinterProgressPrinterMetricsLoggerReceivedArguments = (screenPrinter: screenPrinter, filePrinter: filePrinter, progressPrinter: progressPrinter, metricsLogger: metricsLogger)
-        configureScreenPrinterFilePrinterProgressPrinterMetricsLoggerReceivedInvocations.append((screenPrinter: screenPrinter, filePrinter: filePrinter, progressPrinter: progressPrinter, metricsLogger: metricsLogger))
+        configureScreenPrinterFilePrinterProgressPrinterMetricsLoggerReceivedInvocationsLock.withLock {
+            configureScreenPrinterFilePrinterProgressPrinterMetricsLoggerReceivedInvocations.append((screenPrinter: screenPrinter, filePrinter: filePrinter, progressPrinter: progressPrinter, metricsLogger: metricsLogger))
+        }
         await configureScreenPrinterFilePrinterProgressPrinterMetricsLoggerClosure?(screenPrinter, filePrinter, progressPrinter, metricsLogger)
     }
 
@@ -73,12 +76,15 @@ public final class ILoggerMock: ILogger {
     public var logLevelOutputCalled: Bool { logLevelOutputCallsCount > 0 }
     public var logLevelOutputReceivedArguments: (text: String, level: LogLevel, output: LoggerOutput)?
     public var logLevelOutputReceivedInvocations: [(text: String, level: LogLevel, output: LoggerOutput)] = []
+    private let logLevelOutputReceivedInvocationsLock = NSRecursiveLock()
     public var logLevelOutputClosure: ((String, LogLevel, LoggerOutput) async -> Void)?
 
     public func log(_ text: String, level: LogLevel, output: LoggerOutput) async {
         logLevelOutputCallsCount += 1
         logLevelOutputReceivedArguments = (text: text, level: level, output: output)
-        logLevelOutputReceivedInvocations.append((text: text, level: level, output: output))
+        logLevelOutputReceivedInvocationsLock.withLock {
+            logLevelOutputReceivedInvocations.append((text: text, level: level, output: output))
+        }
         await logLevelOutputClosure?(text, level, output)
     }
 
@@ -88,12 +94,15 @@ public final class ILoggerMock: ILogger {
     public var logPlainLevelOutputCalled: Bool { logPlainLevelOutputCallsCount > 0 }
     public var logPlainLevelOutputReceivedArguments: (text: String, level: LogLevel, output: LoggerOutput)?
     public var logPlainLevelOutputReceivedInvocations: [(text: String, level: LogLevel, output: LoggerOutput)] = []
+    private let logPlainLevelOutputReceivedInvocationsLock = NSRecursiveLock()
     public var logPlainLevelOutputClosure: ((String, LogLevel, LoggerOutput) async -> Void)?
 
     public func logPlain(_ text: String, level: LogLevel, output: LoggerOutput) async {
         logPlainLevelOutputCallsCount += 1
         logPlainLevelOutputReceivedArguments = (text: text, level: level, output: output)
-        logPlainLevelOutputReceivedInvocations.append((text: text, level: level, output: output))
+        logPlainLevelOutputReceivedInvocationsLock.withLock {
+            logPlainLevelOutputReceivedInvocations.append((text: text, level: level, output: output))
+        }
         await logPlainLevelOutputClosure?(text, level, output)
     }
 
@@ -103,12 +112,15 @@ public final class ILoggerMock: ILogger {
     public var logListLevelOutputCalled: Bool { logListLevelOutputCallsCount > 0 }
     public var logListLevelOutputReceivedArguments: (list: [String], level: LogLevel, output: LoggerOutput)?
     public var logListLevelOutputReceivedInvocations: [(list: [String], level: LogLevel, output: LoggerOutput)] = []
+    private let logListLevelOutputReceivedInvocationsLock = NSRecursiveLock()
     public var logListLevelOutputClosure: (([String], LogLevel, LoggerOutput) async -> Void)?
 
     public func logList(_ list: [String], level: LogLevel, output: LoggerOutput) async {
         logListLevelOutputCallsCount += 1
         logListLevelOutputReceivedArguments = (list: list, level: level, output: output)
-        logListLevelOutputReceivedInvocations.append((list: list, level: level, output: output))
+        logListLevelOutputReceivedInvocationsLock.withLock {
+            logListLevelOutputReceivedInvocations.append((list: list, level: level, output: output))
+        }
         await logListLevelOutputClosure?(list, level, output)
     }
 }

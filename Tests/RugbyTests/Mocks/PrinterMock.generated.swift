@@ -16,13 +16,16 @@ public final class PrinterMock: Printer {
     public var canPrintLevelCalled: Bool { canPrintLevelCallsCount > 0 }
     public var canPrintLevelReceivedLevel: LogLevel?
     public var canPrintLevelReceivedInvocations: [LogLevel] = []
+    private let canPrintLevelReceivedInvocationsLock = NSRecursiveLock()
     public var canPrintLevelReturnValue: Bool!
     public var canPrintLevelClosure: ((LogLevel) -> Bool)?
 
     public func canPrint(level: LogLevel) -> Bool {
         canPrintLevelCallsCount += 1
         canPrintLevelReceivedLevel = level
-        canPrintLevelReceivedInvocations.append(level)
+        canPrintLevelReceivedInvocationsLock.withLock {
+            canPrintLevelReceivedInvocations.append(level)
+        }
         if let canPrintLevelClosure = canPrintLevelClosure {
             return canPrintLevelClosure(level)
         } else {
@@ -36,12 +39,15 @@ public final class PrinterMock: Printer {
     public var printIconDurationLevelUpdateLineCalled: Bool { printIconDurationLevelUpdateLineCallsCount > 0 }
     public var printIconDurationLevelUpdateLineReceivedArguments: (text: String, icon: String?, duration: Double?, level: LogLevel, updateLine: Bool)?
     public var printIconDurationLevelUpdateLineReceivedInvocations: [(text: String, icon: String?, duration: Double?, level: LogLevel, updateLine: Bool)] = []
+    private let printIconDurationLevelUpdateLineReceivedInvocationsLock = NSRecursiveLock()
     public var printIconDurationLevelUpdateLineClosure: ((String, String?, Double?, LogLevel, Bool) -> Void)?
 
     public func print(_ text: String, icon: String?, duration: Double?, level: LogLevel, updateLine: Bool) {
         printIconDurationLevelUpdateLineCallsCount += 1
         printIconDurationLevelUpdateLineReceivedArguments = (text: text, icon: icon, duration: duration, level: level, updateLine: updateLine)
-        printIconDurationLevelUpdateLineReceivedInvocations.append((text: text, icon: icon, duration: duration, level: level, updateLine: updateLine))
+        printIconDurationLevelUpdateLineReceivedInvocationsLock.withLock {
+            printIconDurationLevelUpdateLineReceivedInvocations.append((text: text, icon: icon, duration: duration, level: level, updateLine: updateLine))
+        }
         printIconDurationLevelUpdateLineClosure?(text, icon, duration, level, updateLine)
     }
 
