@@ -22,10 +22,10 @@ public actor ISwiftVersionProviderMock: ISwiftVersionProvider {
     public var swiftVersionClosure: (() throws -> String)?
 
     public func swiftVersion() throws -> String {
+        swiftVersionCallsCount += 1
         if let error = swiftVersionThrowableError {
             throw error
         }
-        swiftVersionCallsCount += 1
         if let swiftVersionClosure = swiftVersionClosure {
             return try swiftVersionClosure()
         } else {

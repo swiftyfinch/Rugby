@@ -17,10 +17,10 @@ final class IXcodeCLTVersionProviderMock: IXcodeCLTVersionProvider {
     var versionClosure: (() throws -> (base: String, build: String?))?
 
     func version() throws -> (base: String, build: String?) {
+        versionCallsCount += 1
         if let error = versionThrowableError {
             throw error
         }
-        versionCallsCount += 1
         if let versionClosure = versionClosure {
             return try versionClosure()
         } else {

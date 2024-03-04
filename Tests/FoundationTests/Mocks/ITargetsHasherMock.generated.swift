@@ -18,12 +18,12 @@ final class ITargetsHasherMock: ITargetsHasher {
     var hashXcargsRehashClosure: ((TargetsMap, [String], Bool) async throws -> Void)?
 
     func hash(_ targets: TargetsMap, xcargs: [String], rehash: Bool) async throws {
-        if let error = hashXcargsRehashThrowableError {
-            throw error
-        }
         hashXcargsRehashCallsCount += 1
         hashXcargsRehashReceivedArguments = (targets: targets, xcargs: xcargs, rehash: rehash)
         hashXcargsRehashReceivedInvocations.append((targets: targets, xcargs: xcargs, rehash: rehash))
+        if let error = hashXcargsRehashThrowableError {
+            throw error
+        }
         try await hashXcargsRehashClosure?(targets, xcargs, rehash)
     }
 
@@ -37,12 +37,12 @@ final class ITargetsHasherMock: ITargetsHasher {
     var hashXcargsClosure: ((TargetsMap, [String]) async throws -> Void)?
 
     func hash(_ targets: TargetsMap, xcargs: [String]) async throws {
-        if let error = hashXcargsThrowableError {
-            throw error
-        }
         hashXcargsCallsCount += 1
         hashXcargsReceivedArguments = (targets: targets, xcargs: xcargs)
         hashXcargsReceivedInvocations.append((targets: targets, xcargs: xcargs))
+        if let error = hashXcargsThrowableError {
+            throw error
+        }
         try await hashXcargsClosure?(targets, xcargs)
     }
 }

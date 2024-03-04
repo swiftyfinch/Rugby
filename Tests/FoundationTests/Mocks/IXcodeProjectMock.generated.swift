@@ -19,10 +19,10 @@ public final class IXcodeProjectMock: IXcodeProject {
     public var folderPathsClosure: (() async throws -> [String])?
 
     public func folderPaths() async throws -> [String] {
+        folderPathsCallsCount += 1
         if let error = folderPathsThrowableError {
             throw error
         }
-        folderPathsCallsCount += 1
         if let folderPathsClosure = folderPathsClosure {
             return try await folderPathsClosure()
         } else {
@@ -41,12 +41,12 @@ public final class IXcodeProjectMock: IXcodeProject {
     public var containsBuildSettingsKeyClosure: ((String) async throws -> Bool)?
 
     public func contains(buildSettingsKey: String) async throws -> Bool {
-        if let error = containsBuildSettingsKeyThrowableError {
-            throw error
-        }
         containsBuildSettingsKeyCallsCount += 1
         containsBuildSettingsKeyReceivedBuildSettingsKey = buildSettingsKey
         containsBuildSettingsKeyReceivedInvocations.append(buildSettingsKey)
+        if let error = containsBuildSettingsKeyThrowableError {
+            throw error
+        }
         if let containsBuildSettingsKeyClosure = containsBuildSettingsKeyClosure {
             return try await containsBuildSettingsKeyClosure(buildSettingsKey)
         } else {
@@ -64,12 +64,12 @@ public final class IXcodeProjectMock: IXcodeProject {
     public var setBuildSettingsKeyValueClosure: ((String, Any) async throws -> Void)?
 
     public func set(buildSettingsKey: String, value: Any) async throws {
-        if let error = setBuildSettingsKeyValueThrowableError {
-            throw error
-        }
         setBuildSettingsKeyValueCallsCount += 1
         setBuildSettingsKeyValueReceivedArguments = (buildSettingsKey: buildSettingsKey, value: value)
         setBuildSettingsKeyValueReceivedInvocations.append((buildSettingsKey: buildSettingsKey, value: value))
+        if let error = setBuildSettingsKeyValueThrowableError {
+            throw error
+        }
         try await setBuildSettingsKeyValueClosure?(buildSettingsKey, value)
     }
 }

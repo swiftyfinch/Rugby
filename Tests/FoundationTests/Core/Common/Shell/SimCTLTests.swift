@@ -34,7 +34,7 @@ extension SimCTLTests {
 
         // Assert
         XCTAssertEqual(resultError as? TestError, .test)
-        XCTAssertFalse(shellExecutor.throwingShellArgsCalled)
+        XCTAssertTrue(shellExecutor.throwingShellArgsCalled)
     }
 
     func test_availableDevices_nilOutputError() throws {

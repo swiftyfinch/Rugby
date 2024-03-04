@@ -18,12 +18,12 @@ final class ILibrariesPatcherMock: ILibrariesPatcher {
     var patchClosure: ((TargetsMap) async throws -> Void)?
 
     func patch(_ targets: TargetsMap) async throws {
-        if let error = patchThrowableError {
-            throw error
-        }
         patchCallsCount += 1
         patchReceivedTargets = targets
         patchReceivedInvocations.append(targets)
+        if let error = patchThrowableError {
+            throw error
+        }
         try await patchClosure?(targets)
     }
 }

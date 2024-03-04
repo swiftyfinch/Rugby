@@ -20,10 +20,10 @@ final class IBuildPhaseHasherMock: IBuildPhaseHasher {
     var hashContextTargetClosure: ((IInternalTarget) async throws -> Any)?
 
     func hashContext(target: IInternalTarget) async throws -> Any {
+        hashContextTargetCallsCount += 1
         if let error = hashContextTargetThrowableError {
             throw error
         }
-        hashContextTargetCallsCount += 1
         hashContextTargetReceivedTarget = target
         hashContextTargetReceivedInvocationsLock.withLock {
             hashContextTargetReceivedInvocations.append(target)

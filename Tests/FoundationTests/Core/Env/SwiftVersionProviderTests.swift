@@ -146,6 +146,6 @@ extension SwiftVersionProviderTests {
         // Assert
         let unwrappedError = try XCTUnwrap(resultError as? TestError)
         XCTAssertEqual(unwrappedError, .test)
-        XCTAssertEqual(shellExecutorMock.throwingShellArgsCallsCount, 0)
+        XCTAssertTrue(shellExecutorMock.throwingShellArgsCalled)
     }
 }

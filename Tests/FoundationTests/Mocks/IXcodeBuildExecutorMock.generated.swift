@@ -1,4 +1,4 @@
-// Generated using Sourcery 2.0.2 — https://github.com/krzysztofzablocki/Sourcery
+// Generated using Sourcery 2.1.1 — https://github.com/krzysztofzablocki/Sourcery
 // DO NOT EDIT
 
 // swiftlint:disable all
@@ -18,10 +18,10 @@ final class IXcodeBuildExecutorMock: IXcodeBuildExecutor {
     var runRawLogPathLogPathArgsClosure: ((String, String, String, Any) throws -> Void)?
 
     func run(_ command: String, rawLogPath: String, logPath: String, args: Any...) throws {
+        runRawLogPathLogPathArgsCallsCount += 1
         if let error = runRawLogPathLogPathArgsThrowableError {
             throw error
         }
-        runRawLogPathLogPathArgsCallsCount += 1
         runRawLogPathLogPathArgsReceivedArguments = (command: command, rawLogPath: rawLogPath, logPath: logPath, args: args)
         runRawLogPathLogPathArgsReceivedInvocations.append((command: command, rawLogPath: rawLogPath, logPath: logPath, args: args))
         try runRawLogPathLogPathArgsClosure?(command, rawLogPath, logPath, args)

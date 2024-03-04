@@ -44,12 +44,12 @@ public final class IShellExecutorMock: IShellExecutor {
 
     @discardableResult
     public func throwingShell(_ command: String, args: Any...) throws -> String? {
-        if let error = throwingShellArgsThrowableError {
-            throw error
-        }
         throwingShellArgsCallsCount += 1
         throwingShellArgsReceivedArguments = (command: command, args: args)
         throwingShellArgsReceivedInvocations.append((command: command, args: args))
+        if let error = throwingShellArgsThrowableError {
+            throw error
+        }
         if let throwingShellArgsClosure = throwingShellArgsClosure {
             return try throwingShellArgsClosure(command, args)
         } else {
@@ -67,12 +67,12 @@ public final class IShellExecutorMock: IShellExecutor {
     public var printShellArgsClosure: ((String, Any) throws -> Void)?
 
     public func printShell(_ command: String, args: Any...) throws {
-        if let error = printShellArgsThrowableError {
-            throw error
-        }
         printShellArgsCallsCount += 1
         printShellArgsReceivedArguments = (command: command, args: args)
         printShellArgsReceivedInvocations.append((command: command, args: args))
+        if let error = printShellArgsThrowableError {
+            throw error
+        }
         try printShellArgsClosure?(command, args)
     }
 
@@ -87,12 +87,12 @@ public final class IShellExecutorMock: IShellExecutor {
     public var openClosure: ((String) throws -> ReadableStream)?
 
     public func open(_ path: String) throws -> ReadableStream {
-        if let error = openThrowableError {
-            throw error
-        }
         openCallsCount += 1
         openReceivedPath = path
         openReceivedInvocations.append(path)
+        if let error = openThrowableError {
+            throw error
+        }
         if let openClosure = openClosure {
             return try openClosure(path)
         } else {

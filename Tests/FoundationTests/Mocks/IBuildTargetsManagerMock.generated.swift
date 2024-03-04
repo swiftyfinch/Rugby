@@ -19,12 +19,12 @@ final class IBuildTargetsManagerMock: IBuildTargetsManager {
     var findTargetsExceptTargetsIncludingTestsClosure: ((NSRegularExpression?, NSRegularExpression?, Bool) async throws -> TargetsMap)?
 
     func findTargets(_ targets: NSRegularExpression?, exceptTargets: NSRegularExpression?, includingTests: Bool) async throws -> TargetsMap {
-        if let error = findTargetsExceptTargetsIncludingTestsThrowableError {
-            throw error
-        }
         findTargetsExceptTargetsIncludingTestsCallsCount += 1
         findTargetsExceptTargetsIncludingTestsReceivedArguments = (targets: targets, exceptTargets: exceptTargets, includingTests: includingTests)
         findTargetsExceptTargetsIncludingTestsReceivedInvocations.append((targets: targets, exceptTargets: exceptTargets, includingTests: includingTests))
+        if let error = findTargetsExceptTargetsIncludingTestsThrowableError {
+            throw error
+        }
         if let findTargetsExceptTargetsIncludingTestsClosure = findTargetsExceptTargetsIncludingTestsClosure {
             return try await findTargetsExceptTargetsIncludingTestsClosure(targets, exceptTargets, includingTests)
         } else {

@@ -19,12 +19,12 @@ final class IBuildLogFormatterMock: IBuildLogFormatter {
     var formatLineOutputClosure: ((String, @escaping (String, OutputType) throws -> Void) throws -> Void)?
 
     func format(line: String, output: @escaping (String, OutputType) throws -> Void) throws {
-        if let error = formatLineOutputThrowableError {
-            throw error
-        }
         formatLineOutputCallsCount += 1
         formatLineOutputReceivedArguments = (line: line, output: output)
         formatLineOutputReceivedInvocations.append((line: line, output: output))
+        if let error = formatLineOutputThrowableError {
+            throw error
+        }
         try formatLineOutputClosure?(line, output)
     }
 
@@ -38,12 +38,12 @@ final class IBuildLogFormatterMock: IBuildLogFormatter {
     var finishOutputClosure: ((@escaping (String, OutputType) throws -> Void) throws -> Void)?
 
     func finish(output: @escaping (String, OutputType) throws -> Void) throws {
-        if let error = finishOutputThrowableError {
-            throw error
-        }
         finishOutputCallsCount += 1
         finishOutputReceivedOutput = output
         finishOutputReceivedInvocations.append(output)
+        if let error = finishOutputThrowableError {
+            throw error
+        }
         try finishOutputClosure?(output)
     }
 }

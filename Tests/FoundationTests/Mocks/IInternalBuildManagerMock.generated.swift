@@ -19,12 +19,12 @@ final class IInternalBuildManagerMock: IInternalBuildManager {
     var prepareTargetsFreeSpaceIfNeededPatchLibrariesClosure: ((TargetsScope, Bool, Bool) async throws -> TargetsMap)?
 
     func prepare(targets: TargetsScope, freeSpaceIfNeeded: Bool, patchLibraries: Bool) async throws -> TargetsMap {
-        if let error = prepareTargetsFreeSpaceIfNeededPatchLibrariesThrowableError {
-            throw error
-        }
         prepareTargetsFreeSpaceIfNeededPatchLibrariesCallsCount += 1
         prepareTargetsFreeSpaceIfNeededPatchLibrariesReceivedArguments = (targets: targets, freeSpaceIfNeeded: freeSpaceIfNeeded, patchLibraries: patchLibraries)
         prepareTargetsFreeSpaceIfNeededPatchLibrariesReceivedInvocations.append((targets: targets, freeSpaceIfNeeded: freeSpaceIfNeeded, patchLibraries: patchLibraries))
+        if let error = prepareTargetsFreeSpaceIfNeededPatchLibrariesThrowableError {
+            throw error
+        }
         if let prepareTargetsFreeSpaceIfNeededPatchLibrariesClosure = prepareTargetsFreeSpaceIfNeededPatchLibrariesClosure {
             return try await prepareTargetsFreeSpaceIfNeededPatchLibrariesClosure(targets, freeSpaceIfNeeded, patchLibraries)
         } else {
@@ -43,12 +43,12 @@ final class IInternalBuildManagerMock: IInternalBuildManager {
     var makeBuildTargetClosure: ((TargetsMap) async throws -> IInternalTarget)?
 
     func makeBuildTarget(_ targets: TargetsMap) async throws -> IInternalTarget {
-        if let error = makeBuildTargetThrowableError {
-            throw error
-        }
         makeBuildTargetCallsCount += 1
         makeBuildTargetReceivedTargets = targets
         makeBuildTargetReceivedInvocations.append(targets)
+        if let error = makeBuildTargetThrowableError {
+            throw error
+        }
         if let makeBuildTargetClosure = makeBuildTargetClosure {
             return try await makeBuildTargetClosure(targets)
         } else {
@@ -66,12 +66,12 @@ final class IInternalBuildManagerMock: IInternalBuildManager {
     var buildOptionsPathsClosure: ((IInternalTarget, XcodeBuildOptions, XcodeBuildPaths) async throws -> Void)?
 
     func build(_ target: IInternalTarget, options: XcodeBuildOptions, paths: XcodeBuildPaths) async throws {
-        if let error = buildOptionsPathsThrowableError {
-            throw error
-        }
         buildOptionsPathsCallsCount += 1
         buildOptionsPathsReceivedArguments = (target: target, options: options, paths: paths)
         buildOptionsPathsReceivedInvocations.append((target: target, options: options, paths: paths))
+        if let error = buildOptionsPathsThrowableError {
+            throw error
+        }
         try await buildOptionsPathsClosure?(target, options, paths)
     }
 
@@ -85,12 +85,12 @@ final class IInternalBuildManagerMock: IInternalBuildManager {
     var buildTargetsOptionsPathsIgnoreCacheClosure: ((TargetsScope, XcodeBuildOptions, XcodeBuildPaths, Bool) async throws -> Void)?
 
     func build(targets: TargetsScope, options: XcodeBuildOptions, paths: XcodeBuildPaths, ignoreCache: Bool) async throws {
-        if let error = buildTargetsOptionsPathsIgnoreCacheThrowableError {
-            throw error
-        }
         buildTargetsOptionsPathsIgnoreCacheCallsCount += 1
         buildTargetsOptionsPathsIgnoreCacheReceivedArguments = (targets: targets, options: options, paths: paths, ignoreCache: ignoreCache)
         buildTargetsOptionsPathsIgnoreCacheReceivedInvocations.append((targets: targets, options: options, paths: paths, ignoreCache: ignoreCache))
+        if let error = buildTargetsOptionsPathsIgnoreCacheThrowableError {
+            throw error
+        }
         try await buildTargetsOptionsPathsIgnoreCacheClosure?(targets, options, paths, ignoreCache)
     }
 
@@ -104,12 +104,12 @@ final class IInternalBuildManagerMock: IInternalBuildManager {
     public var buildTargetsRegexExceptTargetsRegexOptionsPathsIgnoreCacheClosure: ((NSRegularExpression?, NSRegularExpression?, XcodeBuildOptions, XcodeBuildPaths, Bool) async throws -> Void)?
 
     public func build(targetsRegex: NSRegularExpression?, exceptTargetsRegex: NSRegularExpression?, options: XcodeBuildOptions, paths: XcodeBuildPaths, ignoreCache: Bool) async throws {
-        if let error = buildTargetsRegexExceptTargetsRegexOptionsPathsIgnoreCacheThrowableError {
-            throw error
-        }
         buildTargetsRegexExceptTargetsRegexOptionsPathsIgnoreCacheCallsCount += 1
         buildTargetsRegexExceptTargetsRegexOptionsPathsIgnoreCacheReceivedArguments = (targetsRegex: targetsRegex, exceptTargetsRegex: exceptTargetsRegex, options: options, paths: paths, ignoreCache: ignoreCache)
         buildTargetsRegexExceptTargetsRegexOptionsPathsIgnoreCacheReceivedInvocations.append((targetsRegex: targetsRegex, exceptTargetsRegex: exceptTargetsRegex, options: options, paths: paths, ignoreCache: ignoreCache))
+        if let error = buildTargetsRegexExceptTargetsRegexOptionsPathsIgnoreCacheThrowableError {
+            throw error
+        }
         try await buildTargetsRegexExceptTargetsRegexOptionsPathsIgnoreCacheClosure?(targetsRegex, exceptTargetsRegex, options, paths, ignoreCache)
     }
 }

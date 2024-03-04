@@ -19,12 +19,12 @@ final class IFileContentHasherMock: IFileContentHasher {
     var hashContextPathsClosure: (([String]) async throws -> [String])?
 
     func hashContext(paths: [String]) async throws -> [String] {
-        if let error = hashContextPathsThrowableError {
-            throw error
-        }
         hashContextPathsCallsCount += 1
         hashContextPathsReceivedPaths = paths
         hashContextPathsReceivedInvocations.append(paths)
+        if let error = hashContextPathsThrowableError {
+            throw error
+        }
         if let hashContextPathsClosure = hashContextPathsClosure {
             return try await hashContextPathsClosure(paths)
         } else {

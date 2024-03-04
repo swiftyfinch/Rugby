@@ -19,12 +19,12 @@ final class IReachabilityCheckerMock: IReachabilityChecker {
     var checkIfURLIsReachableClosure: ((URL) async throws -> Bool)?
 
     func checkIfURLIsReachable(_ url: URL) async throws -> Bool {
-        if let error = checkIfURLIsReachableThrowableError {
-            throw error
-        }
         checkIfURLIsReachableCallsCount += 1
         checkIfURLIsReachableReceivedUrl = url
         checkIfURLIsReachableReceivedInvocations.append(url)
+        if let error = checkIfURLIsReachableThrowableError {
+            throw error
+        }
         if let checkIfURLIsReachableClosure = checkIfURLIsReachableClosure {
             return try await checkIfURLIsReachableClosure(url)
         } else {
