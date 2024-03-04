@@ -13,8 +13,8 @@ final class ICacheDownloaderMock: ICacheDownloader {
     var checkIfBinaryIsReachableUrlCallsCount = 0
     var checkIfBinaryIsReachableUrlCalled: Bool { checkIfBinaryIsReachableUrlCallsCount > 0 }
     var checkIfBinaryIsReachableUrlReceivedUrl: URL?
-    var checkIfBinaryIsReachableUrlReceivedInvocationsLock = NSRecursiveLock()
     var checkIfBinaryIsReachableUrlReceivedInvocations: [URL] = []
+    private let checkIfBinaryIsReachableUrlReceivedInvocationsLock = NSRecursiveLock()
     var checkIfBinaryIsReachableUrlReturnValue: Bool!
     var checkIfBinaryIsReachableUrlClosure: ((URL) async -> Bool)?
 
@@ -37,13 +37,16 @@ final class ICacheDownloaderMock: ICacheDownloader {
     var downloadBinaryUrlToCalled: Bool { downloadBinaryUrlToCallsCount > 0 }
     var downloadBinaryUrlToReceivedArguments: (url: URL, folderURL: URL)?
     var downloadBinaryUrlToReceivedInvocations: [(url: URL, folderURL: URL)] = []
+    private let downloadBinaryUrlToReceivedInvocationsLock = NSRecursiveLock()
     var downloadBinaryUrlToReturnValue: Bool!
     var downloadBinaryUrlToClosure: ((URL, URL) async -> Bool)?
 
     func downloadBinary(url: URL, to folderURL: URL) async -> Bool {
         downloadBinaryUrlToCallsCount += 1
         downloadBinaryUrlToReceivedArguments = (url: url, folderURL: folderURL)
-        downloadBinaryUrlToReceivedInvocations.append((url: url, folderURL: folderURL))
+        downloadBinaryUrlToReceivedInvocationsLock.withLock {
+            downloadBinaryUrlToReceivedInvocations.append((url: url, folderURL: folderURL))
+        }
         if let downloadBinaryUrlToClosure = downloadBinaryUrlToClosure {
             return await downloadBinaryUrlToClosure(url, folderURL)
         } else {

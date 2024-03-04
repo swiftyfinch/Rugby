@@ -15,13 +15,16 @@ final class IBuildTargetsManagerMock: IBuildTargetsManager {
     var findTargetsExceptTargetsIncludingTestsCalled: Bool { findTargetsExceptTargetsIncludingTestsCallsCount > 0 }
     var findTargetsExceptTargetsIncludingTestsReceivedArguments: (targets: NSRegularExpression?, exceptTargets: NSRegularExpression?, includingTests: Bool)?
     var findTargetsExceptTargetsIncludingTestsReceivedInvocations: [(targets: NSRegularExpression?, exceptTargets: NSRegularExpression?, includingTests: Bool)] = []
+    private let findTargetsExceptTargetsIncludingTestsReceivedInvocationsLock = NSRecursiveLock()
     var findTargetsExceptTargetsIncludingTestsReturnValue: TargetsMap!
     var findTargetsExceptTargetsIncludingTestsClosure: ((NSRegularExpression?, NSRegularExpression?, Bool) async throws -> TargetsMap)?
 
     func findTargets(_ targets: NSRegularExpression?, exceptTargets: NSRegularExpression?, includingTests: Bool) async throws -> TargetsMap {
         findTargetsExceptTargetsIncludingTestsCallsCount += 1
         findTargetsExceptTargetsIncludingTestsReceivedArguments = (targets: targets, exceptTargets: exceptTargets, includingTests: includingTests)
-        findTargetsExceptTargetsIncludingTestsReceivedInvocations.append((targets: targets, exceptTargets: exceptTargets, includingTests: includingTests))
+        findTargetsExceptTargetsIncludingTestsReceivedInvocationsLock.withLock {
+            findTargetsExceptTargetsIncludingTestsReceivedInvocations.append((targets: targets, exceptTargets: exceptTargets, includingTests: includingTests))
+        }
         if let error = findTargetsExceptTargetsIncludingTestsThrowableError {
             throw error
         }
@@ -38,13 +41,16 @@ final class IBuildTargetsManagerMock: IBuildTargetsManager {
     var filterTargetsIncludingTestsCalled: Bool { filterTargetsIncludingTestsCallsCount > 0 }
     var filterTargetsIncludingTestsReceivedArguments: (targets: TargetsMap, includingTests: Bool)?
     var filterTargetsIncludingTestsReceivedInvocations: [(targets: TargetsMap, includingTests: Bool)] = []
+    private let filterTargetsIncludingTestsReceivedInvocationsLock = NSRecursiveLock()
     var filterTargetsIncludingTestsReturnValue: TargetsMap!
     var filterTargetsIncludingTestsClosure: ((TargetsMap, Bool) -> TargetsMap)?
 
     func filterTargets(_ targets: TargetsMap, includingTests: Bool) -> TargetsMap {
         filterTargetsIncludingTestsCallsCount += 1
         filterTargetsIncludingTestsReceivedArguments = (targets: targets, includingTests: includingTests)
-        filterTargetsIncludingTestsReceivedInvocations.append((targets: targets, includingTests: includingTests))
+        filterTargetsIncludingTestsReceivedInvocationsLock.withLock {
+            filterTargetsIncludingTestsReceivedInvocations.append((targets: targets, includingTests: includingTests))
+        }
         if let filterTargetsIncludingTestsClosure = filterTargetsIncludingTestsClosure {
             return filterTargetsIncludingTestsClosure(targets, includingTests)
         } else {
@@ -59,13 +65,16 @@ final class IBuildTargetsManagerMock: IBuildTargetsManager {
     var createTargetDependenciesBuildConfigurationTestplanPathCalled: Bool { createTargetDependenciesBuildConfigurationTestplanPathCallsCount > 0 }
     var createTargetDependenciesBuildConfigurationTestplanPathReceivedArguments: (dependencies: TargetsMap, buildConfiguration: String?, testplanPath: String?)?
     var createTargetDependenciesBuildConfigurationTestplanPathReceivedInvocations: [(dependencies: TargetsMap, buildConfiguration: String?, testplanPath: String?)] = []
+    private let createTargetDependenciesBuildConfigurationTestplanPathReceivedInvocationsLock = NSRecursiveLock()
     var createTargetDependenciesBuildConfigurationTestplanPathReturnValue: IInternalTarget!
     var createTargetDependenciesBuildConfigurationTestplanPathClosure: ((TargetsMap, String?, String?) async throws -> IInternalTarget)?
 
     func createTarget(dependencies: TargetsMap, buildConfiguration: String?, testplanPath: String?) async throws -> IInternalTarget {
         createTargetDependenciesBuildConfigurationTestplanPathCallsCount += 1
         createTargetDependenciesBuildConfigurationTestplanPathReceivedArguments = (dependencies: dependencies, buildConfiguration: buildConfiguration, testplanPath: testplanPath)
-        createTargetDependenciesBuildConfigurationTestplanPathReceivedInvocations.append((dependencies: dependencies, buildConfiguration: buildConfiguration, testplanPath: testplanPath))
+        createTargetDependenciesBuildConfigurationTestplanPathReceivedInvocationsLock.withLock {
+            createTargetDependenciesBuildConfigurationTestplanPathReceivedInvocations.append((dependencies: dependencies, buildConfiguration: buildConfiguration, testplanPath: testplanPath))
+        }
         if let error = createTargetDependenciesBuildConfigurationTestplanPathThrowableError {
             throw error
         }

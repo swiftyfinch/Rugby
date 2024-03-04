@@ -96,12 +96,15 @@ final class IInternalTargetMock: IInternalTarget {
     var addDependenciesCalled: Bool { addDependenciesCallsCount > 0 }
     var addDependenciesReceivedOther: TargetsMap?
     var addDependenciesReceivedInvocations: [TargetsMap] = []
+    private let addDependenciesReceivedInvocationsLock = NSRecursiveLock()
     var addDependenciesClosure: ((TargetsMap) -> Void)?
 
     func addDependencies(_ other: TargetsMap) {
         addDependenciesCallsCount += 1
         addDependenciesReceivedOther = other
-        addDependenciesReceivedInvocations.append(other)
+        addDependenciesReceivedInvocationsLock.withLock {
+            addDependenciesReceivedInvocations.append(other)
+        }
         addDependenciesClosure?(other)
     }
 
@@ -111,12 +114,15 @@ final class IInternalTargetMock: IInternalTarget {
     var deleteDependenciesCalled: Bool { deleteDependenciesCallsCount > 0 }
     var deleteDependenciesReceivedOther: TargetsMap?
     var deleteDependenciesReceivedInvocations: [TargetsMap] = []
+    private let deleteDependenciesReceivedInvocationsLock = NSRecursiveLock()
     var deleteDependenciesClosure: ((TargetsMap) -> Void)?
 
     func deleteDependencies(_ other: TargetsMap) {
         deleteDependenciesCallsCount += 1
         deleteDependenciesReceivedOther = other
-        deleteDependenciesReceivedInvocations.append(other)
+        deleteDependenciesReceivedInvocationsLock.withLock {
+            deleteDependenciesReceivedInvocations.append(other)
+        }
         deleteDependenciesClosure?(other)
     }
 

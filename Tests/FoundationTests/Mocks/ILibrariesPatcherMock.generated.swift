@@ -15,12 +15,15 @@ final class ILibrariesPatcherMock: ILibrariesPatcher {
     var patchCalled: Bool { patchCallsCount > 0 }
     var patchReceivedTargets: TargetsMap?
     var patchReceivedInvocations: [TargetsMap] = []
+    private let patchReceivedInvocationsLock = NSRecursiveLock()
     var patchClosure: ((TargetsMap) async throws -> Void)?
 
     func patch(_ targets: TargetsMap) async throws {
         patchCallsCount += 1
         patchReceivedTargets = targets
-        patchReceivedInvocations.append(targets)
+        patchReceivedInvocationsLock.withLock {
+            patchReceivedInvocations.append(targets)
+        }
         if let error = patchThrowableError {
             throw error
         }

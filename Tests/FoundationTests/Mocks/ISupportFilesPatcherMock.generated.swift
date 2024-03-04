@@ -15,13 +15,16 @@ final class ISupportFilesPatcherMock: ISupportFilesPatcher {
     var prepareReplacementsForTargetCalled: Bool { prepareReplacementsForTargetCallsCount > 0 }
     var prepareReplacementsForTargetReceivedTarget: IInternalTarget?
     var prepareReplacementsForTargetReceivedInvocations: [IInternalTarget] = []
+    private let prepareReplacementsForTargetReceivedInvocationsLock = NSRecursiveLock()
     var prepareReplacementsForTargetReturnValue: [FileReplacement]!
     var prepareReplacementsForTargetClosure: ((IInternalTarget) throws -> [FileReplacement])?
 
     func prepareReplacements(forTarget target: IInternalTarget) throws -> [FileReplacement] {
         prepareReplacementsForTargetCallsCount += 1
         prepareReplacementsForTargetReceivedTarget = target
-        prepareReplacementsForTargetReceivedInvocations.append(target)
+        prepareReplacementsForTargetReceivedInvocationsLock.withLock {
+            prepareReplacementsForTargetReceivedInvocations.append(target)
+        }
         if let error = prepareReplacementsForTargetThrowableError {
             throw error
         }

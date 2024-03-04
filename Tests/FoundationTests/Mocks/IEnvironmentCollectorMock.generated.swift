@@ -17,13 +17,16 @@ public final class IEnvironmentCollectorMock: IEnvironmentCollector {
     public var envRugbyVersionRugbyEnvironmentCalled: Bool { envRugbyVersionRugbyEnvironmentCallsCount > 0 }
     public var envRugbyVersionRugbyEnvironmentReceivedArguments: (rugbyVersion: String, rugbyEnvironment: [String: String])?
     public var envRugbyVersionRugbyEnvironmentReceivedInvocations: [(rugbyVersion: String, rugbyEnvironment: [String: String])] = []
+    private let envRugbyVersionRugbyEnvironmentReceivedInvocationsLock = NSRecursiveLock()
     public var envRugbyVersionRugbyEnvironmentReturnValue: [String]!
     public var envRugbyVersionRugbyEnvironmentClosure: ((String, [String: String]) async throws -> [String])?
 
     public func env(rugbyVersion: String, rugbyEnvironment: [String: String]) async throws -> [String] {
         envRugbyVersionRugbyEnvironmentCallsCount += 1
         envRugbyVersionRugbyEnvironmentReceivedArguments = (rugbyVersion: rugbyVersion, rugbyEnvironment: rugbyEnvironment)
-        envRugbyVersionRugbyEnvironmentReceivedInvocations.append((rugbyVersion: rugbyVersion, rugbyEnvironment: rugbyEnvironment))
+        envRugbyVersionRugbyEnvironmentReceivedInvocationsLock.withLock {
+            envRugbyVersionRugbyEnvironmentReceivedInvocations.append((rugbyVersion: rugbyVersion, rugbyEnvironment: rugbyEnvironment))
+        }
         if let error = envRugbyVersionRugbyEnvironmentThrowableError {
             throw error
         }

@@ -14,19 +14,19 @@ final class IConfigurationsHasherMock: IConfigurationsHasher {
     var hashContextCallsCount = 0
     var hashContextCalled: Bool { hashContextCallsCount > 0 }
     var hashContextReceivedTarget: IInternalTarget?
-    let hashContextReceivedInvocationsLock = NSRecursiveLock()
     var hashContextReceivedInvocations: [IInternalTarget] = []
+    private let hashContextReceivedInvocationsLock = NSRecursiveLock()
     var hashContextReturnValue: [Any]!
     var hashContextClosure: ((IInternalTarget) throws -> [Any])?
 
     func hashContext(_ target: IInternalTarget) throws -> [Any] {
         hashContextCallsCount += 1
-        if let error = hashContextThrowableError {
-            throw error
-        }
         hashContextReceivedTarget = target
         hashContextReceivedInvocationsLock.withLock {
             hashContextReceivedInvocations.append(target)
+        }
+        if let error = hashContextThrowableError {
+            throw error
         }
         if let hashContextClosure = hashContextClosure {
             return try hashContextClosure(target)

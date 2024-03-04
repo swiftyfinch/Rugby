@@ -14,19 +14,19 @@ final class ICocoaPodsScriptsHasherMock: ICocoaPodsScriptsHasher {
     var hashContextCallsCount = 0
     var hashContextCalled: Bool { hashContextCallsCount > 0 }
     var hashContextReceivedTarget: IInternalTarget?
-    let hashContextReceivedInvocationsLock = NSRecursiveLock()
     var hashContextReceivedInvocations: [IInternalTarget] = []
+    private let hashContextReceivedInvocationsLock = NSRecursiveLock()
     var hashContextReturnValue: [String]!
     var hashContextClosure: ((IInternalTarget) async throws -> [String])?
 
     func hashContext(_ target: IInternalTarget) async throws -> [String] {
         hashContextCallsCount += 1
-        if let error = hashContextThrowableError {
-            throw error
-        }
         hashContextReceivedTarget = target
         hashContextReceivedInvocationsLock.withLock {
             hashContextReceivedInvocations.append(target)
+        }
+        if let error = hashContextThrowableError {
+            throw error
         }
         if let hashContextClosure = hashContextClosure {
             return try await hashContextClosure(target)

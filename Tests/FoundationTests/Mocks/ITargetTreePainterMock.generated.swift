@@ -14,13 +14,16 @@ final class ITargetTreePainterMock: ITargetTreePainter {
     var paintTargetsCalled: Bool { paintTargetsCallsCount > 0 }
     var paintTargetsReceivedTargets: TargetsMap?
     var paintTargetsReceivedInvocations: [TargetsMap] = []
+    private let paintTargetsReceivedInvocationsLock = NSRecursiveLock()
     var paintTargetsReturnValue: String!
     var paintTargetsClosure: ((TargetsMap) -> String)?
 
     func paint(targets: TargetsMap) -> String {
         paintTargetsCallsCount += 1
         paintTargetsReceivedTargets = targets
-        paintTargetsReceivedInvocations.append(targets)
+        paintTargetsReceivedInvocationsLock.withLock {
+            paintTargetsReceivedInvocations.append(targets)
+        }
         if let paintTargetsClosure = paintTargetsClosure {
             return paintTargetsClosure(targets)
         } else {

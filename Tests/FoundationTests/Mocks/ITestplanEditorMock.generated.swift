@@ -15,13 +15,16 @@ final class ITestplanEditorMock: ITestplanEditor {
     var expandTestplanPathCalled: Bool { expandTestplanPathCallsCount > 0 }
     var expandTestplanPathReceivedPath: String?
     var expandTestplanPathReceivedInvocations: [String] = []
+    private let expandTestplanPathReceivedInvocationsLock = NSRecursiveLock()
     var expandTestplanPathReturnValue: String!
     var expandTestplanPathClosure: ((String) throws -> String)?
 
     func expandTestplanPath(_ path: String) throws -> String {
         expandTestplanPathCallsCount += 1
         expandTestplanPathReceivedPath = path
-        expandTestplanPathReceivedInvocations.append(path)
+        expandTestplanPathReceivedInvocationsLock.withLock {
+            expandTestplanPathReceivedInvocations.append(path)
+        }
         if let error = expandTestplanPathThrowableError {
             throw error
         }
@@ -39,13 +42,16 @@ final class ITestplanEditorMock: ITestplanEditor {
     var createTestplanTestplanTemplatePathTestTargetsInFolderPathCalled: Bool { createTestplanTestplanTemplatePathTestTargetsInFolderPathCallsCount > 0 }
     var createTestplanTestplanTemplatePathTestTargetsInFolderPathReceivedArguments: (testplanTemplatePath: String, testTargets: TargetsMap, folderPath: String)?
     var createTestplanTestplanTemplatePathTestTargetsInFolderPathReceivedInvocations: [(testplanTemplatePath: String, testTargets: TargetsMap, folderPath: String)] = []
+    private let createTestplanTestplanTemplatePathTestTargetsInFolderPathReceivedInvocationsLock = NSRecursiveLock()
     var createTestplanTestplanTemplatePathTestTargetsInFolderPathReturnValue: URL!
     var createTestplanTestplanTemplatePathTestTargetsInFolderPathClosure: ((String, TargetsMap, String) throws -> URL)?
 
     func createTestplan(testplanTemplatePath: String, testTargets: TargetsMap, inFolderPath folderPath: String) throws -> URL {
         createTestplanTestplanTemplatePathTestTargetsInFolderPathCallsCount += 1
         createTestplanTestplanTemplatePathTestTargetsInFolderPathReceivedArguments = (testplanTemplatePath: testplanTemplatePath, testTargets: testTargets, folderPath: folderPath)
-        createTestplanTestplanTemplatePathTestTargetsInFolderPathReceivedInvocations.append((testplanTemplatePath: testplanTemplatePath, testTargets: testTargets, folderPath: folderPath))
+        createTestplanTestplanTemplatePathTestTargetsInFolderPathReceivedInvocationsLock.withLock {
+            createTestplanTestplanTemplatePathTestTargetsInFolderPathReceivedInvocations.append((testplanTemplatePath: testplanTemplatePath, testTargets: testTargets, folderPath: folderPath))
+        }
         if let error = createTestplanTestplanTemplatePathTestTargetsInFolderPathThrowableError {
             throw error
         }

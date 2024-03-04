@@ -55,13 +55,16 @@ final class IGitMock: IGit {
     var isBehindBranchCalled: Bool { isBehindBranchCallsCount > 0 }
     var isBehindBranchReceivedBranch: String?
     var isBehindBranchReceivedInvocations: [String] = []
+    private let isBehindBranchReceivedInvocationsLock = NSRecursiveLock()
     var isBehindBranchReturnValue: Bool!
     var isBehindBranchClosure: ((String) throws -> Bool)?
 
     func isBehind(branch: String) throws -> Bool {
         isBehindBranchCallsCount += 1
         isBehindBranchReceivedBranch = branch
-        isBehindBranchReceivedInvocations.append(branch)
+        isBehindBranchReceivedInvocationsLock.withLock {
+            isBehindBranchReceivedInvocations.append(branch)
+        }
         if let error = isBehindBranchThrowableError {
             throw error
         }
