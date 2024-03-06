@@ -42,7 +42,10 @@ extension Use: RunnableCommand {
                     patterns: targetsOptions.exceptAsRegex,
                     exactMatches: targetsOptions.exceptTargets
                 ),
-                xcargs: dependencies.xcargsProvider.xcargs(strip: additionalBuildOptions.strip),
+                xcargs: dependencies.xcargsProvider.xcargs(
+                    strip: additionalBuildOptions.strip,
+                    skipSigning: additionalBuildOptions.skipSigning
+                ),
                 deleteSources: deleteSources
             )
     }
