@@ -28,6 +28,7 @@
 │ -r, --rollback    * Restore projects state before the last Rugby usage. │
 │ --prebuild        * Prebuild targets ignoring sources.                  │
 │ --strip           * Build without debug symbols.                        │
+│ --skip-signing    * Disable code signing.                               │
 │ --ignore-cache    * Ignore shared cache.                                │
 │ --delete-sources  * Delete target groups from project.                  │
 │ -v, --verbose []  * Increase verbosity level.                           │

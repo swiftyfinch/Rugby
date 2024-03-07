@@ -31,6 +31,7 @@
 ╭─────────────────────────────────────────────────────────────────────────────────────────────╮
 │ --analyse         * Run only in analyse mode without downloading. The endpoint is optional. │
 │ --strip           * Build without debug symbols.                                            │
+│ --skip-signing    * Disable code signing.                                                   │
 │ -v, --verbose []  * Increase verbosity level.                                               │
 │ -q, --quiet []    * Decrease verbosity level.                                               │
 │ -h, --help        * Show help information.                                                  │

@@ -22,6 +22,7 @@
 ╭────────────────────────────────────────────────────────╮
 │ --delete-sources  * Delete target groups from project. │
 │ --strip           * Build without debug symbols.       │
+│ --skip-signing    * Disable code signing.              │
 │ -v, --verbose []  * Increase verbosity level.          │
 │ -q, --quiet []    * Decrease verbosity level.          │
 │ -h, --help        * Show help information.             │
