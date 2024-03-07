@@ -29,6 +29,7 @@
 │ --impact          * Select tests by impact.                               │
 │ --pass            * Mark test targets as passed if all tests are succeed. │
 │ --strip           * Build without debug symbols.                          │
+│ --skip-signing    * Disable code signing.                                 │
 │ -v, --verbose []  * Increase verbosity level.                             │
 │ -q, --quiet []    * Decrease verbosity level.                             │
 │ -h, --help        * Show help information.                                │
