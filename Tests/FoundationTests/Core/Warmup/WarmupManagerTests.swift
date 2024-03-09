@@ -646,7 +646,7 @@ extension WarmupManagerTests {
         XCTAssertEqual(loggerBlockInvocations[4].level, .compact)
         XCTAssertEqual(loggerBlockInvocations[4].output, .all)
 
-        XCTAssertEqual(logger.logLevelOutputReceivedInvocations[4].text, "Downloaded 50% Binaries (1/2)")
+        XCTAssertEqual(logger.logLevelOutputReceivedInvocations[4].text, "Downloaded: 50% (1/2)")
         XCTAssertEqual(logger.logLevelOutputReceivedInvocations[4].level, .compact)
         XCTAssertEqual(logger.logLevelOutputReceivedInvocations[4].output, .all)
     }
