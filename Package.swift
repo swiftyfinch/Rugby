@@ -11,13 +11,13 @@ let package = Package(
     ],
     dependencies: [
         // rugby
-        .package(url: "https://github.com/apple/swift-argument-parser", from: "1.2.2"),
+        .package(url: "https://github.com/apple/swift-argument-parser", from: "1.3.0"),
 
         // RugbyFoundation
         .package(url: "https://github.com/onevcat/Rainbow", from: "4.0.1"),
-        .package(url: "https://github.com/tuist/XcodeProj", from: "8.12.0"),
+        .package(url: "https://github.com/tuist/XcodeProj", from: "8.20.0"),
         .package(url: "https://github.com/kareman/SwiftShell", from: "5.1.0"),
-        .package(url: "https://github.com/tuist/xcbeautify", from: "1.0.0"),
+        .package(url: "https://github.com/tuist/xcbeautify", from: "1.6.0"),
         .package(url: "https://github.com/jpsim/Yams", from: "5.0.6"),
         .package(url: "https://github.com/weichsel/ZIPFoundation", from: "0.9.18"),
         .package(url: "https://github.com/swiftyfinch/Fish", from: "0.1.1")
