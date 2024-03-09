@@ -17,14 +17,14 @@ jobs:
 
   swiftlint:
     name: SwiftLint
-    runs-on: macos-latest
+    runs-on: macos-13
     steps:
     - uses: actions/checkout@v4
     - run: swiftlint --strict --quiet --reporter github-actions-logging
 
   install:
     name: Install Script
-    runs-on: macos-latest
+    runs-on: macos-13
     steps:
     - uses: actions/checkout@v4
     - name: Install Rugby
@@ -35,7 +35,7 @@ jobs:
 
   release:
     name: Build Binary
-    runs-on: macos-latest
+    runs-on: macos-13
     steps:
     - uses: actions/checkout@v4
     - uses: actions/cache@v4
@@ -48,7 +48,7 @@ jobs:
 
   unit-tests:
     name: Unit Tests
-    runs-on: macos-latest
+    runs-on: macos-13
     env:
       LCOV_PATH: .build/artifacts/info.lcov
       BUILD_FOLDER: .build/debug/RugbyPackageTests.xctest/Contents/MacOS/RugbyPackageTests
@@ -90,7 +90,7 @@ jobs:
   smoke-build-frameworks:
     name: Smoke Build (Frameworks)
     needs: unit-tests
-    runs-on: macos-latest
+    runs-on: macos-13
     steps:
     - uses: actions/checkout@v4
     - uses: actions/download-artifact@v4
@@ -132,7 +132,7 @@ jobs:
   smoke-build-libs:
     name: Smoke Build (Libraries)
     needs: unit-tests
-    runs-on: macos-latest
+    runs-on: macos-13
     steps:
     - uses: actions/checkout@v4
     - uses: actions/download-artifact@v4
@@ -174,7 +174,7 @@ jobs:
   smoke-test-multiproj:
     name: Smoke Test (Multiproj)
     needs: unit-tests
-    runs-on: macos-latest
+    runs-on: macos-13
     steps:
     - uses: actions/checkout@v4
     - uses: actions/download-artifact@v4
@@ -204,7 +204,7 @@ jobs:
   smoke-test:
     name: Smoke Test (Frameworks)
     needs: unit-tests
-    runs-on: macos-latest
+    runs-on: macos-13
     steps:
     - uses: actions/checkout@v4
     - uses: actions/download-artifact@v4
