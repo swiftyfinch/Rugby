@@ -249,6 +249,7 @@ extension TestManagerTests {
         let testplanURL = URL(fileURLWithPath: "tests/Rugby.xctestplan")
         testplanEditor.createTestplanTestplanTemplatePathTestTargetsInFolderPathReturnValue = testplanURL
         let testsTarget = IInternalTargetMock()
+        testsTarget.underlyingUuid = "test_RugbyPods_uuid"
         testsTarget.underlyingName = "RugbyPods"
         testsTarget.explicitDependencies = [
             localPodFrameworkUnitTests.uuid: localPodFrameworkUnitTests,
@@ -397,6 +398,12 @@ extension TestManagerTests {
         XCTAssertEqual(loggerBlockInvocations[9].level, .result)
         XCTAssertEqual(loggerBlockInvocations[9].output, .all)
 
+        XCTAssertEqual(xcodeProject.deleteTargetsKeepGroupsCallsCount, 1)
+        let deleteTargetsArgs = try XCTUnwrap(xcodeProject.deleteTargetsKeepGroupsReceivedArguments)
+        XCTAssertEqual(deleteTargetsArgs.targetsForRemove.count, 1)
+        XCTAssertTrue(deleteTargetsArgs.targetsForRemove.contains(testsTarget.uuid))
+        XCTAssertTrue(deleteTargetsArgs.keepGroups)
+
         XCTAssertEqual(loggerBlockInvocations[10].header, "Marking Tests as Passed")
         XCTAssertNil(loggerBlockInvocations[10].footer)
         XCTAssertNil(loggerBlockInvocations[10].metricKey)
@@ -515,6 +522,7 @@ extension TestManagerTests {
         let testplanURL = URL(fileURLWithPath: "tests/Rugby.xctestplan")
         testplanEditor.createTestplanTestplanTemplatePathTestTargetsInFolderPathReturnValue = testplanURL
         let testsTarget = IInternalTargetMock()
+        testsTarget.underlyingUuid = "test_RugbyPods_uuid"
         testsTarget.underlyingName = "RugbyPods"
         testsTarget.explicitDependencies = [
             localPodFrameworkUnitTests.uuid: localPodFrameworkUnitTests,
@@ -663,6 +671,12 @@ extension TestManagerTests {
         XCTAssertEqual(loggerBlockInvocations[9].metricKey, "xcodebuild_test")
         XCTAssertEqual(loggerBlockInvocations[9].level, .result)
         XCTAssertEqual(loggerBlockInvocations[9].output, .all)
+
+        XCTAssertEqual(xcodeProject.deleteTargetsKeepGroupsCallsCount, 1)
+        let deleteTargetsArgs = try XCTUnwrap(xcodeProject.deleteTargetsKeepGroupsReceivedArguments)
+        XCTAssertEqual(deleteTargetsArgs.targetsForRemove.count, 1)
+        XCTAssertTrue(deleteTargetsArgs.targetsForRemove.contains(testsTarget.uuid))
+        XCTAssertTrue(deleteTargetsArgs.keepGroups)
 
         XCTAssertEqual(logger.logLevelOutputReceivedInvocations.count, 4)
         XCTAssertEqual(logger.logLevelOutputReceivedInvocations[0].text, "LocalPod-framework-Unit-Tests")

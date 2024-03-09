@@ -134,17 +134,26 @@ final class TestManager: Loggable {
             }
             let processInterruptionTask = processMonitor.runOnInterruption(cleanup)
 
-            defer {
+            let deleteTestsTargetScheme = {
+                try await self.xcodeProject.deleteTargets([testsTarget.uuid: testsTarget])
+            }
+            do {
+                try await xcodeBuild.test(
+                    scheme: testsTarget.name,
+                    testPlan: testplanPath.deletingPathExtension().lastPathComponent,
+                    simulatorName: simulatorName,
+                    options: options,
+                    paths: paths
+                )
+                try await deleteTestsTargetScheme()
                 processInterruptionTask.cancel()
                 cleanup()
+            } catch {
+                try await deleteTestsTargetScheme()
+                processInterruptionTask.cancel()
+                cleanup()
+                throw error
             }
-            try await xcodeBuild.test(
-                scheme: testsTarget.name,
-                testPlan: testplanPath.deletingPathExtension().lastPathComponent,
-                simulatorName: simulatorName,
-                options: options,
-                paths: paths
-            )
         })
     }
 
