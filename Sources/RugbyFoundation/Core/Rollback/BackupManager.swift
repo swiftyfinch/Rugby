@@ -30,15 +30,12 @@ public enum BackupKind: String {
 
 enum BackupManagerError: LocalizedError {
     case missingBackup
-    case unexpectedBackupStructure
 
     var errorDescription: String? {
         let output: String
         switch self {
         case .missingBackup:
             output = "Can't find backup."
-        case .unexpectedBackupStructure:
-            output = "Unexpected backup structure."
         }
         return output
     }
@@ -55,7 +52,6 @@ final class BackupManager {
 
     private let yes = "YES"
     private let targetSupportFiles = "Target Support Files"
-    private let partialBackupPodsFolder = "Pods"
 
     init(backupFolderPath: String,
          workingDirectory: IFolder,
@@ -111,7 +107,7 @@ extension BackupManager {
 // MARK: - Private Restore
 
 extension BackupManager {
-    private func restoreSteps(from subfolderName: String) throws -> [(source: IFolder, target: String)] {
+    private func restoreSteps(from subfolderName: String) throws -> [(source: IFile, target: String)] {
         let backupFolderPath = backupFolderPath(subfolderName: subfolderName)
         guard let backupFolder = try? Folder.at(backupFolderPath),
               try !backupFolder.isEmpty() else { throw Error.missingBackup }
@@ -119,19 +115,11 @@ extension BackupManager {
         return try restoreSteps(from: backupFolder)
     }
 
-    private func restoreSteps(from backupFolder: IFolder) throws -> [(source: IFolder, target: String)] {
+    private func restoreSteps(from backupFolder: IFolder) throws -> [(source: IFile, target: String)] {
         let subfolders = try backupFolder.folders()
-        return try subfolders.flatMap { folder -> [(source: IFolder, target: String)] in
-            let adjustedFolder: IFolder
-            if folder.name == partialBackupPodsFolder {
-                guard let childrenFolder = try folder.folders().first else { throw Error.unexpectedBackupStructure }
-                adjustedFolder = childrenFolder
-            } else {
-                adjustedFolder = folder
-            }
-
-            let folders = try adjustedFolder.folders()
-            return folders.compactMap { file in
+        return try subfolders.flatMap { folder -> [(source: IFile, target: String)] in
+            let files = try folder.files(deep: true)
+            return files.compactMap { file in
                 guard let destinationFolderSubpath = file.parent?.relativePath(to: folder) else { return nil }
                 return (file, workingDirectory.subpath(destinationFolderSubpath))
             }
@@ -142,13 +130,13 @@ extension BackupManager {
 // MARK: - Common Steps
 
 extension BackupManager {
-    private func applySteps(_ steps: [(source: IItem, target: String)]) async throws {
+    private func applySteps(_ steps: [(source: IFile, target: String)]) async throws {
         try await steps.concurrentForEach { file, folderPath in
             try file.copy(to: folderPath, replace: true)
         }
     }
 
-    private func applySteps(_ steps: [(source: IItem, target: String)]) throws {
+    private func applySteps(_ steps: [(source: IFile, target: String)]) throws {
         try steps.forEach { file, folderPath in
             try file.copy(to: folderPath, replace: true)
         }

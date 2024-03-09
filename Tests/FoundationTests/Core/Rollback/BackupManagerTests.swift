@@ -196,8 +196,6 @@ extension BackupManagerTests {
         let pods = try originalFolder.createFolder(named: "Pods").createFolder(named: "Pods")
         let projectFolder = try pods.createFolder(named: "Pods.xcodeproj")
         try projectFolder.createFile(named: "project.pbxproj", contents: "test_pbxproj_content")
-        let xcschemes = try projectFolder.createFolder(named: "xcuserdata/swiftyfinch.xcuserdatad/xcschemes")
-        try xcschemes.createFile(named: "Pods-ExampleFrameworks.xcscheme")
         let workspace = try projectFolder.createFolder(named: "project.xcworkspace")
         try workspace.createFile(named: "contents.xcworkspacedata", contents: "test_workspace_content")
         let targetSupportFiles = try pods.createFolder(named: "Target Support Files")
@@ -211,11 +209,6 @@ extension BackupManagerTests {
                                    contents: "test_podsExample.resources_content")
         try podsExample.createFile(named: "Pods-ExampleFrameworks-frameworks.sh",
                                    contents: "test_podsExample.frameworks_content")
-
-        let currentXCSchemes = try workingDirectory.createFolder(
-            named: "Pods/Pods.xcodeproj/xcuserdata/swiftyfinch.xcuserdatad/xcschemes"
-        )
-        try currentXCSchemes.createFile(named: "RugbyPods.xcscheme")
 
         // Act
         try await sut.asyncRestore(.original)
@@ -236,12 +229,6 @@ extension BackupManagerTests {
         )))
         XCTAssertTrue(File.isExist(at: workingDirectory.subpath(
             "Pods/Target Support Files/Pods-ExampleFrameworks/Pods-ExampleFrameworks-resources.sh"
-        )))
-        XCTAssertTrue(File.isExist(at: workingDirectory.subpath(
-            "Pods/Pods.xcodeproj/xcuserdata/swiftyfinch.xcuserdatad/xcschemes/Pods-ExampleFrameworks.xcscheme"
-        )))
-        XCTAssertFalse(File.isExist(at: workingDirectory.subpath(
-            "Pods/Pods.xcodeproj/xcuserdata/swiftyfinch.xcuserdatad/xcschemes/RugbyPods.xcscheme"
         )))
     }
 
