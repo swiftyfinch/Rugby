@@ -118,7 +118,7 @@ final class WarmupManager: Loggable {
 
         let reachable = reachableBinariesInfo.reachable
         let reachablePercent = reachable.count.percent(total: binariesInfo.count)
-        await log("Found \(reachablePercent)% Remote Binaries (\(reachable.count)/\(binariesInfo.count))")
+        await log("Found Remotely: \(reachablePercent)% (\(reachable.count)/\(binariesInfo.count))")
         metricsLogger.log(reachablePercent, name: "Found Remote Binaries Percent")
 
         if dryRun { return }
