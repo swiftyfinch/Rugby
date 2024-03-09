@@ -127,6 +127,7 @@ final class WarmupManager: Loggable {
         }
         let downloadedPercent = downloaded.count.percent(total: reachable.count)
         await log("Downloaded: \(downloadedPercent)% (\(downloaded.count)/\(reachable.count))")
+        metricsLogger.log(downloadedPercent, name: "Downloaded Binaries Percent")
     }
 
     private func makeEndpoint(_ endpoint: String) throws -> URL {
