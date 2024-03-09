@@ -4,7 +4,7 @@ import PackageDescription
 
 let package = Package(
     name: "Rugby",
-    platforms: [.macOS(.v12)],
+    platforms: [.macOS(.v13)],
     products: [
         .executable(name: "rugby", targets: ["Rugby"]),
         .library(name: "RugbyFoundation", targets: ["RugbyFoundation"])
