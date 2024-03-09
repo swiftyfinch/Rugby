@@ -451,7 +451,7 @@ extension WarmupManagerTests {
         XCTAssertEqual(metricsLogger.logNameReceivedInvocations[0].name, "Found Remote Binaries Percent")
         XCTAssertEqual(metricsLogger.logNameReceivedInvocations[0].metric, 50.0)
 
-        XCTAssertEqual(logger.logLevelOutputReceivedInvocations[3].text, "Found 50% Remote Binaries (1/2)")
+        XCTAssertEqual(logger.logLevelOutputReceivedInvocations[3].text, "Found Remotely: 50% (1/2)")
         XCTAssertEqual(logger.logLevelOutputReceivedInvocations[3].level, .compact)
         XCTAssertEqual(logger.logLevelOutputReceivedInvocations[3].output, .all)
     }
@@ -636,7 +636,7 @@ extension WarmupManagerTests {
         XCTAssertEqual(metricsLogger.logNameReceivedInvocations[0].name, "Found Remote Binaries Percent")
         XCTAssertEqual(metricsLogger.logNameReceivedInvocations[0].metric, 66.0)
 
-        XCTAssertEqual(logger.logLevelOutputReceivedInvocations[3].text, "Found 66% Remote Binaries (2/3)")
+        XCTAssertEqual(logger.logLevelOutputReceivedInvocations[3].text, "Found Remotely: 66% (2/3)")
         XCTAssertEqual(logger.logLevelOutputReceivedInvocations[3].level, .compact)
         XCTAssertEqual(logger.logLevelOutputReceivedInvocations[3].output, .all)
 
