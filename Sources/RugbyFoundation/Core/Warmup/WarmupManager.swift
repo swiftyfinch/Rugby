@@ -77,7 +77,7 @@ final class WarmupManager: Loggable {
         guard targets.isNotEmpty else { throw BuildError.cantFindBuildTargets }
 
         try await log("Hashing Targets", auto: await targetsHasher.hash(targets, xcargs: options.xcargs))
-        let (_, notFound) = try await log(
+        let (found, notFound) = try await log(
             "Finding Binaries",
             auto: binariesStorage.findBinaries(ofTargets: targets, buildOptions: options)
         )
@@ -91,15 +91,10 @@ final class WarmupManager: Loggable {
             await logList(notFoundPaths, level: logLevel)
         }
 
-        if notFound.count == 0 {
-            await log("Found 100% Binaries (\(targets.count))", level: .result)
-        } else {
-            let notFoundPercent = notFound.count.percent(total: targets.count)
-            await log(
-                "Not Found Locally \(notFoundPercent)% Binaries (\(notFound.count)/\(targets.count))",
-                level: .result
-            )
-        }
+        await log(
+            "Found Locally: \(found.count.percent(total: targets.count))% (\(found.count)/\(targets.count))",
+            level: .result
+        )
 
         return notFound
     }

@@ -196,7 +196,7 @@ extension WarmupManagerTests {
         XCTAssertEqual(loggerBlockInvocations[2].output, .all)
 
         XCTAssertEqual(logger.logLevelOutputReceivedInvocations.count, 1)
-        XCTAssertEqual(logger.logLevelOutputReceivedInvocations[0].text, "Found 100% Binaries (2)")
+        XCTAssertEqual(logger.logLevelOutputReceivedInvocations[0].text, "Found Locally: 100% (2/2)")
         XCTAssertEqual(logger.logLevelOutputReceivedInvocations[0].level, .result)
         XCTAssertEqual(logger.logLevelOutputReceivedInvocations[0].output, .all)
     }
@@ -213,7 +213,8 @@ extension WarmupManagerTests {
         rugbyXcodeProject.isAlreadyUsingRugbyReturnValue = false
         buildTargetsManager.findTargetsExceptTargetsIncludingTestsReturnValue = [
             alamofire.uuid: alamofire,
-            snapkit.uuid: snapkit
+            snapkit.uuid: snapkit,
+            moya.uuid: moya
         ]
         binariesStorage.findBinariesOfTargetsBuildOptionsReturnValue = (
             [moya.uuid: moya],
@@ -257,7 +258,7 @@ extension WarmupManagerTests {
 
         XCTAssertEqual(targetsHasher.hashXcargsCallsCount, 1)
         let hashArguments = try XCTUnwrap(targetsHasher.hashXcargsReceivedArguments)
-        XCTAssertEqual(hashArguments.targets.count, 2)
+        XCTAssertEqual(hashArguments.targets.count, 3)
         XCTAssertTrue(hashArguments.targets.contains(alamofire.uuid))
         XCTAssertTrue(hashArguments.targets.contains(snapkit.uuid))
         XCTAssertEqual(hashArguments.xcargs, xcodeBuildOptions.xcargs)
@@ -268,7 +269,7 @@ extension WarmupManagerTests {
         XCTAssertEqual(loggerBlockInvocations[1].output, .all)
 
         let findBinariesArguments = try XCTUnwrap(binariesStorage.findBinariesOfTargetsBuildOptionsReceivedArguments)
-        XCTAssertEqual(findBinariesArguments.targets.count, 2)
+        XCTAssertEqual(findBinariesArguments.targets.count, 3)
         XCTAssertTrue(findBinariesArguments.targets.contains(alamofire.uuid))
         XCTAssertTrue(findBinariesArguments.targets.contains(snapkit.uuid))
         XCTAssertEqual(findBinariesArguments.buildOptions, xcodeBuildOptions)
@@ -290,7 +291,7 @@ extension WarmupManagerTests {
         XCTAssertEqual(logger.logListLevelOutputReceivedInvocations[0].level, .result)
         XCTAssertEqual(logger.logListLevelOutputReceivedInvocations[0].output, .all)
 
-        XCTAssertEqual(logger.logLevelOutputReceivedInvocations[1].text, "Not Found Locally 100% Binaries (2/2)")
+        XCTAssertEqual(logger.logLevelOutputReceivedInvocations[1].text, "Found Locally: 33% (1/3)")
         XCTAssertEqual(logger.logLevelOutputReceivedInvocations[1].level, .result)
         XCTAssertEqual(logger.logLevelOutputReceivedInvocations[1].output, .all)
     }
@@ -414,7 +415,7 @@ extension WarmupManagerTests {
         XCTAssertEqual(logger.logListLevelOutputReceivedInvocations[0].level, .result)
         XCTAssertEqual(logger.logListLevelOutputReceivedInvocations[0].output, .all)
 
-        XCTAssertEqual(logger.logLevelOutputReceivedInvocations[1].text, "Not Found Locally 66% Binaries (2/3)")
+        XCTAssertEqual(logger.logLevelOutputReceivedInvocations[1].text, "Found Locally: 33% (1/3)")
         XCTAssertEqual(logger.logLevelOutputReceivedInvocations[1].level, .result)
         XCTAssertEqual(logger.logLevelOutputReceivedInvocations[1].output, .all)
 
@@ -595,7 +596,7 @@ extension WarmupManagerTests {
         XCTAssertEqual(logger.logListLevelOutputReceivedInvocations[0].level, .info)
         XCTAssertEqual(logger.logListLevelOutputReceivedInvocations[0].output, .all)
 
-        XCTAssertEqual(logger.logLevelOutputReceivedInvocations[1].text, "Not Found Locally 75% Binaries (3/4)")
+        XCTAssertEqual(logger.logLevelOutputReceivedInvocations[1].text, "Found Locally: 25% (1/4)")
         XCTAssertEqual(logger.logLevelOutputReceivedInvocations[1].level, .result)
         XCTAssertEqual(logger.logLevelOutputReceivedInvocations[1].output, .all)
 
