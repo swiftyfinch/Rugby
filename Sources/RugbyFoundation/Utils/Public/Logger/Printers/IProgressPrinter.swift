@@ -1,5 +1,5 @@
 /// The protocol describing a progress printer which can be used in the logger.
-public protocol IProgressPrinter: Actor {
+public protocol IProgressPrinter: Actor, AnyObject {
     /// Shows the progress.
     /// - Parameters:
     ///   - text: A text to print.

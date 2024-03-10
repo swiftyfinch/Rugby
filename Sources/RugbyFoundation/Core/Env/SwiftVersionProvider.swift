@@ -3,7 +3,7 @@ import Foundation
 // MARK: - Interface
 
 /// The protocol describing a service providing the current Swift version.
-public protocol ISwiftVersionProvider: Actor {
+public protocol ISwiftVersionProvider: Actor, AnyObject {
     /// Returns the current Swift version.
     func swiftVersion() throws -> String
 }

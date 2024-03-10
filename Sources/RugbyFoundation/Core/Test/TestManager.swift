@@ -3,7 +3,7 @@ import Foundation
 // MARK: - Interface
 
 /// The manager to test in CocoaPods project.
-public protocol ITestManager {
+public protocol ITestManager: AnyObject {
     /// Runs tests by impact or not.
     /// - Parameters:
     ///   - targetsRegex: A RegEx to select targets.

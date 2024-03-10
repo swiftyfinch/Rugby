@@ -3,7 +3,7 @@ import Foundation
 // MARK: - Interface
 
 /// The protocol describing a manager to analyse test targets in CocoaPods project.
-public protocol ITestImpactManager {
+public protocol ITestImpactManager: AnyObject {
     /// Prints affected test targets.
     /// - Parameters:
     ///   - targetsRegex: A RegEx to select targets.

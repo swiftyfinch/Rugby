@@ -4,7 +4,7 @@ import Foundation
 // MARK: - Interface
 
 /// The protocol describing a manager to prebuild CocoaPods project.
-public protocol IPrebuildManager {
+public protocol IPrebuildManager: AnyObject {
     /// Prebuilds CocoaPods project and keeps binaries.
     /// - Parameters:
     ///   - targetsRegex: A RegEx to select targets.

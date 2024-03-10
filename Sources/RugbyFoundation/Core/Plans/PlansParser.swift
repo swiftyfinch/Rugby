@@ -5,7 +5,7 @@ import Yams
 // MARK: - Interface
 
 /// The protocol describing a service to parse YAML files with Rugby plans.
-public protocol IPlansParser {
+public protocol IPlansParser: AnyObject {
     /// Returns plans list.
     /// - Parameter path: A path to plans file.
     func plans(atPath path: String) throws -> [Plan]
@@ -138,11 +138,11 @@ private extension String {
 
 // MARK: - Field Parsers
 
-private protocol FieldParser {
+private protocol FieldParser: AnyObject {
     func parse(_ value: Any, ofField field: String, toArgs args: inout [String]) -> Bool
 }
 
-private struct StringFieldParser: FieldParser {
+private final class StringFieldParser: FieldParser {
     func parse(_ value: Any, ofField field: String, toArgs args: inout [String]) -> Bool {
         guard let string = value as? String else { return false }
         if field == .argumentKey {
@@ -155,7 +155,7 @@ private struct StringFieldParser: FieldParser {
     }
 }
 
-private struct BoolFieldParser: FieldParser {
+private final class BoolFieldParser: FieldParser {
     func parse(_ value: Any, ofField field: String, toArgs args: inout [String]) -> Bool {
         guard let bool = value as? Bool else { return false }
         if bool {
@@ -165,7 +165,7 @@ private struct BoolFieldParser: FieldParser {
     }
 }
 
-private struct IntFieldParser: FieldParser {
+private final class IntFieldParser: FieldParser {
     func parse(_ value: Any, ofField field: String, toArgs args: inout [String]) -> Bool {
         guard let int = value as? Int else { return false }
         args.append("\(String.optionPrefix)\(field)")
@@ -174,7 +174,7 @@ private struct IntFieldParser: FieldParser {
     }
 }
 
-private struct StringsFieldParser: FieldParser {
+private final class StringsFieldParser: FieldParser {
     func parse(_ value: Any, ofField field: String, toArgs args: inout [String]) -> Bool {
         guard let strings = value as? [String] else { return false }
         guard strings.isNotEmpty else { return true }

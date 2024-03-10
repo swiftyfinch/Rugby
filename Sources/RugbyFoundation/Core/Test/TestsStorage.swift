@@ -3,7 +3,7 @@ import Foundation
 
 // MARK: - Interface
 
-protocol ITestsStorage {
+protocol ITestsStorage: AnyObject {
     func saveTests(
         of targets: TargetsMap,
         buildOptions: XcodeBuildOptions

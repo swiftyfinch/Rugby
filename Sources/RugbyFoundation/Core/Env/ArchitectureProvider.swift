@@ -1,7 +1,7 @@
 // MARK: - Interface
 
 /// The protocol describing a service providing the current CPU architecture.
-public protocol IArchitectureProvider {
+public protocol IArchitectureProvider: AnyObject {
     /// Returns the current CPU architecture.
     func architecture() -> Architecture
 }

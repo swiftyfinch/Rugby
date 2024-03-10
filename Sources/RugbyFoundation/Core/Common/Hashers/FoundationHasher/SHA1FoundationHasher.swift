@@ -3,7 +3,7 @@ import Foundation
 
 // MARK: - Interface
 
-protocol FoundationHasher {
+protocol FoundationHasher: AnyObject {
     func hash(_ string: String) -> String
     func hash(_ arrayOfStrings: [String]) -> String
     func hash(_ data: Data) -> String

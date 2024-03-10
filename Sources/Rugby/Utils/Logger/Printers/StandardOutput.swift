@@ -1,6 +1,6 @@
 // MARK: - Interface
 
-protocol IStandardOutput {
+protocol IStandardOutput: AnyObject {
     func print(_ text: String)
 }
 

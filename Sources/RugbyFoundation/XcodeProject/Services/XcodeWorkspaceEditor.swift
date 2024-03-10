@@ -3,7 +3,7 @@ import XcodeProj
 
 // MARK: - Interface
 
-protocol IXcodeWorkspaceEditor {
+protocol IXcodeWorkspaceEditor: AnyObject {
     func readProjectPaths() throws -> [String]
 }
 

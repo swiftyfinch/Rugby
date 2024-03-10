@@ -4,7 +4,7 @@ import XcodeProj
 
 // MARK: - Interface
 
-protocol ITestplanEditor {
+protocol ITestplanEditor: AnyObject {
     func expandTestplanPath(_ path: String) throws -> String
 
     func createTestplan(
