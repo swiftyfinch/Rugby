@@ -25,7 +25,6 @@
  Flags:
 ╭──────────────────────────────────────────────────╮
 │ --strip           * Build without debug symbols. │
-│ --skip-signing    * Disable code signing.        │
 │ --ignore-cache    * Ignore shared cache.         │
 │ -v, --verbose []  * Increase verbosity level.    │
 │ -q, --quiet []    * Decrease verbosity level.    │
