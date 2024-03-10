@@ -28,6 +28,7 @@ release:
 	cp -f `swift build -c release --arch x86_64 --show-bin-path`/rugby Release/rugby
 	strip -rSTx Release/rugby
 	cd Release && zip -r x86_64.zip rugby
+	cd Release && mv rugby rugby-x86_64
 	@echo
 
 	swift package clean
@@ -35,6 +36,11 @@ release:
 	cp -f `swift build -c release --arch arm64 --show-bin-path`/rugby Release/rugby
 	strip -rSTx Release/rugby
 	cd Release && zip -r arm64.zip rugby
+	cd Release && mv rugby rugby-arm64
+	@echo
+
+	cd Release && lipo -create rugby-x86_64 rugby-arm64 -output rugby
+	cd Release && zip -r universal.zip rugby
 
 .PHONY: mocks
 mocks:
