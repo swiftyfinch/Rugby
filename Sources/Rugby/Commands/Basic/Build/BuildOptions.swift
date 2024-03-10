@@ -21,7 +21,7 @@ struct BuildOptions: AsyncParsableCommand {
     var targetsOptions: TargetsOptions
 
     func xcodeBuildOptions(
-        skipSigning: Bool? = nil,
+        skipSigning: Bool = false,
         resultBundlePath: String? = nil
     ) -> XcodeBuildOptions {
         XcodeBuildOptions(
@@ -30,7 +30,7 @@ struct BuildOptions: AsyncParsableCommand {
             arch: resolveArchitecture().rawValue,
             xcargs: dependencies.xcargsProvider.xcargs(
                 strip: additionalBuildOptions.strip,
-                skipSigning: skipSigning ?? additionalBuildOptions.skipSigning
+                skipSigning: skipSigning
             ),
             resultBundlePath: resultBundlePath
         )
