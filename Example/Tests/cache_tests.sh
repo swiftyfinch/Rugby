@@ -10,9 +10,9 @@ header "CocoaPods"
 pod install --repo-update
 
 header "Rugby"
-rugby build -t Pods-ExampleFrameworks --strip --skip-signing
-rugby build -t Pods-ExampleLibs --strip --skip-signing
-rugby use -t Pods-ExampleFrameworks Pods-ExampleLibs --strip --skip-signing
+rugby build -t Pods-ExampleFrameworks --output multiline
+rugby build -t Pods-ExampleLibs --output multiline
+rugby use -t Pods-ExampleFrameworks Pods-ExampleLibs --output multiline
 
 header "Test"
 set -o pipefail && env NSUnbufferedIO=YES arch -arm64 xcodebuild test \

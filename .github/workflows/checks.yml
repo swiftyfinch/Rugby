@@ -109,11 +109,7 @@ jobs:
 
     - name: Rugby
       working-directory: ./Example
-      run: |
-        rugby --prebuild \
-              --targets Pods-ExampleFrameworks \
-              --strip \
-              --skip-signing \
+      run: rugby --prebuild --targets Pods-ExampleFrameworks --output multiline
 
     - run: brew install xcbeautify
     - name: XcodeBuild Test
@@ -151,11 +147,7 @@ jobs:
 
     - name: Rugby
       working-directory: ./Example
-      run: |
-        rugby --prebuild \
-              --targets Pods-ExampleLibs \
-              --strip \
-              --skip-signing \
+      run: rugby --prebuild --targets Pods-ExampleLibs --output multiline
 
     - run: brew install xcbeautify
     - name: XcodeBuild Test
@@ -196,8 +188,6 @@ jobs:
       working-directory: ./Example
       run: |
         rugby _test --targets-as-regex framework \
-                    --strip \
-                    --skip-signing \
                     --simulator-name 'iPhone 14' \
                     --testplan-template-path ExampleFrameworks
 
@@ -226,7 +216,5 @@ jobs:
       working-directory: ./Example
       run: |
         rugby _test --targets-as-regex framework \
-                    --strip \
-                    --skip-signing \
                     --simulator-name 'iPhone 14' \
                     --testplan-template-path ExampleFrameworks

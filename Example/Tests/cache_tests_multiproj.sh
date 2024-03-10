@@ -13,5 +13,4 @@ header "Rugby Test"
 rugby _test -g framework \
             -n 'iPhone 15' \
             -p ExampleFrameworks \
-            --strip \
-            --skip-signing
+            --output multiline
