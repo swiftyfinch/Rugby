@@ -1,7 +1,7 @@
 import Fish
 import XcbeautifyLib
 
-protocol IBuildLogFormatter {
+protocol IBuildLogFormatter: AnyObject {
     func format(
         line: String,
         output: @escaping (String, OutputType) throws -> Void

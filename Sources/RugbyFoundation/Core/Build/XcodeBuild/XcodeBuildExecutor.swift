@@ -5,7 +5,7 @@ import XcbeautifyLib
 
 // MARK: - Interface
 
-protocol IXcodeBuildExecutor {
+protocol IXcodeBuildExecutor: AnyObject {
     func run(
         _ command: String,
         rawLogPath: String,

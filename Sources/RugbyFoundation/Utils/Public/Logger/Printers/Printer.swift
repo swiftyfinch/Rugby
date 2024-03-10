@@ -1,5 +1,5 @@
 /// The protocol describing a printer which can be used in the logger.
-public protocol Printer {
+public protocol Printer: AnyObject {
     /// Returns true if text can be printed.
     /// - Parameter level: A level for deciding if text should be printed.
     func canPrint(level: LogLevel) -> Bool

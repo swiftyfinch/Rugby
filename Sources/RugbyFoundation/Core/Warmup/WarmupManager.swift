@@ -3,7 +3,7 @@ import Foundation
 // MARK: - Interface
 
 /// The protocol describing a manager to download remote built binaries based on CocoaPods project targets.
-public protocol IWarmupManager {
+public protocol IWarmupManager: AnyObject {
     /// Downloads remote built binaries based on CocoaPods project targets.
     /// - Parameters:
     ///   - mode: A warmup mode.

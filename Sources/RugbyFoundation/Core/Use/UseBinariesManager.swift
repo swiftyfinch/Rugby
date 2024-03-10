@@ -3,7 +3,7 @@ import Foundation
 // MARK: - Interface
 
 /// The protocol describing a manager to use built binaries instead of targets in CocoaPods project.
-public protocol IUseBinariesManager {
+public protocol IUseBinariesManager: AnyObject {
     /// Uses built binaries instead of targets.
     /// - Parameters:
     ///   - targetsRegex: A RegEx to select targets.

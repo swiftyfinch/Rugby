@@ -1,6 +1,6 @@
 // MARK: - Interface
 
-protocol ITargetTreePainter {
+protocol ITargetTreePainter: AnyObject {
     func paint(targets: TargetsMap) -> String
 }
 

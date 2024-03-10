@@ -2,7 +2,7 @@ import Foundation
 
 // MARK: - Interface
 
-protocol IXcodeCLTVersionProvider {
+protocol IXcodeCLTVersionProvider: AnyObject {
     func version() throws -> (base: String, build: String?)
 }
 

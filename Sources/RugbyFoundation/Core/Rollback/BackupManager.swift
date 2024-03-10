@@ -4,7 +4,7 @@ import Foundation
 // MARK: - Interface
 
 /// The protocol describing a backup manager to save or restore an Xcode project state.
-public protocol IBackupManager {
+public protocol IBackupManager: AnyObject {
     /// Backups Xcode project.
     /// - Parameters:
     ///   - xcodeProject: A service for Xcode project managment.

@@ -4,7 +4,7 @@ import Foundation
 // MARK: - Interface
 
 /// The protocol describing a service providing the environment information.
-public protocol IEnvironmentCollector {
+public protocol IEnvironmentCollector: AnyObject {
     /// Returns the environment information.
     /// - Parameters:
     ///   - rugbyVersion: The current version of Rugby.

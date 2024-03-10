@@ -18,7 +18,7 @@ enum ReplacementBoundary {
     static let suffix = #"(?=(\"|'|\s))"#
 }
 
-protocol ISupportFilesPatcher {
+protocol ISupportFilesPatcher: AnyObject {
     func prepareReplacements(forTarget target: IInternalTarget) throws -> [FileReplacement]
 }
 

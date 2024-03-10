@@ -4,7 +4,7 @@ import Foundation
 // MARK: - Interface
 
 /// The protocol describing a manager to clean Rugby folders.
-public protocol ICleaner {
+public protocol ICleaner: AnyObject {
     /// Deletes selected shared binaries.
     /// - Parameter names: A collection of binaries to delete.
     func deleteSharedBinaries(names: [String]) async throws

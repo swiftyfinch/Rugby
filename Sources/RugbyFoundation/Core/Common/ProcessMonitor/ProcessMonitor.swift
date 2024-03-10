@@ -4,7 +4,7 @@ import SwiftShell
 // MARK: - Interface
 
 /// The protocol describing a service to monitor Rugby child processes.
-public protocol IProcessMonitor {
+public protocol IProcessMonitor: AnyObject {
     /// Starts to monitor Rugby process.
     func monitor()
 

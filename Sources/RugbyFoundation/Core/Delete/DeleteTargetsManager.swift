@@ -3,7 +3,7 @@ import Foundation
 // MARK: - Interface
 
 /// The protocol describing a manager to delete targets from Xcode project.
-public protocol IDeleteTargetsManager {
+public protocol IDeleteTargetsManager: AnyObject {
     /// Deletes targets from Xcode project.
     /// - Parameters:
     ///   - targetsRegex: A RegEx to select targets.

@@ -4,7 +4,7 @@ import SwiftShell
 // MARK: - Interface
 
 /// The protocol describing a service to execute shell commands from Rugby.
-public protocol IShellExecutor {
+public protocol IShellExecutor: AnyObject {
     /// Runs shell command and returns output and error.
     /// - Parameters:
     ///   - command: A commad to run.

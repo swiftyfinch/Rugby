@@ -3,7 +3,7 @@ import Fish
 // MARK: - Interface
 
 /// The protocol describing router with all Rugby paths.
-public protocol IRouter {
+public protocol IRouter: AnyObject {
     /// The directory with Pods folder.
     var workingDirectory: IFolder { get }
 

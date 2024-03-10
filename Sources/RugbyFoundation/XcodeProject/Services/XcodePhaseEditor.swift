@@ -2,7 +2,7 @@ import XcodeProj
 
 // MARK: - Interface
 
-protocol IXcodePhaseEditor {
+protocol IXcodePhaseEditor: AnyObject {
     /// Removes script phases after "Source" phase inclusive.
     func keepOnlyPreSourceScriptPhases(in targets: TargetsMap) async
 

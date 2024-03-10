@@ -2,7 +2,7 @@ import Fish
 import Foundation
 import XcodeProj
 
-protocol IXcodeProjectSchemesEditor {
+protocol IXcodeProjectSchemesEditor: AnyObject {
     func deleteSchemes(
         ofTargets targetsForRemove: TargetsMap,
         targets: TargetsMap

@@ -2,7 +2,7 @@ import Foundation
 
 // MARK: - Interface
 
-protocol ITimerTaskFactory {
+protocol ITimerTaskFactory: AnyObject {
     func makeTask(interval: TimeInterval, task: @escaping () -> Void) -> ITimerTask
 }
 

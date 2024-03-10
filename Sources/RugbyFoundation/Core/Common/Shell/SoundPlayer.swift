@@ -1,7 +1,7 @@
 // MARK: - Interface
 
 /// The protocol describing a service to play sound notifications.
-public protocol ISoundPlayer {
+public protocol ISoundPlayer: AnyObject {
     /// Plays the bell notification.
     func playBell()
 }
