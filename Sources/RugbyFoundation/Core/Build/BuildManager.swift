@@ -139,7 +139,7 @@ extension BuildManager: IInternalBuildManager {
         }
         guard exactTargets.isNotEmpty else { throw BuildError.cantFindBuildTargets }
 
-        try await log("Backuping", level: .info, auto: await backupManager.backup(xcodeProject, kind: .tmp))
+        try await log("Backuping", auto: await backupManager.backup(xcodeProject, kind: .tmp))
         if freeSpaceIfNeeded {
             try await log("Checking Binaries Storage", auto: await binariesCleaner.freeSpace())
         }
