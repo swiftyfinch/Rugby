@@ -32,9 +32,11 @@ final class XcodeBuildExecutor: IXcodeBuildExecutor, Loggable {
     func run(_ command: String, rawLogPath: String, logPath: String, args: Any...) async throws {
         try Folder.create(at: URL(fileURLWithPath: rawLogPath).deletingLastPathComponent().path)
         try shellExecutor.throwingShell(command, args: args, "| tee '\(rawLogPath)'")
-        if let errors = try? await beautifyLog(rawLogPath: rawLogPath, logPath: logPath), errors.isNotEmpty {
-            throw BuildError.buildFailed(errors: errors, buildLogPath: logPath, rawBuildLogPath: rawLogPath)
-        }
+        try await log("Beautifying Log", block: {
+            if let errors = try? await beautifyLog(rawLogPath: rawLogPath, logPath: logPath), errors.isNotEmpty {
+                throw BuildError.buildFailed(errors: errors, buildLogPath: logPath, rawBuildLogPath: rawLogPath)
+            }
+        })
     }
 
     // MARK: - Private
