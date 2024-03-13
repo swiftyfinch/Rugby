@@ -144,7 +144,7 @@ extension BuildManager: IInternalBuildManager {
             try await log("Checking Binaries Storage", auto: await binariesCleaner.freeSpace())
         }
         if patchLibraries {
-            try await log("Patching Libraries", level: .info, auto: await librariesPatcher.patch(exactTargets))
+            try await log("Patching Libraries", auto: await librariesPatcher.patch(exactTargets))
         }
         return exactTargets
     }
