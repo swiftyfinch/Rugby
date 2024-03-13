@@ -173,11 +173,15 @@ extension BuildManager: IInternalBuildManager {
             }
             let processInterruptionTask = processMonitor.runOnInterruption(cleanup)
 
-            defer {
+            do {
+                try await xcodeBuild.build(target: target.name, options: options, paths: paths)
                 processInterruptionTask.cancel()
-                cleanup()
+                await log("Cleaning Up", block: cleanup)
+            } catch {
+                processInterruptionTask.cancel()
+                await log("Cleaning Up", block: cleanup)
+                throw error
             }
-            try await xcodeBuild.build(target: target.name, options: options, paths: paths)
         })
     }
 
