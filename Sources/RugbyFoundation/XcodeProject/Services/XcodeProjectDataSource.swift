@@ -11,7 +11,7 @@ final class XcodeProjectDataSource: Loggable {
     var rootProject: IProject {
         get async throws {
             if let cachedRootProject { return cachedRootProject }
-            let project = try await log("Reading Project", level: .info, auto: Project(path: .string(projectPath)))
+            let project = try await log("Reading Project", auto: Project(path: .string(projectPath)))
             cachedRootProject = project
             return project
         }
@@ -24,7 +24,7 @@ final class XcodeProjectDataSource: Loggable {
             let subprojects: [IProject]
             let xcodeprojFileReferences = try await rootProject.pbxProj.projectReferences()
             if xcodeprojFileReferences.isNotEmpty {
-                subprojects = try await log("Reading Subprojects", level: .info, block: {
+                subprojects = try await log("Reading Subprojects", block: {
                     try await xcodeprojFileReferences.concurrentMap { reference in
                         try Project(path: .reference(reference))
                     }
