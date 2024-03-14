@@ -112,6 +112,11 @@ jobs:
       run: rugby --prebuild --targets Pods-ExampleFrameworks --output multiline
 
     - run: brew install xcbeautify
+      if: always()
+    - name: Beautify logs
+      if: always()
+      run: cat ~/.rugby/logs/+latest/rawBuild.log 2>&1 | xcbeautify --renderer github-actions
+
     - name: XcodeBuild Test
       working-directory: ./Example
       run: |
