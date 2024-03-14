@@ -30,7 +30,7 @@ final class XcodeBuildExecutor: IXcodeBuildExecutor, Loggable {
     }
 
     func run(_ command: String, rawLogPath: String, logPath: String, args: Any...) async throws {
-        try Folder.create(at: URL(fileURLWithPath: rawLogPath).deletingLastPathComponent().path)
+        try createRawLogFolder(at: rawLogPath)
         try shellExecutor.throwingShell(command, args: args, "| tee '\(rawLogPath)'")
         try await log("Beautifying Log", block: {
             if let errors = try? await beautifyLog(rawLogPath: rawLogPath, logPath: logPath), errors.isNotEmpty {
@@ -40,6 +40,14 @@ final class XcodeBuildExecutor: IXcodeBuildExecutor, Loggable {
     }
 
     // MARK: - Private
+
+    private func createRawLogFolder(at rawLogPath: String) throws {
+        let folder = try Folder.create(at: URL(fileURLWithPath: rawLogPath).deletingLastPathComponent().path)
+        guard let parent = folder.parent else { return }
+        let latestLogFolderSymlink = "\(parent.path)/+latest"
+        shellExecutor.shell("rm -f \(latestLogFolderSymlink)")
+        try FileManager.default.createSymbolicLink(atPath: latestLogFolderSymlink, withDestinationPath: folder.path)
+    }
 
     private func beautifyLog(rawLogPath: String, logPath: String) async throws -> [String] {
         var tests: [String] = []
