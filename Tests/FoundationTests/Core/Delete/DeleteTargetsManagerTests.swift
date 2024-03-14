@@ -108,7 +108,7 @@ extension DeleteTargetsManagerTests {
         XCTAssertEqual(loggerBlockInvocations[1].header, "Keeping Excepted Targets Dependencies")
         XCTAssertNil(loggerBlockInvocations[1].footer)
         XCTAssertNil(loggerBlockInvocations[1].metricKey)
-        XCTAssertEqual(loggerBlockInvocations[1].level, .info)
+        XCTAssertEqual(loggerBlockInvocations[1].level, .compact)
         XCTAssertEqual(loggerBlockInvocations[1].output, .all)
 
         XCTAssertEqual(logger.logLevelOutputReceivedInvocations.count, 1)
@@ -166,7 +166,7 @@ extension DeleteTargetsManagerTests {
         XCTAssertEqual(loggerBlockInvocations[1].header, "Keeping Excepted Targets Dependencies")
         XCTAssertNil(loggerBlockInvocations[1].footer)
         XCTAssertNil(loggerBlockInvocations[1].metricKey)
-        XCTAssertEqual(loggerBlockInvocations[1].level, .info)
+        XCTAssertEqual(loggerBlockInvocations[1].level, .compact)
         XCTAssertEqual(loggerBlockInvocations[1].output, .all)
 
         XCTAssertEqual(backupManager.backupKindReceivedInvocations.count, 1)
@@ -175,7 +175,7 @@ extension DeleteTargetsManagerTests {
         XCTAssertEqual(loggerBlockInvocations[2].header, "Backuping")
         XCTAssertNil(loggerBlockInvocations[2].footer)
         XCTAssertNil(loggerBlockInvocations[2].metricKey)
-        XCTAssertEqual(loggerBlockInvocations[2].level, .info)
+        XCTAssertEqual(loggerBlockInvocations[2].level, .compact)
         XCTAssertEqual(loggerBlockInvocations[2].output, .all)
 
         XCTAssertEqual(xcodeProject.deleteTargetsKeepGroupsReceivedInvocations.count, 1)

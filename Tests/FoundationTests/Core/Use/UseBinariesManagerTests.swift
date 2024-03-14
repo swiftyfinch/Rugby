@@ -213,7 +213,7 @@ extension UseBinariesManagerTests {
         XCTAssertEqual(loggerBlockInvocations[1].header, "Backuping")
         XCTAssertNil(loggerBlockInvocations[1].footer)
         XCTAssertNil(loggerBlockInvocations[1].metricKey)
-        XCTAssertEqual(loggerBlockInvocations[1].level, .info)
+        XCTAssertEqual(loggerBlockInvocations[1].level, .compact)
         XCTAssertEqual(loggerBlockInvocations[1].output, .all)
         XCTAssertEqual(backupManager.backupKindCallsCount, 1)
         let backupKindReceivedArguments = try XCTUnwrap(backupManager.backupKindReceivedArguments)
