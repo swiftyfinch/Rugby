@@ -7,6 +7,9 @@ import XCTest
 final class XcodeBuildExecutorTests: XCTestCase {
     private var sut: XcodeBuildExecutor!
     private var logger: ILoggerMock!
+    private var loggerBlockInvocations: [
+        (header: String, footer: String?, metricKey: String?, level: LogLevel, output: LoggerOutput)
+    ]!
     private var shellExecutor: IShellExecutorMock!
     private var buildLogFormatter: IBuildLogFormatterMock!
     private var fishSharedStorage: IFilesManagerMock!
@@ -22,6 +25,11 @@ final class XcodeBuildExecutorTests: XCTestCase {
         }
 
         logger = ILoggerMock()
+        loggerBlockInvocations = []
+        logger.logFooterMetricKeyLevelOutputBlockClosure = { header, footer, metricKey, level, output, block in
+            self.loggerBlockInvocations.append((header, footer, metricKey, level, output))
+            return try await block()
+        }
         shellExecutor = IShellExecutorMock()
         buildLogFormatter = IBuildLogFormatterMock()
         sut = XcodeBuildExecutor(
@@ -35,6 +43,7 @@ final class XcodeBuildExecutorTests: XCTestCase {
         super.tearDown()
         sut = nil
         logger = nil
+        loggerBlockInvocations = nil
         shellExecutor = nil
         buildLogFormatter = nil
         fishSharedStorage = nil
@@ -96,6 +105,13 @@ extension XcodeBuildExecutorTests {
 
         XCTAssertEqual(createFileMock.appendCallsCount, 1)
         XCTAssertEqual(createFileMock.appendReceivedInvocations, [expectedContent + "\n"])
+
+        XCTAssertEqual(loggerBlockInvocations.count, 1)
+        XCTAssertEqual(loggerBlockInvocations[0].header, "Beautifying Log".green)
+        XCTAssertNil(loggerBlockInvocations[0].footer)
+        XCTAssertEqual(loggerBlockInvocations[0].level, .compact)
+        XCTAssertNil(loggerBlockInvocations[0].metricKey)
+        XCTAssertEqual(loggerBlockInvocations[0].output, .all)
     }
 
     func test_errorsInLog() async throws {
@@ -175,6 +191,13 @@ extension XcodeBuildExecutorTests {
         XCTAssertEqual(fishSharedStorage.createFolderAtReceivedPath, rugbyDirectory.path)
         XCTAssertEqual(createFileMock.appendCallsCount, 2)
         XCTAssertEqual(createFileMock.appendReceivedInvocations, expectedContent.map { "\($0)\n" })
+
+        XCTAssertEqual(loggerBlockInvocations.count, 1)
+        XCTAssertEqual(loggerBlockInvocations[0].header, "Beautifying Log".green)
+        XCTAssertNil(loggerBlockInvocations[0].footer)
+        XCTAssertEqual(loggerBlockInvocations[0].level, .compact)
+        XCTAssertNil(loggerBlockInvocations[0].metricKey)
+        XCTAssertEqual(loggerBlockInvocations[0].output, .all)
     }
 }
 

@@ -199,7 +199,7 @@ extension BuildManagerTests {
         XCTAssertEqual(loggerBlockInvocations[1].header, "Backuping")
         XCTAssertNil(loggerBlockInvocations[1].footer)
         XCTAssertNil(loggerBlockInvocations[1].metricKey)
-        XCTAssertEqual(loggerBlockInvocations[1].level, .info)
+        XCTAssertEqual(loggerBlockInvocations[1].level, .compact)
         XCTAssertEqual(loggerBlockInvocations[1].output, .all)
         XCTAssertEqual(backupManager.backupKindCallsCount, 1)
         XCTAssertIdentical(backupManager.backupKindReceivedArguments?.xcodeProject, xcodeProject)
@@ -215,7 +215,7 @@ extension BuildManagerTests {
         XCTAssertEqual(loggerBlockInvocations[3].header, "Patching Libraries")
         XCTAssertNil(loggerBlockInvocations[3].footer)
         XCTAssertNil(loggerBlockInvocations[3].metricKey)
-        XCTAssertEqual(loggerBlockInvocations[3].level, .info)
+        XCTAssertEqual(loggerBlockInvocations[3].level, .compact)
         XCTAssertEqual(loggerBlockInvocations[3].output, .all)
         XCTAssertEqual(librariesPatcher.patchCallsCount, 1)
         let patchReceivedTargets = try XCTUnwrap(librariesPatcher.patchReceivedTargets)
@@ -319,7 +319,7 @@ extension BuildManagerTests {
         XCTAssertEqual(loggerBlockInvocations[1].header, "Backuping")
         XCTAssertNil(loggerBlockInvocations[1].footer)
         XCTAssertNil(loggerBlockInvocations[1].metricKey)
-        XCTAssertEqual(loggerBlockInvocations[1].level, .info)
+        XCTAssertEqual(loggerBlockInvocations[1].level, .compact)
         XCTAssertEqual(loggerBlockInvocations[1].output, .all)
         XCTAssertEqual(backupManager.backupKindCallsCount, 1)
         XCTAssertIdentical(backupManager.backupKindReceivedArguments?.xcodeProject, xcodeProject)
@@ -335,7 +335,7 @@ extension BuildManagerTests {
         XCTAssertEqual(loggerBlockInvocations[3].header, "Patching Libraries")
         XCTAssertNil(loggerBlockInvocations[3].footer)
         XCTAssertNil(loggerBlockInvocations[3].metricKey)
-        XCTAssertEqual(loggerBlockInvocations[3].level, .info)
+        XCTAssertEqual(loggerBlockInvocations[3].level, .compact)
         XCTAssertEqual(loggerBlockInvocations[3].output, .all)
         XCTAssertEqual(librariesPatcher.patchCallsCount, 1)
         let patchReceivedTargets = try XCTUnwrap(librariesPatcher.patchReceivedTargets)
@@ -488,7 +488,7 @@ extension BuildManagerTests {
         XCTAssertEqual(environmentCollector.logXcodeVersionCallsCount, 1)
         XCTAssertEqual(rugbyXcodeProject.isAlreadyUsingRugbyCallsCount, 1)
 
-        XCTAssertEqual(loggerBlockInvocations.count, 11)
+        XCTAssertEqual(loggerBlockInvocations.count, 12)
         XCTAssertEqual(logger.logLevelOutputReceivedInvocations.count, 3)
         XCTAssertEqual(logger.logPlainLevelOutputReceivedInvocations.count, 1)
 
@@ -507,7 +507,7 @@ extension BuildManagerTests {
         XCTAssertEqual(loggerBlockInvocations[1].header, "Backuping")
         XCTAssertNil(loggerBlockInvocations[1].footer)
         XCTAssertNil(loggerBlockInvocations[1].metricKey)
-        XCTAssertEqual(loggerBlockInvocations[1].level, .info)
+        XCTAssertEqual(loggerBlockInvocations[1].level, .compact)
         XCTAssertEqual(loggerBlockInvocations[1].output, .all)
         XCTAssertEqual(backupManager.backupKindCallsCount, 1)
         XCTAssertIdentical(backupManager.backupKindReceivedArguments?.xcodeProject, xcodeProject)
@@ -523,7 +523,7 @@ extension BuildManagerTests {
         XCTAssertEqual(loggerBlockInvocations[3].header, "Patching Libraries")
         XCTAssertNil(loggerBlockInvocations[3].footer)
         XCTAssertNil(loggerBlockInvocations[3].metricKey)
-        XCTAssertEqual(loggerBlockInvocations[3].level, .info)
+        XCTAssertEqual(loggerBlockInvocations[3].level, .compact)
         XCTAssertEqual(loggerBlockInvocations[3].output, .all)
         XCTAssertEqual(librariesPatcher.patchCallsCount, 1)
         let patchReceivedTargets = try XCTUnwrap(librariesPatcher.patchReceivedTargets)
@@ -649,6 +649,12 @@ extension BuildManagerTests {
         XCTAssertEqual(xcodeBuild.buildTargetOptionsPathsReceivedArguments?.options, buildOptions)
         XCTAssertEqual(xcodeBuild.buildTargetOptionsPathsReceivedArguments?.paths, buildPaths)
         XCTAssertEqual(resultError as? TestError, .test)
+
+        XCTAssertEqual(loggerBlockInvocations[11].header, "Cleaning Up")
+        XCTAssertNil(loggerBlockInvocations[11].footer)
+        XCTAssertNil(loggerBlockInvocations[11].metricKey)
+        XCTAssertEqual(loggerBlockInvocations[11].level, .compact)
+        XCTAssertEqual(loggerBlockInvocations[11].output, .all)
     }
 
     func test_build_full() async throws {
@@ -700,7 +706,7 @@ extension BuildManagerTests {
         XCTAssertEqual(environmentCollector.logXcodeVersionCallsCount, 1)
         XCTAssertEqual(rugbyXcodeProject.isAlreadyUsingRugbyCallsCount, 1)
 
-        XCTAssertEqual(loggerBlockInvocations.count, 12)
+        XCTAssertEqual(loggerBlockInvocations.count, 13)
         XCTAssertEqual(logger.logLevelOutputReceivedInvocations.count, 3)
         XCTAssertEqual(logger.logPlainLevelOutputReceivedInvocations.count, 1)
 
@@ -719,7 +725,7 @@ extension BuildManagerTests {
         XCTAssertEqual(loggerBlockInvocations[1].header, "Backuping")
         XCTAssertNil(loggerBlockInvocations[1].footer)
         XCTAssertNil(loggerBlockInvocations[1].metricKey)
-        XCTAssertEqual(loggerBlockInvocations[1].level, .info)
+        XCTAssertEqual(loggerBlockInvocations[1].level, .compact)
         XCTAssertEqual(loggerBlockInvocations[1].output, .all)
         XCTAssertEqual(backupManager.backupKindCallsCount, 1)
         XCTAssertIdentical(backupManager.backupKindReceivedArguments?.xcodeProject, xcodeProject)
@@ -735,7 +741,7 @@ extension BuildManagerTests {
         XCTAssertEqual(loggerBlockInvocations[3].header, "Patching Libraries")
         XCTAssertNil(loggerBlockInvocations[3].footer)
         XCTAssertNil(loggerBlockInvocations[3].metricKey)
-        XCTAssertEqual(loggerBlockInvocations[3].level, .info)
+        XCTAssertEqual(loggerBlockInvocations[3].level, .compact)
         XCTAssertEqual(loggerBlockInvocations[3].output, .all)
         XCTAssertEqual(librariesPatcher.patchCallsCount, 1)
         let patchReceivedTargets = try XCTUnwrap(librariesPatcher.patchReceivedTargets)
@@ -861,7 +867,7 @@ extension BuildManagerTests {
         XCTAssertEqual(xcodeBuild.buildTargetOptionsPathsReceivedArguments?.options, buildOptions)
         XCTAssertEqual(xcodeBuild.buildTargetOptionsPathsReceivedArguments?.paths, buildPaths)
 
-        XCTAssertEqual(loggerBlockInvocations[11].header, "Saving binaries (2)")
+        XCTAssertEqual(loggerBlockInvocations[11].header, "Cleaning Up")
         XCTAssertNil(loggerBlockInvocations[11].footer)
         XCTAssertNil(loggerBlockInvocations[11].metricKey)
         XCTAssertEqual(loggerBlockInvocations[11].level, .compact)
@@ -875,6 +881,12 @@ extension BuildManagerTests {
         XCTAssertTrue(saveBinariesArguments.targets.contains(moya.uuid))
         XCTAssertEqual(saveBinariesArguments.buildOptions, buildOptions)
         XCTAssertEqual(saveBinariesArguments.buildPaths, buildPaths)
+
+        XCTAssertEqual(loggerBlockInvocations[12].header, "Saving binaries (2)")
+        XCTAssertNil(loggerBlockInvocations[12].footer)
+        XCTAssertNil(loggerBlockInvocations[12].metricKey)
+        XCTAssertEqual(loggerBlockInvocations[12].level, .compact)
+        XCTAssertEqual(loggerBlockInvocations[12].output, .all)
     }
 }
 
@@ -914,7 +926,7 @@ extension BuildManagerTests {
         XCTAssertEqual(loggerBlockInvocations[1].header, "Backuping")
         XCTAssertNil(loggerBlockInvocations[1].footer)
         XCTAssertNil(loggerBlockInvocations[1].metricKey)
-        XCTAssertEqual(loggerBlockInvocations[1].level, .info)
+        XCTAssertEqual(loggerBlockInvocations[1].level, .compact)
         XCTAssertEqual(loggerBlockInvocations[1].output, .all)
         XCTAssertEqual(backupManager.backupKindCallsCount, 1)
         XCTAssertIdentical(backupManager.backupKindReceivedArguments?.xcodeProject, xcodeProject)
