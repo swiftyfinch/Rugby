@@ -77,8 +77,8 @@
       "kind" : "remoteSourceControl",
       "location" : "https://github.com/tuist/xcbeautify",
       "state" : {
-        "revision" : "82bc54c25c78284555759277d4d92fef5627f95e",
-        "version" : "1.6.0"
+        "revision" : "3d4d7943c7c1400e2bc3fbcf93d87a76dfbca53f",
+        "version" : "1.7.0"
       }
     },
     {
