@@ -11,18 +11,19 @@
  > Run the build and use commands.
 
  Options:
-╭───────────────────────────────────────────────────────────────────────────────╮
-│ --warmup                   * Warmup cache with this endpoint.                 │
-│ -s, --sdk                  * Build SDK: sim or ios.                           │
-│ -a, --arch                 * Build architecture: auto, x86_64 or arm64.       │
-│ -c, --config               * Build configuration. (Debug)                     │
-│ -t, --targets []           * Target names to select. Empty means all targets. │
-│ -g, --targets-as-regex []  * Regular expression patterns to select targets.   │
-│ -e, --except []            * Target names to exclude.                         │
-│ -x, --except-as-regex []   * Regular expression patterns to exclude targets.  │
-│ --result-bundle-path       * Path to xcresult bundle.                         │
-│ -o, --output               * Output mode: fold, multiline, silent, raw.       │
-╰───────────────────────────────────────────────────────────────────────────────╯
+╭─────────────────────────────────────────────────────────────────────────────────────────────╮
+│ --warmup                   * Warmup cache with this endpoint.                               │
+│ --headers []               * Extra HTTP header fields for warmup ("s3-key: my-secret-key"). │
+│ -s, --sdk                  * Build SDK: sim or ios.                                         │
+│ -a, --arch                 * Build architecture: auto, x86_64 or arm64.                     │
+│ -c, --config               * Build configuration. (Debug)                                   │
+│ -t, --targets []           * Target names to select. Empty means all targets.               │
+│ -g, --targets-as-regex []  * Regular expression patterns to select targets.                 │
+│ -e, --except []            * Target names to exclude.                                       │
+│ -x, --except-as-regex []   * Regular expression patterns to exclude targets.                │
+│ --result-bundle-path       * Path to xcresult bundle.                                       │
+│ -o, --output               * Output mode: fold, multiline, silent, raw.                     │
+╰─────────────────────────────────────────────────────────────────────────────────────────────╯
  Flags:
 ╭─────────────────────────────────────────────────────────────────────────╮
 │ -r, --rollback    * Restore projects state before the last Rugby usage. │
