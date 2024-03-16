@@ -6,7 +6,7 @@ private extension String {
 }
 
 final class HelpPrinter {
-    private let terminalWidth = Terminal.columns() ?? 80
+    private let terminalWidth = Terminal.columns() ?? Int.max
     private let arguments: [(String, ArgumentInfoV0.KindV0)] = [
         ("Arguments", .positional),
         ("Options", .option),
