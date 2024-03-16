@@ -72,6 +72,9 @@ extension Shortcuts {
         @Option(help: "Warmup cache with this endpoint.")
         var warmup: String?
 
+        @Option(help: "Extra HTTP header fields for warmup (\"s3-key: my-secret-key\").")
+        var headers: [String] = []
+
         @OptionGroup
         var buildOptions: BuildOptions
 
@@ -120,6 +123,7 @@ extension Shortcuts.Cache: RunnableCommand {
             warmup.commonOptions = commonOptions
             warmup.timeout = Self.settings.warmupTimeout
             warmup.maxConnections = Self.settings.warmupMaximumConnectionsPerHost
+            warmup.headers = headers
             runnableCommands.append(("Warmup", warmup))
         }
 
