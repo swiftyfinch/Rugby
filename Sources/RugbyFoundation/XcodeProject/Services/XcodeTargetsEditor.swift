@@ -68,9 +68,10 @@ final class XcodeTargetsEditor: Loggable {
                 try dictionary[target.project.uuid, default: [:]][target.uuid] = target
             }
             let targets = try await targetsDataSource.targets
-            targetsByProject.forEach { _, targetsForRemove in
+            try targetsByProject.forEach { _, targetsForRemove in
                 guard let project = targetsForRemove.values.first?.project else { return }
-                project.deleteTargetGroups(targetsForRemove, targets: targets)
+                let projectTargets = try targets.filter { try $0.value.project.uuid == project.uuid }
+                project.deleteTargetGroups(targetsForRemove, targets: projectTargets)
             }
         }
 
