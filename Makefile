@@ -61,3 +61,7 @@ test:
 .PHONY: smoke
 smoke:
 	cd Example && Tests/CacheTests.sh
+
+.PHONY: docs
+docs:
+	ruby .github/scripts/update_docs.rb
