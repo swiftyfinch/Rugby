@@ -52,28 +52,28 @@ final class CacheDownloaderTests: XCTestCase {
 extension CacheDownloaderTests {
     func test_checkIfBinaryIsReachable_true() async {
         let url: URL! = URL(string: "https://github.com/swiftyfinch/Rugby")
-        reachabilityChecker.checkIfURLIsReachableReturnValue = true
+        reachabilityChecker.checkIfURLIsReachableHeadersReturnValue = true
 
         // Act
-        let isReachable = await sut.checkIfBinaryIsReachable(url: url)
+        let isReachable = await sut.checkIfBinaryIsReachable(url: url, headers: [:])
 
         // Assert
         XCTAssertTrue(isReachable)
-        XCTAssertEqual(reachabilityChecker.checkIfURLIsReachableCallsCount, 1)
-        XCTAssertEqual(reachabilityChecker.checkIfURLIsReachableReceivedUrl, url)
+        XCTAssertEqual(reachabilityChecker.checkIfURLIsReachableHeadersCallsCount, 1)
+        XCTAssertEqual(reachabilityChecker.checkIfURLIsReachableHeadersReceivedArguments?.url, url)
     }
 
     func test_checkIfBinaryIsReachable_false() async {
         let url: URL! = URL(string: "https://github.com/swiftyfinch/Rugby")
-        reachabilityChecker.checkIfURLIsReachableReturnValue = false
+        reachabilityChecker.checkIfURLIsReachableHeadersReturnValue = false
 
         // Act
-        let isReachable = await sut.checkIfBinaryIsReachable(url: url)
+        let isReachable = await sut.checkIfBinaryIsReachable(url: url, headers: [:])
 
         // Assert
         XCTAssertFalse(isReachable)
-        XCTAssertEqual(reachabilityChecker.checkIfURLIsReachableCallsCount, 1)
-        XCTAssertEqual(reachabilityChecker.checkIfURLIsReachableReceivedUrl, url)
+        XCTAssertEqual(reachabilityChecker.checkIfURLIsReachableHeadersCallsCount, 1)
+        XCTAssertEqual(reachabilityChecker.checkIfURLIsReachableHeadersReceivedArguments?.url, url)
     }
 
     func test_downloadBinary_failedDownloading() async {
@@ -84,12 +84,14 @@ extension CacheDownloaderTests {
         urlSession.downloadForThrowableError = TestError.test
 
         // Act
-        let isDownloaded = await sut.downloadBinary(url: url, to: fileURL)
+        let isDownloaded = await sut.downloadBinary(url: url, headers: ["test_field": "test_value"], to: fileURL)
 
         // Assert
         XCTAssertFalse(isDownloaded)
         XCTAssertEqual(urlSession.downloadForCallsCount, 1)
         XCTAssertEqual(urlSession.downloadForReceivedRequest?.url, url)
+        XCTAssertEqual(urlSession.downloadForReceivedRequest?.allHTTPHeaderFields?.count, 1)
+        XCTAssertEqual(urlSession.downloadForReceivedRequest?.allHTTPHeaderFields?["test_field"], "test_value")
         XCTAssertEqual(logger.logLevelOutputReceivedInvocations.count, 2)
         XCTAssertEqual(
             logger.logLevelOutputReceivedInvocations[0].text,
@@ -116,7 +118,7 @@ extension CacheDownloaderTests {
         decompressor.unzipFileDestinationThrowableError = TestError.test
 
         // Act
-        let isDownloaded = await sut.downloadBinary(url: url, to: fileURL)
+        let isDownloaded = await sut.downloadBinary(url: url, headers: [:], to: fileURL)
 
         // Assert
         XCTAssertFalse(isDownloaded)
@@ -159,7 +161,7 @@ extension CacheDownloaderTests {
         fishSharedStorage.createFolderAtReturnValue = IFolderMock()
 
         // Act
-        let isDownloaded = await sut.downloadBinary(url: url, to: fileURL)
+        let isDownloaded = await sut.downloadBinary(url: url, headers: [:], to: fileURL)
 
         // Assert
         XCTAssertTrue(isDownloaded)

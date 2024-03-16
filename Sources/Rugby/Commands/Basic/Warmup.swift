@@ -13,7 +13,7 @@ struct Warmup: AsyncParsableCommand {
         """
     )
 
-    @Argument(help: "Endpoint for your binaries storage (s3.eu-west-2.amazonaws.com)")
+    @Argument(help: "Endpoint for your binaries storage (s3.eu-west-2.amazonaws.com).")
     var endpoint: String?
 
     @Flag(help: "Run only in analyse mode without downloading. The endpoint is optional.")
@@ -30,6 +30,9 @@ struct Warmup: AsyncParsableCommand {
 
     @Option(help: "The maximum number of simultaneous connections.")
     var maxConnections = settings.warmupMaximumConnectionsPerHost
+
+    @Option(help: "Extra HTTP header fields for a request (\"s3-key: my-secret-key\").")
+    var headers: [String] = []
 
     func run() async throws {
         try await run(body,
@@ -76,7 +79,19 @@ extension Warmup: RunnableCommand {
                 exactMatches: buildOptions.targetsOptions.exceptTargets
             ),
             options: buildOptions.xcodeBuildOptions(),
-            maxInParallel: maxConnections
+            maxInParallel: maxConnections,
+            headers: headers.parseHeaders()
         )
+    }
+}
+
+extension [String] {
+    func parseHeaders() -> [String: String] {
+        reduce(into: [:]) { headers, header in
+            let fieldAndValue = header.components(separatedBy: ": ")
+            guard fieldAndValue.count == 2 else { return }
+            let (field, value) = (fieldAndValue[0], fieldAndValue[1])
+            headers[field] = value
+        }
     }
 }

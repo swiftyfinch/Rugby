@@ -10,28 +10,28 @@ final class IReachabilityCheckerMock: IReachabilityChecker {
 
     // MARK: - checkIfURLIsReachable
 
-    var checkIfURLIsReachableThrowableError: Error?
-    var checkIfURLIsReachableCallsCount = 0
-    var checkIfURLIsReachableCalled: Bool { checkIfURLIsReachableCallsCount > 0 }
-    var checkIfURLIsReachableReceivedUrl: URL?
-    var checkIfURLIsReachableReceivedInvocations: [URL] = []
-    private let checkIfURLIsReachableReceivedInvocationsLock = NSRecursiveLock()
-    var checkIfURLIsReachableReturnValue: Bool!
-    var checkIfURLIsReachableClosure: ((URL) async throws -> Bool)?
+    var checkIfURLIsReachableHeadersThrowableError: Error?
+    var checkIfURLIsReachableHeadersCallsCount = 0
+    var checkIfURLIsReachableHeadersCalled: Bool { checkIfURLIsReachableHeadersCallsCount > 0 }
+    var checkIfURLIsReachableHeadersReceivedArguments: (url: URL, headers: [String: String])?
+    var checkIfURLIsReachableHeadersReceivedInvocations: [(url: URL, headers: [String: String])] = []
+    private let checkIfURLIsReachableHeadersReceivedInvocationsLock = NSRecursiveLock()
+    var checkIfURLIsReachableHeadersReturnValue: Bool!
+    var checkIfURLIsReachableHeadersClosure: ((URL, [String: String]) async throws -> Bool)?
 
-    func checkIfURLIsReachable(_ url: URL) async throws -> Bool {
-        checkIfURLIsReachableCallsCount += 1
-        checkIfURLIsReachableReceivedUrl = url
-        checkIfURLIsReachableReceivedInvocationsLock.withLock {
-            checkIfURLIsReachableReceivedInvocations.append(url)
+    func checkIfURLIsReachable(_ url: URL, headers: [String: String]) async throws -> Bool {
+        checkIfURLIsReachableHeadersCallsCount += 1
+        checkIfURLIsReachableHeadersReceivedArguments = (url: url, headers: headers)
+        checkIfURLIsReachableHeadersReceivedInvocationsLock.withLock {
+            checkIfURLIsReachableHeadersReceivedInvocations.append((url: url, headers: headers))
         }
-        if let error = checkIfURLIsReachableThrowableError {
+        if let error = checkIfURLIsReachableHeadersThrowableError {
             throw error
         }
-        if let checkIfURLIsReachableClosure = checkIfURLIsReachableClosure {
-            return try await checkIfURLIsReachableClosure(url)
+        if let checkIfURLIsReachableHeadersClosure = checkIfURLIsReachableHeadersClosure {
+            return try await checkIfURLIsReachableHeadersClosure(url, headers)
         } else {
-            return checkIfURLIsReachableReturnValue
+            return checkIfURLIsReachableHeadersReturnValue
         }
     }
 }

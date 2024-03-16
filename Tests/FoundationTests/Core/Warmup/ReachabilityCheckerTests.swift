@@ -26,13 +26,15 @@ extension ReachabilityCheckerTests {
         urlSession.dataForReturnValue = (data, response)
 
         // Act
-        let reachable = try await sut.checkIfURLIsReachable(url)
+        let reachable = try await sut.checkIfURLIsReachable(url, headers: ["test_field": "test_value"])
 
         // Assert
         XCTAssertTrue(reachable)
         XCTAssertEqual(urlSession.dataForCallsCount, 1)
         XCTAssertEqual(urlSession.dataForReceivedRequest?.url, url)
         XCTAssertEqual(urlSession.dataForReceivedRequest?.httpMethod, "HEAD")
+        XCTAssertEqual(urlSession.dataForReceivedRequest?.allHTTPHeaderFields?.count, 1)
+        XCTAssertEqual(urlSession.dataForReceivedRequest?.allHTTPHeaderFields?["test_field"], "test_value")
     }
 
     func test_checkIfURLIsReachable_404() async throws {
@@ -42,7 +44,7 @@ extension ReachabilityCheckerTests {
         urlSession.dataForReturnValue = (data, response)
 
         // Act
-        let reachable = try await sut.checkIfURLIsReachable(url)
+        let reachable = try await sut.checkIfURLIsReachable(url, headers: [:])
 
         // Assert
         XCTAssertFalse(reachable)
@@ -60,7 +62,7 @@ extension ReachabilityCheckerTests {
         // Act
         var resultError: Error?
         do {
-            _ = try await sut.checkIfURLIsReachable(url)
+            _ = try await sut.checkIfURLIsReachable(url, headers: [:])
         } catch {
             resultError = error
         }

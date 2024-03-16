@@ -11,11 +11,13 @@ public protocol IWarmupManager: AnyObject {
     ///   - exceptTargetsRegex: A RegEx to exclude targets.
     ///   - options: Xcode build options.
     ///   - maxInParallel: A count of parallel jobs.
+    ///   - headers: Extra HTTP header fields for a request (["s3-key": "my-secret-key"]).
     func warmup(mode: WarmupMode,
                 targetsRegex: NSRegularExpression?,
                 exceptTargetsRegex: NSRegularExpression?,
                 options: XcodeBuildOptions,
-                maxInParallel: Int) async throws
+                maxInParallel: Int,
+                headers: [String: String]) async throws
 }
 
 /// The enumeration of warmup modes.
@@ -103,12 +105,13 @@ final class WarmupManager: Loggable {
                                         endpointURL: URL,
                                         options: XcodeBuildOptions,
                                         dryRun: Bool,
-                                        maxInParallel: Int) async throws {
+                                        maxInParallel: Int,
+                                        headers: [String: String]) async throws {
         let binariesInfo = try collectRemoteBinariesInfo(targets: targets,
                                                          endpoint: endpointURL,
                                                          options: options)
         let reachableBinariesInfo = await log("Checking binaries reachability") {
-            await filterReachableURLs(binariesInfo: binariesInfo, maxInParallel: maxInParallel)
+            await filterReachableURLs(binariesInfo: binariesInfo, maxInParallel: maxInParallel, headers: headers)
         }
         if reachableBinariesInfo.unreachable.isNotEmpty {
             let listUnreachable = reachableBinariesInfo.unreachable
@@ -123,7 +126,7 @@ final class WarmupManager: Loggable {
 
         if dryRun { return }
         let downloaded = await log("Downloading binaries (\(reachable.count))") {
-            await downloadBinaries(binariesInfo: reachable, maxInParallel: maxInParallel)
+            await downloadBinaries(binariesInfo: reachable, maxInParallel: maxInParallel, headers: headers)
         }
         let downloadedPercent = downloaded.count.percent(total: reachable.count)
         await log("Downloaded: \(downloadedPercent)% (\(downloaded.count)/\(reachable.count))")
@@ -160,13 +163,14 @@ private extension WarmupManager {
 
     private func filterReachableURLs(
         binariesInfo: [RemoteBinaryInfo],
-        maxInParallel: Int
+        maxInParallel: Int,
+        headers: [String: String]
     ) async -> (reachable: [RemoteBinaryInfo], unreachable: [RemoteBinaryInfo]) {
         await binariesInfo.concurrentCompactMap(
             maxInParallel: maxInParallel
         ) { [weak self] binaryInfo -> (succeed: Bool, info: RemoteBinaryInfo) in
             guard let self else { return (false, binaryInfo) }
-            let succeed = await self.cacheDownloader.checkIfBinaryIsReachable(url: binaryInfo.url)
+            let succeed = await self.cacheDownloader.checkIfBinaryIsReachable(url: binaryInfo.url, headers: headers)
             return (succeed, binaryInfo)
         }.reduce(into: (reachable: [RemoteBinaryInfo], unreachable: [RemoteBinaryInfo])([], [])) { result, current in
             if current.succeed {
@@ -179,12 +183,13 @@ private extension WarmupManager {
 
     private func downloadBinaries(
         binariesInfo: [RemoteBinaryInfo],
-        maxInParallel: Int
+        maxInParallel: Int,
+        headers: [String: String]
     ) async -> [RemoteBinaryInfo] {
         await binariesInfo.concurrentCompactMap(maxInParallel: maxInParallel) { [weak self] binaryInfo in
             guard let self else { return nil }
             let (url, localPath) = binaryInfo
-            let succeed = await self.cacheDownloader.downloadBinary(url: url, to: localPath)
+            let succeed = await self.cacheDownloader.downloadBinary(url: url, headers: headers, to: localPath)
             return succeed ? binaryInfo : nil
         }
     }
@@ -204,7 +209,8 @@ extension WarmupManager: IWarmupManager {
                        targetsRegex: NSRegularExpression?,
                        exceptTargetsRegex: NSRegularExpression?,
                        options: XcodeBuildOptions,
-                       maxInParallel: Int) async throws {
+                       maxInParallel: Int,
+                       headers: [String: String]) async throws {
         let endpointURL: URL?
         switch mode {
         case let .endpoint(endpoint), let .analyse(endpoint?):
@@ -227,7 +233,8 @@ extension WarmupManager: IWarmupManager {
             endpointURL: endpointURL,
             options: options,
             dryRun: mode.dryRun,
-            maxInParallel: maxInParallel
+            maxInParallel: maxInParallel,
+            headers: headers
         )
     }
 }
