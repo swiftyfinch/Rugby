@@ -11,22 +11,23 @@
  > Download remote binaries for targets from Pods project.
 
  Arguments:
-╭─────────────────────────────────────────────────────────────────────────────╮
-│ endpoint  * Endpoint for your binaries storage (s3.eu-west-2.amazonaws.com) │
-╰─────────────────────────────────────────────────────────────────────────────╯
+╭──────────────────────────────────────────────────────────────────────────────╮
+│ endpoint  * Endpoint for your binaries storage (s3.eu-west-2.amazonaws.com). │
+╰──────────────────────────────────────────────────────────────────────────────╯
  Options:
-╭───────────────────────────────────────────────────────────────────────────────────╮
-│ -s, --sdk                  * Build SDK: sim or ios.                               │
-│ -a, --arch                 * Build architecture: auto, x86_64 or arm64.           │
-│ -c, --config               * Build configuration. (Debug)                         │
-│ -t, --targets []           * Target names to select. Empty means all targets.     │
-│ -g, --targets-as-regex []  * Regular expression patterns to select targets.       │
-│ -e, --except []            * Target names to exclude.                             │
-│ -x, --except-as-regex []   * Regular expression patterns to exclude targets.      │
-│ -o, --output               * Output mode: fold, multiline, silent, raw.           │
-│ --timeout                  * Timeout for requests in seconds. (60)                │
-│ --max-connections          * The maximum number of simultaneous connections. (10) │
-╰───────────────────────────────────────────────────────────────────────────────────╯
+╭────────────────────────────────────────────────────────────────────────────────────────────────╮
+│ -s, --sdk                  * Build SDK: sim or ios.                                            │
+│ -a, --arch                 * Build architecture: auto, x86_64 or arm64.                        │
+│ -c, --config               * Build configuration. (Debug)                                      │
+│ -t, --targets []           * Target names to select. Empty means all targets.                  │
+│ -g, --targets-as-regex []  * Regular expression patterns to select targets.                    │
+│ -e, --except []            * Target names to exclude.                                          │
+│ -x, --except-as-regex []   * Regular expression patterns to exclude targets.                   │
+│ -o, --output               * Output mode: fold, multiline, silent, raw.                        │
+│ --timeout                  * Timeout for requests in seconds. (60)                             │
+│ --max-connections          * The maximum number of simultaneous connections. (10)              │
+│ --headers []               * Extra HTTP header fields for a request ("s3-key: my-secret-key"). │
+╰────────────────────────────────────────────────────────────────────────────────────────────────╯
  Flags:
 ╭─────────────────────────────────────────────────────────────────────────────────────────────╮
 │ --analyse         * Run only in analyse mode without downloading. The endpoint is optional. │
