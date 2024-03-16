@@ -17,7 +17,7 @@
 │ _test      * (Experimental) Analyse and run tests.                   │
 │ rollback   * Restore projects state before the last Rugby usage.     │
 │ plan       * Run sequence of Rugby commands.                         │
-│ clear      * Clear modules cache.                                    │
+│ clear      * Delete different Rugby folders.                         │
 │ update     * Update Rugby version.                                   │
 │ doctor     * Heal your wounds after using Rugby (or not).            │
 │ shell      * Run shell command from Rugby.                           │
