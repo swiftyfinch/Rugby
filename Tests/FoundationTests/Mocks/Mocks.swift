@@ -157,4 +157,7 @@ extension IInternalTestImpactManager {}
 // sourcery: AutoMockable, testableImports = ["RugbyFoundation"]
 extension ISimCTL {}
 
+// sourcery: AutoMockable, testableImports = ["RugbyFoundation"]
+extension ITargetsPrinter {}
+
 // TODO: Needs to improve Sourcery template to generate mocks automatically w/o manual editing

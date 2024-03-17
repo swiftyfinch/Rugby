@@ -12,24 +12,24 @@ public final class IUseBinariesManagerMock: IUseBinariesManager {
 
     // MARK: - use
 
-    public var useTargetsRegexExceptTargetsRegexXcargsDeleteSourcesThrowableError: Error?
-    public var useTargetsRegexExceptTargetsRegexXcargsDeleteSourcesCallsCount = 0
-    public var useTargetsRegexExceptTargetsRegexXcargsDeleteSourcesCalled: Bool { useTargetsRegexExceptTargetsRegexXcargsDeleteSourcesCallsCount > 0 }
-    public var useTargetsRegexExceptTargetsRegexXcargsDeleteSourcesReceivedArguments: (targetsRegex: NSRegularExpression?, exceptTargetsRegex: NSRegularExpression?, xcargs: [String], deleteSources: Bool)?
-    public var useTargetsRegexExceptTargetsRegexXcargsDeleteSourcesReceivedInvocations: [(targetsRegex: NSRegularExpression?, exceptTargetsRegex: NSRegularExpression?, xcargs: [String], deleteSources: Bool)] = []
-    private let useTargetsRegexExceptTargetsRegexXcargsDeleteSourcesReceivedInvocationsLock = NSRecursiveLock()
-    public var useTargetsRegexExceptTargetsRegexXcargsDeleteSourcesClosure: ((NSRegularExpression?, NSRegularExpression?, [String], Bool) async throws -> Void)?
+    public var useTargetsOptionsXcargsDeleteSourcesThrowableError: Error?
+    public var useTargetsOptionsXcargsDeleteSourcesCallsCount = 0
+    public var useTargetsOptionsXcargsDeleteSourcesCalled: Bool { useTargetsOptionsXcargsDeleteSourcesCallsCount > 0 }
+    public var useTargetsOptionsXcargsDeleteSourcesReceivedArguments: (targetsOptions: TargetsOptions, xcargs: [String], deleteSources: Bool)?
+    public var useTargetsOptionsXcargsDeleteSourcesReceivedInvocations: [(targetsOptions: TargetsOptions, xcargs: [String], deleteSources: Bool)] = []
+    private let useTargetsOptionsXcargsDeleteSourcesReceivedInvocationsLock = NSRecursiveLock()
+    public var useTargetsOptionsXcargsDeleteSourcesClosure: ((TargetsOptions, [String], Bool) async throws -> Void)?
 
-    public func use(targetsRegex: NSRegularExpression?, exceptTargetsRegex: NSRegularExpression?, xcargs: [String], deleteSources: Bool) async throws {
-        useTargetsRegexExceptTargetsRegexXcargsDeleteSourcesCallsCount += 1
-        useTargetsRegexExceptTargetsRegexXcargsDeleteSourcesReceivedArguments = (targetsRegex: targetsRegex, exceptTargetsRegex: exceptTargetsRegex, xcargs: xcargs, deleteSources: deleteSources)
-        useTargetsRegexExceptTargetsRegexXcargsDeleteSourcesReceivedInvocationsLock.withLock {
-            useTargetsRegexExceptTargetsRegexXcargsDeleteSourcesReceivedInvocations.append((targetsRegex: targetsRegex, exceptTargetsRegex: exceptTargetsRegex, xcargs: xcargs, deleteSources: deleteSources))
+    public func use(targetsOptions: TargetsOptions, xcargs: [String], deleteSources: Bool) async throws {
+        useTargetsOptionsXcargsDeleteSourcesCallsCount += 1
+        useTargetsOptionsXcargsDeleteSourcesReceivedArguments = (targetsOptions: targetsOptions, xcargs: xcargs, deleteSources: deleteSources)
+        useTargetsOptionsXcargsDeleteSourcesReceivedInvocationsLock.withLock {
+            useTargetsOptionsXcargsDeleteSourcesReceivedInvocations.append((targetsOptions: targetsOptions, xcargs: xcargs, deleteSources: deleteSources))
         }
-        if let error = useTargetsRegexExceptTargetsRegexXcargsDeleteSourcesThrowableError {
+        if let error = useTargetsOptionsXcargsDeleteSourcesThrowableError {
             throw error
         }
-        try await useTargetsRegexExceptTargetsRegexXcargsDeleteSourcesClosure?(targetsRegex, exceptTargetsRegex, xcargs, deleteSources)
+        try await useTargetsOptionsXcargsDeleteSourcesClosure?(targetsOptions, xcargs, deleteSources)
     }
 
     // MARK: - use

@@ -10,28 +10,28 @@ final class IInternalBuildManagerMock: IInternalBuildManager {
 
     // MARK: - prepare
 
-    var prepareTargetsFreeSpaceIfNeededPatchLibrariesThrowableError: Error?
-    var prepareTargetsFreeSpaceIfNeededPatchLibrariesCallsCount = 0
-    var prepareTargetsFreeSpaceIfNeededPatchLibrariesCalled: Bool { prepareTargetsFreeSpaceIfNeededPatchLibrariesCallsCount > 0 }
-    var prepareTargetsFreeSpaceIfNeededPatchLibrariesReceivedArguments: (targets: TargetsScope, freeSpaceIfNeeded: Bool, patchLibraries: Bool)?
-    var prepareTargetsFreeSpaceIfNeededPatchLibrariesReceivedInvocations: [(targets: TargetsScope, freeSpaceIfNeeded: Bool, patchLibraries: Bool)] = []
-    private let prepareTargetsFreeSpaceIfNeededPatchLibrariesReceivedInvocationsLock = NSRecursiveLock()
-    var prepareTargetsFreeSpaceIfNeededPatchLibrariesReturnValue: TargetsMap!
-    var prepareTargetsFreeSpaceIfNeededPatchLibrariesClosure: ((TargetsScope, Bool, Bool) async throws -> TargetsMap)?
+    var prepareTargetsTargetsTryModeFreeSpaceIfNeededPatchLibrariesThrowableError: Error?
+    var prepareTargetsTargetsTryModeFreeSpaceIfNeededPatchLibrariesCallsCount = 0
+    var prepareTargetsTargetsTryModeFreeSpaceIfNeededPatchLibrariesCalled: Bool { prepareTargetsTargetsTryModeFreeSpaceIfNeededPatchLibrariesCallsCount > 0 }
+    var prepareTargetsTargetsTryModeFreeSpaceIfNeededPatchLibrariesReceivedArguments: (targets: TargetsScope, targetsTryMode: Bool, freeSpaceIfNeeded: Bool, patchLibraries: Bool)?
+    var prepareTargetsTargetsTryModeFreeSpaceIfNeededPatchLibrariesReceivedInvocations: [(targets: TargetsScope, targetsTryMode: Bool, freeSpaceIfNeeded: Bool, patchLibraries: Bool)] = []
+    private let prepareTargetsTargetsTryModeFreeSpaceIfNeededPatchLibrariesReceivedInvocationsLock = NSRecursiveLock()
+    var prepareTargetsTargetsTryModeFreeSpaceIfNeededPatchLibrariesReturnValue: TargetsMap!
+    var prepareTargetsTargetsTryModeFreeSpaceIfNeededPatchLibrariesClosure: ((TargetsScope, Bool, Bool, Bool) async throws -> TargetsMap)?
 
-    func prepare(targets: TargetsScope, freeSpaceIfNeeded: Bool, patchLibraries: Bool) async throws -> TargetsMap {
-        prepareTargetsFreeSpaceIfNeededPatchLibrariesCallsCount += 1
-        prepareTargetsFreeSpaceIfNeededPatchLibrariesReceivedArguments = (targets: targets, freeSpaceIfNeeded: freeSpaceIfNeeded, patchLibraries: patchLibraries)
-        prepareTargetsFreeSpaceIfNeededPatchLibrariesReceivedInvocationsLock.withLock {
-            prepareTargetsFreeSpaceIfNeededPatchLibrariesReceivedInvocations.append((targets: targets, freeSpaceIfNeeded: freeSpaceIfNeeded, patchLibraries: patchLibraries))
+    func prepare(targets: TargetsScope, targetsTryMode: Bool, freeSpaceIfNeeded: Bool, patchLibraries: Bool) async throws -> TargetsMap {
+        prepareTargetsTargetsTryModeFreeSpaceIfNeededPatchLibrariesCallsCount += 1
+        prepareTargetsTargetsTryModeFreeSpaceIfNeededPatchLibrariesReceivedArguments = (targets: targets, targetsTryMode: targetsTryMode, freeSpaceIfNeeded: freeSpaceIfNeeded, patchLibraries: patchLibraries)
+        prepareTargetsTargetsTryModeFreeSpaceIfNeededPatchLibrariesReceivedInvocationsLock.withLock {
+            prepareTargetsTargetsTryModeFreeSpaceIfNeededPatchLibrariesReceivedInvocations.append((targets: targets, targetsTryMode: targetsTryMode, freeSpaceIfNeeded: freeSpaceIfNeeded, patchLibraries: patchLibraries))
         }
-        if let error = prepareTargetsFreeSpaceIfNeededPatchLibrariesThrowableError {
+        if let error = prepareTargetsTargetsTryModeFreeSpaceIfNeededPatchLibrariesThrowableError {
             throw error
         }
-        if let prepareTargetsFreeSpaceIfNeededPatchLibrariesClosure = prepareTargetsFreeSpaceIfNeededPatchLibrariesClosure {
-            return try await prepareTargetsFreeSpaceIfNeededPatchLibrariesClosure(targets, freeSpaceIfNeeded, patchLibraries)
+        if let prepareTargetsTargetsTryModeFreeSpaceIfNeededPatchLibrariesClosure = prepareTargetsTargetsTryModeFreeSpaceIfNeededPatchLibrariesClosure {
+            return try await prepareTargetsTargetsTryModeFreeSpaceIfNeededPatchLibrariesClosure(targets, targetsTryMode, freeSpaceIfNeeded, patchLibraries)
         } else {
-            return prepareTargetsFreeSpaceIfNeededPatchLibrariesReturnValue
+            return prepareTargetsTargetsTryModeFreeSpaceIfNeededPatchLibrariesReturnValue
         }
     }
 
@@ -86,46 +86,46 @@ final class IInternalBuildManagerMock: IInternalBuildManager {
 
     // MARK: - build
 
-    var buildTargetsOptionsPathsIgnoreCacheThrowableError: Error?
-    var buildTargetsOptionsPathsIgnoreCacheCallsCount = 0
-    var buildTargetsOptionsPathsIgnoreCacheCalled: Bool { buildTargetsOptionsPathsIgnoreCacheCallsCount > 0 }
-    var buildTargetsOptionsPathsIgnoreCacheReceivedArguments: (targets: TargetsScope, options: XcodeBuildOptions, paths: XcodeBuildPaths, ignoreCache: Bool)?
-    var buildTargetsOptionsPathsIgnoreCacheReceivedInvocations: [(targets: TargetsScope, options: XcodeBuildOptions, paths: XcodeBuildPaths, ignoreCache: Bool)] = []
-    private let buildTargetsOptionsPathsIgnoreCacheReceivedInvocationsLock = NSRecursiveLock()
-    var buildTargetsOptionsPathsIgnoreCacheClosure: ((TargetsScope, XcodeBuildOptions, XcodeBuildPaths, Bool) async throws -> Void)?
+    var buildTargetsTargetsTryModeOptionsPathsIgnoreCacheThrowableError: Error?
+    var buildTargetsTargetsTryModeOptionsPathsIgnoreCacheCallsCount = 0
+    var buildTargetsTargetsTryModeOptionsPathsIgnoreCacheCalled: Bool { buildTargetsTargetsTryModeOptionsPathsIgnoreCacheCallsCount > 0 }
+    var buildTargetsTargetsTryModeOptionsPathsIgnoreCacheReceivedArguments: (targets: TargetsScope, targetsTryMode: Bool, options: XcodeBuildOptions, paths: XcodeBuildPaths, ignoreCache: Bool)?
+    var buildTargetsTargetsTryModeOptionsPathsIgnoreCacheReceivedInvocations: [(targets: TargetsScope, targetsTryMode: Bool, options: XcodeBuildOptions, paths: XcodeBuildPaths, ignoreCache: Bool)] = []
+    private let buildTargetsTargetsTryModeOptionsPathsIgnoreCacheReceivedInvocationsLock = NSRecursiveLock()
+    var buildTargetsTargetsTryModeOptionsPathsIgnoreCacheClosure: ((TargetsScope, Bool, XcodeBuildOptions, XcodeBuildPaths, Bool) async throws -> Void)?
 
-    func build(targets: TargetsScope, options: XcodeBuildOptions, paths: XcodeBuildPaths, ignoreCache: Bool) async throws {
-        buildTargetsOptionsPathsIgnoreCacheCallsCount += 1
-        buildTargetsOptionsPathsIgnoreCacheReceivedArguments = (targets: targets, options: options, paths: paths, ignoreCache: ignoreCache)
-        buildTargetsOptionsPathsIgnoreCacheReceivedInvocationsLock.withLock {
-            buildTargetsOptionsPathsIgnoreCacheReceivedInvocations.append((targets: targets, options: options, paths: paths, ignoreCache: ignoreCache))
+    func build(targets: TargetsScope, targetsTryMode: Bool, options: XcodeBuildOptions, paths: XcodeBuildPaths, ignoreCache: Bool) async throws {
+        buildTargetsTargetsTryModeOptionsPathsIgnoreCacheCallsCount += 1
+        buildTargetsTargetsTryModeOptionsPathsIgnoreCacheReceivedArguments = (targets: targets, targetsTryMode: targetsTryMode, options: options, paths: paths, ignoreCache: ignoreCache)
+        buildTargetsTargetsTryModeOptionsPathsIgnoreCacheReceivedInvocationsLock.withLock {
+            buildTargetsTargetsTryModeOptionsPathsIgnoreCacheReceivedInvocations.append((targets: targets, targetsTryMode: targetsTryMode, options: options, paths: paths, ignoreCache: ignoreCache))
         }
-        if let error = buildTargetsOptionsPathsIgnoreCacheThrowableError {
+        if let error = buildTargetsTargetsTryModeOptionsPathsIgnoreCacheThrowableError {
             throw error
         }
-        try await buildTargetsOptionsPathsIgnoreCacheClosure?(targets, options, paths, ignoreCache)
+        try await buildTargetsTargetsTryModeOptionsPathsIgnoreCacheClosure?(targets, targetsTryMode, options, paths, ignoreCache)
     }
 
     // MARK: - build
 
-    public var buildTargetsRegexExceptTargetsRegexOptionsPathsIgnoreCacheThrowableError: Error?
-    public var buildTargetsRegexExceptTargetsRegexOptionsPathsIgnoreCacheCallsCount = 0
-    public var buildTargetsRegexExceptTargetsRegexOptionsPathsIgnoreCacheCalled: Bool { buildTargetsRegexExceptTargetsRegexOptionsPathsIgnoreCacheCallsCount > 0 }
-    public var buildTargetsRegexExceptTargetsRegexOptionsPathsIgnoreCacheReceivedArguments: (targetsRegex: NSRegularExpression?, exceptTargetsRegex: NSRegularExpression?, options: XcodeBuildOptions, paths: XcodeBuildPaths, ignoreCache: Bool)?
-    public var buildTargetsRegexExceptTargetsRegexOptionsPathsIgnoreCacheReceivedInvocations: [(targetsRegex: NSRegularExpression?, exceptTargetsRegex: NSRegularExpression?, options: XcodeBuildOptions, paths: XcodeBuildPaths, ignoreCache: Bool)] = []
-    private let buildTargetsRegexExceptTargetsRegexOptionsPathsIgnoreCacheReceivedInvocationsLock = NSRecursiveLock()
-    public var buildTargetsRegexExceptTargetsRegexOptionsPathsIgnoreCacheClosure: ((NSRegularExpression?, NSRegularExpression?, XcodeBuildOptions, XcodeBuildPaths, Bool) async throws -> Void)?
+    public var buildTargetsOptionsOptionsPathsIgnoreCacheThrowableError: Error?
+    public var buildTargetsOptionsOptionsPathsIgnoreCacheCallsCount = 0
+    public var buildTargetsOptionsOptionsPathsIgnoreCacheCalled: Bool { buildTargetsOptionsOptionsPathsIgnoreCacheCallsCount > 0 }
+    public var buildTargetsOptionsOptionsPathsIgnoreCacheReceivedArguments: (targetsOptions: TargetsOptions, options: XcodeBuildOptions, paths: XcodeBuildPaths, ignoreCache: Bool)?
+    public var buildTargetsOptionsOptionsPathsIgnoreCacheReceivedInvocations: [(targetsOptions: TargetsOptions, options: XcodeBuildOptions, paths: XcodeBuildPaths, ignoreCache: Bool)] = []
+    private let buildTargetsOptionsOptionsPathsIgnoreCacheReceivedInvocationsLock = NSRecursiveLock()
+    public var buildTargetsOptionsOptionsPathsIgnoreCacheClosure: ((TargetsOptions, XcodeBuildOptions, XcodeBuildPaths, Bool) async throws -> Void)?
 
-    public func build(targetsRegex: NSRegularExpression?, exceptTargetsRegex: NSRegularExpression?, options: XcodeBuildOptions, paths: XcodeBuildPaths, ignoreCache: Bool) async throws {
-        buildTargetsRegexExceptTargetsRegexOptionsPathsIgnoreCacheCallsCount += 1
-        buildTargetsRegexExceptTargetsRegexOptionsPathsIgnoreCacheReceivedArguments = (targetsRegex: targetsRegex, exceptTargetsRegex: exceptTargetsRegex, options: options, paths: paths, ignoreCache: ignoreCache)
-        buildTargetsRegexExceptTargetsRegexOptionsPathsIgnoreCacheReceivedInvocationsLock.withLock {
-            buildTargetsRegexExceptTargetsRegexOptionsPathsIgnoreCacheReceivedInvocations.append((targetsRegex: targetsRegex, exceptTargetsRegex: exceptTargetsRegex, options: options, paths: paths, ignoreCache: ignoreCache))
+    public func build(targetsOptions: TargetsOptions, options: XcodeBuildOptions, paths: XcodeBuildPaths, ignoreCache: Bool) async throws {
+        buildTargetsOptionsOptionsPathsIgnoreCacheCallsCount += 1
+        buildTargetsOptionsOptionsPathsIgnoreCacheReceivedArguments = (targetsOptions: targetsOptions, options: options, paths: paths, ignoreCache: ignoreCache)
+        buildTargetsOptionsOptionsPathsIgnoreCacheReceivedInvocationsLock.withLock {
+            buildTargetsOptionsOptionsPathsIgnoreCacheReceivedInvocations.append((targetsOptions: targetsOptions, options: options, paths: paths, ignoreCache: ignoreCache))
         }
-        if let error = buildTargetsRegexExceptTargetsRegexOptionsPathsIgnoreCacheThrowableError {
+        if let error = buildTargetsOptionsOptionsPathsIgnoreCacheThrowableError {
             throw error
         }
-        try await buildTargetsRegexExceptTargetsRegexOptionsPathsIgnoreCacheClosure?(targetsRegex, exceptTargetsRegex, options, paths, ignoreCache)
+        try await buildTargetsOptionsOptionsPathsIgnoreCacheClosure?(targetsOptions, options, paths, ignoreCache)
     }
 }
 

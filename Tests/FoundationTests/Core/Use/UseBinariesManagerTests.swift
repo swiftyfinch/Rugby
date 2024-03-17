@@ -19,6 +19,7 @@ final class UseBinariesManagerTests: XCTestCase {
     private var targetsHasher: ITargetsHasherMock!
     private var supportFilesPatcher: ISupportFilesPatcherMock!
     private var fileContentEditor: IFileContentEditorMock!
+    private var targetsPrinter: ITargetsPrinterMock!
 
     override func setUp() {
         super.setUp()
@@ -39,6 +40,7 @@ final class UseBinariesManagerTests: XCTestCase {
         targetsHasher = ITargetsHasherMock()
         supportFilesPatcher = ISupportFilesPatcherMock()
         fileContentEditor = IFileContentEditorMock()
+        targetsPrinter = ITargetsPrinterMock()
         sut = UseBinariesManager(
             logger: logger,
             buildTargetsManager: buildTargetsManager,
@@ -49,7 +51,8 @@ final class UseBinariesManagerTests: XCTestCase {
             binariesStorage: binariesStorage,
             targetsHasher: targetsHasher,
             supportFilesPatcher: supportFilesPatcher,
-            fileContentEditor: fileContentEditor
+            fileContentEditor: fileContentEditor,
+            targetsPrinter: targetsPrinter
         )
     }
 
@@ -67,6 +70,7 @@ final class UseBinariesManagerTests: XCTestCase {
         targetsHasher = nil
         supportFilesPatcher = nil
         fileContentEditor = nil
+        targetsPrinter = nil
     }
 }
 
@@ -78,8 +82,7 @@ extension UseBinariesManagerTests {
         var resultError: Error?
         do {
             try await sut.use(
-                targetsRegex: nil,
-                exceptTargetsRegex: nil,
+                targetsOptions: .init(),
                 xcargs: [],
                 deleteSources: false
             )
@@ -106,8 +109,10 @@ extension UseBinariesManagerTests {
 
         // Act
         try await sut.use(
-            targetsRegex: targetsRegex,
-            exceptTargetsRegex: exceptTargetsRegex,
+            targetsOptions: .init(
+                targetsRegex: targetsRegex,
+                exceptTargetsRegex: exceptTargetsRegex
+            ),
             xcargs: [],
             deleteSources: false
         )
@@ -192,8 +197,10 @@ extension UseBinariesManagerTests {
 
         // Act
         try await sut.use(
-            targetsRegex: targetsRegex,
-            exceptTargetsRegex: exceptTargetsRegex,
+            targetsOptions: .init(
+                targetsRegex: targetsRegex,
+                exceptTargetsRegex: exceptTargetsRegex
+            ),
             xcargs: ["test_xcarg0", "test_xcarg1"],
             deleteSources: false
         )

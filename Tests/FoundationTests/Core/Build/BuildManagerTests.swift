@@ -26,6 +26,7 @@ final class BuildManagerTests: XCTestCase {
     private var environmentCollector: IEnvironmentCollectorMock!
     private var env: IEnvironmentMock!
     private var targetTreePainter: ITargetTreePainterMock!
+    private var targetsPrinter: ITargetsPrinterMock!
 
     override func setUp() {
         super.setUp()
@@ -51,6 +52,7 @@ final class BuildManagerTests: XCTestCase {
         environmentCollector = IEnvironmentCollectorMock()
         env = IEnvironmentMock()
         targetTreePainter = ITargetTreePainterMock()
+        targetsPrinter = ITargetsPrinterMock()
         sut = BuildManager(
             logger: logger,
             buildTargetsManager: buildTargetsManager,
@@ -66,7 +68,8 @@ final class BuildManagerTests: XCTestCase {
             binariesCleaner: binariesCleaner,
             environmentCollector: environmentCollector,
             env: env,
-            targetTreePainter: targetTreePainter
+            targetTreePainter: targetTreePainter,
+            targetsPrinter: targetsPrinter
         )
     }
 
@@ -88,6 +91,7 @@ final class BuildManagerTests: XCTestCase {
         environmentCollector = nil
         env = nil
         targetTreePainter = nil
+        targetsPrinter = nil
         sut = nil
     }
 }
@@ -100,8 +104,7 @@ extension BuildManagerTests {
         var resultError: Error?
         do {
             try await sut.build(
-                targetsRegex: nil,
-                exceptTargetsRegex: nil,
+                targetsOptions: .init(),
                 options: .mock(),
                 paths: .mock(),
                 ignoreCache: false
@@ -131,8 +134,7 @@ extension BuildManagerTests {
         var resultError: Error?
         do {
             try await sut.build(
-                targetsRegex: nil,
-                exceptTargetsRegex: nil,
+                targetsOptions: .init(),
                 options: .mock(),
                 paths: .mock(),
                 ignoreCache: false
@@ -170,8 +172,10 @@ extension BuildManagerTests {
 
         // Act
         try await sut.build(
-            targetsRegex: targetsRegex,
-            exceptTargetsRegex: exceptTargetsRegex,
+            targetsOptions: .init(
+                targetsRegex: targetsRegex,
+                exceptTargetsRegex: exceptTargetsRegex
+            ),
             options: buildOptions,
             paths: .mock(),
             ignoreCache: false
@@ -286,8 +290,10 @@ extension BuildManagerTests {
         var resultError: Error?
         do {
             try await sut.build(
-                targetsRegex: targetsRegex,
-                exceptTargetsRegex: exceptTargetsRegex,
+                targetsOptions: .init(
+                    targetsRegex: targetsRegex,
+                    exceptTargetsRegex: exceptTargetsRegex
+                ),
                 options: buildOptions,
                 paths: .mock(),
                 ignoreCache: false
@@ -474,8 +480,10 @@ extension BuildManagerTests {
         var resultError: Error?
         do {
             try await sut.build(
-                targetsRegex: targetsRegex,
-                exceptTargetsRegex: exceptTargetsRegex,
+                targetsOptions: .init(
+                    targetsRegex: targetsRegex,
+                    exceptTargetsRegex: exceptTargetsRegex
+                ),
                 options: buildOptions,
                 paths: buildPaths,
                 ignoreCache: false
@@ -695,8 +703,10 @@ extension BuildManagerTests {
 
         // Act
         try await sut.build(
-            targetsRegex: targetsRegex,
-            exceptTargetsRegex: exceptTargetsRegex,
+            targetsOptions: .init(
+                targetsRegex: targetsRegex,
+                exceptTargetsRegex: exceptTargetsRegex
+            ),
             options: buildOptions,
             paths: buildPaths,
             ignoreCache: false
@@ -902,6 +912,7 @@ extension BuildManagerTests {
         // Act
         _ = try await sut.prepare(
             targets: .filter(regex: targetsRegex, exceptRegex: exceptTargetsRegex),
+            targetsTryMode: false,
             freeSpaceIfNeeded: false,
             patchLibraries: false
         )

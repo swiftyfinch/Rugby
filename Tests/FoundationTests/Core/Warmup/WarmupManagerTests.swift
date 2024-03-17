@@ -16,6 +16,7 @@ final class WarmupManagerTests: XCTestCase {
     private var targetsHasher: ITargetsHasherMock!
     private var cacheDownloader: ICacheDownloaderMock!
     private var metricsLogger: IMetricsLoggerMock!
+    private var targetsPrinter: ITargetsPrinterMock!
 
     override func setUp() {
         super.setUp()
@@ -33,6 +34,7 @@ final class WarmupManagerTests: XCTestCase {
         targetsHasher = ITargetsHasherMock()
         cacheDownloader = ICacheDownloaderMock()
         metricsLogger = IMetricsLoggerMock()
+        targetsPrinter = ITargetsPrinterMock()
         sut = WarmupManager(
             logger: logger,
             rugbyXcodeProject: rugbyXcodeProject,
@@ -40,7 +42,8 @@ final class WarmupManagerTests: XCTestCase {
             binariesStorage: binariesStorage,
             targetsHasher: targetsHasher,
             cacheDownloader: cacheDownloader,
-            metricsLogger: metricsLogger
+            metricsLogger: metricsLogger,
+            targetsPrinter: targetsPrinter
         )
     }
 
@@ -54,6 +57,7 @@ final class WarmupManagerTests: XCTestCase {
         targetsHasher = nil
         cacheDownloader = nil
         metricsLogger = nil
+        targetsPrinter = nil
         sut = nil
     }
 }
@@ -69,8 +73,7 @@ extension WarmupManagerTests {
         do {
             try await sut.warmup(
                 mode: .analyse(endpoint: endpoint),
-                targetsRegex: nil,
-                exceptTargetsRegex: nil,
+                targetsOptions: .init(),
                 options: .mock(),
                 maxInParallel: 10,
                 headers: [:]
@@ -92,8 +95,7 @@ extension WarmupManagerTests {
         do {
             try await sut.warmup(
                 mode: .analyse(endpoint: nil),
-                targetsRegex: nil,
-                exceptTargetsRegex: nil,
+                targetsOptions: .init(),
                 options: .mock(),
                 maxInParallel: 10,
                 headers: [:]
@@ -115,8 +117,7 @@ extension WarmupManagerTests {
         do {
             try await sut.warmup(
                 mode: .analyse(endpoint: nil),
-                targetsRegex: nil,
-                exceptTargetsRegex: nil,
+                targetsOptions: .init(),
                 options: .mock(),
                 maxInParallel: 10,
                 headers: [:]
@@ -154,8 +155,10 @@ extension WarmupManagerTests {
         // Act
         try await sut.warmup(
             mode: .analyse(endpoint: nil),
-            targetsRegex: targetsRegex,
-            exceptTargetsRegex: exceptTargetsRegex,
+            targetsOptions: .init(
+                targetsRegex: targetsRegex,
+                exceptTargetsRegex: exceptTargetsRegex
+            ),
             options: xcodeBuildOptions,
             maxInParallel: 10,
             headers: [:]
@@ -239,8 +242,10 @@ extension WarmupManagerTests {
         // Act
         try await sut.warmup(
             mode: .analyse(endpoint: nil),
-            targetsRegex: targetsRegex,
-            exceptTargetsRegex: exceptTargetsRegex,
+            targetsOptions: .init(
+                targetsRegex: targetsRegex,
+                exceptTargetsRegex: exceptTargetsRegex
+            ),
             options: xcodeBuildOptions,
             maxInParallel: 10,
             headers: [:]
@@ -360,8 +365,10 @@ extension WarmupManagerTests {
         // Act
         try await sut.warmup(
             mode: .analyse(endpoint: endpoint),
-            targetsRegex: targetsRegex,
-            exceptTargetsRegex: exceptTargetsRegex,
+            targetsOptions: .init(
+                targetsRegex: targetsRegex,
+                exceptTargetsRegex: exceptTargetsRegex
+            ),
             options: xcodeBuildOptions,
             maxInParallel: 10,
             headers: [:]
@@ -538,8 +545,10 @@ extension WarmupManagerTests {
         // Act
         try await sut.warmup(
             mode: .endpoint(endpoint),
-            targetsRegex: targetsRegex,
-            exceptTargetsRegex: exceptTargetsRegex,
+            targetsOptions: .init(
+                targetsRegex: targetsRegex,
+                exceptTargetsRegex: exceptTargetsRegex
+            ),
             options: xcodeBuildOptions,
             maxInParallel: 10,
             headers: ["test_field": "test_value"]
