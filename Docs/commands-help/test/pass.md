@@ -23,12 +23,13 @@
 │ -o, --output               * Output mode: fold, multiline, silent, raw.                  │
 ╰──────────────────────────────────────────────────────────────────────────────────────────╯
  Flags:
-╭──────────────────────────────────────────────────╮
-│ --strip           * Build without debug symbols. │
-│ -v, --verbose []  * Increase verbosity level.    │
-│ -q, --quiet []    * Decrease verbosity level.    │
-│ -h, --help        * Show help information.       │
-╰──────────────────────────────────────────────────╯
+╭──────────────────────────────────────────────────────────────────────────────────────╮
+│ --strip           * Build without debug symbols.                                     │
+│ --try             * Run command in mode, with only the selected targets are printed. │
+│ -v, --verbose []  * Increase verbosity level.                                        │
+│ -q, --quiet []    * Decrease verbosity level.                                        │
+│ -h, --help        * Show help information.                                           │
+╰──────────────────────────────────────────────────────────────────────────────────────╯
 ```
 
 ## Discussion
