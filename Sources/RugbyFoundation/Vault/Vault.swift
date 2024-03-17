@@ -87,7 +87,10 @@ public final class Vault {
     // MARK: - Logs
 
     /// The service to keep only latest logs.
-    public private(set) lazy var logsRotator = LogsRotator(logsPath: router.logsFolderPath)
+    public private(set) lazy var logsRotator = LogsRotator(
+        logsPath: router.logsFolderPath,
+        shellExecutor: shellExecutor
+    )
 
     /// The service to log commands metrics.
     public private(set) lazy var metricsLogger = MetricsLogger(folderPath: router.logsFolderPath)
