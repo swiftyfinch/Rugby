@@ -4,9 +4,11 @@ import Foundation
 /// The service to keep only latest logs.
 public final class LogsRotator {
     private let logsPath: String
+    private let shellExecutor: IShellExecutor
 
     private let maxLogs = 10
     private var cachedLogsRecord: IFolder?
+    private let latestSymbolicLinkName = "+latest"
 
     private lazy var dateFormatter: DateFormatter = {
         let dateFormatter = DateFormatter()
@@ -18,8 +20,11 @@ public final class LogsRotator {
 
     /// Initializer.
     /// - Parameter logsPath: The path to the logs folder.
-    public init(logsPath: String) {
+    /// - Parameter shellExecutor: The service to execute shell commands from Rugby.
+    public init(logsPath: String,
+                shellExecutor: IShellExecutor) {
         self.logsPath = logsPath
+        self.shellExecutor = shellExecutor
     }
 
     /// Creates the new log file folder per a session and returns it.
@@ -37,6 +42,7 @@ public final class LogsRotator {
 
         let logsFolderName = dateFormatter.string(from: Date())
         let logsRecord = try logsFolder.createFolder(named: logsFolderName)
+        try createSymbolicLink(at: logsFolder.path, destinationPath: logsRecord.path)
         cachedLogsRecord = logsRecord
         return logsRecord
     }
@@ -57,5 +63,11 @@ public final class LogsRotator {
             else { return false } // Silent error here, this is not so important for the main functionality.
             return lhsDate.timeIntervalSinceReferenceDate < rhsDate.timeIntervalSinceReferenceDate
         }
+    }
+
+    private func createSymbolicLink(at path: String, destinationPath: String) throws {
+        let latestLogFolderSymlink = "\(path)/\(latestSymbolicLinkName)"
+        shellExecutor.shell("rm -f \(latestLogFolderSymlink)")
+        try FileManager.default.createSymbolicLink(atPath: latestLogFolderSymlink, withDestinationPath: destinationPath)
     }
 }
