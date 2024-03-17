@@ -23,7 +23,7 @@ struct TargetsOptions: ParsableCommand {
     var exceptAsRegex: [String] = []
 
     @Flag(name: .customLong("try"),
-          help: "Run command in mode, with only the selected targets are printed.")
+          help: "Run command in mode where only selected targets are printed.")
     var tryMode = false
 }
 
