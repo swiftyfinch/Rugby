@@ -25,6 +25,7 @@ public extension Vault {
                              binariesStorage: binariesStorage,
                              targetsHasher: targetsHasher(),
                              cacheDownloader: cacheDownloader,
-                             metricsLogger: metricsLogger)
+                             metricsLogger: metricsLogger,
+                             targetsPrinter: targetsPrinter)
     }
 }

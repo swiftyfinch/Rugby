@@ -20,13 +20,16 @@ final class DeleteTargetsManager: Loggable {
     let logger: ILogger
     private let xcodeProject: IInternalXcodeProject
     private let backupManager: IBackupManager
+    private let targetsPrinter: ITargetsPrinter
 
     init(logger: ILogger,
          xcodeProject: IInternalXcodeProject,
-         backupManager: IBackupManager) {
+         backupManager: IBackupManager,
+         targetsPrinter: ITargetsPrinter) {
         self.logger = logger
         self.xcodeProject = xcodeProject
         self.backupManager = backupManager
+        self.targetsPrinter = targetsPrinter
     }
 }
 
@@ -50,6 +53,9 @@ extension DeleteTargetsManager: IDeleteTargetsManager {
                     shouldBeRemoved.subtract(intersection)
                 }
             })
+        }
+        if targetsOptions.tryMode {
+            return await targetsPrinter.print(shouldBeRemoved)
         }
         guard shouldBeRemoved.isNotEmpty else { return await log("Skip") }
 

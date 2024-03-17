@@ -22,20 +22,23 @@ extension Vault {
             localRugbyFolderPath: router.rugbyPath,
             buildFolderPath: router.buildPath
         )
-        return BuildManager(logger: logger,
-                            buildTargetsManager: buildTargetsManager,
-                            librariesPatcher: LibrariesPatcher(logger: logger),
-                            xcodeProject: xcodeProject,
-                            rugbyXcodeProject: RugbyXcodeProject(xcodeProject: xcodeProject),
-                            backupManager: backupManager(),
-                            processMonitor: processMonitor,
-                            xcodeBuild: xcodeBuild(),
-                            binariesStorage: binariesStorage,
-                            targetsHasher: targetsHasher(),
-                            useBinariesManager: useBinariesManager,
-                            binariesCleaner: binariesCleaner,
-                            environmentCollector: environmentCollector,
-                            env: env,
-                            targetTreePainter: TargetTreePainter())
+        return BuildManager(
+            logger: logger,
+            buildTargetsManager: buildTargetsManager,
+            librariesPatcher: LibrariesPatcher(logger: logger),
+            xcodeProject: xcodeProject,
+            rugbyXcodeProject: RugbyXcodeProject(xcodeProject: xcodeProject),
+            backupManager: backupManager(),
+            processMonitor: processMonitor,
+            xcodeBuild: xcodeBuild(),
+            binariesStorage: binariesStorage,
+            targetsHasher: targetsHasher(),
+            useBinariesManager: useBinariesManager,
+            binariesCleaner: binariesCleaner,
+            environmentCollector: environmentCollector,
+            env: env,
+            targetTreePainter: TargetTreePainter(),
+            targetsPrinter: targetsPrinter
+        )
     }
 }

@@ -19,6 +19,7 @@ extension Vault {
                            binariesStorage: binariesStorage,
                            targetsHasher: targetsHasher(),
                            supportFilesPatcher: SupportFilesPatcher(),
-                           fileContentEditor: FileContentEditor())
+                           fileContentEditor: FileContentEditor(),
+                           targetsPrinter: targetsPrinter)
     }
 }

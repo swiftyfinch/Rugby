@@ -19,7 +19,8 @@ public extension Vault {
                 binariesStorage: binariesStorage,
                 sharedPath: router.testsImpactFolderPath
             ),
-            git: git
+            git: git,
+            targetsPrinter: targetsPrinter
         )
     }
 
@@ -52,7 +53,8 @@ public extension Vault {
                 binariesStorage: binariesStorage,
                 sharedPath: router.testsImpactFolderPath
             ),
-            testsFolderPath: router.testsPath
+            testsFolderPath: router.testsPath,
+            targetsPrinter: targetsPrinter
         )
     }
 }
