@@ -47,14 +47,7 @@ private extension Test {
 
         func body() async throws {
             try await dependencies.testManager().test(
-                targetsRegex: regex(
-                    patterns: buildOptions.targetsOptions.targetsAsRegex,
-                    exactMatches: buildOptions.targetsOptions.targets
-                ),
-                exceptTargetsRegex: regex(
-                    patterns: buildOptions.targetsOptions.exceptAsRegex,
-                    exactMatches: buildOptions.targetsOptions.exceptTargets
-                ),
+                targetsOptions: buildOptions.targetsOptions.foundation(),
                 buildOptions: buildOptions.xcodeBuildOptions(resultBundlePath: resultBundlePath),
                 buildPaths: dependencies.xcode.paths(),
                 testPaths: dependencies.xcode.paths(logsSubfolder: "test"),
@@ -89,14 +82,7 @@ private extension Test {
 
         func body() async throws {
             try await dependencies.testImpactManager().impact(
-                targetsRegex: regex(
-                    patterns: buildOptions.targetsOptions.targetsAsRegex,
-                    exactMatches: buildOptions.targetsOptions.targets
-                ),
-                exceptTargetsRegex: regex(
-                    patterns: buildOptions.targetsOptions.exceptAsRegex,
-                    exactMatches: buildOptions.targetsOptions.exceptTargets
-                ),
+                targetsOptions: buildOptions.targetsOptions.foundation(),
                 buildOptions: buildOptions.xcodeBuildOptions()
             )
         }
@@ -128,14 +114,7 @@ private extension Test {
 
         func body() async throws {
             try await dependencies.testImpactManager().markAsPassed(
-                targetsRegex: regex(
-                    patterns: buildOptions.targetsOptions.targetsAsRegex,
-                    exactMatches: buildOptions.targetsOptions.targets
-                ),
-                exceptTargetsRegex: regex(
-                    patterns: buildOptions.targetsOptions.exceptAsRegex,
-                    exactMatches: buildOptions.targetsOptions.exceptTargets
-                ),
+                targetsOptions: buildOptions.targetsOptions.foundation(),
                 buildOptions: buildOptions.xcodeBuildOptions(),
                 upToDateBranch: upToDateBranch
             )

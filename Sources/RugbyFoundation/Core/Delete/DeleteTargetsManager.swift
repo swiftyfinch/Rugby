@@ -6,12 +6,10 @@ import Foundation
 public protocol IDeleteTargetsManager: AnyObject {
     /// Deletes targets from Xcode project.
     /// - Parameters:
-    ///   - targetsRegex: A RegEx to select targets.
-    ///   - exceptTargetsRegex: A RegEx to exclude targets.
+    ///   - targetsOptions: A set of options to to select targets.
     ///   - keepExceptedTargetsDependencies: A flag to keep dependencies of excepted targets.
     ///   - deleteSources: An option to delete targets with sources from Xcode project.
-    func delete(targetsRegex: NSRegularExpression?,
-                exceptTargetsRegex: NSRegularExpression?,
+    func delete(targetsOptions: TargetsOptions,
                 keepExceptedTargetsDependencies: Bool,
                 deleteSources: Bool) async throws
 }
@@ -35,13 +33,15 @@ final class DeleteTargetsManager: Loggable {
 // MARK: - IDeleteTargetsManager
 
 extension DeleteTargetsManager: IDeleteTargetsManager {
-    public func delete(targetsRegex: NSRegularExpression?,
-                       exceptTargetsRegex: NSRegularExpression?,
+    public func delete(targetsOptions: TargetsOptions,
                        keepExceptedTargetsDependencies: Bool,
                        deleteSources: Bool) async throws {
         var shouldBeRemoved = try await log(
             "Finding Targets",
-            auto: await xcodeProject.findTargets(by: targetsRegex, except: exceptTargetsRegex)
+            auto: await xcodeProject.findTargets(
+                by: targetsOptions.targetsRegex,
+                except: targetsOptions.exceptTargetsRegex
+            )
         )
         if keepExceptedTargetsDependencies {
             try await log("Keeping Excepted Targets Dependencies", block: {

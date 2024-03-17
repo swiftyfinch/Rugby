@@ -57,12 +57,14 @@ extension Warmup: RunnableCommand {
 
     func body() async throws {
         let mode: WarmupMode
-        switch (analyse, endpoint) {
-        case (true, let endpoint):
+        switch (buildOptions.targetsOptions.tryMode, analyse, endpoint) {
+        case (true, _, _):
+            mode = .printTargets
+        case (_, true, let endpoint):
             mode = .analyse(endpoint: endpoint)
-        case (false, let endpoint?):
+        case (_, false, let endpoint?):
             mode = .endpoint(endpoint)
-        case (false, nil):
+        case (_, false, nil):
             throw Error.missingEndpoint
         }
         try await dependencies.warmupManager(
@@ -70,14 +72,7 @@ extension Warmup: RunnableCommand {
             httpMaximumConnectionsPerHost: maxConnections
         ).warmup(
             mode: mode,
-            targetsRegex: regex(
-                patterns: buildOptions.targetsOptions.targetsAsRegex,
-                exactMatches: buildOptions.targetsOptions.targets
-            ),
-            exceptTargetsRegex: regex(
-                patterns: buildOptions.targetsOptions.exceptAsRegex,
-                exactMatches: buildOptions.targetsOptions.exceptTargets
-            ),
+            targetsOptions: buildOptions.targetsOptions.foundation(),
             options: buildOptions.xcodeBuildOptions(),
             maxInParallel: maxConnections,
             headers: headers.parseHeaders()

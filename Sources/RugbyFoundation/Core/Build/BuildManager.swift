@@ -6,13 +6,11 @@ import Foundation
 public protocol IBuildManager: AnyObject {
     /// Builds CocoaPods project and keeps binaries.
     /// - Parameters:
-    ///   - targetsRegex: A RegEx to select targets.
-    ///   - exceptTargetsRegex: A RegEx to exclude targets.
+    ///   - targetsOptions: A set of options to to select targets.
     ///   - options: Xcode build options.
     ///   - paths: A collection of Xcode paths.
     ///   - ignoreCache: A flag to ignore already built binaries.
-    func build(targetsRegex: NSRegularExpression?,
-               exceptTargetsRegex: NSRegularExpression?,
+    func build(targetsOptions: TargetsOptions,
                options: XcodeBuildOptions,
                paths: XcodeBuildPaths,
                ignoreCache: Bool) async throws
@@ -20,11 +18,13 @@ public protocol IBuildManager: AnyObject {
 
 protocol IInternalBuildManager: IBuildManager {
     func prepare(targets: TargetsScope,
+                 targetsTryMode: Bool,
                  freeSpaceIfNeeded: Bool,
                  patchLibraries: Bool) async throws -> TargetsMap
     func makeBuildTarget(_ targets: TargetsMap) async throws -> IInternalTarget
     func build(_ target: IInternalTarget, options: XcodeBuildOptions, paths: XcodeBuildPaths) async throws
     func build(targets: TargetsScope,
+               targetsTryMode: Bool,
                options: XcodeBuildOptions,
                paths: XcodeBuildPaths,
                ignoreCache: Bool) async throws
@@ -125,6 +125,7 @@ final class BuildManager: Loggable {
 
 extension BuildManager: IInternalBuildManager {
     func prepare(targets: TargetsScope,
+                 targetsTryMode: Bool,
                  freeSpaceIfNeeded: Bool,
                  patchLibraries: Bool) async throws -> TargetsMap {
         let exactTargets: TargetsMap
@@ -186,10 +187,12 @@ extension BuildManager: IInternalBuildManager {
     }
 
     func build(targets: TargetsScope,
+               targetsTryMode: Bool,
                options: XcodeBuildOptions,
                paths: XcodeBuildPaths,
                ignoreCache: Bool) async throws {
         let exactTargets = try await prepare(targets: targets,
+                                             targetsTryMode: targetsTryMode,
                                              freeSpaceIfNeeded: true,
                                              patchLibraries: true)
         guard let buildTargets = try await reuseTargets(
@@ -213,8 +216,7 @@ extension BuildManager: IInternalBuildManager {
 // MARK: - IBuildManager
 
 extension BuildManager: IBuildManager {
-    public func build(targetsRegex: NSRegularExpression?,
-                      exceptTargetsRegex: NSRegularExpression?,
+    public func build(targetsOptions: TargetsOptions,
                       options: XcodeBuildOptions,
                       paths: XcodeBuildPaths,
                       ignoreCache: Bool) async throws {
@@ -222,7 +224,8 @@ extension BuildManager: IBuildManager {
         guard try await !rugbyXcodeProject.isAlreadyUsingRugby() else { throw RugbyError.alreadyUseRugby }
 
         try await build(
-            targets: .filter(regex: targetsRegex, exceptRegex: exceptTargetsRegex),
+            targets: .init(targetsOptions),
+            targetsTryMode: targetsOptions.tryMode,
             options: options,
             paths: paths,
             ignoreCache: ignoreCache

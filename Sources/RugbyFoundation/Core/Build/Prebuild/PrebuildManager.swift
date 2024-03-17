@@ -7,13 +7,11 @@ import Foundation
 public protocol IPrebuildManager: AnyObject {
     /// Prebuilds CocoaPods project and keeps binaries.
     /// - Parameters:
-    ///   - targetsRegex: A RegEx to select targets.
-    ///   - exceptTargetsRegex: A RegEx to exclude targets.
+    ///   - targetsOptions: A set of options to to select targets.
     ///   - options: Xcode build options.
     ///   - paths: A collection of Xcode paths.
     func prebuild(
-        targetsRegex: NSRegularExpression?,
-        exceptTargetsRegex: NSRegularExpression?,
+        targetsOptions: TargetsOptions,
         options: XcodeBuildOptions,
         paths: XcodeBuildPaths
     ) async throws
@@ -51,8 +49,7 @@ final class PrebuildManager: Loggable {
 
 extension PrebuildManager: IPrebuildManager {
     func prebuild(
-        targetsRegex: NSRegularExpression?,
-        exceptTargetsRegex: NSRegularExpression?,
+        targetsOptions: TargetsOptions,
         options: XcodeBuildOptions,
         paths: XcodeBuildPaths
     ) async throws {
@@ -60,7 +57,8 @@ extension PrebuildManager: IPrebuildManager {
         guard try await !rugbyXcodeProject.isAlreadyUsingRugby() else { throw RugbyError.alreadyUseRugby }
 
         let targets = try await buildManager.prepare(
-            targets: .filter(regex: targetsRegex, exceptRegex: exceptTargetsRegex),
+            targets: .init(targetsOptions),
+            targetsTryMode: targetsOptions.tryMode,
             freeSpaceIfNeeded: false,
             patchLibraries: false
         )
