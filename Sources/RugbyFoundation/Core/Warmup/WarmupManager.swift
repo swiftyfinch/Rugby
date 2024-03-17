@@ -7,14 +7,12 @@ public protocol IWarmupManager: AnyObject {
     /// Downloads remote built binaries based on CocoaPods project targets.
     /// - Parameters:
     ///   - mode: A warmup mode.
-    ///   - targetsRegex: A RegEx to select targets.
-    ///   - exceptTargetsRegex: A RegEx to exclude targets.
+    ///   - targetsOptions: A set of options to to select targets.
     ///   - options: Xcode build options.
     ///   - maxInParallel: A count of parallel jobs.
     ///   - headers: Extra HTTP header fields for a request (["s3-key": "my-secret-key"]).
     func warmup(mode: WarmupMode,
-                targetsRegex: NSRegularExpression?,
-                exceptTargetsRegex: NSRegularExpression?,
+                targetsOptions: TargetsOptions,
                 options: XcodeBuildOptions,
                 maxInParallel: Int,
                 headers: [String: String]) async throws
@@ -26,6 +24,8 @@ public enum WarmupMode {
     case endpoint(String)
     /// The mode to analyse availability of binaries.
     case analyse(endpoint: String?)
+    /// A mode where only the selected targets are printed.
+    case printTargets
 }
 
 enum WarmupManagerError: LocalizedError, Equatable {
@@ -68,13 +68,15 @@ final class WarmupManager: Loggable {
         self.metricsLogger = metricsLogger
     }
 
-    private func findLocalBinaries(targetsRegex: NSRegularExpression?,
-                                   exceptTargetsRegex: NSRegularExpression?,
+    private func findLocalBinaries(targetsOptions: TargetsOptions,
                                    options: XcodeBuildOptions,
                                    dryRun: Bool) async throws -> TargetsMap {
         let targets = try await log(
             "Finding Build Targets",
-            auto: await buildTargetsManager.findTargets(targetsRegex, exceptTargets: exceptTargetsRegex)
+            auto: await buildTargetsManager.findTargets(
+                targetsOptions.targetsRegex,
+                exceptTargets: targetsOptions.exceptTargetsRegex
+            )
         )
         guard targets.isNotEmpty else { throw BuildError.cantFindBuildTargets }
 
@@ -206,8 +208,7 @@ private extension WarmupMode {
 
 extension WarmupManager: IWarmupManager {
     public func warmup(mode: WarmupMode,
-                       targetsRegex: NSRegularExpression?,
-                       exceptTargetsRegex: NSRegularExpression?,
+                       targetsOptions: TargetsOptions,
                        options: XcodeBuildOptions,
                        maxInParallel: Int,
                        headers: [String: String]) async throws {
@@ -215,14 +216,13 @@ extension WarmupManager: IWarmupManager {
         switch mode {
         case let .endpoint(endpoint), let .analyse(endpoint?):
             endpointURL = try makeEndpoint(endpoint)
-        case .analyse(nil):
+        case .analyse(nil), .printTargets:
             endpointURL = nil
         }
         guard try await !rugbyXcodeProject.isAlreadyUsingRugby() else { throw RugbyError.alreadyUseRugby }
 
         let notFoundTargets = try await findLocalBinaries(
-            targetsRegex: targetsRegex,
-            exceptTargetsRegex: exceptTargetsRegex,
+            targetsOptions: targetsOptions,
             options: options,
             dryRun: mode.dryRun
         )

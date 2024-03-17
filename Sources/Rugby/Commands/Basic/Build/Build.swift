@@ -42,14 +42,7 @@ extension Build {
 
         func body() async throws {
             try await dependencies.buildManager().build(
-                targetsRegex: regex(
-                    patterns: buildOptions.targetsOptions.targetsAsRegex,
-                    exactMatches: buildOptions.targetsOptions.targets
-                ),
-                exceptTargetsRegex: regex(
-                    patterns: buildOptions.targetsOptions.exceptAsRegex,
-                    exactMatches: buildOptions.targetsOptions.exceptTargets
-                ),
+                targetsOptions: buildOptions.targetsOptions.foundation(),
                 options: buildOptions.xcodeBuildOptions(resultBundlePath: resultBundlePath),
                 paths: dependencies.xcode.paths(),
                 ignoreCache: ignoreCache
@@ -82,14 +75,7 @@ extension Build {
 
         func body() async throws {
             try await dependencies.prebuildManager().prebuild(
-                targetsRegex: regex(
-                    patterns: buildOptions.targetsOptions.targetsAsRegex,
-                    exactMatches: buildOptions.targetsOptions.targets
-                ),
-                exceptTargetsRegex: regex(
-                    patterns: buildOptions.targetsOptions.exceptAsRegex,
-                    exactMatches: buildOptions.targetsOptions.exceptTargets
-                ),
+                targetsOptions: buildOptions.targetsOptions.foundation(),
                 options: buildOptions.xcodeBuildOptions(skipSigning: true),
                 paths: dependencies.xcode.paths(logsSubfolder: "prebuild")
             )

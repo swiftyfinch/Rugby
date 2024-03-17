@@ -6,8 +6,7 @@ import Foundation
 public protocol ITestManager: AnyObject {
     /// Runs tests by impact or not.
     /// - Parameters:
-    ///   - targetsRegex: A RegEx to select targets.
-    ///   - exceptTargetsRegex: A RegEx to exclude targets.
+    ///   - targetsOptions: A set of options to to select targets.
     ///   - buildOptions: Xcode build options.
     ///   - buildPaths: A collection of Xcode build paths.
     ///   - testPaths: A collection of Xcode tests paths.
@@ -15,8 +14,7 @@ public protocol ITestManager: AnyObject {
     ///   - simulatorName: A name of simulator.
     ///   - byImpact: A flag to select test targets by impact.
     ///   - markPassed: Mark test targets as passed if all tests are succeed.
-    func test(targetsRegex: NSRegularExpression?,
-              exceptTargetsRegex: NSRegularExpression?,
+    func test(targetsOptions: TargetsOptions,
               buildOptions: XcodeBuildOptions,
               buildPaths: XcodeBuildPaths,
               testPaths: XcodeBuildPaths,
@@ -158,16 +156,14 @@ final class TestManager: Loggable {
     }
 
     private func selectingTargets(
-        targetsRegex: NSRegularExpression?,
-        exceptTargetsRegex: NSRegularExpression?,
+        targetsOptions: TargetsOptions,
         buildOptions: XcodeBuildOptions,
         byImpact: Bool,
         quiet: Bool = false
     ) async throws -> TargetsMap {
         guard byImpact else {
             let testTargets = try await testImpactManager.fetchTestTargets(
-                targetsRegex,
-                exceptTargetsRegex: exceptTargetsRegex,
+                targetsOptions: targetsOptions,
                 buildOptions: buildOptions,
                 quiet: quiet
             )
@@ -184,8 +180,7 @@ final class TestManager: Loggable {
         }
 
         let missingTestTargets = try await testImpactManager.missingTargets(
-            targetsRegex,
-            exceptTargetsRegex: exceptTargetsRegex,
+            targetsOptions: targetsOptions,
             buildOptions: buildOptions,
             quiet: quiet
         )
@@ -201,8 +196,7 @@ final class TestManager: Loggable {
         return missingTestTargets
     }
 
-    private func cache(targetsRegex: NSRegularExpression?,
-                       exceptTargetsRegex: NSRegularExpression?,
+    private func cache(targetsOptions: TargetsOptions,
                        testTargets: TargetsMap,
                        buildOptions: XcodeBuildOptions,
                        buildPaths: XcodeBuildPaths,
@@ -211,6 +205,7 @@ final class TestManager: Loggable {
             "Building",
             auto: await buildManager.build(
                 targets: .exact(testTargets.dependenciesMap()),
+                targetsTryMode: false,
                 options: buildOptions,
                 paths: buildPaths,
                 ignoreCache: false
@@ -218,14 +213,14 @@ final class TestManager: Loggable {
         )
         return try await log("Using Binaries", block: {
             let updatedTestTargets = try await selectingTargets(
-                targetsRegex: targetsRegex,
-                exceptTargetsRegex: exceptTargetsRegex,
+                targetsOptions: targetsOptions,
                 buildOptions: buildOptions,
                 byImpact: byImpact,
                 quiet: true
             )
             try await useBinariesManager.use(
                 targets: .exact(updatedTestTargets.dependenciesMap()),
+                targetsTryMode: false,
                 xcargs: buildOptions.xcargs,
                 deleteSources: false
             )
@@ -235,8 +230,7 @@ final class TestManager: Loggable {
 }
 
 extension TestManager: ITestManager {
-    func test(targetsRegex: NSRegularExpression?,
-              exceptTargetsRegex: NSRegularExpression?,
+    func test(targetsOptions: TargetsOptions,
               buildOptions: XcodeBuildOptions,
               buildPaths: XcodeBuildPaths,
               testPaths: XcodeBuildPaths,
@@ -252,10 +246,10 @@ extension TestManager: ITestManager {
         let testTargets = try await log(
             "Selecting Targets",
             auto: await selectingTargets(
-                targetsRegex: targetsRegex,
-                exceptTargetsRegex: exceptTargetsRegex,
+                targetsOptions: targetsOptions,
                 buildOptions: buildOptions,
-                byImpact: byImpact
+                byImpact: byImpact,
+                quiet: targetsOptions.tryMode
             )
         )
         guard testTargets.isNotEmpty else { return }
@@ -263,8 +257,7 @@ extension TestManager: ITestManager {
         let updatedTestTargets = try await log(
             "Caching Targets",
             auto: await cache(
-                targetsRegex: targetsRegex,
-                exceptTargetsRegex: exceptTargetsRegex,
+                targetsOptions: targetsOptions,
                 testTargets: testTargets,
                 buildOptions: buildOptions,
                 buildPaths: buildPaths,

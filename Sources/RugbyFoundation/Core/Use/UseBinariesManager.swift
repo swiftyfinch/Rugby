@@ -6,12 +6,10 @@ import Foundation
 public protocol IUseBinariesManager: AnyObject {
     /// Uses built binaries instead of targets.
     /// - Parameters:
-    ///   - targetsRegex: A RegEx to select targets.
-    ///   - exceptTargetsRegex: A RegEx to exclude targets.
+    ///   - targetsOptions: A set of options to to select targets.
     ///   - xcargs: The xcargs which is used in Rugby.
     ///   - deleteSources: An option to delete targets with sources from Xcode project.
-    func use(targetsRegex: NSRegularExpression?,
-             exceptTargetsRegex: NSRegularExpression?,
+    func use(targetsOptions: TargetsOptions,
              xcargs: [String],
              deleteSources: Bool) async throws
 
@@ -25,6 +23,7 @@ public protocol IUseBinariesManager: AnyObject {
 
 protocol IInternalUseBinariesManager: IUseBinariesManager {
     func use(targets: TargetsScope,
+             targetsTryMode: Bool,
              xcargs: [String],
              deleteSources: Bool) async throws
 }
@@ -159,6 +158,7 @@ private extension String {
 
 extension UseBinariesManager: IInternalUseBinariesManager {
     func use(targets: TargetsScope,
+             targetsTryMode: Bool,
              xcargs: [String],
              deleteSources: Bool) async throws {
         let binaryTargets = try await findTargets(targets: targets)
@@ -176,14 +176,14 @@ extension UseBinariesManager: IInternalUseBinariesManager {
 // MARK: - IUseBinariesManager
 
 extension UseBinariesManager: IUseBinariesManager {
-    public func use(targetsRegex: NSRegularExpression?,
-                    exceptTargetsRegex: NSRegularExpression?,
+    public func use(targetsOptions: TargetsOptions,
                     xcargs: [String],
                     deleteSources: Bool) async throws {
         guard try await !rugbyXcodeProject.isAlreadyUsingRugby() else { throw RugbyError.alreadyUseRugby }
 
         try await use(
-            targets: .filter(regex: targetsRegex, exceptRegex: exceptTargetsRegex),
+            targets: .init(targetsOptions),
+            targetsTryMode: targetsOptions.tryMode,
             xcargs: xcargs,
             deleteSources: deleteSources
         )

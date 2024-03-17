@@ -6,21 +6,17 @@ import Foundation
 public protocol ITestImpactManager: AnyObject {
     /// Prints affected test targets.
     /// - Parameters:
-    ///   - targetsRegex: A RegEx to select targets.
-    ///   - exceptTargetsRegex: A RegEx to exclude targets.
+    ///   - targetsOptions: A set of options to to select targets.
     ///   - options: Xcode build options.
-    func impact(targetsRegex: NSRegularExpression?,
-                exceptTargetsRegex: NSRegularExpression?,
+    func impact(targetsOptions: TargetsOptions,
                 buildOptions: XcodeBuildOptions) async throws
 
     /// Marks test targets as passed.
     /// - Parameters:
-    ///   - targetsRegex: A RegEx to select targets.
-    ///   - exceptTargetsRegex: A RegEx to exclude targets.
+    ///   - targetsOptions: A set of options to to select targets.
     ///   - options: Xcode build options.
     ///   - upToDateBranch: Skip if the current branch is not up-to-date to target one.
-    func markAsPassed(targetsRegex: NSRegularExpression?,
-                      exceptTargetsRegex: NSRegularExpression?,
+    func markAsPassed(targetsOptions: TargetsOptions,
                       buildOptions: XcodeBuildOptions,
                       upToDateBranch: String?) async throws
 }
@@ -54,27 +50,24 @@ final class TestImpactManager: Loggable {
 }
 
 protocol IInternalTestImpactManager: ITestImpactManager {
-    func fetchTestTargets(_ targetsRegex: NSRegularExpression?,
-                          exceptTargetsRegex: NSRegularExpression?,
+    func fetchTestTargets(targetsOptions: TargetsOptions,
                           buildOptions: XcodeBuildOptions,
                           quiet: Bool) async throws -> TargetsMap
-    func missingTargets(_ targetsRegex: NSRegularExpression?,
-                        exceptTargetsRegex: NSRegularExpression?,
+    func missingTargets(targetsOptions: TargetsOptions,
                         buildOptions: XcodeBuildOptions,
                         quiet: Bool) async throws -> TargetsMap
 }
 
 extension TestImpactManager: IInternalTestImpactManager {
-    func fetchTestTargets(_ targetsRegex: NSRegularExpression?,
-                          exceptTargetsRegex: NSRegularExpression?,
+    func fetchTestTargets(targetsOptions: TargetsOptions,
                           buildOptions: XcodeBuildOptions,
                           quiet: Bool) async throws -> TargetsMap {
         let targets = try await log(
             "Finding Targets",
             level: quiet ? .info : .compact,
             auto: await buildTargetsManager.findTargets(
-                targetsRegex,
-                exceptTargets: exceptTargetsRegex,
+                targetsOptions.targetsRegex,
+                exceptTargets: targetsOptions.exceptTargetsRegex,
                 includingTests: true
             )
         )
@@ -84,13 +77,11 @@ extension TestImpactManager: IInternalTestImpactManager {
         return targets.filter(\.value.isTests)
     }
 
-    func missingTargets(_ targetsRegex: NSRegularExpression?,
-                        exceptTargetsRegex: NSRegularExpression?,
+    func missingTargets(targetsOptions: TargetsOptions,
                         buildOptions: XcodeBuildOptions,
                         quiet: Bool) async throws -> TargetsMap {
         let targets = try await fetchTestTargets(
-            targetsRegex,
-            exceptTargetsRegex: exceptTargetsRegex,
+            targetsOptions: targetsOptions,
             buildOptions: buildOptions,
             quiet: quiet
         )
@@ -99,15 +90,13 @@ extension TestImpactManager: IInternalTestImpactManager {
 }
 
 extension TestImpactManager: ITestImpactManager {
-    func impact(targetsRegex: NSRegularExpression?,
-                exceptTargetsRegex: NSRegularExpression?,
+    func impact(targetsOptions: TargetsOptions,
                 buildOptions: XcodeBuildOptions) async throws {
         try await environmentCollector.logXcodeVersion()
         guard try await !rugbyXcodeProject.isAlreadyUsingRugby() else { throw RugbyError.alreadyUseRugby }
 
         let targets = try await fetchTestTargets(
-            targetsRegex,
-            exceptTargetsRegex: exceptTargetsRegex,
+            targetsOptions: targetsOptions,
             buildOptions: buildOptions,
             quiet: false
         )
@@ -126,8 +115,7 @@ extension TestImpactManager: ITestImpactManager {
         }
     }
 
-    func markAsPassed(targetsRegex: NSRegularExpression?,
-                      exceptTargetsRegex: NSRegularExpression?,
+    func markAsPassed(targetsOptions: TargetsOptions,
                       buildOptions: XcodeBuildOptions,
                       upToDateBranch: String?) async throws {
         if let branch = upToDateBranch {
@@ -138,13 +126,11 @@ extension TestImpactManager: ITestImpactManager {
                 return await log("Skip: The current branch is behind \(branch).")
             }
         }
-
         try await environmentCollector.logXcodeVersion()
         guard try await !rugbyXcodeProject.isAlreadyUsingRugby() else { throw RugbyError.alreadyUseRugby }
 
         let targets = try await fetchTestTargets(
-            targetsRegex,
-            exceptTargetsRegex: exceptTargetsRegex,
+            targetsOptions: targetsOptions,
             buildOptions: buildOptions,
             quiet: false
         )
