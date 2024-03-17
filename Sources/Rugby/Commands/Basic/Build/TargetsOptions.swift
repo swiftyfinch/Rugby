@@ -1,4 +1,5 @@
 import ArgumentParser
+import RugbyFoundation
 
 struct TargetsOptions: ParsableCommand {
     @Option(name: .shortAndLong,
@@ -20,4 +21,18 @@ struct TargetsOptions: ParsableCommand {
             parsing: .upToNextOption,
             help: "Regular expression patterns to exclude targets.")
     var exceptAsRegex: [String] = []
+
+    @Flag(name: .customLong("try"),
+          help: "Run command in mode, with only the selected targets are printed.")
+    var tryMode = false
+}
+
+extension TargetsOptions {
+    func foundation() throws -> RugbyFoundation.TargetsOptions {
+        try .init(
+            tryMode: tryMode,
+            targetsRegex: regex(patterns: targetsAsRegex, exactMatches: targets),
+            exceptTargetsRegex: regex(patterns: exceptAsRegex, exactMatches: exceptTargets)
+        )
+    }
 }
