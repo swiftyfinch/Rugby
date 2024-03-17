@@ -25,15 +25,15 @@
 │ -o, --output                  * Output mode: fold, multiline, silent, raw.       │
 ╰──────────────────────────────────────────────────────────────────────────────────╯
  Flags:
-╭──────────────────────────────────────────────────────────────────────────────────────╮
-│ --impact          * Select tests by impact.                                          │
-│ --pass            * Mark test targets as passed if all tests are succeed.            │
-│ --strip           * Build without debug symbols.                                     │
-│ --try             * Run command in mode, with only the selected targets are printed. │
-│ -v, --verbose []  * Increase verbosity level.                                        │
-│ -q, --quiet []    * Decrease verbosity level.                                        │
-│ -h, --help        * Show help information.                                           │
-╰──────────────────────────────────────────────────────────────────────────────────────╯
+╭──────────────────────────────────────────────────────────────────────────────────╮
+│ --impact          * Select tests by impact.                                      │
+│ --pass            * Mark test targets as passed if all tests are succeed.        │
+│ --strip           * Build without debug symbols.                                 │
+│ --try             * Run command in mode where only selected targets are printed. │
+│ -v, --verbose []  * Increase verbosity level.                                    │
+│ -q, --quiet []    * Decrease verbosity level.                                    │
+│ -h, --help        * Show help information.                                       │
+╰──────────────────────────────────────────────────────────────────────────────────╯
 ```
 
 ## Discussion

@@ -32,7 +32,7 @@
 ╭─────────────────────────────────────────────────────────────────────────────────────────────╮
 │ --analyse         * Run only in analyse mode without downloading. The endpoint is optional. │
 │ --strip           * Build without debug symbols.                                            │
-│ --try             * Run command in mode, with only the selected targets are printed.        │
+│ --try             * Run command in mode where only selected targets are printed.            │
 │ -v, --verbose []  * Increase verbosity level.                                               │
 │ -q, --quiet []    * Decrease verbosity level.                                               │
 │ -h, --help        * Show help information.                                                  │
