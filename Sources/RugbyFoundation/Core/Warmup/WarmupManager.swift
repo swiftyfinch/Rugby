@@ -51,6 +51,7 @@ final class WarmupManager: Loggable {
     private let targetsHasher: ITargetsHasher
     private let cacheDownloader: ICacheDownloader
     private let metricsLogger: IMetricsLogger
+    private let targetsPrinter: ITargetsPrinter
 
     init(logger: ILogger,
          rugbyXcodeProject: IRugbyXcodeProject,
@@ -58,7 +59,8 @@ final class WarmupManager: Loggable {
          binariesStorage: IBinariesStorage,
          targetsHasher: ITargetsHasher,
          cacheDownloader: ICacheDownloader,
-         metricsLogger: IMetricsLogger) {
+         metricsLogger: IMetricsLogger,
+         targetsPrinter: ITargetsPrinter) {
         self.logger = logger
         self.rugbyXcodeProject = rugbyXcodeProject
         self.buildTargetsManager = buildTargetsManager
@@ -66,6 +68,7 @@ final class WarmupManager: Loggable {
         self.targetsHasher = targetsHasher
         self.cacheDownloader = cacheDownloader
         self.metricsLogger = metricsLogger
+        self.targetsPrinter = targetsPrinter
     }
 
     private func findLocalBinaries(targetsOptions: TargetsOptions,
@@ -78,6 +81,7 @@ final class WarmupManager: Loggable {
                 exceptTargets: targetsOptions.exceptTargetsRegex
             )
         )
+        if targetsOptions.tryMode { return targets }
         guard targets.isNotEmpty else { throw BuildError.cantFindBuildTargets }
 
         try await log("Hashing Targets", auto: await targetsHasher.hash(targets, xcargs: options.xcargs))
@@ -226,6 +230,9 @@ extension WarmupManager: IWarmupManager {
             options: options,
             dryRun: mode.dryRun
         )
+        if targetsOptions.tryMode {
+            return await targetsPrinter.print(notFoundTargets)
+        }
 
         guard let endpointURL, notFoundTargets.isNotEmpty else { return }
         try await downloadRemoteBinaries(

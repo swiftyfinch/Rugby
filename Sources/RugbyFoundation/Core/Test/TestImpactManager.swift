@@ -31,6 +31,7 @@ final class TestImpactManager: Loggable {
     private let targetsHasher: ITargetsHasher
     private let testsStorage: ITestsStorage
     private let git: IGit
+    private let targetsPrinter: ITargetsPrinter
 
     init(logger: ILogger,
          environmentCollector: IEnvironmentCollector,
@@ -38,7 +39,8 @@ final class TestImpactManager: Loggable {
          buildTargetsManager: IBuildTargetsManager,
          targetsHasher: ITargetsHasher,
          testsStorage: ITestsStorage,
-         git: IGit) {
+         git: IGit,
+         targetsPrinter: ITargetsPrinter) {
         self.logger = logger
         self.environmentCollector = environmentCollector
         self.rugbyXcodeProject = rugbyXcodeProject
@@ -46,6 +48,7 @@ final class TestImpactManager: Loggable {
         self.targetsHasher = targetsHasher
         self.testsStorage = testsStorage
         self.git = git
+        self.targetsPrinter = targetsPrinter
     }
 }
 
@@ -71,6 +74,7 @@ extension TestImpactManager: IInternalTestImpactManager {
                 includingTests: true
             )
         )
+        if targetsOptions.tryMode { return targets }
         try await log("Hashing Targets",
                       level: quiet ? .info : .compact,
                       auto: await targetsHasher.hash(targets, xcargs: buildOptions.xcargs))
@@ -100,6 +104,9 @@ extension TestImpactManager: ITestImpactManager {
             buildOptions: buildOptions,
             quiet: false
         )
+        if targetsOptions.tryMode {
+            return await targetsPrinter.print(targets)
+        }
 
         let missingTestTargets = try await testsStorage.findMissingTests(of: targets, buildOptions: buildOptions)
         guard !missingTestTargets.isEmpty else {
@@ -134,6 +141,9 @@ extension TestImpactManager: ITestImpactManager {
             buildOptions: buildOptions,
             quiet: false
         )
+        if targetsOptions.tryMode {
+            return await targetsPrinter.print(targets)
+        }
         try await log(
             "Marking Tests as Passed",
             auto: await testsStorage.saveTests(of: targets, buildOptions: buildOptions)

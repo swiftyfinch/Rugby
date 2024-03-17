@@ -11,7 +11,8 @@ public extension Vault {
             xcodeProject: xcodeProject,
             binariesStorage: binariesStorage,
             rugbyXcodeProject: RugbyXcodeProject(xcodeProject: xcodeProject),
-            environmentCollector: environmentCollector
+            environmentCollector: environmentCollector,
+            targetsPrinter: targetsPrinter
         )
     }
 }

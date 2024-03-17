@@ -42,6 +42,7 @@ final class UseBinariesManager: Loggable {
     private let targetsHasher: ITargetsHasher
     private let supportFilesPatcher: ISupportFilesPatcher
     private let fileContentEditor: IFileContentEditor
+    private let targetsPrinter: ITargetsPrinter
 
     init(logger: ILogger,
          buildTargetsManager: IBuildTargetsManager,
@@ -52,7 +53,8 @@ final class UseBinariesManager: Loggable {
          binariesStorage: IBinariesStorage,
          targetsHasher: ITargetsHasher,
          supportFilesPatcher: ISupportFilesPatcher,
-         fileContentEditor: IFileContentEditor) {
+         fileContentEditor: IFileContentEditor,
+         targetsPrinter: ITargetsPrinter) {
         self.logger = logger
         self.buildTargetsManager = buildTargetsManager
         self.librariesPatcher = librariesPatcher
@@ -63,6 +65,7 @@ final class UseBinariesManager: Loggable {
         self.targetsHasher = targetsHasher
         self.supportFilesPatcher = supportFilesPatcher
         self.fileContentEditor = fileContentEditor
+        self.targetsPrinter = targetsPrinter
     }
 }
 
@@ -162,6 +165,9 @@ extension UseBinariesManager: IInternalUseBinariesManager {
              xcargs: [String],
              deleteSources: Bool) async throws {
         let binaryTargets = try await findTargets(targets: targets)
+        if targetsTryMode {
+            return await targetsPrinter.print(binaryTargets)
+        }
         guard binaryTargets.isNotEmpty else { return await log("Skip") }
 
         try await log("Backuping", auto: await backupManager.backup(xcodeProject, kind: .original))

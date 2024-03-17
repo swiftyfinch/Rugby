@@ -27,6 +27,7 @@ final class PrebuildManager: Loggable {
     private let binariesStorage: IBinariesStorage
     private let rugbyXcodeProject: IRugbyXcodeProject
     private let environmentCollector: IEnvironmentCollector
+    private let targetsPrinter: ITargetsPrinter
 
     init(
         logger: ILogger,
@@ -35,7 +36,8 @@ final class PrebuildManager: Loggable {
         xcodeProject: IInternalXcodeProject,
         binariesStorage: IBinariesStorage,
         rugbyXcodeProject: IRugbyXcodeProject,
-        environmentCollector: IEnvironmentCollector
+        environmentCollector: IEnvironmentCollector,
+        targetsPrinter: ITargetsPrinter
     ) {
         self.logger = logger
         self.xcodePhaseEditor = xcodePhaseEditor
@@ -44,6 +46,7 @@ final class PrebuildManager: Loggable {
         self.binariesStorage = binariesStorage
         self.rugbyXcodeProject = rugbyXcodeProject
         self.environmentCollector = environmentCollector
+        self.targetsPrinter = targetsPrinter
     }
 }
 
@@ -62,6 +65,9 @@ extension PrebuildManager: IPrebuildManager {
             freeSpaceIfNeeded: false,
             patchLibraries: false
         )
+        if targetsOptions.tryMode {
+            return await targetsPrinter.print(targets)
+        }
 
         let targetsTree = targets.merging(targets.flatMapValues(\.dependencies))
         await log("Removing Build Phases") {

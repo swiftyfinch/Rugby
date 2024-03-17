@@ -48,6 +48,7 @@ final class BuildManager: Loggable {
     private let environmentCollector: IEnvironmentCollector
     private let env: IEnvironment
     private let targetTreePainter: ITargetTreePainter
+    private let targetsPrinter: ITargetsPrinter
 
     init(logger: ILogger,
          buildTargetsManager: IBuildTargetsManager,
@@ -63,7 +64,8 @@ final class BuildManager: Loggable {
          binariesCleaner: IBinariesCleaner,
          environmentCollector: IEnvironmentCollector,
          env: IEnvironment,
-         targetTreePainter: ITargetTreePainter) {
+         targetTreePainter: ITargetTreePainter,
+         targetsPrinter: ITargetsPrinter) {
         self.logger = logger
         self.buildTargetsManager = buildTargetsManager
         self.librariesPatcher = librariesPatcher
@@ -79,6 +81,7 @@ final class BuildManager: Loggable {
         self.environmentCollector = environmentCollector
         self.env = env
         self.targetTreePainter = targetTreePainter
+        self.targetsPrinter = targetsPrinter
     }
 
     private func reuseTargets(
@@ -138,6 +141,7 @@ extension BuildManager: IInternalBuildManager {
                 auto: await buildTargetsManager.findTargets(regex, exceptTargets: exceptRegex)
             )
         }
+        if targetsTryMode { return exactTargets }
         guard exactTargets.isNotEmpty else { throw BuildError.cantFindBuildTargets }
 
         try await log("Backuping", auto: await backupManager.backup(xcodeProject, kind: .tmp))
@@ -195,6 +199,9 @@ extension BuildManager: IInternalBuildManager {
                                              targetsTryMode: targetsTryMode,
                                              freeSpaceIfNeeded: true,
                                              patchLibraries: true)
+        if targetsTryMode {
+            return await targetsPrinter.print(exactTargets)
+        }
         guard let buildTargets = try await reuseTargets(
             targets: exactTargets,
             options: options,

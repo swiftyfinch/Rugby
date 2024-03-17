@@ -55,6 +55,7 @@ final class TestManager: Loggable {
     private let simCTL: ISimCTL
     private let testsStorage: ITestsStorage
     private let testsFolderPath: String
+    private let targetsPrinter: ITargetsPrinter
 
     init(logger: ILogger,
          environmentCollector: IEnvironmentCollector,
@@ -70,7 +71,8 @@ final class TestManager: Loggable {
          processMonitor: IProcessMonitor,
          simCTL: ISimCTL,
          testsStorage: ITestsStorage,
-         testsFolderPath: String) {
+         testsFolderPath: String,
+         targetsPrinter: ITargetsPrinter) {
         self.logger = logger
         self.environmentCollector = environmentCollector
         self.rugbyXcodeProject = rugbyXcodeProject
@@ -86,6 +88,7 @@ final class TestManager: Loggable {
         self.simCTL = simCTL
         self.testsStorage = testsStorage
         self.testsFolderPath = testsFolderPath
+        self.targetsPrinter = targetsPrinter
     }
 
     private func validateSimulatorName(_ name: String) throws {
@@ -252,6 +255,9 @@ extension TestManager: ITestManager {
                 quiet: targetsOptions.tryMode
             )
         )
+        if targetsOptions.tryMode {
+            return await targetsPrinter.print(testTargets)
+        }
         guard testTargets.isNotEmpty else { return }
 
         let updatedTestTargets = try await log(

@@ -5,6 +5,7 @@ public extension Vault {
     func deleteTargetsManager(projectPath: String) -> IDeleteTargetsManager {
         DeleteTargetsManager(logger: logger,
                              xcodeProject: xcode.project(projectPath: projectPath),
-                             backupManager: backupManager())
+                             backupManager: backupManager(),
+                             targetsPrinter: targetsPrinter)
     }
 }
