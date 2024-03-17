@@ -27,6 +27,7 @@ final class TestManagerTests: XCTestCase {
     private var simCTL: ISimCTLMock!
     private var testsStorage: ITestsStorageMock!
     private var workingDirectory: IFolder!
+    private var targetsPrinter: ITargetsPrinterMock!
 
     override func setUp() async throws {
         try await super.setUp()
@@ -54,6 +55,7 @@ final class TestManagerTests: XCTestCase {
         processMonitor = IProcessMonitorMock()
         simCTL = ISimCTLMock()
         testsStorage = ITestsStorageMock()
+        targetsPrinter = ITargetsPrinterMock()
         sut = TestManager(
             logger: logger,
             environmentCollector: environmentCollector,
@@ -69,7 +71,8 @@ final class TestManagerTests: XCTestCase {
             processMonitor: processMonitor,
             simCTL: simCTL,
             testsStorage: testsStorage,
-            testsFolderPath: workingDirectory.path
+            testsFolderPath: workingDirectory.path,
+            targetsPrinter: targetsPrinter
         )
     }
 
@@ -92,6 +95,7 @@ final class TestManagerTests: XCTestCase {
         simCTL = nil
         testsStorage = nil
         workingDirectory = nil
+        targetsPrinter = nil
     }
 }
 
@@ -103,8 +107,7 @@ extension TestManagerTests {
         var resultError: Error?
         do {
             try await sut.test(
-                targetsRegex: nil,
-                exceptTargetsRegex: nil,
+                targetsOptions: .init(),
                 buildOptions: .mock(),
                 buildPaths: .mock(),
                 testPaths: .mock(),
@@ -131,8 +134,7 @@ extension TestManagerTests {
         var resultError: Error?
         do {
             try await sut.test(
-                targetsRegex: nil,
-                exceptTargetsRegex: nil,
+                targetsOptions: .init(),
                 buildOptions: .mock(),
                 buildPaths: .mock(),
                 testPaths: .mock(),
@@ -173,12 +175,14 @@ extension TestManagerTests {
             )
         ]
         rugbyXcodeProject.isAlreadyUsingRugbyReturnValue = false
-        testImpactManager.missingTargetsExceptTargetsRegexBuildOptionsQuietReturnValue = [:]
+        testImpactManager.missingTargetsTargetsOptionsBuildOptionsQuietReturnValue = [:]
 
         // Act
         try await sut.test(
-            targetsRegex: targetsRegex,
-            exceptTargetsRegex: exceptTargetsRegex,
+            targetsOptions: .init(
+                targetsRegex: targetsRegex,
+                exceptTargetsRegex: exceptTargetsRegex
+            ),
             buildOptions: buildOptions,
             buildPaths: .mock(),
             testPaths: .mock(),
@@ -192,12 +196,12 @@ extension TestManagerTests {
         XCTAssertTrue(logger.logListLevelOutputReceivedInvocations.isEmpty)
         XCTAssertTrue(logger.logPlainLevelOutputReceivedInvocations.isEmpty)
 
-        XCTAssertEqual(testImpactManager.missingTargetsExceptTargetsRegexBuildOptionsQuietCallsCount, 1)
+        XCTAssertEqual(testImpactManager.missingTargetsTargetsOptionsBuildOptionsQuietCallsCount, 1)
         let missingTargetsArguments = try XCTUnwrap(
-            testImpactManager.missingTargetsExceptTargetsRegexBuildOptionsQuietReceivedArguments
+            testImpactManager.missingTargetsTargetsOptionsBuildOptionsQuietReceivedArguments
         )
-        XCTAssertEqual(missingTargetsArguments.targetsRegex, targetsRegex)
-        XCTAssertEqual(missingTargetsArguments.exceptTargetsRegex, exceptTargetsRegex)
+        XCTAssertEqual(missingTargetsArguments.targetsOptions.targetsRegex, targetsRegex)
+        XCTAssertEqual(missingTargetsArguments.targetsOptions.exceptTargetsRegex, exceptTargetsRegex)
         XCTAssertEqual(missingTargetsArguments.buildOptions, buildOptions)
 
         let loggerBlockInvocations = try XCTUnwrap(loggerBlockInvocations)
@@ -245,7 +249,7 @@ extension TestManagerTests {
             localPodFrameworkUnitTests.uuid: localPodFrameworkUnitTests,
             localPodUnitResourceBundleTests.uuid: localPodUnitResourceBundleTests
         ]
-        testImpactManager.missingTargetsExceptTargetsRegexBuildOptionsQuietReturnValue = missingTargets
+        testImpactManager.missingTargetsTargetsOptionsBuildOptionsQuietReturnValue = missingTargets
         let testplanURL = URL(fileURLWithPath: "tests/Rugby.xctestplan")
         testplanEditor.createTestplanTestplanTemplatePathTestTargetsInFolderPathReturnValue = testplanURL
         let testsTarget = IInternalTargetMock()
@@ -260,8 +264,10 @@ extension TestManagerTests {
 
         // Act
         try await sut.test(
-            targetsRegex: targetsRegex,
-            exceptTargetsRegex: exceptTargetsRegex,
+            targetsOptions: .init(
+                targetsRegex: targetsRegex,
+                exceptTargetsRegex: exceptTargetsRegex
+            ),
             buildOptions: buildOptions,
             buildPaths: buildPaths,
             testPaths: .mock(),
@@ -275,14 +281,14 @@ extension TestManagerTests {
         XCTAssertTrue(logger.logListLevelOutputReceivedInvocations.isEmpty)
         XCTAssertTrue(logger.logPlainLevelOutputReceivedInvocations.isEmpty)
 
-        XCTAssertEqual(testImpactManager.missingTargetsExceptTargetsRegexBuildOptionsQuietCallsCount, 2)
-        let missingTargetsInvocations = testImpactManager.missingTargetsExceptTargetsRegexBuildOptionsQuietReceivedInvocations
-        XCTAssertEqual(missingTargetsInvocations[0].targetsRegex, targetsRegex)
-        XCTAssertEqual(missingTargetsInvocations[0].exceptTargetsRegex, exceptTargetsRegex)
+        XCTAssertEqual(testImpactManager.missingTargetsTargetsOptionsBuildOptionsQuietCallsCount, 2)
+        let missingTargetsInvocations = testImpactManager.missingTargetsTargetsOptionsBuildOptionsQuietReceivedInvocations
+        XCTAssertEqual(missingTargetsInvocations[0].targetsOptions.targetsRegex, targetsRegex)
+        XCTAssertEqual(missingTargetsInvocations[0].targetsOptions.exceptTargetsRegex, exceptTargetsRegex)
         XCTAssertEqual(missingTargetsInvocations[0].buildOptions, buildOptions)
         XCTAssertFalse(missingTargetsInvocations[0].quiet)
-        XCTAssertEqual(missingTargetsInvocations[1].targetsRegex, targetsRegex)
-        XCTAssertEqual(missingTargetsInvocations[1].exceptTargetsRegex, exceptTargetsRegex)
+        XCTAssertEqual(missingTargetsInvocations[1].targetsOptions.targetsRegex, targetsRegex)
+        XCTAssertEqual(missingTargetsInvocations[1].targetsOptions.exceptTargetsRegex, exceptTargetsRegex)
         XCTAssertTrue(missingTargetsInvocations[1].quiet)
 
         let loggerBlockInvocations = try XCTUnwrap(loggerBlockInvocations)
@@ -298,7 +304,7 @@ extension TestManagerTests {
         XCTAssertEqual(loggerBlockInvocations[1].level, .compact)
         XCTAssertEqual(loggerBlockInvocations[1].output, .all)
 
-        let buildTargetsArguments = try XCTUnwrap(buildManager.buildTargetsOptionsPathsIgnoreCacheReceivedArguments)
+        let buildTargetsArguments = try XCTUnwrap(buildManager.buildTargetsTargetsTryModeOptionsPathsIgnoreCacheReceivedArguments)
         switch buildTargetsArguments.targets {
         case let .exact(targets):
             XCTAssertEqual(targets.count, 1)
@@ -310,8 +316,8 @@ extension TestManagerTests {
         XCTAssertEqual(buildTargetsArguments.paths, buildPaths)
         XCTAssertFalse(buildTargetsArguments.ignoreCache)
 
-        XCTAssertEqual(useBinariesManager.useTargetsXcargsDeleteSourcesCallsCount, 1)
-        let useTargetsArguments = try XCTUnwrap(useBinariesManager.useTargetsXcargsDeleteSourcesReceivedArguments)
+        XCTAssertEqual(useBinariesManager.useTargetsTargetsTryModeXcargsDeleteSourcesCallsCount, 1)
+        let useTargetsArguments = try XCTUnwrap(useBinariesManager.useTargetsTargetsTryModeXcargsDeleteSourcesReceivedArguments)
         switch useTargetsArguments.targets {
         case let .exact(targets):
             XCTAssertEqual(targets.count, 1)
@@ -322,7 +328,7 @@ extension TestManagerTests {
         XCTAssertEqual(useTargetsArguments.xcargs, buildOptions.xcargs)
         XCTAssertFalse(useTargetsArguments.deleteSources)
 
-        XCTAssertEqual(buildManager.buildTargetsOptionsPathsIgnoreCacheCallsCount, 1)
+        XCTAssertEqual(buildManager.buildTargetsTargetsTryModeOptionsPathsIgnoreCacheCallsCount, 1)
         XCTAssertEqual(loggerBlockInvocations[2].header, "Caching Targets")
         XCTAssertNil(loggerBlockInvocations[2].footer)
         XCTAssertNil(loggerBlockInvocations[2].metricKey)
@@ -446,12 +452,14 @@ extension TestManagerTests {
         ]
         testplanEditor.expandTestplanPathReturnValue = testplanTemplatePath
         rugbyXcodeProject.isAlreadyUsingRugbyReturnValue = false
-        testImpactManager.fetchTestTargetsExceptTargetsRegexBuildOptionsQuietReturnValue = [:]
+        testImpactManager.fetchTestTargetsTargetsOptionsBuildOptionsQuietReturnValue = [:]
 
         // Act
         try await sut.test(
-            targetsRegex: targetsRegex,
-            exceptTargetsRegex: exceptTargetsRegex,
+            targetsOptions: .init(
+                targetsRegex: targetsRegex,
+                exceptTargetsRegex: exceptTargetsRegex
+            ),
             buildOptions: buildOptions,
             buildPaths: .mock(),
             testPaths: .mock(),
@@ -465,12 +473,12 @@ extension TestManagerTests {
         XCTAssertTrue(logger.logListLevelOutputReceivedInvocations.isEmpty)
         XCTAssertTrue(logger.logPlainLevelOutputReceivedInvocations.isEmpty)
 
-        XCTAssertEqual(testImpactManager.fetchTestTargetsExceptTargetsRegexBuildOptionsQuietCallsCount, 1)
+        XCTAssertEqual(testImpactManager.fetchTestTargetsTargetsOptionsBuildOptionsQuietCallsCount, 1)
         let fetchTestTargetsArguments = try XCTUnwrap(
-            testImpactManager.fetchTestTargetsExceptTargetsRegexBuildOptionsQuietReceivedArguments
+            testImpactManager.fetchTestTargetsTargetsOptionsBuildOptionsQuietReceivedArguments
         )
-        XCTAssertEqual(fetchTestTargetsArguments.targetsRegex, targetsRegex)
-        XCTAssertEqual(fetchTestTargetsArguments.exceptTargetsRegex, exceptTargetsRegex)
+        XCTAssertEqual(fetchTestTargetsArguments.targetsOptions.targetsRegex, targetsRegex)
+        XCTAssertEqual(fetchTestTargetsArguments.targetsOptions.exceptTargetsRegex, exceptTargetsRegex)
         XCTAssertEqual(fetchTestTargetsArguments.buildOptions, buildOptions)
 
         let loggerBlockInvocations = try XCTUnwrap(loggerBlockInvocations)
@@ -518,7 +526,7 @@ extension TestManagerTests {
             localPodFrameworkUnitTests.uuid: localPodFrameworkUnitTests,
             localPodUnitResourceBundleTests.uuid: localPodUnitResourceBundleTests
         ]
-        testImpactManager.fetchTestTargetsExceptTargetsRegexBuildOptionsQuietReturnValue = missingTargets
+        testImpactManager.fetchTestTargetsTargetsOptionsBuildOptionsQuietReturnValue = missingTargets
         let testplanURL = URL(fileURLWithPath: "tests/Rugby.xctestplan")
         testplanEditor.createTestplanTestplanTemplatePathTestTargetsInFolderPathReturnValue = testplanURL
         let testsTarget = IInternalTargetMock()
@@ -533,8 +541,10 @@ extension TestManagerTests {
 
         // Act
         try await sut.test(
-            targetsRegex: targetsRegex,
-            exceptTargetsRegex: exceptTargetsRegex,
+            targetsOptions: .init(
+                targetsRegex: targetsRegex,
+                exceptTargetsRegex: exceptTargetsRegex
+            ),
             buildOptions: buildOptions,
             buildPaths: buildPaths,
             testPaths: .mock(),
@@ -548,14 +558,14 @@ extension TestManagerTests {
         XCTAssertTrue(logger.logListLevelOutputReceivedInvocations.isEmpty)
         XCTAssertTrue(logger.logPlainLevelOutputReceivedInvocations.isEmpty)
 
-        XCTAssertEqual(testImpactManager.fetchTestTargetsExceptTargetsRegexBuildOptionsQuietCallsCount, 2)
-        let fetchTestTargetsInvocations = testImpactManager.fetchTestTargetsExceptTargetsRegexBuildOptionsQuietReceivedInvocations
-        XCTAssertEqual(fetchTestTargetsInvocations[0].targetsRegex, targetsRegex)
-        XCTAssertEqual(fetchTestTargetsInvocations[0].exceptTargetsRegex, exceptTargetsRegex)
+        XCTAssertEqual(testImpactManager.fetchTestTargetsTargetsOptionsBuildOptionsQuietCallsCount, 2)
+        let fetchTestTargetsInvocations = testImpactManager.fetchTestTargetsTargetsOptionsBuildOptionsQuietReceivedInvocations
+        XCTAssertEqual(fetchTestTargetsInvocations[0].targetsOptions.targetsRegex, targetsRegex)
+        XCTAssertEqual(fetchTestTargetsInvocations[0].targetsOptions.exceptTargetsRegex, exceptTargetsRegex)
         XCTAssertEqual(fetchTestTargetsInvocations[0].buildOptions, buildOptions)
         XCTAssertFalse(fetchTestTargetsInvocations[0].quiet)
-        XCTAssertEqual(fetchTestTargetsInvocations[1].targetsRegex, targetsRegex)
-        XCTAssertEqual(fetchTestTargetsInvocations[1].exceptTargetsRegex, exceptTargetsRegex)
+        XCTAssertEqual(fetchTestTargetsInvocations[1].targetsOptions.targetsRegex, targetsRegex)
+        XCTAssertEqual(fetchTestTargetsInvocations[1].targetsOptions.exceptTargetsRegex, exceptTargetsRegex)
         XCTAssertEqual(fetchTestTargetsInvocations[1].buildOptions, buildOptions)
         XCTAssertTrue(fetchTestTargetsInvocations[1].quiet)
 
@@ -572,7 +582,7 @@ extension TestManagerTests {
         XCTAssertEqual(loggerBlockInvocations[1].level, .compact)
         XCTAssertEqual(loggerBlockInvocations[1].output, .all)
 
-        let buildTargetsArguments = try XCTUnwrap(buildManager.buildTargetsOptionsPathsIgnoreCacheReceivedArguments)
+        let buildTargetsArguments = try XCTUnwrap(buildManager.buildTargetsTargetsTryModeOptionsPathsIgnoreCacheReceivedArguments)
         switch buildTargetsArguments.targets {
         case let .exact(targets):
             XCTAssertEqual(targets.count, 1)
@@ -584,8 +594,8 @@ extension TestManagerTests {
         XCTAssertEqual(buildTargetsArguments.paths, buildPaths)
         XCTAssertFalse(buildTargetsArguments.ignoreCache)
 
-        XCTAssertEqual(useBinariesManager.useTargetsXcargsDeleteSourcesCallsCount, 1)
-        let useTargetsArguments = try XCTUnwrap(useBinariesManager.useTargetsXcargsDeleteSourcesReceivedArguments)
+        XCTAssertEqual(useBinariesManager.useTargetsTargetsTryModeXcargsDeleteSourcesCallsCount, 1)
+        let useTargetsArguments = try XCTUnwrap(useBinariesManager.useTargetsTargetsTryModeXcargsDeleteSourcesReceivedArguments)
         switch useTargetsArguments.targets {
         case let .exact(targets):
             XCTAssertEqual(targets.count, 1)
@@ -596,7 +606,7 @@ extension TestManagerTests {
         XCTAssertEqual(useTargetsArguments.xcargs, buildOptions.xcargs)
         XCTAssertFalse(useTargetsArguments.deleteSources)
 
-        XCTAssertEqual(buildManager.buildTargetsOptionsPathsIgnoreCacheCallsCount, 1)
+        XCTAssertEqual(buildManager.buildTargetsTargetsTryModeOptionsPathsIgnoreCacheCallsCount, 1)
         XCTAssertEqual(loggerBlockInvocations[2].header, "Caching Targets")
         XCTAssertNil(loggerBlockInvocations[2].footer)
         XCTAssertNil(loggerBlockInvocations[2].metricKey)

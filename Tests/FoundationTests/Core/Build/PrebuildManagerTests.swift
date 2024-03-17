@@ -11,6 +11,7 @@ final class PrebuildManagerTests: XCTestCase {
     private var binariesStorage: IBinariesStorageMock!
     private var rugbyXcodeProject: IRugbyXcodeProjectMock!
     private var environmentCollector: IEnvironmentCollectorMock!
+    private var targetsPrinter: ITargetsPrinterMock!
 
     override func setUp() {
         super.setUp()
@@ -21,6 +22,7 @@ final class PrebuildManagerTests: XCTestCase {
         binariesStorage = IBinariesStorageMock()
         rugbyXcodeProject = IRugbyXcodeProjectMock()
         environmentCollector = IEnvironmentCollectorMock()
+        targetsPrinter = ITargetsPrinterMock()
         sut = PrebuildManager(
             logger: logger,
             xcodePhaseEditor: xcodePhaseEditor,
@@ -28,7 +30,8 @@ final class PrebuildManagerTests: XCTestCase {
             xcodeProject: xcodeProject,
             binariesStorage: binariesStorage,
             rugbyXcodeProject: rugbyXcodeProject,
-            environmentCollector: environmentCollector
+            environmentCollector: environmentCollector,
+            targetsPrinter: targetsPrinter
         )
         Rainbow.enabled = true
     }
@@ -43,6 +46,7 @@ final class PrebuildManagerTests: XCTestCase {
         binariesStorage = nil
         rugbyXcodeProject = nil
         environmentCollector = nil
+        targetsPrinter = nil
     }
 }
 
@@ -77,21 +81,25 @@ extension PrebuildManagerTests {
             logReceivedInvocations.append((header, footer, metricKey, level, output))
             return try await block()
         }
-        buildManager.prepareTargetsFreeSpaceIfNeededPatchLibrariesReturnValue = [:]
+        buildManager.prepareTargetsTargetsTryModeFreeSpaceIfNeededPatchLibrariesReturnValue = [:]
         let targetsRegex = try NSRegularExpression(pattern: ".*")
         let exceptTargetsRegex = try NSRegularExpression(pattern: ".?")
 
         // Act
         try await sut.prebuild(
-            targetsRegex: targetsRegex,
-            exceptTargetsRegex: exceptTargetsRegex,
+            targetsOptions: .init(
+                targetsRegex: targetsRegex,
+                exceptTargetsRegex: exceptTargetsRegex
+            ),
             options: options,
             paths: paths
         )
 
         // Assert
-        XCTAssertEqual(buildManager.prepareTargetsFreeSpaceIfNeededPatchLibrariesCallsCount, 1)
-        let buildArgs = try XCTUnwrap(buildManager.prepareTargetsFreeSpaceIfNeededPatchLibrariesReceivedArguments)
+        XCTAssertEqual(buildManager.prepareTargetsTargetsTryModeFreeSpaceIfNeededPatchLibrariesCallsCount, 1)
+        let buildArgs = try XCTUnwrap(
+            buildManager.prepareTargetsTargetsTryModeFreeSpaceIfNeededPatchLibrariesReceivedArguments
+        )
         var targetsRegexBuildArgs: NSRegularExpression?
         var exceptTargetsRegexBuildArgs: NSRegularExpression?
         switch buildArgs.targets {
@@ -136,7 +144,7 @@ extension PrebuildManagerTests {
         target0.dependencies = [dependencyTarget.uuid: dependencyTarget]
         let target1 = IInternalTargetMock()
         target1.underlyingUuid = "test_target1"
-        buildManager.prepareTargetsFreeSpaceIfNeededPatchLibrariesReturnValue = [
+        buildManager.prepareTargetsTargetsTryModeFreeSpaceIfNeededPatchLibrariesReturnValue = [
             target0.uuid: target0,
             target1.uuid: target1
         ]
@@ -146,8 +154,7 @@ extension PrebuildManagerTests {
 
         // Act
         try await sut.prebuild(
-            targetsRegex: nil,
-            exceptTargetsRegex: nil,
+            targetsOptions: .init(),
             options: options,
             paths: paths
         )

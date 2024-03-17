@@ -10,46 +10,46 @@ final class IInternalUseBinariesManagerMock: IInternalUseBinariesManager {
 
     // MARK: - use
 
-    var useTargetsXcargsDeleteSourcesThrowableError: Error?
-    var useTargetsXcargsDeleteSourcesCallsCount = 0
-    var useTargetsXcargsDeleteSourcesCalled: Bool { useTargetsXcargsDeleteSourcesCallsCount > 0 }
-    var useTargetsXcargsDeleteSourcesReceivedArguments: (targets: TargetsScope, xcargs: [String], deleteSources: Bool)?
-    var useTargetsXcargsDeleteSourcesReceivedInvocations: [(targets: TargetsScope, xcargs: [String], deleteSources: Bool)] = []
-    private let useTargetsXcargsDeleteSourcesReceivedInvocationsLock = NSRecursiveLock()
-    var useTargetsXcargsDeleteSourcesClosure: ((TargetsScope, [String], Bool) async throws -> Void)?
+    var useTargetsTargetsTryModeXcargsDeleteSourcesThrowableError: Error?
+    var useTargetsTargetsTryModeXcargsDeleteSourcesCallsCount = 0
+    var useTargetsTargetsTryModeXcargsDeleteSourcesCalled: Bool { useTargetsTargetsTryModeXcargsDeleteSourcesCallsCount > 0 }
+    var useTargetsTargetsTryModeXcargsDeleteSourcesReceivedArguments: (targets: TargetsScope, targetsTryMode: Bool, xcargs: [String], deleteSources: Bool)?
+    var useTargetsTargetsTryModeXcargsDeleteSourcesReceivedInvocations: [(targets: TargetsScope, targetsTryMode: Bool, xcargs: [String], deleteSources: Bool)] = []
+    private let useTargetsTargetsTryModeXcargsDeleteSourcesReceivedInvocationsLock = NSRecursiveLock()
+    var useTargetsTargetsTryModeXcargsDeleteSourcesClosure: ((TargetsScope, Bool, [String], Bool) async throws -> Void)?
 
-    func use(targets: TargetsScope, xcargs: [String], deleteSources: Bool) async throws {
-        useTargetsXcargsDeleteSourcesCallsCount += 1
-        useTargetsXcargsDeleteSourcesReceivedArguments = (targets: targets, xcargs: xcargs, deleteSources: deleteSources)
-        useTargetsXcargsDeleteSourcesReceivedInvocationsLock.withLock {
-            useTargetsXcargsDeleteSourcesReceivedInvocations.append((targets: targets, xcargs: xcargs, deleteSources: deleteSources))
+    func use(targets: TargetsScope, targetsTryMode: Bool, xcargs: [String], deleteSources: Bool) async throws {
+        useTargetsTargetsTryModeXcargsDeleteSourcesCallsCount += 1
+        useTargetsTargetsTryModeXcargsDeleteSourcesReceivedArguments = (targets: targets, targetsTryMode: targetsTryMode, xcargs: xcargs, deleteSources: deleteSources)
+        useTargetsTargetsTryModeXcargsDeleteSourcesReceivedInvocationsLock.withLock {
+            useTargetsTargetsTryModeXcargsDeleteSourcesReceivedInvocations.append((targets: targets, targetsTryMode: targetsTryMode, xcargs: xcargs, deleteSources: deleteSources))
         }
-        if let error = useTargetsXcargsDeleteSourcesThrowableError {
+        if let error = useTargetsTargetsTryModeXcargsDeleteSourcesThrowableError {
             throw error
         }
-        try await useTargetsXcargsDeleteSourcesClosure?(targets, xcargs, deleteSources)
+        try await useTargetsTargetsTryModeXcargsDeleteSourcesClosure?(targets, targetsTryMode, xcargs, deleteSources)
     }
 
     // MARK: - use
 
-    public var useTargetsRegexExceptTargetsRegexXcargsDeleteSourcesThrowableError: Error?
-    public var useTargetsRegexExceptTargetsRegexXcargsDeleteSourcesCallsCount = 0
-    public var useTargetsRegexExceptTargetsRegexXcargsDeleteSourcesCalled: Bool { useTargetsRegexExceptTargetsRegexXcargsDeleteSourcesCallsCount > 0 }
-    public var useTargetsRegexExceptTargetsRegexXcargsDeleteSourcesReceivedArguments: (targetsRegex: NSRegularExpression?, exceptTargetsRegex: NSRegularExpression?, xcargs: [String], deleteSources: Bool)?
-    public var useTargetsRegexExceptTargetsRegexXcargsDeleteSourcesReceivedInvocations: [(targetsRegex: NSRegularExpression?, exceptTargetsRegex: NSRegularExpression?, xcargs: [String], deleteSources: Bool)] = []
-    private let useTargetsRegexExceptTargetsRegexXcargsDeleteSourcesReceivedInvocationsLock = NSRecursiveLock()
-    public var useTargetsRegexExceptTargetsRegexXcargsDeleteSourcesClosure: ((NSRegularExpression?, NSRegularExpression?, [String], Bool) async throws -> Void)?
+    public var useTargetsOptionsXcargsDeleteSourcesThrowableError: Error?
+    public var useTargetsOptionsXcargsDeleteSourcesCallsCount = 0
+    public var useTargetsOptionsXcargsDeleteSourcesCalled: Bool { useTargetsOptionsXcargsDeleteSourcesCallsCount > 0 }
+    public var useTargetsOptionsXcargsDeleteSourcesReceivedArguments: (targetsOptions: TargetsOptions, xcargs: [String], deleteSources: Bool)?
+    public var useTargetsOptionsXcargsDeleteSourcesReceivedInvocations: [(targetsOptions: TargetsOptions, xcargs: [String], deleteSources: Bool)] = []
+    private let useTargetsOptionsXcargsDeleteSourcesReceivedInvocationsLock = NSRecursiveLock()
+    public var useTargetsOptionsXcargsDeleteSourcesClosure: ((TargetsOptions, [String], Bool) async throws -> Void)?
 
-    public func use(targetsRegex: NSRegularExpression?, exceptTargetsRegex: NSRegularExpression?, xcargs: [String], deleteSources: Bool) async throws {
-        useTargetsRegexExceptTargetsRegexXcargsDeleteSourcesCallsCount += 1
-        useTargetsRegexExceptTargetsRegexXcargsDeleteSourcesReceivedArguments = (targetsRegex: targetsRegex, exceptTargetsRegex: exceptTargetsRegex, xcargs: xcargs, deleteSources: deleteSources)
-        useTargetsRegexExceptTargetsRegexXcargsDeleteSourcesReceivedInvocationsLock.withLock {
-            useTargetsRegexExceptTargetsRegexXcargsDeleteSourcesReceivedInvocations.append((targetsRegex: targetsRegex, exceptTargetsRegex: exceptTargetsRegex, xcargs: xcargs, deleteSources: deleteSources))
+    public func use(targetsOptions: TargetsOptions, xcargs: [String], deleteSources: Bool) async throws {
+        useTargetsOptionsXcargsDeleteSourcesCallsCount += 1
+        useTargetsOptionsXcargsDeleteSourcesReceivedArguments = (targetsOptions: targetsOptions, xcargs: xcargs, deleteSources: deleteSources)
+        useTargetsOptionsXcargsDeleteSourcesReceivedInvocationsLock.withLock {
+            useTargetsOptionsXcargsDeleteSourcesReceivedInvocations.append((targetsOptions: targetsOptions, xcargs: xcargs, deleteSources: deleteSources))
         }
-        if let error = useTargetsRegexExceptTargetsRegexXcargsDeleteSourcesThrowableError {
+        if let error = useTargetsOptionsXcargsDeleteSourcesThrowableError {
             throw error
         }
-        try await useTargetsRegexExceptTargetsRegexXcargsDeleteSourcesClosure?(targetsRegex, exceptTargetsRegex, xcargs, deleteSources)
+        try await useTargetsOptionsXcargsDeleteSourcesClosure?(targetsOptions, xcargs, deleteSources)
     }
 
     // MARK: - use

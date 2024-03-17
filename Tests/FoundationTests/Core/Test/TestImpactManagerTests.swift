@@ -16,6 +16,7 @@ final class TestImpactManagerTests: XCTestCase {
     private var targetsHasher: ITargetsHasherMock!
     private var testsStorage: ITestsStorageMock!
     private var git: IGitMock!
+    private var targetsPrinter: ITargetsPrinterMock!
     private var sut: ITestImpactManager!
 
     override func setUp() {
@@ -34,6 +35,7 @@ final class TestImpactManagerTests: XCTestCase {
         targetsHasher = ITargetsHasherMock()
         testsStorage = ITestsStorageMock()
         git = IGitMock()
+        targetsPrinter = ITargetsPrinterMock()
         sut = TestImpactManager(
             logger: logger,
             environmentCollector: environmentCollector,
@@ -41,7 +43,8 @@ final class TestImpactManagerTests: XCTestCase {
             buildTargetsManager: buildTargetsManager,
             targetsHasher: targetsHasher,
             testsStorage: testsStorage,
-            git: git
+            git: git,
+            targetsPrinter: targetsPrinter
         )
     }
 
@@ -55,6 +58,7 @@ final class TestImpactManagerTests: XCTestCase {
         targetsHasher = nil
         testsStorage = nil
         git = nil
+        targetsPrinter = nil
         sut = nil
     }
 }
@@ -67,8 +71,7 @@ extension TestImpactManagerTests {
         var resultError: Error?
         do {
             try await sut.markAsPassed(
-                targetsRegex: nil,
-                exceptTargetsRegex: nil,
+                targetsOptions: .init(),
                 buildOptions: .mock(),
                 upToDateBranch: nil
             )
@@ -114,8 +117,10 @@ extension TestImpactManagerTests {
 
         // Act
         try await sut.markAsPassed(
-            targetsRegex: targetsRegex,
-            exceptTargetsRegex: exceptTargetsRegex,
+            targetsOptions: .init(
+                targetsRegex: targetsRegex,
+                exceptTargetsRegex: exceptTargetsRegex
+            ),
             buildOptions: buildOptions,
             upToDateBranch: nil
         )
@@ -158,8 +163,7 @@ extension TestImpactManagerTests {
 
         // Act
         try await sut.markAsPassed(
-            targetsRegex: nil,
-            exceptTargetsRegex: nil,
+            targetsOptions: .init(),
             buildOptions: .mock(),
             upToDateBranch: "main"
         )
@@ -186,8 +190,7 @@ extension TestImpactManagerTests {
 
         // Act
         try await sut.markAsPassed(
-            targetsRegex: nil,
-            exceptTargetsRegex: nil,
+            targetsOptions: .init(),
             buildOptions: .mock(),
             upToDateBranch: "main"
         )
@@ -235,8 +238,10 @@ extension TestImpactManagerTests {
 
         // Act
         try await sut.markAsPassed(
-            targetsRegex: targetsRegex,
-            exceptTargetsRegex: exceptTargetsRegex,
+            targetsOptions: .init(
+                targetsRegex: targetsRegex,
+                exceptTargetsRegex: exceptTargetsRegex
+            ),
             buildOptions: buildOptions,
             upToDateBranch: "dev"
         )
@@ -287,8 +292,7 @@ extension TestImpactManagerTests {
         var resultError: Error?
         do {
             try await sut.impact(
-                targetsRegex: nil,
-                exceptTargetsRegex: nil,
+                targetsOptions: .init(),
                 buildOptions: .mock()
             )
         } catch {
@@ -341,8 +345,10 @@ extension TestImpactManagerTests {
 
         // Act
         try await sut.impact(
-            targetsRegex: targetsRegex,
-            exceptTargetsRegex: exceptTargetsRegex,
+            targetsOptions: .init(
+                targetsRegex: targetsRegex,
+                exceptTargetsRegex: exceptTargetsRegex
+            ),
             buildOptions: buildOptions
         )
 
@@ -416,8 +422,10 @@ extension TestImpactManagerTests {
 
         // Act
         try await sut.impact(
-            targetsRegex: targetsRegex,
-            exceptTargetsRegex: exceptTargetsRegex,
+            targetsOptions: .init(
+                targetsRegex: targetsRegex,
+                exceptTargetsRegex: exceptTargetsRegex
+            ),
             buildOptions: buildOptions
         )
 

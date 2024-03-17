@@ -13,6 +13,7 @@ final class DeleteTargetsManagerTests: XCTestCase {
     ]!
     private var xcodeProject: IInternalXcodeProjectMock!
     private var backupManager: IBackupManagerMock!
+    private var targetsPrinter: ITargetsPrinterMock!
 
     override func setUp() {
         super.setUp()
@@ -27,10 +28,12 @@ final class DeleteTargetsManagerTests: XCTestCase {
 
         xcodeProject = IInternalXcodeProjectMock()
         backupManager = IBackupManagerMock()
+        targetsPrinter = ITargetsPrinterMock()
         sut = DeleteTargetsManager(
             logger: logger,
             xcodeProject: xcodeProject,
-            backupManager: backupManager
+            backupManager: backupManager,
+            targetsPrinter: targetsPrinter
         )
     }
 
@@ -41,6 +44,7 @@ final class DeleteTargetsManagerTests: XCTestCase {
         loggerBlockInvocations = nil
         xcodeProject = nil
         backupManager = nil
+        targetsPrinter = nil
     }
 }
 
@@ -52,8 +56,10 @@ extension DeleteTargetsManagerTests {
 
         // Act
         try await sut.delete(
-            targetsRegex: targetsRegex,
-            exceptTargetsRegex: exceptTargetsRegex,
+            targetsOptions: .init(
+                targetsRegex: targetsRegex,
+                exceptTargetsRegex: exceptTargetsRegex
+            ),
             keepExceptedTargetsDependencies: false,
             deleteSources: false
         )
@@ -84,8 +90,10 @@ extension DeleteTargetsManagerTests {
 
         // Act
         try await sut.delete(
-            targetsRegex: targetsRegex,
-            exceptTargetsRegex: exceptTargetsRegex,
+            targetsOptions: .init(
+                targetsRegex: targetsRegex,
+                exceptTargetsRegex: exceptTargetsRegex
+            ),
             keepExceptedTargetsDependencies: true,
             deleteSources: false
         )
@@ -141,8 +149,10 @@ extension DeleteTargetsManagerTests {
 
         // Act
         try await sut.delete(
-            targetsRegex: nil,
-            exceptTargetsRegex: exceptTargetsRegex,
+            targetsOptions: .init(
+                targetsRegex: nil,
+                exceptTargetsRegex: exceptTargetsRegex
+            ),
             keepExceptedTargetsDependencies: true,
             deleteSources: true
         )
