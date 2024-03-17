@@ -20,7 +20,7 @@ let package = Package(
         .package(url: "https://github.com/tuist/xcbeautify", from: "1.6.0"),
         .package(url: "https://github.com/jpsim/Yams", from: "5.0.6"),
         .package(url: "https://github.com/weichsel/ZIPFoundation", from: "0.9.18"),
-        .package(url: "https://github.com/swiftyfinch/Fish", from: "0.1.1")
+        .package(url: "https://github.com/swiftyfinch/Fish", from: "0.1.2")
     ],
     targets: [
         // rugby
