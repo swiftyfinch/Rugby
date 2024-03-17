@@ -25,16 +25,17 @@
 │ -o, --output               * Output mode: fold, multiline, silent, raw.                     │
 ╰─────────────────────────────────────────────────────────────────────────────────────────────╯
  Flags:
-╭─────────────────────────────────────────────────────────────────────────╮
-│ -r, --rollback    * Restore projects state before the last Rugby usage. │
-│ --prebuild        * Prebuild targets ignoring sources.                  │
-│ --strip           * Build without debug symbols.                        │
-│ --ignore-cache    * Ignore shared cache.                                │
-│ --delete-sources  * Delete target groups from project.                  │
-│ -v, --verbose []  * Increase verbosity level.                           │
-│ -q, --quiet []    * Decrease verbosity level.                           │
-│ -h, --help        * Show help information.                              │
-╰─────────────────────────────────────────────────────────────────────────╯
+╭──────────────────────────────────────────────────────────────────────────────────────╮
+│ -r, --rollback    * Restore projects state before the last Rugby usage.              │
+│ --prebuild        * Prebuild targets ignoring sources.                               │
+│ --strip           * Build without debug symbols.                                     │
+│ --try             * Run command in mode, with only the selected targets are printed. │
+│ --ignore-cache    * Ignore shared cache.                                             │
+│ --delete-sources  * Delete target groups from project.                               │
+│ -v, --verbose []  * Increase verbosity level.                                        │
+│ -q, --quiet []    * Decrease verbosity level.                                        │
+│ -h, --help        * Show help information.                                           │
+╰──────────────────────────────────────────────────────────────────────────────────────╯
 ```
 
 ## Discussion

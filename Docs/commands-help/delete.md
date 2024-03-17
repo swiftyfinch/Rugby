@@ -20,13 +20,14 @@
 │ -o, --output               * Output mode: fold, multiline, silent, raw.       │
 ╰───────────────────────────────────────────────────────────────────────────────╯
  Flags:
-╭────────────────────────────────────────────────────────────╮
-│ --safe            * Keep dependencies of excepted targets. │
-│ --delete-sources  * Delete target groups from project.     │
-│ -v, --verbose []  * Increase verbosity level.              │
-│ -q, --quiet []    * Decrease verbosity level.              │
-│ -h, --help        * Show help information.                 │
-╰────────────────────────────────────────────────────────────╯
+╭──────────────────────────────────────────────────────────────────────────────────────╮
+│ --safe            * Keep dependencies of excepted targets.                           │
+│ --delete-sources  * Delete target groups from project.                               │
+│ --try             * Run command in mode, with only the selected targets are printed. │
+│ -v, --verbose []  * Increase verbosity level.                                        │
+│ -q, --quiet []    * Decrease verbosity level.                                        │
+│ -h, --help        * Show help information.                                           │
+╰──────────────────────────────────────────────────────────────────────────────────────╯
 ```
 
 ## Discussion
