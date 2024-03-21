@@ -73,7 +73,7 @@ final class SupportFilesPatcher {
     }
 
     private func prepareFrameworksReplacements(target: IInternalTarget) throws -> FileReplacement? {
-        guard target.isTests || target.isPodsUmbrella,
+        guard target.isTests || target.isPodsUmbrella || target.isApplication,
               let filePath = target.frameworksScriptPath else { return nil }
 
         let replacementsPairs: [Replacement] = target.binaryProducts.compactMap { product in
@@ -92,7 +92,7 @@ final class SupportFilesPatcher {
     }
 
     private func prepareResourcesReplacements(target: IInternalTarget) throws -> FileReplacement? {
-        guard target.isTests || target.isPodsUmbrella,
+        guard target.isTests || target.isPodsUmbrella || target.isApplication,
               let filePath = target.resourcesScriptPath else { return nil }
 
         let bundlesReplacementsPairs: [Replacement] = target.binaryProducts.compactMap { product in

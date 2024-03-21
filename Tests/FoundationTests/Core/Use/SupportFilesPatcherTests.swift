@@ -92,6 +92,52 @@ extension SupportFilesPatcherTests {
         XCTAssertEqual(result[3].regex.pattern, resourcesRegexPattern)
         XCTAssertEqual(result[3].filePath, target.resourcesScriptPath)
     }
+
+    func test_prepareReplacements_application() throws {
+        let target = Target.application
+        // swiftlint:disable line_length
+        let xcconfigReplacements = [
+            "${PODS_CONFIGURATION_BUILD_DIR}/Alamofire": "${HOME}/.rugby/bin/Alamofire/${CONFIGURATION}${EFFECTIVE_PLATFORM_NAME}-${ARCHS}/36ff0bc",
+            "${PODS_CONFIGURATION_BUILD_DIR}/Moya/Moya.modulemap": "${HOME}/.rugby/bin/Moya/${CONFIGURATION}${EFFECTIVE_PLATFORM_NAME}-${ARCHS}/badaa58/Moya.modulemap",
+            "${PODS_CONFIGURATION_BUILD_DIR}/Moya": "${HOME}/.rugby/bin/Moya/${CONFIGURATION}${EFFECTIVE_PLATFORM_NAME}-${ARCHS}/badaa58",
+            "${PODS_CONFIGURATION_BUILD_DIR}/Alamofire/Alamofire.modulemap": "${HOME}/.rugby/bin/Alamofire/${CONFIGURATION}${EFFECTIVE_PLATFORM_NAME}-${ARCHS}/36ff0bc/Alamofire.modulemap",
+            "${PODS_CONFIGURATION_BUILD_DIR}/Moya/Moya.framework/Headers": "${HOME}/.rugby/bin/Moya/${CONFIGURATION}${EFFECTIVE_PLATFORM_NAME}-${ARCHS}/badaa58/Moya.framework/Headers",
+            "${PODS_CONFIGURATION_BUILD_DIR}/Alamofire/Alamofire.framework/Headers": "${HOME}/.rugby/bin/Alamofire/${CONFIGURATION}${EFFECTIVE_PLATFORM_NAME}-${ARCHS}/36ff0bc/Alamofire.framework/Headers"
+        ]
+        let xcconfigRegexPattern = expectedPrefixBoundary + #"(\$\{PODS_CONFIGURATION_BUILD_DIR\}\/Moya\/Moya\.framework\/Headers|\$\{PODS_CONFIGURATION_BUILD_DIR\}\/Moya|\$\{PODS_CONFIGURATION_BUILD_DIR\}\/Moya\/Moya\.modulemap|\$\{PODS_CONFIGURATION_BUILD_DIR\}\/Alamofire\/Alamofire\.framework\/Headers|\$\{PODS_CONFIGURATION_BUILD_DIR\}\/Alamofire|\$\{PODS_CONFIGURATION_BUILD_DIR\}\/Alamofire\/Alamofire\.modulemap)"# + expectedSuffixBoundary
+        let frameworkReplacements = [
+            "${BUILT_PRODUCTS_DIR}/Moya/Moya.framework": "${HOME}/.rugby/bin/Moya/${CONFIGURATION}${EFFECTIVE_PLATFORM_NAME}-${ARCHS}/badaa58/Moya.framework",
+            "${BUILT_PRODUCTS_DIR}/Alamofire/Alamofire.framework": "${HOME}/.rugby/bin/Alamofire/${CONFIGURATION}${EFFECTIVE_PLATFORM_NAME}-${ARCHS}/36ff0bc/Alamofire.framework"
+        ]
+        let frameworksRegexPattern = expectedPrefixBoundary + #"\$\{BUILT_PRODUCTS_DIR\}\/(Moya\/Moya\.framework|Alamofire\/Alamofire\.framework)"# + expectedSuffixBoundary
+        let resourcesReplacements = [
+            "${BUILT_PRODUCTS_DIR}/Moya/Moya.framework/": "${HOME}/.rugby/bin/Moya/${CONFIGURATION}${EFFECTIVE_PLATFORM_NAME}-${ARCHS}/badaa58/Moya.framework/",
+            "${BUILT_PRODUCTS_DIR}/Alamofire/Alamofire.framework/": "${HOME}/.rugby/bin/Alamofire/${CONFIGURATION}${EFFECTIVE_PLATFORM_NAME}-${ARCHS}/36ff0bc/Alamofire.framework/"
+        ]
+        let resourcesRegexPattern = "(" + expectedPrefixBoundary
+            + #"\$\{PODS_CONFIGURATION_BUILD_DIR\}\/()"#
+            + expectedSuffixBoundary
+            + #"|\$\{BUILT_PRODUCTS_DIR\}\/(Moya\/Moya\.framework\/|Alamofire\/Alamofire\.framework\/))"#
+        // swiftlint:enable line_length
+
+        // Act
+        let result = try sut.prepareReplacements(forTarget: target)
+
+        // Assert
+        XCTAssertEqual(result.count, 4)
+        XCTAssertEqual(result[0].replacements, xcconfigReplacements)
+        XCTAssertEqual(result[0].regex.pattern, xcconfigRegexPattern)
+        XCTAssertEqual(result[0].filePath, target.xcconfigPaths[0])
+        XCTAssertEqual(result[1].replacements, xcconfigReplacements)
+        XCTAssertEqual(result[1].regex.pattern, xcconfigRegexPattern)
+        XCTAssertEqual(result[1].filePath, target.xcconfigPaths[1])
+        XCTAssertEqual(result[2].replacements, frameworkReplacements)
+        XCTAssertEqual(result[2].regex.pattern, frameworksRegexPattern)
+        XCTAssertEqual(result[2].filePath, target.frameworksScriptPath)
+        XCTAssertEqual(result[3].replacements, resourcesReplacements)
+        XCTAssertEqual(result[3].regex.pattern, resourcesRegexPattern)
+        XCTAssertEqual(result[3].filePath, target.resourcesScriptPath)
+    }
 }
 
 private extension SupportFilesPatcherTests {
@@ -188,9 +234,10 @@ private extension Target {
         let moyaFramework = Target.moyaFramework
         let alamofireFramework = Target.alamofireFramework
         let localPodFramework = IInternalTargetMock()
-        localPodFramework.name = "LocalPod"
-        localPodFramework.isPodsUmbrella = false
-        localPodFramework.isTests = false
+        localPodFramework.underlyingName = "LocalPod"
+        localPodFramework.underlyingIsPodsUmbrella = false
+        localPodFramework.underlyingIsTests = false
+        localPodFramework.underlyingIsApplication = false
         localPodFramework.binaryProducts = [
             moyaFramework.product,
             alamofireFramework.product
@@ -278,5 +325,25 @@ private extension Target {
         product.binaryPath = "${HOME}/.rugby/bin/Realm-library/${CONFIGURATION}${EFFECTIVE_PLATFORM_NAME}-${ARCHS}/d2d48c5"
         realm.product = product
         return realm
+    }
+
+    static var application: IInternalTargetMock {
+        let application = IInternalTargetMock()
+        application.name = "LocalPod-Example"
+        application.underlyingIsPodsUmbrella = false
+        application.underlyingIsTests = false
+        application.underlyingIsApplication = true
+        application.binaryProducts = [
+            moyaFramework.product,
+            alamofireFramework.product
+        ].compactMap()
+        let prefixPath = "~/Developer/Rugby/Example/Pods/Target Support Files/LocalPod-Example"
+        application.xcconfigPaths = [
+            "\(prefixPath)/LocalPod-Example.debug.xcconfig",
+            "\(prefixPath)/LocalPod-Example.release.xcconfig"
+        ]
+        application.frameworksScriptPath = "\(prefixPath)/LocalPod-Example-frameworks.sh"
+        application.resourcesScriptPath = "\(prefixPath)/LocalPod-Example-resources.sh"
+        return application
     }
 }
