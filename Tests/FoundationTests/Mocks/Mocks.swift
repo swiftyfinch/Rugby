@@ -162,3 +162,6 @@ extension ITargetsPrinter {}
 
 // sourcery: AutoMockable, testableImports = ["RugbyFoundation"]
 extension IXcodePhaseEditor {}
+
+// sourcery: AutoMockable, testableImports = ["RugbyFoundation"]
+extension IXcodeBuildConfigurationEditor {}
