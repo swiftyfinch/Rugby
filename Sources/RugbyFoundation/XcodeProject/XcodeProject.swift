@@ -22,6 +22,11 @@ protocol IInternalXcodeProject: IXcodeProject {
 
     func createAggregatedTarget(
         name: String,
+        in project: IProject,
+        dependencies: TargetsMap
+    ) async throws -> IInternalTarget
+    func createAggregatedTargetInRootProject(
+        name: String,
         dependencies: TargetsMap
     ) async throws -> IInternalTarget
 
@@ -53,6 +58,10 @@ extension IInternalXcodeProject {
         try await findTargets(by: regex, except: exceptRegex, includingDependencies: false)
     }
 
+    func createAggregatedTarget(name: String, in project: IProject) async throws -> IInternalTarget {
+        try await createAggregatedTarget(name: name, in: project, dependencies: [:])
+    }
+
     func deleteTargets(_ targetsForRemove: TargetsMap) async throws {
         try await deleteTargets(targetsForRemove, keepGroups: true)
     }
@@ -61,14 +70,14 @@ extension IInternalXcodeProject {
 final class XcodeProject {
     private let projectDataSource: XcodeProjectDataSource
     private let targetsFinder: XcodeTargetsFinder
-    private let targetsEditor: XcodeTargetsEditor
+    private let targetsEditor: IXcodeTargetsEditor
     private let buildSettingsEditor: XcodeBuildSettingsEditor
     private let schemesEditor: IXcodeProjectSchemesEditor
     private let workspaceEditor: IXcodeWorkspaceEditor
 
     init(projectDataSource: XcodeProjectDataSource,
          targetsFinder: XcodeTargetsFinder,
-         targetsEditor: XcodeTargetsEditor,
+         targetsEditor: IXcodeTargetsEditor,
          buildSettingsEditor: XcodeBuildSettingsEditor,
          schemesEditor: IXcodeProjectSchemesEditor,
          workspaceEditor: IXcodeWorkspaceEditor) {
@@ -120,9 +129,21 @@ extension XcodeProject: IInternalXcodeProject {
 
     // MARK: - Create Targets
 
+    func createAggregatedTargetInRootProject(
+        name: String,
+        dependencies: TargetsMap
+    ) async throws -> IInternalTarget {
+        try await targetsEditor.createAggregatedTarget(
+            name: name,
+            in: projectDataSource.rootProject,
+            dependencies: dependencies
+        )
+    }
+
     func createAggregatedTarget(name: String,
+                                in project: IProject,
                                 dependencies: TargetsMap) async throws -> IInternalTarget {
-        try await targetsEditor.createAggregatedTarget(name: name, dependencies: dependencies)
+        try await targetsEditor.createAggregatedTarget(name: name, in: project, dependencies: dependencies)
     }
 
     // MARK: - Delete Targets

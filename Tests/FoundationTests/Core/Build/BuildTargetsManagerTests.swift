@@ -196,15 +196,15 @@ extension BuildTargetsManagerTests {
             snapkit.uuid: snapkit
         ]
         let resultTarget = IInternalTargetMock()
-        xcodeProject.createAggregatedTargetNameDependenciesReturnValue = resultTarget
+        xcodeProject.createAggregatedTargetInRootProjectNameDependenciesReturnValue = resultTarget
 
         // Act
         let target = try await sut.createTarget(dependencies: targets)
 
         // Assert
         XCTAssertIdentical(resultTarget, target)
-        XCTAssertEqual(xcodeProject.createAggregatedTargetNameDependenciesCallsCount, 1)
-        let arguments = try XCTUnwrap(xcodeProject.createAggregatedTargetNameDependenciesReceivedArguments)
+        XCTAssertEqual(xcodeProject.createAggregatedTargetInRootProjectNameDependenciesCallsCount, 1)
+        let arguments = try XCTUnwrap(xcodeProject.createAggregatedTargetInRootProjectNameDependenciesReceivedArguments)
         XCTAssertEqual(arguments.name, "RugbyPods")
         XCTAssertEqual(arguments.dependencies.count, 3)
         XCTAssertTrue(arguments.dependencies.contains(alamofire.uuid))
@@ -222,7 +222,7 @@ extension BuildTargetsManagerTests {
             localPodTests.uuid: localPodTests
         ]
         let resultTarget = IInternalTargetMock()
-        xcodeProject.createAggregatedTargetNameDependenciesReturnValue = resultTarget
+        xcodeProject.createAggregatedTargetInRootProjectNameDependenciesReturnValue = resultTarget
 
         // Act
         let target = try await sut.createTarget(
@@ -233,9 +233,9 @@ extension BuildTargetsManagerTests {
 
         // Assert
         XCTAssertIdentical(resultTarget, target)
-        XCTAssertEqual(xcodeProject.createAggregatedTargetNameDependenciesCallsCount, 1)
+        XCTAssertEqual(xcodeProject.createAggregatedTargetInRootProjectNameDependenciesCallsCount, 1)
         let createAggregatedArguments = try XCTUnwrap(
-            xcodeProject.createAggregatedTargetNameDependenciesReceivedArguments
+            xcodeProject.createAggregatedTargetInRootProjectNameDependenciesReceivedArguments
         )
         XCTAssertEqual(createAggregatedArguments.name, "RugbyPods")
         XCTAssertEqual(createAggregatedArguments.dependencies.count, 2)

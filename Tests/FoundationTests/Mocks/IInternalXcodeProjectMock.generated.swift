@@ -63,28 +63,55 @@ final class IInternalXcodeProjectMock: IInternalXcodeProject {
 
     // MARK: - createAggregatedTarget
 
-    var createAggregatedTargetNameDependenciesThrowableError: Error?
-    var createAggregatedTargetNameDependenciesCallsCount = 0
-    var createAggregatedTargetNameDependenciesCalled: Bool { createAggregatedTargetNameDependenciesCallsCount > 0 }
-    var createAggregatedTargetNameDependenciesReceivedArguments: (name: String, dependencies: TargetsMap)?
-    var createAggregatedTargetNameDependenciesReceivedInvocations: [(name: String, dependencies: TargetsMap)] = []
-    private let createAggregatedTargetNameDependenciesReceivedInvocationsLock = NSRecursiveLock()
-    var createAggregatedTargetNameDependenciesReturnValue: IInternalTarget!
-    var createAggregatedTargetNameDependenciesClosure: ((String, TargetsMap) async throws -> IInternalTarget)?
+    var createAggregatedTargetNameInDependenciesThrowableError: Error?
+    var createAggregatedTargetNameInDependenciesCallsCount = 0
+    var createAggregatedTargetNameInDependenciesCalled: Bool { createAggregatedTargetNameInDependenciesCallsCount > 0 }
+    var createAggregatedTargetNameInDependenciesReceivedArguments: (name: String, project: IProject, dependencies: TargetsMap)?
+    var createAggregatedTargetNameInDependenciesReceivedInvocations: [(name: String, project: IProject, dependencies: TargetsMap)] = []
+    private let createAggregatedTargetNameInDependenciesReceivedInvocationsLock = NSRecursiveLock()
+    var createAggregatedTargetNameInDependenciesReturnValue: IInternalTarget!
+    var createAggregatedTargetNameInDependenciesClosure: ((String, IProject, TargetsMap) async throws -> IInternalTarget)?
 
-    func createAggregatedTarget(name: String, dependencies: TargetsMap) async throws -> IInternalTarget {
-        createAggregatedTargetNameDependenciesCallsCount += 1
-        createAggregatedTargetNameDependenciesReceivedArguments = (name: name, dependencies: dependencies)
-        createAggregatedTargetNameDependenciesReceivedInvocationsLock.withLock {
-            createAggregatedTargetNameDependenciesReceivedInvocations.append((name: name, dependencies: dependencies))
+    func createAggregatedTarget(name: String, in project: IProject, dependencies: TargetsMap) async throws -> IInternalTarget {
+        createAggregatedTargetNameInDependenciesCallsCount += 1
+        createAggregatedTargetNameInDependenciesReceivedArguments = (name: name, project: project, dependencies: dependencies)
+        createAggregatedTargetNameInDependenciesReceivedInvocationsLock.withLock {
+            createAggregatedTargetNameInDependenciesReceivedInvocations.append((name: name, project: project, dependencies: dependencies))
         }
-        if let error = createAggregatedTargetNameDependenciesThrowableError {
+        if let error = createAggregatedTargetNameInDependenciesThrowableError {
             throw error
         }
-        if let createAggregatedTargetNameDependenciesClosure = createAggregatedTargetNameDependenciesClosure {
-            return try await createAggregatedTargetNameDependenciesClosure(name, dependencies)
+        if let createAggregatedTargetNameInDependenciesClosure = createAggregatedTargetNameInDependenciesClosure {
+            return try await createAggregatedTargetNameInDependenciesClosure(name, project, dependencies)
         } else {
-            return createAggregatedTargetNameDependenciesReturnValue
+            return createAggregatedTargetNameInDependenciesReturnValue
+        }
+    }
+
+    // MARK: - createAggregatedTargetInRootProject
+
+    var createAggregatedTargetInRootProjectNameDependenciesThrowableError: Error?
+    var createAggregatedTargetInRootProjectNameDependenciesCallsCount = 0
+    var createAggregatedTargetInRootProjectNameDependenciesCalled: Bool { createAggregatedTargetInRootProjectNameDependenciesCallsCount > 0 }
+    var createAggregatedTargetInRootProjectNameDependenciesReceivedArguments: (name: String, dependencies: TargetsMap)?
+    var createAggregatedTargetInRootProjectNameDependenciesReceivedInvocations: [(name: String, dependencies: TargetsMap)] = []
+    private let createAggregatedTargetInRootProjectNameDependenciesReceivedInvocationsLock = NSRecursiveLock()
+    var createAggregatedTargetInRootProjectNameDependenciesReturnValue: IInternalTarget!
+    var createAggregatedTargetInRootProjectNameDependenciesClosure: ((String, TargetsMap) async throws -> IInternalTarget)?
+
+    func createAggregatedTargetInRootProject(name: String, dependencies: TargetsMap) async throws -> IInternalTarget {
+        createAggregatedTargetInRootProjectNameDependenciesCallsCount += 1
+        createAggregatedTargetInRootProjectNameDependenciesReceivedArguments = (name: name, dependencies: dependencies)
+        createAggregatedTargetInRootProjectNameDependenciesReceivedInvocationsLock.withLock {
+            createAggregatedTargetInRootProjectNameDependenciesReceivedInvocations.append((name: name, dependencies: dependencies))
+        }
+        if let error = createAggregatedTargetInRootProjectNameDependenciesThrowableError {
+            throw error
+        }
+        if let createAggregatedTargetInRootProjectNameDependenciesClosure = createAggregatedTargetInRootProjectNameDependenciesClosure {
+            return try await createAggregatedTargetInRootProjectNameDependenciesClosure(name, dependencies)
+        } else {
+            return createAggregatedTargetInRootProjectNameDependenciesReturnValue
         }
     }
 
