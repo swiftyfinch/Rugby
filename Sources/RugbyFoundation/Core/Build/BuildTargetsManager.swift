@@ -75,7 +75,10 @@ extension BuildTargetsManager: IBuildTargetsManager {
         buildConfiguration: String?,
         testplanPath: String?
     ) async throws -> IInternalTarget {
-        let target = try await xcodeProject.createAggregatedTarget(name: buildTargetName, dependencies: dependencies)
+        let target = try await xcodeProject.createAggregatedTargetInRootProject(
+            name: buildTargetName,
+            dependencies: dependencies
+        )
         if let buildConfiguration, let testplanPath {
             xcodeProject.createTestingScheme(target, buildConfiguration: buildConfiguration, testplanPath: testplanPath)
         }

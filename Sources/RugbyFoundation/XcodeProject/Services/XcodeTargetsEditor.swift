@@ -1,5 +1,19 @@
 import XcodeProj
 
+// MARK: - Interface
+
+protocol IXcodeTargetsEditor: AnyObject {
+    func resetCache()
+    func createAggregatedTarget(
+        name: String,
+        in project: IProject,
+        dependencies: TargetsMap
+    ) async throws -> IInternalTarget
+    func deleteTargets(_ targetsForRemove: TargetsMap, keepGroups: Bool) async throws
+}
+
+// MARK: - Implementation
+
 final class XcodeTargetsEditor: Loggable {
     let logger: ILogger
 
@@ -16,13 +30,20 @@ final class XcodeTargetsEditor: Loggable {
         self.targetsDataSource = targetsDataSource
         self.schemesEditor = schemesEditor
     }
+}
 
+// MARK: - IXcodeTargetsEditor
+
+extension XcodeTargetsEditor: IXcodeTargetsEditor {
     func resetCache() {
         targetsDataSource.resetCache()
     }
 
-    func createAggregatedTarget(name: String, dependencies: TargetsMap) async throws -> IInternalTarget {
-        let project = try await projectDataSource.rootProject
+    func createAggregatedTarget(
+        name: String,
+        in project: IProject,
+        dependencies: TargetsMap
+    ) async throws -> IInternalTarget {
         let pbxTarget = PBXAggregateTarget(name: name)
         pbxTarget.buildConfigurationList = try project.buildConfigurationList
         try project.pbxProject.targets.append(pbxTarget)
