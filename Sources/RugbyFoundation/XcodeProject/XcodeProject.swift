@@ -35,6 +35,11 @@ protocol IInternalXcodeProject: IXcodeProject {
         keepGroups: Bool
     ) async throws
 
+    func addDependencies(
+        _ dependencies: TargetsMap,
+        to target: IInternalTarget
+    ) throws
+
     func createTestingScheme(
         _ target: IInternalTarget,
         buildConfiguration: String,
@@ -150,6 +155,15 @@ extension XcodeProject: IInternalXcodeProject {
 
     func deleteTargets(_ targetsForRemove: TargetsMap, keepGroups: Bool = true) async throws {
         try await targetsEditor.deleteTargets(targetsForRemove, keepGroups: keepGroups)
+    }
+
+    // MARK: - Dependencies
+
+    func addDependencies(
+        _ dependencies: TargetsMap,
+        to target: IInternalTarget
+    ) throws {
+        try targetsEditor.addDependencies(dependencies, to: target)
     }
 
     // MARK: - Create Schemes

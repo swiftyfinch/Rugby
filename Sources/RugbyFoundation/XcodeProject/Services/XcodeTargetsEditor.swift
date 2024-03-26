@@ -10,6 +10,7 @@ protocol IXcodeTargetsEditor: AnyObject {
         dependencies: TargetsMap
     ) async throws -> IInternalTarget
     func deleteTargets(_ targetsForRemove: TargetsMap, keepGroups: Bool) async throws
+    func addDependencies(_ dependencies: TargetsMap, to target: IInternalTarget) throws
 }
 
 // MARK: - Implementation
@@ -107,5 +108,11 @@ extension XcodeTargetsEditor: IXcodeTargetsEditor {
 
         try await schemesEditor.deleteSchemes(ofTargets: targetsForRemove,
                                               targets: targetsDataSource.targets)
+    }
+
+    func addDependencies(_ dependencies: TargetsMap, to target: IInternalTarget) throws {
+        try target.project.pbxProj.addDependencies(dependencies, target: target)
+        target.addDependencies(dependencies)
+        target.resetDependencies()
     }
 }
