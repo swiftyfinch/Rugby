@@ -20,6 +20,7 @@ final class UseBinariesManagerTests: XCTestCase {
     private var supportFilesPatcher: ISupportFilesPatcherMock!
     private var fileContentEditor: IFileContentEditorMock!
     private var targetsPrinter: ITargetsPrinterMock!
+    private var xcframeworksPatcher: IXCFrameworksPatcherMock!
 
     override func setUp() {
         super.setUp()
@@ -41,6 +42,7 @@ final class UseBinariesManagerTests: XCTestCase {
         supportFilesPatcher = ISupportFilesPatcherMock()
         fileContentEditor = IFileContentEditorMock()
         targetsPrinter = ITargetsPrinterMock()
+        xcframeworksPatcher = IXCFrameworksPatcherMock()
         sut = UseBinariesManager(
             logger: logger,
             buildTargetsManager: buildTargetsManager,
@@ -52,7 +54,8 @@ final class UseBinariesManagerTests: XCTestCase {
             targetsHasher: targetsHasher,
             supportFilesPatcher: supportFilesPatcher,
             fileContentEditor: fileContentEditor,
-            targetsPrinter: targetsPrinter
+            targetsPrinter: targetsPrinter,
+            xcframeworksPatcher: xcframeworksPatcher
         )
     }
 
@@ -71,6 +74,7 @@ final class UseBinariesManagerTests: XCTestCase {
         supportFilesPatcher = nil
         fileContentEditor = nil
         targetsPrinter = nil
+        xcframeworksPatcher = nil
     }
 }
 
@@ -206,7 +210,7 @@ extension UseBinariesManagerTests {
         )
 
         // Assert
-        XCTAssertEqual(loggerBlockInvocations.count, 6)
+        XCTAssertEqual(loggerBlockInvocations.count, 7)
 
         XCTAssertEqual(loggerBlockInvocations[0].header, "Finding Build Targets")
         XCTAssertNil(loggerBlockInvocations[0].footer)
@@ -262,11 +266,22 @@ extension UseBinariesManagerTests {
         XCTAssertEqual(replaceRegexFilePathReceivedArguments.filePath, snapkitFileReplacement.filePath)
         XCTAssertEqual(replaceRegexFilePathReceivedArguments.replacements, snapkitFileReplacement.replacements)
 
-        XCTAssertEqual(loggerBlockInvocations[4].header, "Deleting Targets (2)")
+        XCTAssertEqual(loggerBlockInvocations[4].header, "Detaching XCFramework Build Phase")
         XCTAssertNil(loggerBlockInvocations[4].footer)
         XCTAssertNil(loggerBlockInvocations[4].metricKey)
-        XCTAssertEqual(loggerBlockInvocations[4].level, .compact)
+        XCTAssertEqual(loggerBlockInvocations[4].level, .info)
         XCTAssertEqual(loggerBlockInvocations[4].output, .all)
+        XCTAssertEqual(xcframeworksPatcher.detachXCFrameworkBuildPhaseFromCallsCount, 1)
+        let detachXCFrameworkTargets = try XCTUnwrap(xcframeworksPatcher.detachXCFrameworkBuildPhaseFromReceivedTargets)
+        XCTAssertEqual(detachXCFrameworkTargets.count, 2)
+        XCTAssertTrue(detachXCFrameworkTargets.contains(snapkit.uuid))
+        XCTAssertTrue(detachXCFrameworkTargets.contains(moya.uuid))
+
+        XCTAssertEqual(loggerBlockInvocations[5].header, "Deleting Targets (2)")
+        XCTAssertNil(loggerBlockInvocations[5].footer)
+        XCTAssertNil(loggerBlockInvocations[5].metricKey)
+        XCTAssertEqual(loggerBlockInvocations[5].level, .compact)
+        XCTAssertEqual(loggerBlockInvocations[5].output, .all)
         XCTAssertEqual(xcodeProject.deleteTargetsKeepGroupsCallsCount, 1)
         let deleteTargetsKeepGroupsReceivedArguments = try XCTUnwrap(xcodeProject.deleteTargetsKeepGroupsReceivedArguments)
         XCTAssertEqual(deleteTargetsKeepGroupsReceivedArguments.targetsForRemove.count, 2)
@@ -276,11 +291,11 @@ extension UseBinariesManagerTests {
 
         XCTAssertEqual(rugbyXcodeProject.markAsUsingRugbyCallsCount, 1)
 
-        XCTAssertEqual(loggerBlockInvocations[5].header, "Saving Project")
-        XCTAssertNil(loggerBlockInvocations[5].footer)
-        XCTAssertNil(loggerBlockInvocations[5].metricKey)
-        XCTAssertEqual(loggerBlockInvocations[5].level, .compact)
-        XCTAssertEqual(loggerBlockInvocations[5].output, .all)
+        XCTAssertEqual(loggerBlockInvocations[6].header, "Saving Project")
+        XCTAssertNil(loggerBlockInvocations[6].footer)
+        XCTAssertNil(loggerBlockInvocations[6].metricKey)
+        XCTAssertEqual(loggerBlockInvocations[6].level, .compact)
+        XCTAssertEqual(loggerBlockInvocations[6].output, .all)
         XCTAssertEqual(xcodeProject.saveCallsCount, 1)
     }
 }
