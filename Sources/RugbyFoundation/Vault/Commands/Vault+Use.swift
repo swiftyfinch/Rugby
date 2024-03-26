@@ -10,16 +10,23 @@ extension Vault {
 
     func internalUseBinariesManager(xcodeProject: IInternalXcodeProject,
                                     buildTargetsManager: IBuildTargetsManager) -> IInternalUseBinariesManager {
-        UseBinariesManager(logger: logger,
-                           buildTargetsManager: buildTargetsManager,
-                           librariesPatcher: LibrariesPatcher(logger: logger),
-                           xcodeProject: xcodeProject,
-                           rugbyXcodeProject: RugbyXcodeProject(xcodeProject: xcodeProject),
-                           backupManager: backupManager(),
-                           binariesStorage: binariesStorage,
-                           targetsHasher: targetsHasher(),
-                           supportFilesPatcher: SupportFilesPatcher(),
-                           fileContentEditor: FileContentEditor(),
-                           targetsPrinter: targetsPrinter)
+        UseBinariesManager(
+            logger: logger,
+            buildTargetsManager: buildTargetsManager,
+            librariesPatcher: LibrariesPatcher(logger: logger),
+            xcodeProject: xcodeProject,
+            rugbyXcodeProject: RugbyXcodeProject(xcodeProject: xcodeProject),
+            backupManager: backupManager(),
+            binariesStorage: binariesStorage,
+            targetsHasher: targetsHasher(),
+            supportFilesPatcher: SupportFilesPatcher(),
+            fileContentEditor: FileContentEditor(),
+            targetsPrinter: targetsPrinter,
+            xcframeworksPatcher: XCFrameworksPatcher(
+                xcodeProject: xcodeProject,
+                xcodePhaseEditor: XcodePhaseEditor(),
+                xcodeBuildConfigurationEditor: XcodeBuildConfigurationEditor()
+            )
+        )
     }
 }

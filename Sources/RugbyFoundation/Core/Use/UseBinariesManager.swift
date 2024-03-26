@@ -43,6 +43,7 @@ final class UseBinariesManager: Loggable {
     private let supportFilesPatcher: ISupportFilesPatcher
     private let fileContentEditor: IFileContentEditor
     private let targetsPrinter: ITargetsPrinter
+    private let xcframeworksPatcher: IXCFrameworksPatcher
 
     init(logger: ILogger,
          buildTargetsManager: IBuildTargetsManager,
@@ -54,7 +55,8 @@ final class UseBinariesManager: Loggable {
          targetsHasher: ITargetsHasher,
          supportFilesPatcher: ISupportFilesPatcher,
          fileContentEditor: IFileContentEditor,
-         targetsPrinter: ITargetsPrinter) {
+         targetsPrinter: ITargetsPrinter,
+         xcframeworksPatcher: IXCFrameworksPatcher) {
         self.logger = logger
         self.buildTargetsManager = buildTargetsManager
         self.librariesPatcher = librariesPatcher
@@ -66,6 +68,7 @@ final class UseBinariesManager: Loggable {
         self.supportFilesPatcher = supportFilesPatcher
         self.fileContentEditor = fileContentEditor
         self.targetsPrinter = targetsPrinter
+        self.xcframeworksPatcher = xcframeworksPatcher
     }
 }
 
@@ -199,6 +202,11 @@ extension UseBinariesManager: IUseBinariesManager {
         let internalTargets = targets.compactMapValues { $0 as? IInternalTarget }
         let binaryTargets = try await log("Patching Product Files",
                                           auto: await patchProductFiles(binaryTargets: internalTargets))
+        try await log(
+            "Detaching XCFramework Build Phase",
+            level: .info,
+            auto: await xcframeworksPatcher.detachXCFrameworkBuildPhase(from: binaryTargets)
+        )
         try await log(
             "Deleting Targets (\(binaryTargets.count))",
             auto: await xcodeProject.deleteTargets(binaryTargets, keepGroups: keepGroups)
