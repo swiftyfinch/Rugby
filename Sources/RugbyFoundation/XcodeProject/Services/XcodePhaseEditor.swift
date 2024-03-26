@@ -8,6 +8,12 @@ protocol IXcodePhaseEditor: AnyObject {
 
     /// Deletes phase with "[CP] Copy XCFrameworks" name.
     func deleteCopyXCFrameworksPhase(in targets: TargetsMap) async
+
+    /// Copies phase with "[CP] Copy XCFrameworks" name from one target to another.
+    func copyXCFrameworksPhase(from target: IInternalTarget, to destinationTarget: IInternalTarget)
+
+    /// Returns targets with "[CP] Copy XCFrameworks" phase.
+    func filterXCFrameworksPhaseTargets(_ targets: TargetsMap) -> TargetsMap
 }
 
 // MARK: - Implementation
@@ -35,7 +41,7 @@ extension XcodePhaseEditor: IXcodePhaseEditor {
     func deleteCopyXCFrameworksPhase(in targets: TargetsMap) async {
         await targets.values.concurrentForEach { target in
             target.pbxTarget.buildPhases.removeAll { phase in
-                if phase.name() == .copyXCFrameworks {
+                if phase.isCopyXCFrameworks {
                     phase.files?.forEach(target.project.pbxProj.delete(object:))
                     target.project.pbxProj.delete(object: phase)
                     return true
@@ -44,10 +50,56 @@ extension XcodePhaseEditor: IXcodePhaseEditor {
             }
         }
     }
+
+    func copyXCFrameworksPhase(from target: IInternalTarget, to destinationTarget: IInternalTarget) {
+        guard let xcframeworkBuildPhase = target.pbxTarget.buildPhases.first(where: \.isCopyXCFrameworks),
+              let xcframeworkScriptBuildPhase = xcframeworkBuildPhase as? PBXShellScriptBuildPhase else { return }
+        let copiedPhase = xcframeworkScriptBuildPhase.copy()
+        destinationTarget.pbxTarget.buildPhases.append(copiedPhase)
+        destinationTarget.project.pbxProj.add(object: copiedPhase)
+    }
+
+    func filterXCFrameworksPhaseTargets(_ targets: TargetsMap) -> TargetsMap {
+        targets.filter { target in
+            target.value.buildPhases.contains(where: \.isCopyXCFrameworks)
+        }
+    }
 }
 
 // MARK: - Private extensions
 
 private extension String {
     static let copyXCFrameworks = "[CP] Copy XCFrameworks"
+}
+
+private extension BuildPhase {
+    var isCopyXCFrameworks: Bool {
+        name == .copyXCFrameworks
+    }
+}
+
+private extension PBXBuildPhase {
+    var isCopyXCFrameworks: Bool {
+        name() == .copyXCFrameworks
+    }
+}
+
+private extension PBXShellScriptBuildPhase {
+    func copy() -> PBXShellScriptBuildPhase {
+        PBXShellScriptBuildPhase(
+            files: files ?? [],
+            name: name,
+            inputPaths: inputPaths,
+            outputPaths: outputPaths,
+            inputFileListPaths: inputFileListPaths,
+            outputFileListPaths: outputFileListPaths,
+            shellPath: shellPath ?? "/bin/sh",
+            shellScript: shellScript,
+            buildActionMask: buildActionMask,
+            runOnlyForDeploymentPostprocessing: runOnlyForDeploymentPostprocessing,
+            showEnvVarsInLog: showEnvVarsInLog,
+            alwaysOutOfDate: alwaysOutOfDate,
+            dependencyFile: dependencyFile
+        )
+    }
 }
