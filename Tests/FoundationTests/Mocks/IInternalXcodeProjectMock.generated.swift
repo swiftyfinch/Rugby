@@ -137,6 +137,28 @@ final class IInternalXcodeProjectMock: IInternalXcodeProject {
         try await deleteTargetsKeepGroupsClosure?(targetsForRemove, keepGroups)
     }
 
+    // MARK: - addDependencies
+
+    var addDependenciesToThrowableError: Error?
+    var addDependenciesToCallsCount = 0
+    var addDependenciesToCalled: Bool { addDependenciesToCallsCount > 0 }
+    var addDependenciesToReceivedArguments: (dependencies: TargetsMap, target: IInternalTarget)?
+    var addDependenciesToReceivedInvocations: [(dependencies: TargetsMap, target: IInternalTarget)] = []
+    private let addDependenciesToReceivedInvocationsLock = NSRecursiveLock()
+    var addDependenciesToClosure: ((TargetsMap, IInternalTarget) throws -> Void)?
+
+    func addDependencies(_ dependencies: TargetsMap, to target: IInternalTarget) throws {
+        addDependenciesToCallsCount += 1
+        addDependenciesToReceivedArguments = (dependencies: dependencies, target: target)
+        addDependenciesToReceivedInvocationsLock.withLock {
+            addDependenciesToReceivedInvocations.append((dependencies: dependencies, target: target))
+        }
+        if let error = addDependenciesToThrowableError {
+            throw error
+        }
+        try addDependenciesToClosure?(dependencies, target)
+    }
+
     // MARK: - createTestingScheme
 
     var createTestingSchemeBuildConfigurationTestplanPathCallsCount = 0
