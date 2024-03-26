@@ -164,4 +164,7 @@ extension ITargetsPrinter {}
 extension IXcodePhaseEditor {}
 
 // sourcery: AutoMockable, testableImports = ["RugbyFoundation"]
+extension IXCFrameworksPatcher {}
+
+// sourcery: AutoMockable, testableImports = ["RugbyFoundation"]
 extension IXcodeBuildConfigurationEditor {}
