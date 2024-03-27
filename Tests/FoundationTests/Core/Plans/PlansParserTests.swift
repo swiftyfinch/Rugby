@@ -28,7 +28,7 @@ final class PlansParserTests: XCTestCase {
 // MARK: - Top Plan
 
 extension PlansParserTests {
-    func test_top_plan() throws {
+    func test_top_plan() async throws {
         let expected = Plan(
             name: "usual",
             commands: [Plan.Command(name: "cache", args: ["--arch", "x86_64", "--strip"])]
@@ -45,7 +45,7 @@ extension PlansParserTests {
         let pathURL = URL(fileURLWithPath: path)
 
         // Act
-        let result = try sut.topPlan(atPath: path)
+        let result = try await sut.topPlan(atPath: path)
 
         // Assert
         XCTAssertEqual(result, expected)
@@ -53,7 +53,7 @@ extension PlansParserTests {
         XCTAssertEqual(fishSharedStorage.readFileReceivedFile, pathURL)
     }
 
-    func test_top_plan_cached() throws {
+    func test_top_plan_cached() async throws {
         let expected = Plan(
             name: "usual",
             commands: [Plan.Command(name: "cache", args: ["--arch", "x86_64", "--strip"])]
@@ -70,8 +70,8 @@ extension PlansParserTests {
         let pathURL = URL(fileURLWithPath: path)
 
         // Act
-        let result = try sut.topPlan(atPath: path)
-        let result2 = try sut.topPlan(atPath: path)
+        let result = try await sut.topPlan(atPath: path)
+        let result2 = try await sut.topPlan(atPath: path)
 
         // Assert
         XCTAssertEqual(result, expected)
@@ -80,7 +80,7 @@ extension PlansParserTests {
         XCTAssertEqual(fishSharedStorage.readFileReceivedFile, pathURL)
     }
 
-    func test_top_plan_arguments() throws {
+    func test_top_plan_arguments() async throws {
         let expected = Plan(
             name: "usual",
             commands: [Plan.Command(name: "cache", args: ["A", "B"])]
@@ -98,7 +98,7 @@ extension PlansParserTests {
         let pathURL = URL(fileURLWithPath: path)
 
         // Act
-        let result = try sut.topPlan(atPath: path)
+        let result = try await sut.topPlan(atPath: path)
 
         // Assert
         XCTAssertEqual(result, expected)
@@ -106,7 +106,7 @@ extension PlansParserTests {
         XCTAssertEqual(fishSharedStorage.readFileReceivedFile, pathURL)
     }
 
-    func test_top_plan_noPlans() throws {
+    func test_top_plan_noPlans() async throws {
         let expectedError = PlansParserError.noPlans
         fishSharedStorage.readFileClosure = { _ in "" }
         let path = "test"
@@ -116,7 +116,7 @@ extension PlansParserTests {
         var result: Plan?
         var resultError: Error?
         do {
-            result = try sut.topPlan(atPath: path)
+            result = try await sut.topPlan(atPath: path)
         } catch {
             resultError = error
         }
@@ -132,7 +132,7 @@ extension PlansParserTests {
 // MARK: - Named Plan
 
 extension PlansParserTests {
-    func test_named_plan() throws {
+    func test_named_plan() async throws {
         let expected = Plan(
             name: "tests",
             commands: [Plan.Command(name: "warmup", args: ["s3.eu-west-2.amazonaws.com", "--timeout", "120"])]
@@ -153,7 +153,7 @@ extension PlansParserTests {
         let pathURL = URL(fileURLWithPath: path)
 
         // Act
-        let result = try sut.planNamed("tests", path: path)
+        let result = try await sut.planNamed("tests", path: path)
 
         // Assert
         XCTAssertEqual(result, expected)
@@ -161,7 +161,7 @@ extension PlansParserTests {
         XCTAssertEqual(fishSharedStorage.readFileReceivedFile, pathURL)
     }
 
-    func test_named_plan_noPlanWithName() throws {
+    func test_named_plan_noPlanWithName() async throws {
         let planName = "ci"
         let expectedError = PlansParserError.noPlanWithName(planName)
         fishSharedStorage.readFileClosure = { _ in
@@ -177,7 +177,7 @@ extension PlansParserTests {
         var result: Plan?
         var resultError: Error?
         do {
-            result = try sut.planNamed(planName, path: path)
+            result = try await sut.planNamed(planName, path: path)
         } catch {
             resultError = error
         }
@@ -189,7 +189,7 @@ extension PlansParserTests {
         XCTAssertEqual(fishSharedStorage.readFileReceivedFile, pathURL)
     }
 
-    func test_named_plan_missedCommandType() throws {
+    func test_named_plan_missedCommandType() async throws {
         let planName = "ci"
         let expectedError = PlansParserError.missedCommandType
         fishSharedStorage.readFileClosure = { _ in
@@ -205,7 +205,7 @@ extension PlansParserTests {
         var result: Plan?
         var resultError: Error?
         do {
-            result = try sut.planNamed(planName, path: path)
+            result = try await sut.planNamed(planName, path: path)
         } catch {
             resultError = error
         }
@@ -217,7 +217,7 @@ extension PlansParserTests {
         XCTAssertEqual(fishSharedStorage.readFileReceivedFile, pathURL)
     }
 
-    func test_named_plan_incorrectFormat() throws {
+    func test_named_plan_incorrectFormat() async throws {
         let planName = "ci"
         let expectedError = PlansParserError.incorrectFormat
         fishSharedStorage.readFileClosure = { _ in
@@ -232,7 +232,7 @@ extension PlansParserTests {
         var result: Plan?
         var resultError: Error?
         do {
-            result = try sut.planNamed(planName, path: path)
+            result = try await sut.planNamed(planName, path: path)
         } catch {
             resultError = error
         }
@@ -244,7 +244,7 @@ extension PlansParserTests {
         XCTAssertEqual(fishSharedStorage.readFileReceivedFile, pathURL)
     }
 
-    func test_named_plan_unknownArgumentType() throws {
+    func test_named_plan_unknownArgumentType() async throws {
         let planName = "ci"
         let testValue = 0.3
         let expectedError = PlansParserError.unknownArgumentType(testValue)
@@ -262,7 +262,7 @@ extension PlansParserTests {
         var result: Plan?
         var resultError: Error?
         do {
-            result = try sut.planNamed(planName, path: path)
+            result = try await sut.planNamed(planName, path: path)
         } catch {
             resultError = error
         }
