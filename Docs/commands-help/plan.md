@@ -35,6 +35,7 @@ The command allows you to write a plan (combination of commands) in YAML format:
 cache_plan_name:
 - command: warmup
   argument: s3.eu-west-2.amazonaws.com
+  headers: 'secret-key: ${RUGBY_S3_SECRET_KEY}'
   except: SomePod
   arch: x86_64
 - command: build
@@ -174,3 +175,12 @@ usual:
   strip: true
 ```
 For example, the [cache](shortcuts/cache.md) command has a flag `strip`.
+
+Plans can access environment variables in three different ways:
+```yml
+usual:
+- command: warmup
+  argument: $(S3_ENDPOING)
+  headers: 'secret-key: ${RUGBY_S3_SECRET_KEY}'
+  except: $BAD_POD_TARGET_NAME0
+```

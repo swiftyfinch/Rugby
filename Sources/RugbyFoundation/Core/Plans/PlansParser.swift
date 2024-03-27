@@ -8,17 +8,17 @@ import Yams
 public protocol IPlansParser: AnyObject {
     /// Returns plans list.
     /// - Parameter path: A path to plans file.
-    func plans(atPath path: String) throws -> [Plan]
+    func plans(atPath path: String) async throws -> [Plan]
 
     /// Returns the first plan from file at a path.
     /// - Parameter path: A path to plans file.
-    func topPlan(atPath path: String) throws -> Plan
+    func topPlan(atPath path: String) async throws -> Plan
 
     /// Returns a plan with the name.
     /// - Parameters:
     ///   - name: A name of plan to find.
     ///   - path: A path to plans file.
-    func planNamed(_ name: String, path: String) throws -> Plan
+    func planNamed(_ name: String, path: String) async throws -> Plan
 }
 
 /// The Rugby plan structure.
@@ -76,18 +76,24 @@ enum PlansParserError: LocalizedError {
 final class PlansParser {
     private typealias Error = PlansParserError
     private typealias RawCommand = [String: Any]
+
+    private let envVariablesResolver: IEnvVariablesResolver
     private var cache: [String: [Plan]] = [:]
     private let topPlanRegex = #"^([\w-]+)(?=:)"#
-    private let parsers: [FieldParser] = [
-        StringFieldParser(),
+    private lazy var parsers: [FieldParser] = [
+        StringFieldParser(envVariablesResolver: envVariablesResolver),
         BoolFieldParser(),
         IntFieldParser(),
-        StringsFieldParser()
+        StringsFieldParser(envVariablesResolver: envVariablesResolver)
     ]
+
+    init(envVariablesResolver: IEnvVariablesResolver) {
+        self.envVariablesResolver = envVariablesResolver
+    }
 
     // MARK: - Methods
 
-    private func parse(path: String) throws -> [Plan] {
+    private func parse(path: String) async throws -> [Plan] {
         if let cachedPlans = cache[path] { return cachedPlans }
 
         let content = try File.read(at: path)
@@ -100,8 +106,13 @@ final class PlansParser {
 
         // Bubbling up the 1st plan
         let sortedPlans = rawPlans.sorted { lhs, _ in lhs.key == firstPlan }
-        let plans = try sortedPlans.compactMap { name, commands in
-            try Plan(name: name, commands: commands.compactMap(parseCommand))
+        var plans: [Plan] = []
+        for (name, commands) in sortedPlans {
+            var parsedCommands: [Plan.Command] = []
+            for command in commands {
+                try await parsedCommands.append(parseCommand(command))
+            }
+            plans.append(Plan(name: name, commands: parsedCommands))
         }
         cache[path] = plans
         return plans
@@ -113,16 +124,20 @@ final class PlansParser {
         return firstPlan
     }
 
-    private func parseCommand(_ command: RawCommand) throws -> Plan.Command {
+    private func parseCommand(_ command: RawCommand) async throws -> Plan.Command {
         guard let commandName = command[.commandKey] as? String else {
             throw Error.missedCommandType
         }
 
-        let args: [String] = try command.keys.sorted().reduce(into: []) { args, key in
-            guard let value = command[key], key != .commandKey else { return }
-            guard parsers.contains(where: { $0.parse(value, ofField: key, toArgs: &args) }) else {
-                throw Error.unknownArgumentType(value)
+        var args: [String] = []
+        for key in command.keys.sorted() {
+            guard let value = command[key], key != .commandKey else { continue }
+            var parsed = false
+            for parser in parsers {
+                parsed = try await parser.parse(value, ofField: key, toArgs: &args)
+                if parsed { break }
             }
+            guard parsed else { throw Error.unknownArgumentType(value) }
         }
         return Plan.Command(name: commandName, args: args)
     }
@@ -139,17 +154,24 @@ private extension String {
 // MARK: - Field Parsers
 
 private protocol FieldParser: AnyObject {
-    func parse(_ value: Any, ofField field: String, toArgs args: inout [String]) -> Bool
+    func parse(_ value: Any, ofField field: String, toArgs args: inout [String]) async throws -> Bool
 }
 
 private final class StringFieldParser: FieldParser {
-    func parse(_ value: Any, ofField field: String, toArgs args: inout [String]) -> Bool {
+    private let envVariablesResolver: IEnvVariablesResolver
+
+    init(envVariablesResolver: IEnvVariablesResolver) {
+        self.envVariablesResolver = envVariablesResolver
+    }
+
+    func parse(_ value: Any, ofField field: String, toArgs args: inout [String]) async throws -> Bool {
         guard let string = value as? String else { return false }
+        let resolvedString = try await envVariablesResolver.resolve(string)
         if field == .argumentKey {
-            args.insert(string, at: 0)
+            args.insert(resolvedString, at: 0)
         } else {
             args.append("\(String.optionPrefix)\(field)")
-            args.append(string)
+            args.append(resolvedString)
         }
         return true
     }
@@ -175,14 +197,21 @@ private final class IntFieldParser: FieldParser {
 }
 
 private final class StringsFieldParser: FieldParser {
-    func parse(_ value: Any, ofField field: String, toArgs args: inout [String]) -> Bool {
+    private let envVariablesResolver: IEnvVariablesResolver
+
+    init(envVariablesResolver: IEnvVariablesResolver) {
+        self.envVariablesResolver = envVariablesResolver
+    }
+
+    func parse(_ value: Any, ofField field: String, toArgs args: inout [String]) async throws -> Bool {
         guard let strings = value as? [String] else { return false }
         guard strings.isNotEmpty else { return true }
+        let resolvedStrings = try await strings.concurrentMap(envVariablesResolver.resolve)
         if field == .argumentKey {
-            args.insert(contentsOf: strings, at: 0)
+            args.insert(contentsOf: resolvedStrings, at: 0)
         } else {
             args.append("\(String.optionPrefix)\(field)")
-            args.append(contentsOf: strings)
+            args.append(contentsOf: resolvedStrings)
         }
         return true
     }
@@ -191,20 +220,20 @@ private final class StringsFieldParser: FieldParser {
 // MARK: - IPlansParser
 
 extension PlansParser: IPlansParser {
-    public func plans(atPath path: String) throws -> [Plan] {
-        try parse(path: path)
+    public func plans(atPath path: String) async throws -> [Plan] {
+        try await parse(path: path)
     }
 
-    public func topPlan(atPath path: String) throws -> Plan {
-        let plans = try plans(atPath: path)
+    public func topPlan(atPath path: String) async throws -> Plan {
+        let plans = try await plans(atPath: path)
         guard let plan = plans.first else {
             throw Error.noPlans
         }
         return plan
     }
 
-    public func planNamed(_ name: String, path: String) throws -> Plan {
-        let plans = try plans(atPath: path)
+    public func planNamed(_ name: String, path: String) async throws -> Plan {
+        let plans = try await plans(atPath: path)
         guard let plan = plans.first(where: { $0.name == name }) else {
             throw Error.noPlanWithName(name)
         }

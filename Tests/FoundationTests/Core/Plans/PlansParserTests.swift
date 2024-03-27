@@ -5,6 +5,7 @@ import XCTest
 final class PlansParserTests: XCTestCase {
     private var sut: IPlansParser!
     private var fishSharedStorage: IFilesManagerMock!
+    private var envVariablesResolver: IEnvVariablesResolverMock!
 
     override func setUp() {
         super.setUp()
@@ -14,7 +15,8 @@ final class PlansParserTests: XCTestCase {
         addTeardownBlock {
             Fish.sharedStorage = backupFishSharedStorage
         }
-        sut = PlansParser()
+        envVariablesResolver = IEnvVariablesResolverMock()
+        sut = PlansParser(envVariablesResolver: envVariablesResolver)
     }
 
     override func tearDown() {
@@ -22,13 +24,14 @@ final class PlansParserTests: XCTestCase {
         sut = nil
         fishSharedStorage.readFileClosure = nil
         fishSharedStorage = nil
+        envVariablesResolver = nil
     }
 }
 
 // MARK: - Top Plan
 
 extension PlansParserTests {
-    func test_top_plan() throws {
+    func test_top_plan() async throws {
         let expected = Plan(
             name: "usual",
             commands: [Plan.Command(name: "cache", args: ["--arch", "x86_64", "--strip"])]
@@ -43,9 +46,10 @@ extension PlansParserTests {
         }
         let path = "test"
         let pathURL = URL(fileURLWithPath: path)
+        envVariablesResolver.resolveAdditionalEnvClosure = { string, _ in string }
 
         // Act
-        let result = try sut.topPlan(atPath: path)
+        let result = try await sut.topPlan(atPath: path)
 
         // Assert
         XCTAssertEqual(result, expected)
@@ -53,7 +57,7 @@ extension PlansParserTests {
         XCTAssertEqual(fishSharedStorage.readFileReceivedFile, pathURL)
     }
 
-    func test_top_plan_cached() throws {
+    func test_top_plan_cached() async throws {
         let expected = Plan(
             name: "usual",
             commands: [Plan.Command(name: "cache", args: ["--arch", "x86_64", "--strip"])]
@@ -68,10 +72,11 @@ extension PlansParserTests {
         }
         let path = "test"
         let pathURL = URL(fileURLWithPath: path)
+        envVariablesResolver.resolveAdditionalEnvClosure = { string, _ in string }
 
         // Act
-        let result = try sut.topPlan(atPath: path)
-        let result2 = try sut.topPlan(atPath: path)
+        let result = try await sut.topPlan(atPath: path)
+        let result2 = try await sut.topPlan(atPath: path)
 
         // Assert
         XCTAssertEqual(result, expected)
@@ -80,7 +85,7 @@ extension PlansParserTests {
         XCTAssertEqual(fishSharedStorage.readFileReceivedFile, pathURL)
     }
 
-    func test_top_plan_arguments() throws {
+    func test_top_plan_arguments() async throws {
         let expected = Plan(
             name: "usual",
             commands: [Plan.Command(name: "cache", args: ["A", "B"])]
@@ -96,9 +101,10 @@ extension PlansParserTests {
         }
         let path = "test"
         let pathURL = URL(fileURLWithPath: path)
+        envVariablesResolver.resolveAdditionalEnvClosure = { string, _ in string }
 
         // Act
-        let result = try sut.topPlan(atPath: path)
+        let result = try await sut.topPlan(atPath: path)
 
         // Assert
         XCTAssertEqual(result, expected)
@@ -106,7 +112,7 @@ extension PlansParserTests {
         XCTAssertEqual(fishSharedStorage.readFileReceivedFile, pathURL)
     }
 
-    func test_top_plan_noPlans() throws {
+    func test_top_plan_noPlans() async throws {
         let expectedError = PlansParserError.noPlans
         fishSharedStorage.readFileClosure = { _ in "" }
         let path = "test"
@@ -116,7 +122,7 @@ extension PlansParserTests {
         var result: Plan?
         var resultError: Error?
         do {
-            result = try sut.topPlan(atPath: path)
+            result = try await sut.topPlan(atPath: path)
         } catch {
             resultError = error
         }
@@ -132,7 +138,7 @@ extension PlansParserTests {
 // MARK: - Named Plan
 
 extension PlansParserTests {
-    func test_named_plan() throws {
+    func test_named_plan() async throws {
         let expected = Plan(
             name: "tests",
             commands: [Plan.Command(name: "warmup", args: ["s3.eu-west-2.amazonaws.com", "--timeout", "120"])]
@@ -151,9 +157,10 @@ extension PlansParserTests {
         }
         let path = "test"
         let pathURL = URL(fileURLWithPath: path)
+        envVariablesResolver.resolveAdditionalEnvClosure = { string, _ in string }
 
         // Act
-        let result = try sut.planNamed("tests", path: path)
+        let result = try await sut.planNamed("tests", path: path)
 
         // Assert
         XCTAssertEqual(result, expected)
@@ -161,7 +168,7 @@ extension PlansParserTests {
         XCTAssertEqual(fishSharedStorage.readFileReceivedFile, pathURL)
     }
 
-    func test_named_plan_noPlanWithName() throws {
+    func test_named_plan_noPlanWithName() async throws {
         let planName = "ci"
         let expectedError = PlansParserError.noPlanWithName(planName)
         fishSharedStorage.readFileClosure = { _ in
@@ -177,7 +184,7 @@ extension PlansParserTests {
         var result: Plan?
         var resultError: Error?
         do {
-            result = try sut.planNamed(planName, path: path)
+            result = try await sut.planNamed(planName, path: path)
         } catch {
             resultError = error
         }
@@ -189,7 +196,7 @@ extension PlansParserTests {
         XCTAssertEqual(fishSharedStorage.readFileReceivedFile, pathURL)
     }
 
-    func test_named_plan_missedCommandType() throws {
+    func test_named_plan_missedCommandType() async throws {
         let planName = "ci"
         let expectedError = PlansParserError.missedCommandType
         fishSharedStorage.readFileClosure = { _ in
@@ -205,7 +212,7 @@ extension PlansParserTests {
         var result: Plan?
         var resultError: Error?
         do {
-            result = try sut.planNamed(planName, path: path)
+            result = try await sut.planNamed(planName, path: path)
         } catch {
             resultError = error
         }
@@ -217,7 +224,7 @@ extension PlansParserTests {
         XCTAssertEqual(fishSharedStorage.readFileReceivedFile, pathURL)
     }
 
-    func test_named_plan_incorrectFormat() throws {
+    func test_named_plan_incorrectFormat() async throws {
         let planName = "ci"
         let expectedError = PlansParserError.incorrectFormat
         fishSharedStorage.readFileClosure = { _ in
@@ -232,7 +239,7 @@ extension PlansParserTests {
         var result: Plan?
         var resultError: Error?
         do {
-            result = try sut.planNamed(planName, path: path)
+            result = try await sut.planNamed(planName, path: path)
         } catch {
             resultError = error
         }
@@ -244,7 +251,7 @@ extension PlansParserTests {
         XCTAssertEqual(fishSharedStorage.readFileReceivedFile, pathURL)
     }
 
-    func test_named_plan_unknownArgumentType() throws {
+    func test_named_plan_unknownArgumentType() async throws {
         let planName = "ci"
         let testValue = 0.3
         let expectedError = PlansParserError.unknownArgumentType(testValue)
@@ -262,7 +269,7 @@ extension PlansParserTests {
         var result: Plan?
         var resultError: Error?
         do {
-            result = try sut.planNamed(planName, path: path)
+            result = try await sut.planNamed(planName, path: path)
         } catch {
             resultError = error
         }
@@ -272,5 +279,37 @@ extension PlansParserTests {
         XCTAssertEqual(resultError?.localizedDescription, expectedError.localizedDescription)
         XCTAssertEqual(fishSharedStorage.readFileCallsCount, 1)
         XCTAssertEqual(fishSharedStorage.readFileReceivedFile, pathURL)
+    }
+
+    func test_resolveEnvVariablesInStrings() async throws {
+        fishSharedStorage.readFileClosure = { _ in
+            """
+            plan_with_env:
+            - command: warmup
+              argument: s3.eu-west-2.amazonaws.com
+              timeout: 120
+              headers: "secret_key: ${SECRET_KEY}"
+              targets: [Alamofire, $ANOTHER_TARGET]
+              except: $(ENV_VARIABLE)
+              config: $(SHARED_CONFIG)
+            """
+        }
+        envVariablesResolver.resolveAdditionalEnvClosure = { string, _ in string }
+
+        // Act
+        let result = try await sut.planNamed("plan_with_env", path: "")
+
+        // Assert
+        XCTAssertEqual(
+            Set(envVariablesResolver.resolveAdditionalEnvReceivedInvocations.map(\.string)),
+            [
+                "s3.eu-west-2.amazonaws.com",
+                "$(SHARED_CONFIG)",
+                "$(ENV_VARIABLE)",
+                "secret_key: ${SECRET_KEY}",
+                "Alamofire",
+                "$ANOTHER_TARGET"
+            ]
+        )
     }
 }

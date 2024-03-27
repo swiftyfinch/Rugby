@@ -1,4 +1,5 @@
 import Fish
+import Foundation
 import Rainbow
 
 /// The main container of Rugby stuff.
@@ -105,6 +106,13 @@ public final class Vault {
         sharedPath: router.binFolderPath,
         keepHashYamls: env.keepHashYamls
     )
+    private(set) lazy var envVariablesResolver: IEnvVariablesResolver = EnvVariablesResolver(
+        logger: logger,
+        env: ProcessInfo.processInfo.environment.merging([
+            .SRCROOT: router.podsPath,
+            .BUILD_DIR: router.buildPath
+        ], uniquingKeysWith: { _, rhs in rhs })
+    )
     func targetsHasher() -> ITargetsHasher {
         let foundationHasher = SHA1Hasher()
         let fileContentHasher = FileContentHasher(
@@ -118,13 +126,7 @@ public final class Vault {
                 logger: logger,
                 workingDirectoryPath: router.workingDirectory.path,
                 fileContentHasher: fileContentHasher,
-                xcodeEnvResolver: XcodeEnvResolver(
-                    logger: logger,
-                    env: [
-                        .SRCROOT: router.podsPath,
-                        .BUILD_DIR: router.buildPath
-                    ]
-                )
+                envVariablesResolver: envVariablesResolver
             ),
             cocoaPodsScriptsHasher: CocoaPodsScriptsHasher(fileContentHasher: fileContentHasher),
             configurationsHasher: ConfigurationsHasher(excludeKeys: [settings.hasBackupKey]),
