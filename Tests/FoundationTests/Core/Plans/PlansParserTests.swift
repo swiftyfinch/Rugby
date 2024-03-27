@@ -5,6 +5,7 @@ import XCTest
 final class PlansParserTests: XCTestCase {
     private var sut: IPlansParser!
     private var fishSharedStorage: IFilesManagerMock!
+    private var envVariablesResolver: IEnvVariablesResolverMock!
 
     override func setUp() {
         super.setUp()
@@ -14,7 +15,8 @@ final class PlansParserTests: XCTestCase {
         addTeardownBlock {
             Fish.sharedStorage = backupFishSharedStorage
         }
-        sut = PlansParser()
+        envVariablesResolver = IEnvVariablesResolverMock()
+        sut = PlansParser(envVariablesResolver: envVariablesResolver)
     }
 
     override func tearDown() {
@@ -22,6 +24,7 @@ final class PlansParserTests: XCTestCase {
         sut = nil
         fishSharedStorage.readFileClosure = nil
         fishSharedStorage = nil
+        envVariablesResolver = nil
     }
 }
 
@@ -43,6 +46,7 @@ extension PlansParserTests {
         }
         let path = "test"
         let pathURL = URL(fileURLWithPath: path)
+        envVariablesResolver.resolveAdditionalEnvClosure = { string, _ in string }
 
         // Act
         let result = try await sut.topPlan(atPath: path)
@@ -68,6 +72,7 @@ extension PlansParserTests {
         }
         let path = "test"
         let pathURL = URL(fileURLWithPath: path)
+        envVariablesResolver.resolveAdditionalEnvClosure = { string, _ in string }
 
         // Act
         let result = try await sut.topPlan(atPath: path)
@@ -96,6 +101,7 @@ extension PlansParserTests {
         }
         let path = "test"
         let pathURL = URL(fileURLWithPath: path)
+        envVariablesResolver.resolveAdditionalEnvClosure = { string, _ in string }
 
         // Act
         let result = try await sut.topPlan(atPath: path)
@@ -151,6 +157,7 @@ extension PlansParserTests {
         }
         let path = "test"
         let pathURL = URL(fileURLWithPath: path)
+        envVariablesResolver.resolveAdditionalEnvClosure = { string, _ in string }
 
         // Act
         let result = try await sut.planNamed("tests", path: path)
@@ -272,5 +279,37 @@ extension PlansParserTests {
         XCTAssertEqual(resultError?.localizedDescription, expectedError.localizedDescription)
         XCTAssertEqual(fishSharedStorage.readFileCallsCount, 1)
         XCTAssertEqual(fishSharedStorage.readFileReceivedFile, pathURL)
+    }
+
+    func test_resolveEnvVariablesInStrings() async throws {
+        fishSharedStorage.readFileClosure = { _ in
+            """
+            plan_with_env:
+            - command: warmup
+              argument: s3.eu-west-2.amazonaws.com
+              timeout: 120
+              headers: "secret_key: ${SECRET_KEY}"
+              targets: [Alamofire, $ANOTHER_TARGET]
+              except: $(ENV_VARIABLE)
+              config: $(SHARED_CONFIG)
+            """
+        }
+        envVariablesResolver.resolveAdditionalEnvClosure = { string, _ in string }
+
+        // Act
+        let result = try await sut.planNamed("plan_with_env", path: "")
+
+        // Assert
+        XCTAssertEqual(
+            Set(envVariablesResolver.resolveAdditionalEnvReceivedInvocations.map(\.string)),
+            [
+                "s3.eu-west-2.amazonaws.com",
+                "$(SHARED_CONFIG)",
+                "$(ENV_VARIABLE)",
+                "secret_key: ${SECRET_KEY}",
+                "Alamofire",
+                "$ANOTHER_TARGET"
+            ]
+        )
     }
 }
