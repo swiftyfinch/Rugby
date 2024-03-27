@@ -8,7 +8,7 @@ final class BuildPhaseHasherTests: XCTestCase {
     private var logger: ILoggerMock!
     private let workingDirectoryPath = "/Users/swiftyfinch/Developer/Example"
     private var fileContentHasher: IFileContentHasherMock!
-    private var xcodeEnvResolver: IXcodeEnvResolverMock!
+    private var envVariablesResolver: IEnvVariablesResolverMock!
     private var fishSharedStorage: IFilesManagerMock!
     private var sut: IBuildPhaseHasher!
 
@@ -16,12 +16,12 @@ final class BuildPhaseHasherTests: XCTestCase {
         super.setUp()
         logger = ILoggerMock()
         fileContentHasher = IFileContentHasherMock()
-        xcodeEnvResolver = IXcodeEnvResolverMock()
+        envVariablesResolver = IEnvVariablesResolverMock()
         sut = BuildPhaseHasher(
             logger: logger,
             workingDirectoryPath: workingDirectoryPath,
             fileContentHasher: fileContentHasher,
-            xcodeEnvResolver: xcodeEnvResolver
+            envVariablesResolver: envVariablesResolver
         )
 
         fishSharedStorage = IFilesManagerMock()
@@ -36,7 +36,7 @@ final class BuildPhaseHasherTests: XCTestCase {
         super.tearDown()
         logger = nil
         fileContentHasher = nil
-        xcodeEnvResolver = nil
+        envVariablesResolver = nil
         fishSharedStorage = nil
         sut = nil
     }
@@ -50,7 +50,7 @@ extension BuildPhaseHasherTests {
         let resolvedFilesList = "/Users/swiftyfinch/Developer/Repos/Rugby/Example/Pods/Target Support Files/Realm-framework/Realm-framework-xcframeworks-input-files.xcfilelist"
         let resolvedInputFile0 = "/Users/swiftyfinch/Developer/Repos/Rugby/Example/Pods/Realm/core/realm-monorepo.xcframework"
         let resolvedInputFile1 = "/Users/swiftyfinch/Developer/Repos/Rugby/Example/Pods/Target Support Files/Realm-framework/Realm-framework-xcframeworks.sh"
-        xcodeEnvResolver.resolvePathAdditionalEnvClosure = { path, _ in
+        envVariablesResolver.resolveAdditionalEnvClosure = { path, _ in
             switch path {
             case inputFilesList: return resolvedFilesList
             case inputFile0: return resolvedInputFile0
