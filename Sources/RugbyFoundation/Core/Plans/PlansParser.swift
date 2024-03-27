@@ -76,14 +76,20 @@ enum PlansParserError: LocalizedError {
 final class PlansParser {
     private typealias Error = PlansParserError
     private typealias RawCommand = [String: Any]
+
+    private let envVariablesResolver: IEnvVariablesResolver
     private var cache: [String: [Plan]] = [:]
     private let topPlanRegex = #"^([\w-]+)(?=:)"#
-    private let parsers: [FieldParser] = [
-        StringFieldParser(),
+    private lazy var parsers: [FieldParser] = [
+        StringFieldParser(envVariablesResolver: envVariablesResolver),
         BoolFieldParser(),
         IntFieldParser(),
-        StringsFieldParser()
+        StringsFieldParser(envVariablesResolver: envVariablesResolver)
     ]
+
+    init(envVariablesResolver: IEnvVariablesResolver) {
+        self.envVariablesResolver = envVariablesResolver
+    }
 
     // MARK: - Methods
 
@@ -152,13 +158,20 @@ private protocol FieldParser: AnyObject {
 }
 
 private final class StringFieldParser: FieldParser {
+    private let envVariablesResolver: IEnvVariablesResolver
+
+    init(envVariablesResolver: IEnvVariablesResolver) {
+        self.envVariablesResolver = envVariablesResolver
+    }
+
     func parse(_ value: Any, ofField field: String, toArgs args: inout [String]) async throws -> Bool {
         guard let string = value as? String else { return false }
+        let resolvedString = try await envVariablesResolver.resolve(string)
         if field == .argumentKey {
-            args.insert(string, at: 0)
+            args.insert(resolvedString, at: 0)
         } else {
             args.append("\(String.optionPrefix)\(field)")
-            args.append(string)
+            args.append(resolvedString)
         }
         return true
     }
@@ -184,14 +197,21 @@ private final class IntFieldParser: FieldParser {
 }
 
 private final class StringsFieldParser: FieldParser {
+    private let envVariablesResolver: IEnvVariablesResolver
+
+    init(envVariablesResolver: IEnvVariablesResolver) {
+        self.envVariablesResolver = envVariablesResolver
+    }
+
     func parse(_ value: Any, ofField field: String, toArgs args: inout [String]) async throws -> Bool {
         guard let strings = value as? [String] else { return false }
         guard strings.isNotEmpty else { return true }
+        let resolvedStrings = try await strings.concurrentMap(envVariablesResolver.resolve)
         if field == .argumentKey {
-            args.insert(contentsOf: strings, at: 0)
+            args.insert(contentsOf: resolvedStrings, at: 0)
         } else {
             args.append("\(String.optionPrefix)\(field)")
-            args.append(contentsOf: strings)
+            args.append(contentsOf: resolvedStrings)
         }
         return true
     }
