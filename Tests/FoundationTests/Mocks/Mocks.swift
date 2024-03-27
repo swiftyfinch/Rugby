@@ -59,7 +59,7 @@ extension IProductHasher {}
 extension IBuildRulesHasher {}
 
 // sourcery: AutoMockable, testableImports = ["RugbyFoundation"]
-extension IXcodeEnvResolver {}
+extension IEnvVariablesResolver {}
 
 //// sourcery: AutoMockable, testableImports = ["RugbyFoundation"]
 extension ISwiftVersionProvider {}
