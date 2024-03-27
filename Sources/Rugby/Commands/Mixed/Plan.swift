@@ -25,7 +25,7 @@ struct Plan: AsyncParsableCommand {
         // It's a hidden subcommand
         if let name, name == .plansList {
             // Prints raw plans list for autocompletion
-            let plans = (try? dependencies.plansParser.plans(atPath: path)) ?? []
+            let plans = (try? await dependencies.plansParser.plans(atPath: path)) ?? []
             plans.forEach { print($0.name) }
             return
         }
@@ -40,15 +40,15 @@ struct Plan: AsyncParsableCommand {
 
 extension Plan: RunnableCommand {
     func body() async throws {
-        let plan = try selectPlan()
+        let plan = try await selectPlan()
         try await run(plan: plan)
     }
 
-    private func selectPlan() throws -> RugbyFoundation.Plan {
+    private func selectPlan() async throws -> RugbyFoundation.Plan {
         if let name {
-            return try dependencies.plansParser.planNamed(name, path: path)
+            return try await dependencies.plansParser.planNamed(name, path: path)
         } else {
-            return try dependencies.plansParser.topPlan(atPath: path)
+            return try await dependencies.plansParser.topPlan(atPath: path)
         }
     }
 
