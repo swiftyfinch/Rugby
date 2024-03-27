@@ -14,18 +14,18 @@ final class BuildPhaseHasher: Loggable {
     let logger: ILogger
     private let workingDirectoryPath: String
     private let fileContentHasher: IFileContentHasher
-    private let xcodeEnvResolver: IXcodeEnvResolver
+    private let envVariablesResolver: IEnvVariablesResolver
 
     private let dollarSymbol = "$"
 
     init(logger: ILogger,
          workingDirectoryPath: String,
          fileContentHasher: IFileContentHasher,
-         xcodeEnvResolver: IXcodeEnvResolver) {
+         envVariablesResolver: IEnvVariablesResolver) {
         self.workingDirectoryPath = workingDirectoryPath
         self.logger = logger
         self.fileContentHasher = fileContentHasher
-        self.xcodeEnvResolver = xcodeEnvResolver
+        self.envVariablesResolver = envVariablesResolver
     }
 
     // MARK: - Private
@@ -64,7 +64,7 @@ final class BuildPhaseHasher: Loggable {
         additionalEnv: [String: String]
     ) async throws -> (resolved: [String], unresolved: [String]) {
         let pathsToFileLists = try await paths.concurrentMap {
-            try await self.xcodeEnvResolver.resolve(path: $0, additionalEnv: additionalEnv)
+            try await self.envVariablesResolver.resolve($0, additionalEnv: additionalEnv)
         }
 
         let (unresolvedFileLists, resolvedFileLists) = Set(pathsToFileLists).partition { $0.contains(dollarSymbol) }
@@ -73,7 +73,7 @@ final class BuildPhaseHasher: Loggable {
                 let content = try File.read(at: path)
                 let pathsFromFile = content.components(separatedBy: "\n")
                 return try await pathsFromFile.concurrentMap {
-                    try await self.xcodeEnvResolver.resolve(path: $0, additionalEnv: additionalEnv)
+                    try await self.envVariablesResolver.resolve($0, additionalEnv: additionalEnv)
                 }
             }
 
