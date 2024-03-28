@@ -1,4 +1,5 @@
 import Foundation
+import RugbyFoundation
 
 // MARK: - Interface
 
@@ -16,9 +17,19 @@ final class GitHubReleaseListLoader {
     enum Error: LocalizedError {
         case couldNotRetrieveVersions(String)
 
+        /// https://docs.github.com/en/rest/using-the-rest-api/rate-limits-for-the-rest-api
+        /// The primary rate limit for unauthenticated requests is 60 requests per hour.
+        private static let rateLimitRegex = #"(API rate limit exceeded for \d+\.\d+\.\d+\.\d+\.).*"#
+
         var errorDescription: String? {
             switch self {
             case let .couldNotRetrieveVersions(apiMessage):
+                if let match = try? apiMessage.groups(regex: Error.rateLimitRegex), match.count == 2 {
+                    return """
+                    \(match[1])
+                    \("🚑 Please try again in an hour.".yellow)
+                    """
+                }
                 return apiMessage
             }
         }
