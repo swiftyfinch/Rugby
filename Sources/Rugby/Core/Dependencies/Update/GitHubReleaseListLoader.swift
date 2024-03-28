@@ -13,17 +13,17 @@ struct Release {
 // MARK: - Implementation
 
 final class GitHubReleaseListLoader {
-
     enum Error: LocalizedError {
         case couldNotRetrieveVersions(String)
 
         var errorDescription: String? {
             switch self {
-            case .couldNotRetrieveVersions(let apiMessage):
+            case let .couldNotRetrieveVersions(apiMessage):
                 return apiMessage
             }
         }
     }
+
     private let paths: GitHubUpdaterPaths
 
     init(paths: GitHubUpdaterPaths) {
@@ -50,13 +50,13 @@ final class GitHubReleaseListLoader {
             fatalError("Couldn't build url.")
         }
         let (data, response) = try await URLSession.shared.data(from: url)
-        if let httpResponse = response as? HTTPURLResponse, (400..<500) ~= httpResponse.statusCode {
+        if let httpResponse = response as? HTTPURLResponse, (400 ..< 500) ~= httpResponse.statusCode {
             let errorModel = try parseError(data)
             throw Error.couldNotRetrieveVersions(errorModel.message)
         }
         return data
     }
-    
+
     private func parseError(_ data: Data) throws -> ReleaseResponseErrorModel {
         let decoder = JSONDecoder()
         let model = try decoder.decode(ReleaseResponseErrorModel.self, from: data)
@@ -96,7 +96,7 @@ private struct ReleaseResponseModel: Decodable {
 }
 
 private struct ReleaseResponseErrorModel: Decodable {
-  let message: String
+    let message: String
 }
 
 // swiftlint:enable identifier_name
