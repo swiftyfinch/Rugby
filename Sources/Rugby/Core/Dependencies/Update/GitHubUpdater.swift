@@ -79,19 +79,17 @@ final class GitHubUpdater: Loggable {
         let parsedVersion: GitHubUpdaterVersion
         switch versionInfo.newVersion {
         case .latest:
-            let releases = try await log("Loading Releases",
-                                         auto: await list(count: maxLatestReleasesCount,
-                                                          architecture: architecture,
-                                                          minVersion: minVersion))
-            guard let latest = releases.first(where: { allowBeta || !$0.prerelease })
-            else { throw Error.couldnotFindLatestVersion }
+            let latestVersion = try await log(
+                "Loading Latest",
+                auto: await loadLatest(allowBeta: allowBeta, architecture: architecture, minVersion: minVersion)
+            )
 
-            parsedVersion = try versionParser.parse(latest.version)
+            parsedVersion = try versionParser.parse(latestVersion)
             guard force || parsedVersion > currentVersion else {
                 await log("You’re up to date!")
                 return
             }
-            stringVersion = latest.version
+            stringVersion = latestVersion
         case let .some(version):
             parsedVersion = try versionParser.parse(version)
             stringVersion = version
@@ -111,9 +109,27 @@ final class GitHubUpdater: Loggable {
         let minVersion = try versionParser.parse(minVersion)
         let binaryPath = try getBinaryPath(binaryName: binaryName)
         let architecture = try architecture ?? currentArchitecture(binaryPath: binaryPath)
-        return try await releaseListLoader.load(count: count, architecture: architecture).filter {
-            try versionParser.parse($0.version) >= minVersion
+        return try await list(count: count, architecture: architecture, minVersion: minVersion)
+    }
+
+    private func loadLatest(allowBeta: Bool,
+                            architecture: GitHubUpdaterArchitecture,
+                            minVersion: GitHubUpdaterVersion) async throws -> String {
+        var latestVersion: String?
+        if allowBeta {
+            let releases = try await list(
+                count: maxLatestReleasesCount,
+                architecture: architecture,
+                minVersion: minVersion
+            )
+            latestVersion = releases.first(where: { allowBeta || !$0.prerelease })?.version
+        } else {
+            latestVersion = try await releaseListLoader.loadLatestTag(architecture: architecture)
         }
+        guard let latestVersion else {
+            throw Error.couldnotFindLatestVersion
+        }
+        return latestVersion
     }
 
     private func list(count: Int,

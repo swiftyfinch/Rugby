@@ -13,9 +13,10 @@ struct Release {
 
 // MARK: - Implementation
 
-final class GitHubReleaseListLoader {
+final class GitHubReleaseListLoader: NSObject {
     enum Error: LocalizedError {
         case couldNotRetrieveVersions(String)
+        case couldNotGetLatestTag(String)
 
         /// https://docs.github.com/en/rest/using-the-rest-api/rate-limits-for-the-rest-api
         /// The primary rate limit for unauthenticated requests is 60 requests per hour.
@@ -31,25 +32,49 @@ final class GitHubReleaseListLoader {
                     """
                 }
                 return apiMessage
+            case let .couldNotGetLatestTag(apiMessage):
+                return apiMessage
             }
         }
     }
 
     private let paths: GitHubUpdaterPaths
 
+    private let latestTagRegex = #".*download/(.*)/.*"#
+    private var lastRedirectionLocation: String?
+
     init(paths: GitHubUpdaterPaths) {
         self.paths = paths
     }
 
+    // MARK: - Load Latest Tag
+
+    /// https://docs.github.com/en/repositories/releasing-projects-on-github/linking-to-releases
+    func loadLatestTag(architecture: GitHubUpdaterArchitecture) async throws -> String? {
+        let binaryName = "\(architecture.rawValue).zip"
+        let urlString = "https://github.com/\(paths.repositoryPath)/releases/latest/download/\(binaryName)"
+        guard let url = URL(string: urlString) else {
+            fatalError("Couldn't build url.")
+        }
+
+        var request = URLRequest(url: url)
+        request.httpMethod = "HEAD"
+        _ = try await URLSession.shared.data(from: url, delegate: self)
+        if let match = try lastRedirectionLocation?.groups(regex: latestTagRegex), match.count == 2 {
+            return match[1]
+        }
+        return nil
+    }
+
+    // MARK: - Load Releases
+
     func load(count: Int, architecture: GitHubUpdaterArchitecture) async throws -> [Release] {
-        let data = try await loadData(count: count)
-        let releases = try parseData(data, architecture: architecture)
+        let data = try await loadReleases(count: count)
+        let releases = try parseRelease(data, architecture: architecture)
         return releases
     }
 
-    // MARK: - Private
-
-    private func loadData(count: Int) async throws -> Data {
+    private func loadReleases(count: Int) async throws -> Data {
         let releasesListURL = "https://api.github.com/repos/\(paths.repositoryPath)/releases"
         guard var components = URLComponents(string: releasesListURL) else {
             fatalError("Couldn't create url components.")
@@ -74,7 +99,7 @@ final class GitHubReleaseListLoader {
         return model
     }
 
-    private func parseData(_ data: Data, architecture: GitHubUpdaterArchitecture) throws -> [Release] {
+    private func parseRelease(_ data: Data, architecture: GitHubUpdaterArchitecture) throws -> [Release] {
         let decoder = JSONDecoder()
         let model = try decoder.decode([ReleaseResponseModel].self, from: data)
         let formatter = ISO8601DateFormatter()
@@ -89,6 +114,18 @@ final class GitHubReleaseListLoader {
                            publishedAt: publishedAt,
                            zipURL: zipURL)
         }
+    }
+}
+
+extension GitHubReleaseListLoader: URLSessionTaskDelegate {
+    func urlSession(
+        _: URLSession,
+        task _: URLSessionTask,
+        willPerformHTTPRedirection response: HTTPURLResponse,
+        newRequest _: URLRequest
+    ) async -> URLRequest? {
+        lastRedirectionLocation = response.allHeaderFields["Location"] as? String
+        return nil
     }
 }
 
