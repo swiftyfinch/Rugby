@@ -46,7 +46,7 @@ extension PlansParserTests {
         }
         let path = "test"
         let pathURL = URL(fileURLWithPath: path)
-        envVariablesResolver.resolveAdditionalEnvClosure = { string, _ in string }
+        envVariablesResolver.resolveInClosure = { $0 }
 
         // Act
         let result = try await sut.topPlan(atPath: path)
@@ -72,7 +72,7 @@ extension PlansParserTests {
         }
         let path = "test"
         let pathURL = URL(fileURLWithPath: path)
-        envVariablesResolver.resolveAdditionalEnvClosure = { string, _ in string }
+        envVariablesResolver.resolveInClosure = { $0 }
 
         // Act
         let result = try await sut.topPlan(atPath: path)
@@ -101,7 +101,7 @@ extension PlansParserTests {
         }
         let path = "test"
         let pathURL = URL(fileURLWithPath: path)
-        envVariablesResolver.resolveAdditionalEnvClosure = { string, _ in string }
+        envVariablesResolver.resolveInClosure = { $0 }
 
         // Act
         let result = try await sut.topPlan(atPath: path)
@@ -157,7 +157,7 @@ extension PlansParserTests {
         }
         let path = "test"
         let pathURL = URL(fileURLWithPath: path)
-        envVariablesResolver.resolveAdditionalEnvClosure = { string, _ in string }
+        envVariablesResolver.resolveInClosure = { $0 }
 
         // Act
         let result = try await sut.planNamed("tests", path: path)
@@ -294,14 +294,14 @@ extension PlansParserTests {
               config: $(SHARED_CONFIG)
             """
         }
-        envVariablesResolver.resolveAdditionalEnvClosure = { string, _ in string }
+        envVariablesResolver.resolveInClosure = { $0 }
 
         // Act
-        let result = try await sut.planNamed("plan_with_env", path: "")
+        _ = try await sut.planNamed("plan_with_env", path: "")
 
         // Assert
         XCTAssertEqual(
-            Set(envVariablesResolver.resolveAdditionalEnvReceivedInvocations.map(\.string)),
+            Set(envVariablesResolver.resolveInReceivedInvocations),
             [
                 "s3.eu-west-2.amazonaws.com",
                 "$(SHARED_CONFIG)",

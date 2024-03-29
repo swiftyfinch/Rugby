@@ -50,7 +50,7 @@ extension BuildPhaseHasherTests {
         let resolvedFilesList = "/Users/swiftyfinch/Developer/Repos/Rugby/Example/Pods/Target Support Files/Realm-framework/Realm-framework-xcframeworks-input-files.xcfilelist"
         let resolvedInputFile0 = "/Users/swiftyfinch/Developer/Repos/Rugby/Example/Pods/Realm/core/realm-monorepo.xcframework"
         let resolvedInputFile1 = "/Users/swiftyfinch/Developer/Repos/Rugby/Example/Pods/Target Support Files/Realm-framework/Realm-framework-xcframeworks.sh"
-        envVariablesResolver.resolveAdditionalEnvClosure = { path, _ in
+        envVariablesResolver.resolveXcodeVariablesInAdditionalEnvClosure = { path, _ in
             switch path {
             case inputFilesList: return resolvedFilesList
             case inputFile0: return resolvedInputFile0
