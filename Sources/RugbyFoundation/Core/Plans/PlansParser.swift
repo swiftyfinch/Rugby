@@ -166,7 +166,7 @@ private final class StringFieldParser: FieldParser {
 
     func parse(_ value: Any, ofField field: String, toArgs args: inout [String]) async throws -> Bool {
         guard let string = value as? String else { return false }
-        let resolvedString = try await envVariablesResolver.resolve(string)
+        let resolvedString = try await envVariablesResolver.resolve(in: string)
         if field == .argumentKey {
             args.insert(resolvedString, at: 0)
         } else {

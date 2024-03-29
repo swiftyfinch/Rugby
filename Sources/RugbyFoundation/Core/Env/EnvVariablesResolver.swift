@@ -1,16 +1,12 @@
 // MARK: - Interface
 
 protocol IEnvVariablesResolver: AnyObject {
-    func resolve(
-        _ string: String,
+    func resolve(in string: String) async throws -> String
+
+    func resolveXcodeVariables(
+        in string: String,
         additionalEnv: [String: String]
     ) async throws -> String
-}
-
-extension IEnvVariablesResolver {
-    func resolve(_ string: String) async throws -> String {
-        try await resolve(string, additionalEnv: [:])
-    }
 }
 
 // MARK: - Implementation
@@ -18,16 +14,20 @@ extension IEnvVariablesResolver {
 final class EnvVariablesResolver: Loggable {
     let logger: ILogger
     private let env: [String: String]
-    private let regex = #"\$[\{\(]?([a-zA-Z0-9_]+)[\}\)]?"#
+
+    private let envVariablesRegex = #"\$[\{]?([a-zA-Z0-9_]+)[\}]?"#
+    private let xcodeVariablesRegex = #"\$[\{\(]?([a-zA-Z0-9_]+)[\}\)]?"#
 
     init(logger: ILogger, env: [String: String]) {
         self.logger = logger
         self.env = env
     }
-}
 
-extension EnvVariablesResolver: IEnvVariablesResolver {
-    func resolve(_ string: String, additionalEnv: [String: String]) async throws -> String {
+    private func resolve(
+        in string: String,
+        withRegex regex: String,
+        additionalEnv: [String: String]
+    ) async throws -> String {
         var resolvedPath = string
         var replaced = true
         while replaced {
@@ -43,5 +43,20 @@ extension EnvVariablesResolver: IEnvVariablesResolver {
             replaced = true
         }
         return resolvedPath
+    }
+}
+
+// MARK: - IEnvVariablesResolver
+
+extension EnvVariablesResolver: IEnvVariablesResolver {
+    func resolve(in string: String) async throws -> String {
+        try await resolve(in: string, withRegex: envVariablesRegex, additionalEnv: [:])
+    }
+
+    func resolveXcodeVariables(
+        in string: String,
+        additionalEnv: [String: String]
+    ) async throws -> String {
+        try await resolve(in: string, withRegex: xcodeVariablesRegex, additionalEnv: additionalEnv)
     }
 }
