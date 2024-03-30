@@ -29,7 +29,7 @@ jobs:
     - uses: actions/checkout@v4
     - name: Install Rugby
       run: |
-        curl -Ls curl -Ls https://swiftyfinch.github.io/rugby/install.sh | bash
+        curl -Ls https://swiftyfinch.github.io/rugby/install.sh | bash
         chmod +x ~/.rugby/clt/rugby && echo ~/.rugby/clt >> $GITHUB_PATH
     - run: rugby -h
 
