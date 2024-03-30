@@ -126,7 +126,7 @@ For advanced usage, please read the documentation below.
 - [x] `(Experimental)` 🧪 Test impact or even run tests by impact:
     - [x] 🚀 A new command: `rugby test impact` [#323](https://github.com/swiftyfinch/Rugby/pull/323)
     - [x] 🚀 A new command: `rugby test` [#352](https://github.com/swiftyfinch/Rugby/pull/352)
-- [ ] 💬 Discussions [#357](https://github.com/swiftyfinch/Rugby/discussions/357)
+- [x] 💬 Discussions [#357](https://github.com/swiftyfinch/Rugby/discussions/357)
 
 ## 🤝 Contribution
 
