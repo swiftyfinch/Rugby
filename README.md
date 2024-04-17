@@ -120,14 +120,6 @@ For advanced usage, please read the documentation below.
 
 <br>
 
-# 🎯 Maybe Roadmap
-
-- [x] 👨🏻‍🔧 Increase Code Coverage up to `50%` [#236](https://github.com/swiftyfinch/Rugby/issues/236)
-- [x] `(Experimental)` 🧪 Test impact or even run tests by impact:
-    - [x] 🚀 A new command: `rugby test impact` [#323](https://github.com/swiftyfinch/Rugby/pull/323)
-    - [x] 🚀 A new command: `rugby test` [#352](https://github.com/swiftyfinch/Rugby/pull/352)
-- [x] 💬 Discussions [#357](https://github.com/swiftyfinch/Rugby/discussions/357)
-
 ## 🤝 Contribution
 
 Feel free [to open a pull request](https://github.com/swiftyfinch/rugby/contribute) or a discussion.
