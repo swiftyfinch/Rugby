@@ -37,6 +37,15 @@
       }
     },
     {
+      "identity" : "plzmasdk",
+      "kind" : "remoteSourceControl",
+      "location" : "https://github.com/OlehKulykov/PLzmaSDK",
+      "state" : {
+        "revision" : "9f48b99d8aee09c98184e4610b40ee87487d1643",
+        "version" : "1.4.2"
+      }
+    },
+    {
       "identity" : "rainbow",
       "kind" : "remoteSourceControl",
       "location" : "https://github.com/onevcat/Rainbow",

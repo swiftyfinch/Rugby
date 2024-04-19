@@ -75,6 +75,7 @@ extension WarmupManagerTests {
                 mode: .analyse(endpoint: endpoint),
                 targetsOptions: .init(),
                 options: .mock(),
+                archiveType: .zip,
                 maxInParallel: 10,
                 headers: [:]
             )
@@ -97,6 +98,7 @@ extension WarmupManagerTests {
                 mode: .analyse(endpoint: nil),
                 targetsOptions: .init(),
                 options: .mock(),
+                archiveType: .zip,
                 maxInParallel: 10,
                 headers: [:]
             )
@@ -119,6 +121,7 @@ extension WarmupManagerTests {
                 mode: .analyse(endpoint: nil),
                 targetsOptions: .init(),
                 options: .mock(),
+                archiveType: .zip,
                 maxInParallel: 10,
                 headers: [:]
             )
@@ -160,6 +163,7 @@ extension WarmupManagerTests {
                 exceptTargetsRegex: exceptTargetsRegex
             ),
             options: xcodeBuildOptions,
+            archiveType: .zip,
             maxInParallel: 10,
             headers: [:]
         )
@@ -247,6 +251,7 @@ extension WarmupManagerTests {
                 exceptTargetsRegex: exceptTargetsRegex
             ),
             options: xcodeBuildOptions,
+            archiveType: .zip,
             maxInParallel: 10,
             headers: [:]
         )
@@ -370,6 +375,7 @@ extension WarmupManagerTests {
                 exceptTargetsRegex: exceptTargetsRegex
             ),
             options: xcodeBuildOptions,
+            archiveType: .zip,
             maxInParallel: 10,
             headers: [:]
         )
@@ -550,6 +556,7 @@ extension WarmupManagerTests {
                 exceptTargetsRegex: exceptTargetsRegex
             ),
             options: xcodeBuildOptions,
+            archiveType: .zip,
             maxInParallel: 10,
             headers: ["test_field": "test_value"]
         )
