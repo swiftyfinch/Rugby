@@ -86,6 +86,9 @@ extension Shortcuts {
 
         @Flag(name: .long, help: "Delete target groups from project.")
         var deleteSources = false
+        
+        @Option(help: "The maximum number of simultaneous connections.")
+        var maxConnections = settings.warmupMaximumConnectionsPerHost
 
         @OptionGroup
         var commonOptions: CommonOptions
@@ -122,7 +125,7 @@ extension Shortcuts.Cache: RunnableCommand {
             warmup.buildOptions = buildOptions
             warmup.commonOptions = commonOptions
             warmup.timeout = Self.settings.warmupTimeout
-            warmup.maxConnections = Self.settings.warmupMaximumConnectionsPerHost
+            warmup.maxConnections = maxConnections
             warmup.headers = headers
             runnableCommands.append(("Warmup", warmup))
         }
