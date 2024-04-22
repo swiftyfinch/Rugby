@@ -1,7 +1,7 @@
- @testable import Rugby
- import XCTest
+@testable import Rugby
+import XCTest
 
- final class WarmupTests: XCTestCase {
+final class WarmupTests: XCTestCase {
     func test_headersParsing_two() {
         let headers = ["X-First-Name: Joe", "User-Agent: yes-please/2000"].parseHeaders()
 
@@ -17,4 +17,4 @@
         XCTAssertEqual([].parseHeaders(), [:])
         XCTAssertEqual([""].parseHeaders(), [:])
     }
- }
+}
