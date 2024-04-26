@@ -69,11 +69,13 @@ extension Warmup: RunnableCommand {
         }
         try await dependencies.warmupManager(
             timeoutIntervalForRequest: TimeInterval(timeout),
-            httpMaximumConnectionsPerHost: maxConnections
+            httpMaximumConnectionsPerHost: maxConnections,
+            archiveType: commonOptions.archiveType
         ).warmup(
             mode: mode,
             targetsOptions: buildOptions.targetsOptions.foundation(),
             options: buildOptions.xcodeBuildOptions(),
+            archiveType: commonOptions.archiveType,
             maxInParallel: maxConnections,
             headers: headers.parseHeaders()
         )

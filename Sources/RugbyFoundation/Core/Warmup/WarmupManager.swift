@@ -14,6 +14,7 @@ public protocol IWarmupManager: AnyObject {
     func warmup(mode: WarmupMode,
                 targetsOptions: TargetsOptions,
                 options: XcodeBuildOptions,
+                archiveType: ArchiveType,
                 maxInParallel: Int,
                 headers: [String: String]) async throws
 }
@@ -110,12 +111,14 @@ final class WarmupManager: Loggable {
     private func downloadRemoteBinaries(targets: TargetsMap,
                                         endpointURL: URL,
                                         options: XcodeBuildOptions,
+                                        archiveType: ArchiveType,
                                         dryRun: Bool,
                                         maxInParallel: Int,
                                         headers: [String: String]) async throws {
         let binariesInfo = try collectRemoteBinariesInfo(targets: targets,
                                                          endpoint: endpointURL,
-                                                         options: options)
+                                                         options: options,
+                                                         archiveType: archiveType)
         let reachableBinariesInfo = await log("Checking binaries reachability") {
             await filterReachableURLs(binariesInfo: binariesInfo, maxInParallel: maxInParallel, headers: headers)
         }
@@ -154,14 +157,15 @@ private extension WarmupManager {
     private func collectRemoteBinariesInfo(
         targets: TargetsMap,
         endpoint: URL,
-        options: XcodeBuildOptions
+        options: XcodeBuildOptions,
+        archiveType: ArchiveType
     ) throws -> [RemoteBinaryInfo] {
         try targets.values.map { target in
             let binaryPath = try binariesStorage.finderBinaryFolderPath(target, buildOptions: options)
             let binaryConfigFolder = URL(fileURLWithPath: binaryPath).deletingLastPathComponent()
 
             let relativePath = try binariesStorage.binaryRelativePath(target, buildOptions: options)
-            let url = endpoint.appendingPathComponent(relativePath).appendingPathExtension("zip")
+            let url = endpoint.appendingPathComponent(relativePath).appendingPathExtension(archiveType.rawValue)
 
             return (url, binaryConfigFolder)
         }
@@ -214,6 +218,7 @@ extension WarmupManager: IWarmupManager {
     public func warmup(mode: WarmupMode,
                        targetsOptions: TargetsOptions,
                        options: XcodeBuildOptions,
+                       archiveType: ArchiveType,
                        maxInParallel: Int,
                        headers: [String: String]) async throws {
         let endpointURL: URL?
@@ -239,6 +244,7 @@ extension WarmupManager: IWarmupManager {
             targets: notFoundTargets,
             endpointURL: endpointURL,
             options: options,
+            archiveType: archiveType,
             dryRun: mode.dryRun,
             maxInParallel: maxInParallel,
             headers: headers

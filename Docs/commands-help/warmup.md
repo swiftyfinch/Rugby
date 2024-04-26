@@ -26,6 +26,7 @@
 │ -o, --output               * Output mode: fold, multiline, silent, raw.                        │
 │ --timeout                  * Timeout for requests in seconds. (60)                             │
 │ --max-connections          * The maximum number of simultaneous connections. (10)              │
+│ --archive-type             * Archive type to use. (zip) zip, 7z                                |
 │ --headers []               * Extra HTTP header fields for a request ("s3-key: my-secret-key"). │
 ╰────────────────────────────────────────────────────────────────────────────────────────────────╯
  Flags:
@@ -41,11 +42,11 @@
 
 ## Discussion
 
-The command will try to download binaries from `https://${endpoint}/${module_name}/${config}-${sdk}-${arch}/${hash}`.\
+The command will try to download binaries from `https://${endpoint}/${module_name}/${config}-${sdk}-${arch}/${hash}.${archive_type}`.\
 It should be a zip archive for each module. And the archive should contain a product folder.\
-For example, `https://s3.eu-west-2.amazonaws.com/Alamofire/Debug-iphonesimulator-x86_64/f38484e`.
+For example, `https://s3.eu-west-2.amazonaws.com/Alamofire/Debug-iphonesimulator-x86_64/f38484e.zip`.
 ```
-f38484e (zip)
+f38484e.zip
 ├─ f38484e.yml
 └─ Alamofire.framework
 ```

@@ -57,7 +57,17 @@ end
 # }
 ```
 
+##### Archive types
+
+Please read article [`rugby warmup`](commands-help/warmup.md) and choose archive type which you want to use.
+
+To install 7z if you will use this archive type, please install package from brew
+```sh
+> brew install p7zip
+```
+
 ###### Example of uploading to S3:
+
 ```ruby
 require 'parallel'
 require 'aws-sdk-s3'
@@ -72,8 +82,17 @@ Parallel.each(binaries, in_processes: 10) do |remote_path, path|
   # Zipping binaries
   binary_folder_path = File.dirname(path)
   binary_name = File.basename(path)
+  
+  # In case, if you are using .zip archive to store binaries
   `cd #{binary_folder_path} && zip -r #{binary_name}.zip #{binary_name}`
   # For example, it produces: ~/.rugby/bin/Alamofire/Debug-iphonesimulator-arm64/2617d3e.zip
+  
+  # In case, if you are using .7z archives to store binaries
+  # You can change compression level to reach best performance for your dependencies
+  # Please refer https://7-zip.opensource.jp/chm/cmdline/switches/method.htm and choose compression level for your case
+  # In common, -mx3 is enough to reach smaller archives than .zip and don't lose time in compression/decompression
+  `cd #{binary_folder_path} && 7z a -mx3 #{binary_name}.zip #{binary_name}`
+  # For example, it produces: ~/.rugby/bin/Alamofire/Debug-iphonesimulator-arm64/2617d3e.7z
 
   # Uploading zip files to S3
   content = File.read("#{path}.zip")
