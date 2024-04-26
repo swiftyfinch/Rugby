@@ -11,9 +11,6 @@ struct CommonOptions: ParsableCommand {
 
     @Flag(name: .shortAndLong, help: "Decrease verbosity level.")
     var quiet: Int
-
-    @Option(name: .long, help: "Archive type: zip, 7z")
-    var archiveType: RugbyFoundation.ArchiveType = .zip
 }
 
 enum OutputType: String, ExpressibleByArgument {
@@ -37,8 +34,6 @@ enum OutputType: String, ExpressibleByArgument {
         }
     }
 }
-
-extension ArchiveType: ExpressibleByArgument {}
 
 extension CommonOptions {
     var logLevel: LogLevel {
