@@ -75,9 +75,9 @@ extension WarmupManagerTests {
                 mode: .analyse(endpoint: endpoint),
                 targetsOptions: .init(),
                 options: .mock(),
-                archiveType: .zip,
                 maxInParallel: 10,
-                headers: [:]
+                headers: [:],
+                fileExtension: "zip"
             )
         } catch {
             resultError = error
@@ -98,9 +98,9 @@ extension WarmupManagerTests {
                 mode: .analyse(endpoint: nil),
                 targetsOptions: .init(),
                 options: .mock(),
-                archiveType: .zip,
                 maxInParallel: 10,
-                headers: [:]
+                headers: [:],
+                fileExtension: "zip"
             )
         } catch {
             resultError = error
@@ -121,9 +121,9 @@ extension WarmupManagerTests {
                 mode: .analyse(endpoint: nil),
                 targetsOptions: .init(),
                 options: .mock(),
-                archiveType: .zip,
                 maxInParallel: 10,
-                headers: [:]
+                headers: [:],
+                fileExtension: "zip"
             )
         } catch {
             resultError = error
@@ -163,9 +163,9 @@ extension WarmupManagerTests {
                 exceptTargetsRegex: exceptTargetsRegex
             ),
             options: xcodeBuildOptions,
-            archiveType: .zip,
             maxInParallel: 10,
-            headers: [:]
+            headers: [:],
+            fileExtension: "zip"
         )
 
         // Assert
@@ -251,9 +251,9 @@ extension WarmupManagerTests {
                 exceptTargetsRegex: exceptTargetsRegex
             ),
             options: xcodeBuildOptions,
-            archiveType: .zip,
             maxInParallel: 10,
-            headers: [:]
+            headers: [:],
+            fileExtension: "zip"
         )
 
         // Assert
@@ -316,14 +316,14 @@ extension WarmupManagerTests {
 
 extension WarmupManagerTests {
     func test_analyseEndpointZip() async throws {
-        try await analyse_endpoint(archiveType: .zip)
+        try await analyse_endpoint(fileExtension: ArchiveType.zip.fileExtension)
     }
 
     func test_analyseEndpoint7z() async throws {
-        try await analyse_endpoint(archiveType: .sevenZip)
+        try await analyse_endpoint(fileExtension: ArchiveType.sevenZip.fileExtension)
     }
 
-    func analyse_endpoint(archiveType: ArchiveType) async throws {
+    func analyse_endpoint(fileExtension: String) async throws {
         let targetsRegex = try NSRegularExpression(pattern: "^Alamofire|SnapKit$")
         let exceptTargetsRegex = try NSRegularExpression(pattern: "^Moya$")
         let endpoint = "s3.eu-west-2.amazonaws.com"
@@ -367,9 +367,9 @@ extension WarmupManagerTests {
         }
         cacheDownloader.checkIfBinaryIsReachableUrlHeadersClosure = { url, _ in
             switch url.absoluteString {
-            case "https://s3.eu-west-2.amazonaws.com/SnapKit/Debug-iphonesimulator-arm64/eb56c2f.\(archiveType)":
+            case "https://s3.eu-west-2.amazonaws.com/SnapKit/Debug-iphonesimulator-arm64/eb56c2f.\(fileExtension)":
                 return true
-            case "https://s3.eu-west-2.amazonaws.com/Alamofire/Debug-iphonesimulator-arm64/dbe4415.\(archiveType)":
+            case "https://s3.eu-west-2.amazonaws.com/Alamofire/Debug-iphonesimulator-arm64/dbe4415.\(fileExtension)":
                 return false
             default: fatalError()
             }
@@ -383,9 +383,9 @@ extension WarmupManagerTests {
                 exceptTargetsRegex: exceptTargetsRegex
             ),
             options: xcodeBuildOptions,
-            archiveType: archiveType,
             maxInParallel: 10,
-            headers: [:]
+            headers: [:],
+            fileExtension: fileExtension
         )
 
         // Assert
@@ -451,11 +451,11 @@ extension WarmupManagerTests {
         let sortedReachableInvocations = reachableInvocations.sorted { $0.url.absoluteString < $1.url.absoluteString }
         XCTAssertEqual(
             sortedReachableInvocations[0].url.absoluteString,
-            "https://s3.eu-west-2.amazonaws.com/Alamofire/Debug-iphonesimulator-arm64/dbe4415.\(archiveType)"
+            "https://s3.eu-west-2.amazonaws.com/Alamofire/Debug-iphonesimulator-arm64/dbe4415.\(fileExtension)"
         )
         XCTAssertEqual(
             sortedReachableInvocations[1].url.absoluteString,
-            "https://s3.eu-west-2.amazonaws.com/SnapKit/Debug-iphonesimulator-arm64/eb56c2f.\(archiveType)"
+            "https://s3.eu-west-2.amazonaws.com/SnapKit/Debug-iphonesimulator-arm64/eb56c2f.\(fileExtension)"
         )
         XCTAssertEqual(loggerBlockInvocations[3].header, "Checking binaries reachability")
         XCTAssertNil(loggerBlockInvocations[3].footer)
@@ -467,7 +467,7 @@ extension WarmupManagerTests {
             logger.logLevelOutputReceivedInvocations[2].text,
             """
             Unreachable:
-            https://s3.eu-west-2.amazonaws.com/Alamofire/Debug-iphonesimulator-arm64/dbe4415.\(archiveType)
+            https://s3.eu-west-2.amazonaws.com/Alamofire/Debug-iphonesimulator-arm64/dbe4415.\(fileExtension)
             """
         )
         XCTAssertEqual(logger.logLevelOutputReceivedInvocations[2].level, .compact)
@@ -487,14 +487,14 @@ extension WarmupManagerTests {
 
 extension WarmupManagerTests {
     func test_common_test_zip() async throws {
-        try await common_test(archiveType: .zip)
+        try await common_test(fileExtension: ArchiveType.zip.fileExtension)
     }
 
     func test_common_test_7z() async throws {
-        try await common_test(archiveType: .sevenZip)
+        try await common_test(fileExtension: ArchiveType.sevenZip.fileExtension)
     }
 
-    func common_test(archiveType: ArchiveType) async throws {
+    func common_test(fileExtension: String) async throws {
         let targetsRegex = try NSRegularExpression(pattern: "^Alamofire|SnapKit$")
         let exceptTargetsRegex = try NSRegularExpression(pattern: "^Moya$")
         let endpoint = "s3.eu-west-2.amazonaws.com"
@@ -545,20 +545,20 @@ extension WarmupManagerTests {
         }
         cacheDownloader.checkIfBinaryIsReachableUrlHeadersClosure = { url, _ in
             switch url.absoluteString {
-            case "https://s3.eu-west-2.amazonaws.com/SnapKit/Debug-iphonesimulator-arm64/eb56c2f.\(archiveType)":
+            case "https://s3.eu-west-2.amazonaws.com/SnapKit/Debug-iphonesimulator-arm64/eb56c2f.\(fileExtension)":
                 return true
-            case "https://s3.eu-west-2.amazonaws.com/Alamofire/Debug-iphonesimulator-arm64/dbe4415.\(archiveType)":
+            case "https://s3.eu-west-2.amazonaws.com/Alamofire/Debug-iphonesimulator-arm64/dbe4415.\(fileExtension)":
                 return false
-            case "https://s3.eu-west-2.amazonaws.com/LocalPod/Debug-iphonesimulator-arm64/b3035c7.\(archiveType)":
+            case "https://s3.eu-west-2.amazonaws.com/LocalPod/Debug-iphonesimulator-arm64/b3035c7.\(fileExtension)":
                 return true
             default: fatalError()
             }
         }
         cacheDownloader.downloadBinaryUrlHeadersToClosure = { url, _, _ in
             switch url.absoluteString {
-            case "https://s3.eu-west-2.amazonaws.com/LocalPod/Debug-iphonesimulator-arm64/b3035c7.\(archiveType)":
+            case "https://s3.eu-west-2.amazonaws.com/LocalPod/Debug-iphonesimulator-arm64/b3035c7.\(fileExtension)":
                 return true
-            case "https://s3.eu-west-2.amazonaws.com/SnapKit/Debug-iphonesimulator-arm64/eb56c2f.\(archiveType)":
+            case "https://s3.eu-west-2.amazonaws.com/SnapKit/Debug-iphonesimulator-arm64/eb56c2f.\(fileExtension)":
                 return false
             default: fatalError()
             }
@@ -572,9 +572,9 @@ extension WarmupManagerTests {
                 exceptTargetsRegex: exceptTargetsRegex
             ),
             options: xcodeBuildOptions,
-            archiveType: archiveType,
             maxInParallel: 10,
-            headers: ["test_field": "test_value"]
+            headers: ["test_field": "test_value"],
+            fileExtension: fileExtension
         )
 
         // Assert
@@ -643,17 +643,17 @@ extension WarmupManagerTests {
         let sortedReachableInvocations = reachableInvocations.sorted { $0.url.absoluteString < $1.url.absoluteString }
         XCTAssertEqual(
             sortedReachableInvocations[0].url.absoluteString,
-            "https://s3.eu-west-2.amazonaws.com/Alamofire/Debug-iphonesimulator-arm64/dbe4415.\(archiveType)"
+            "https://s3.eu-west-2.amazonaws.com/Alamofire/Debug-iphonesimulator-arm64/dbe4415.\(fileExtension)"
         )
         XCTAssertEqual(sortedReachableInvocations[0].headers, ["test_field": "test_value"])
         XCTAssertEqual(
             sortedReachableInvocations[1].url.absoluteString,
-            "https://s3.eu-west-2.amazonaws.com/LocalPod/Debug-iphonesimulator-arm64/b3035c7.\(archiveType)"
+            "https://s3.eu-west-2.amazonaws.com/LocalPod/Debug-iphonesimulator-arm64/b3035c7.\(fileExtension)"
         )
         XCTAssertEqual(sortedReachableInvocations[1].headers, ["test_field": "test_value"])
         XCTAssertEqual(
             sortedReachableInvocations[2].url.absoluteString,
-            "https://s3.eu-west-2.amazonaws.com/SnapKit/Debug-iphonesimulator-arm64/eb56c2f.\(archiveType)"
+            "https://s3.eu-west-2.amazonaws.com/SnapKit/Debug-iphonesimulator-arm64/eb56c2f.\(fileExtension)"
         )
         XCTAssertEqual(sortedReachableInvocations[2].headers, ["test_field": "test_value"])
         XCTAssertEqual(loggerBlockInvocations[3].header, "Checking binaries reachability")
@@ -666,7 +666,7 @@ extension WarmupManagerTests {
             logger.logLevelOutputReceivedInvocations[2].text,
             """
             Unreachable:
-            https://s3.eu-west-2.amazonaws.com/Alamofire/Debug-iphonesimulator-arm64/dbe4415.\(archiveType)
+            https://s3.eu-west-2.amazonaws.com/Alamofire/Debug-iphonesimulator-arm64/dbe4415.\(fileExtension)
             """
         )
         XCTAssertEqual(logger.logLevelOutputReceivedInvocations[2].level, .compact)
@@ -682,11 +682,15 @@ extension WarmupManagerTests {
             $0.url.absoluteString < $1.url.absoluteString
         }
         XCTAssertEqual(downloadBinaryInvocations.count, 2)
-        XCTAssertEqual(downloadBinaryInvocations[0].url.absoluteString,
-                       "https://s3.eu-west-2.amazonaws.com/LocalPod/Debug-iphonesimulator-arm64/b3035c7.\(archiveType)")
+        XCTAssertEqual(
+            downloadBinaryInvocations[0].url.absoluteString,
+            "https://s3.eu-west-2.amazonaws.com/LocalPod/Debug-iphonesimulator-arm64/b3035c7.\(fileExtension)"
+        )
         XCTAssertEqual(downloadBinaryInvocations[0].headers, ["test_field": "test_value"])
-        XCTAssertEqual(downloadBinaryInvocations[1].url.absoluteString,
-                       "https://s3.eu-west-2.amazonaws.com/SnapKit/Debug-iphonesimulator-arm64/eb56c2f.\(archiveType)")
+        XCTAssertEqual(
+            downloadBinaryInvocations[1].url.absoluteString,
+            "https://s3.eu-west-2.amazonaws.com/SnapKit/Debug-iphonesimulator-arm64/eb56c2f.\(fileExtension)"
+        )
         XCTAssertEqual(downloadBinaryInvocations[1].headers, ["test_field": "test_value"])
 
         XCTAssertEqual(logger.logLevelOutputReceivedInvocations[3].text, "Found Remotely: 66% (2/3)")

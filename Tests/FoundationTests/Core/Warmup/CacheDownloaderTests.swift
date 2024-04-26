@@ -115,7 +115,7 @@ extension CacheDownloaderTests {
         let tmpFileURL = URL(fileURLWithPath: "/tmp/af22339.tmp")
         urlSession.downloadForReturnValue = tmpFileURL
         fishSharedStorage.createFolderAtReturnValue = IFolderMock()
-        decompressor.unzipFileDestinationThrowableError = TestError.test
+        decompressor.unarchiveFileDestinationThrowableError = TestError.test
 
         // Act
         let isDownloaded = await sut.downloadBinary(url: url, headers: [:], to: fileURL)
@@ -126,9 +126,9 @@ extension CacheDownloaderTests {
         XCTAssertEqual(urlSession.downloadForReceivedRequest?.url, url)
         XCTAssertEqual(fishSharedStorage.createFolderAtCallsCount, 1)
         XCTAssertEqual(fishSharedStorage.createFolderAtReceivedPath, fileURL.path)
-        XCTAssertEqual(decompressor.unzipFileDestinationCallsCount, 1)
-        XCTAssertEqual(decompressor.unzipFileDestinationReceivedArguments?.zipFilePath, tmpFileURL)
-        XCTAssertEqual(decompressor.unzipFileDestinationReceivedArguments?.destination, fileURL)
+        XCTAssertEqual(decompressor.unarchiveFileDestinationCallsCount, 1)
+        XCTAssertEqual(decompressor.unarchiveFileDestinationReceivedArguments?.archiveFilePath, tmpFileURL)
+        XCTAssertEqual(decompressor.unarchiveFileDestinationReceivedArguments?.destination, fileURL)
 
         XCTAssertEqual(logger.logLevelOutputReceivedInvocations.count, 3)
         XCTAssertEqual(
@@ -139,13 +139,13 @@ extension CacheDownloaderTests {
         XCTAssertEqual(logger.logLevelOutputReceivedInvocations[0].output, .file)
         XCTAssertEqual(
             logger.logLevelOutputReceivedInvocations[1].text,
-            "Unzipping to \(fileURL.path)"
+            "Unarchiving to \(fileURL.path)"
         )
         XCTAssertEqual(logger.logLevelOutputReceivedInvocations[1].level, .compact)
         XCTAssertEqual(logger.logLevelOutputReceivedInvocations[1].output, .file)
         XCTAssertEqual(
             logger.logLevelOutputReceivedInvocations[2].text,
-            "Failed unzipping to \(fileURL.path):\ntest"
+            "Failed unarchiving to \(fileURL.path):\ntest"
         )
         XCTAssertEqual(logger.logLevelOutputReceivedInvocations[2].level, .compact)
         XCTAssertEqual(logger.logLevelOutputReceivedInvocations[2].output, .file)
@@ -169,9 +169,9 @@ extension CacheDownloaderTests {
         XCTAssertEqual(urlSession.downloadForReceivedRequest?.url, url)
         XCTAssertEqual(fishSharedStorage.createFolderAtCallsCount, 1)
         XCTAssertEqual(fishSharedStorage.createFolderAtReceivedPath, fileURL.path)
-        XCTAssertEqual(decompressor.unzipFileDestinationCallsCount, 1)
-        XCTAssertEqual(decompressor.unzipFileDestinationReceivedArguments?.zipFilePath, tmpFileURL)
-        XCTAssertEqual(decompressor.unzipFileDestinationReceivedArguments?.destination, fileURL)
+        XCTAssertEqual(decompressor.unarchiveFileDestinationCallsCount, 1)
+        XCTAssertEqual(decompressor.unarchiveFileDestinationReceivedArguments?.archiveFilePath, tmpFileURL)
+        XCTAssertEqual(decompressor.unarchiveFileDestinationReceivedArguments?.destination, fileURL)
 
         XCTAssertEqual(logger.logLevelOutputReceivedInvocations.count, 2)
         XCTAssertEqual(
@@ -182,7 +182,7 @@ extension CacheDownloaderTests {
         XCTAssertEqual(logger.logLevelOutputReceivedInvocations[0].output, .file)
         XCTAssertEqual(
             logger.logLevelOutputReceivedInvocations[1].text,
-            "Unzipping to \(fileURL.path)"
+            "Unarchiving to \(fileURL.path)"
         )
         XCTAssertEqual(logger.logLevelOutputReceivedInvocations[1].level, .compact)
         XCTAssertEqual(logger.logLevelOutputReceivedInvocations[1].output, .file)

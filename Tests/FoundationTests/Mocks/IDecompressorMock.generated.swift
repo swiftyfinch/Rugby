@@ -8,26 +8,26 @@ import Foundation
 
 final class IDecompressorMock: IDecompressor {
 
-    // MARK: - unzipFile
+    // MARK: - unarchiveFile
 
-    var unzipFileDestinationThrowableError: Error?
-    var unzipFileDestinationCallsCount = 0
-    var unzipFileDestinationCalled: Bool { unzipFileDestinationCallsCount > 0 }
-    var unzipFileDestinationReceivedArguments: (zipFilePath: URL, destination: URL)?
-    var unzipFileDestinationReceivedInvocations: [(zipFilePath: URL, destination: URL)] = []
-    private let unzipFileDestinationReceivedInvocationsLock = NSRecursiveLock()
-    var unzipFileDestinationClosure: ((URL, URL) throws -> Void)?
+    var unarchiveFileDestinationThrowableError: Error?
+    var unarchiveFileDestinationCallsCount = 0
+    var unarchiveFileDestinationCalled: Bool { unarchiveFileDestinationCallsCount > 0 }
+    var unarchiveFileDestinationReceivedArguments: (archiveFilePath: URL, destination: URL)?
+    var unarchiveFileDestinationReceivedInvocations: [(archiveFilePath: URL, destination: URL)] = []
+    private let unarchiveFileDestinationReceivedInvocationsLock = NSRecursiveLock()
+    var unarchiveFileDestinationClosure: ((URL, URL) throws -> Void)?
 
-    func unzipFile(_ zipFilePath: URL, destination: URL) throws {
-        unzipFileDestinationCallsCount += 1
-        unzipFileDestinationReceivedArguments = (zipFilePath: zipFilePath, destination: destination)
-        unzipFileDestinationReceivedInvocationsLock.withLock {
-            unzipFileDestinationReceivedInvocations.append((zipFilePath: zipFilePath, destination: destination))
+    func unarchiveFile(_ archiveFilePath: URL, destination: URL) throws {
+        unarchiveFileDestinationCallsCount += 1
+        unarchiveFileDestinationReceivedArguments = (archiveFilePath: archiveFilePath, destination: destination)
+        unarchiveFileDestinationReceivedInvocationsLock.withLock {
+            unarchiveFileDestinationReceivedInvocations.append((archiveFilePath: archiveFilePath, destination: destination))
         }
-        if let error = unzipFileDestinationThrowableError {
+        if let error = unarchiveFileDestinationThrowableError {
             throw error
         }
-        try unzipFileDestinationClosure?(zipFilePath, destination)
+        try unarchiveFileDestinationClosure?(archiveFilePath, destination)
     }
 }
 

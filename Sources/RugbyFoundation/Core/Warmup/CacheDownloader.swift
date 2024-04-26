@@ -42,14 +42,14 @@ final class CacheDownloader: Loggable {
         }
     }
 
-    private func unzip(_ fileURL: URL, to folderURL: URL) async -> Bool {
+    private func unarchive(_ fileURL: URL, to folderURL: URL) async -> Bool {
         do {
-            await log("Unzipping to \(folderURL.path)", output: .file)
+            await log("Unarchiving to \(folderURL.path)", output: .file)
             try Folder.create(at: folderURL.path)
-            try decompressor.unzipFile(fileURL, destination: folderURL)
+            try decompressor.unarchiveFile(fileURL, destination: folderURL)
             return true
         } catch {
-            await log("Failed unzipping to \(folderURL.path):\n\(error.beautifulDescription)", output: .file)
+            await log("Failed unarchiving to \(folderURL.path):\n\(error.beautifulDescription)", output: .file)
             return false
         }
     }
@@ -62,6 +62,6 @@ extension CacheDownloader: ICacheDownloader {
 
     func downloadBinary(url: URL, headers: [String: String], to folderURL: URL) async -> Bool {
         guard let fileURL = await download(url, headers: headers) else { return false }
-        return await unzip(fileURL, to: folderURL)
+        return await unarchive(fileURL, to: folderURL)
     }
 }
