@@ -3,6 +3,7 @@ import Fish
 import Foundation
 import RugbyFoundation
 
+extension ArchiveType: ExpressibleByArgument {}
 struct Warmup: AsyncParsableCommand {
     static var configuration = CommandConfiguration(
         commandName: "warmup",
@@ -33,6 +34,9 @@ struct Warmup: AsyncParsableCommand {
 
     @Option(help: "Extra HTTP header fields for a request (\"s3-key: my-secret-key\").")
     var headers: [String] = []
+
+    @Option(help: "Binary archive file type to use: zip or 7z.")
+    var archiveType: RugbyFoundation.ArchiveType = .zip
 
     func run() async throws {
         try await run(body,
@@ -67,17 +71,18 @@ extension Warmup: RunnableCommand {
         case (_, false, nil):
             throw Error.missingEndpoint
         }
-        try await dependencies.warmupManager(
+        let warmupManager = dependencies.warmupManager(
             timeoutIntervalForRequest: TimeInterval(timeout),
             httpMaximumConnectionsPerHost: maxConnections,
-            archiveType: commonOptions.archiveType
-        ).warmup(
+            archiveType: archiveType
+        )
+        try await warmupManager.warmup(
             mode: mode,
             targetsOptions: buildOptions.targetsOptions.foundation(),
             options: buildOptions.xcodeBuildOptions(),
-            archiveType: commonOptions.archiveType,
             maxInParallel: maxConnections,
-            headers: headers.parseHeaders()
+            headers: headers.parseHeaders(),
+            fileExtension: archiveType.fileExtension
         )
     }
 }
