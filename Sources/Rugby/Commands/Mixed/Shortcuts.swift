@@ -86,7 +86,7 @@ extension Shortcuts {
 
         @Flag(name: .long, help: "Delete target groups from project.")
         var deleteSources = false
-        
+
         @Option(help: "The maximum number of simultaneous connections.")
         var maxConnections = settings.warmupMaximumConnectionsPerHost
 
