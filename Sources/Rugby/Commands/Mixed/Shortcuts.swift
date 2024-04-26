@@ -90,6 +90,9 @@ extension Shortcuts {
         @Option(help: "The maximum number of simultaneous connections.")
         var maxConnections = settings.warmupMaximumConnectionsPerHost
 
+        @Option(help: "Binary archive file type to use: zip or 7z.")
+        var archiveType: RugbyFoundation.ArchiveType = .zip
+
         @OptionGroup
         var commonOptions: CommonOptions
 
@@ -127,6 +130,7 @@ extension Shortcuts.Cache: RunnableCommand {
             warmup.timeout = Self.settings.warmupTimeout
             warmup.maxConnections = maxConnections
             warmup.headers = headers
+            warmup.archiveType = archiveType
             runnableCommands.append(("Warmup", warmup))
         }
 
