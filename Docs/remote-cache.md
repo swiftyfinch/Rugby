@@ -57,11 +57,10 @@ end
 # }
 ```
 
-##### Archive types
+###### Archive types
 
-Please read article [`rugby warmup`](commands-help/warmup.md) and choose archive type which you want to use.
-
-To install 7z if you will use this archive type, please install package from brew
+Read the [`rugby warmup`](commands-help/warmup.md) article and choose the archive type you would like to use.\
+If you plan to use the 7z archive, please install the package from HomeBrew:
 ```sh
 > brew install p7zip
 ```
@@ -82,15 +81,18 @@ Parallel.each(binaries, in_processes: 10) do |remote_path, path|
   # Zipping binaries
   binary_folder_path = File.dirname(path)
   binary_name = File.basename(path)
-  
-  # In case, if you are using .zip archive to store binaries
+
+  # If you are using a .zip archive to store binary files:
   `cd #{binary_folder_path} && zip -r #{binary_name}.zip #{binary_name}`
   # For example, it produces: ~/.rugby/bin/Alamofire/Debug-iphonesimulator-arm64/2617d3e.zip
-  
-  # In case, if you are using .7z archives to store binaries
-  # You can change compression level to reach best performance for your dependencies
-  # Please refer https://7-zip.opensource.jp/chm/cmdline/switches/method.htm and choose compression level for your case
-  # In common, -mx3 is enough to reach smaller archives than .zip and don't lose time in compression/decompression
+
+  # If you are using a .7z archive to store binary files:
+  # You can adjust the compression level to achieve the best performance for your dependencies.
+  # Please refer to https://7-zip.opensource.jp/chm/cmdline/switches/method.htm to choose
+  # the compression level that best suits your needs.
+  #
+  # In general, -mx3 should be sufficient to create smaller archives than those produced by .zip,
+  # and it will not take long to compress or decompress them.
   `cd #{binary_folder_path} && 7z a -mx3 #{binary_name}.zip #{binary_name}`
   # For example, it produces: ~/.rugby/bin/Alamofire/Debug-iphonesimulator-arm64/2617d3e.7z
 
