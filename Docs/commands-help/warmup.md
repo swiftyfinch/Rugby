@@ -26,8 +26,8 @@
 │ -o, --output               * Output mode: fold, multiline, silent, raw.                        │
 │ --timeout                  * Timeout for requests in seconds. (60)                             │
 │ --max-connections          * The maximum number of simultaneous connections. (10)              │
-│ --archive-type             * Archive type to use. (zip) zip, 7z                                |
 │ --headers []               * Extra HTTP header fields for a request ("s3-key: my-secret-key"). │
+│ --archive-type             * Binary archive file type to use: zip or 7z.                       │
 ╰────────────────────────────────────────────────────────────────────────────────────────────────╯
  Flags:
 ╭─────────────────────────────────────────────────────────────────────────────────────────────╮
