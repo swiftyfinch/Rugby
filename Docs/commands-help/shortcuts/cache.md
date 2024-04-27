@@ -12,8 +12,6 @@
 
  Options:
 ╭─────────────────────────────────────────────────────────────────────────────────────────────╮
-│ --warmup                   * Warmup cache with this endpoint.                               │
-│ --headers []               * Extra HTTP header fields for warmup ("s3-key: my-secret-key"). │
 │ -s, --sdk                  * Build SDK: sim or ios.                                         │
 │ -a, --arch                 * Build architecture: auto, x86_64 or arm64.                     │
 │ -c, --config               * Build configuration. (Debug)                                   │
@@ -22,6 +20,8 @@
 │ -e, --except []            * Target names to exclude.                                       │
 │ -x, --except-as-regex []   * Regular expression patterns to exclude targets.                │
 │ --result-bundle-path       * Path to xcresult bundle.                                       │
+│ --warmup                   * Warmup cache with this endpoint.                               │
+│ --headers []               * Extra HTTP header fields for warmup ("s3-key: my-secret-key"). │
 │ --max-connections          * The maximum number of simultaneous connections. (10)           │
 │ --archive-type             * Binary archive file type to use: zip or 7z.                    │
 │ -o, --output               * Output mode: fold, multiline, silent, raw.                     │
