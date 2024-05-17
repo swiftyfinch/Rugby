@@ -213,7 +213,7 @@ extension TargetsHasherTests {
         alamofire.hashContext = "test_hashContext"
         alamofire.targetHashContext = ["testKey": "testValue"]
         let targets: TargetsMap = [alamofire.uuid: alamofire]
-
+        xcodeCLTVersionProvider.versionReturnValue = XcodeVersion(base: "14.5", build: "1234")
         // Act
         try await sut.hash(targets, xcargs: [], rehash: false)
 
