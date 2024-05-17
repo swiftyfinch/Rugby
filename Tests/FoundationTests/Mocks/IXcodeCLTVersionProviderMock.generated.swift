@@ -6,17 +6,19 @@
 import Foundation
 @testable import RugbyFoundation
 
-final class IXcodeCLTVersionProviderMock: IXcodeCLTVersionProvider {
+public final class IXcodeCLTVersionProviderMock: IXcodeCLTVersionProvider {
+
+    public init() {}
 
     // MARK: - version
 
-    var versionThrowableError: Error?
-    var versionCallsCount = 0
-    var versionCalled: Bool { versionCallsCount > 0 }
-    var versionReturnValue: (base: String, build: String?)!
-    var versionClosure: (() throws -> (base: String, build: String?))?
+    public var versionThrowableError: Error?
+    public var versionCallsCount = 0
+    public var versionCalled: Bool { versionCallsCount > 0 }
+    public var versionReturnValue: XcodeVersion!
+    public var versionClosure: (() throws -> XcodeVersion)?
 
-    func version() throws -> (base: String, build: String?) {
+    public func version() throws -> XcodeVersion {
         versionCallsCount += 1
         if let error = versionThrowableError {
             throw error
