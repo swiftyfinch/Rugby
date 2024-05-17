@@ -47,7 +47,7 @@ final class EnvironmentCollectorTests: XCTestCase {
 
 extension EnvironmentCollectorTests {
     func test_env() async throws {
-        xcodeCLTVersionProvider.versionReturnValue = ("Xcode 15.0", "Build version 15A240d")
+        xcodeCLTVersionProvider.versionReturnValue = XcodeVersion(base: "Xcode 15.0", build: "Build version 15A240d")
         architectureProvider.architectureReturnValue = .arm64
         await swiftVersionProvider.setSwiftVersionReturnValue("5.9")
         shellExecutor.throwingShellArgsClosure = { command, _ in
@@ -92,7 +92,7 @@ extension EnvironmentCollectorTests {
 
     func test_write() async throws {
         Rainbow.enabled = false
-        xcodeCLTVersionProvider.versionReturnValue = ("Xcode 15.0", "Build version 15A240d")
+        xcodeCLTVersionProvider.versionReturnValue = XcodeVersion(base: "Xcode 15.0", build: "Build version 15A240d")
         await swiftVersionProvider.setSwiftVersionReturnValue("5.9")
         architectureProvider.architectureReturnValue = .auto
         struct Build {
@@ -136,7 +136,7 @@ extension EnvironmentCollectorTests {
 
     func test_logXcodeVersion() async throws {
         Rainbow.enabled = true
-        xcodeCLTVersionProvider.versionReturnValue = ("Xcode 15.0", "Build version 15A240d")
+        xcodeCLTVersionProvider.versionReturnValue = XcodeVersion(base: "Xcode 15.0", build: "Build version 15A240d")
 
         // Act
         try await sut.logXcodeVersion()

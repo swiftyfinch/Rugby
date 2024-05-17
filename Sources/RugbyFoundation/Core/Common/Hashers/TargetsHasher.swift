@@ -13,6 +13,7 @@ protocol ITargetsHasher: AnyObject {
 final class TargetsHasher {
     private let foundationHasher: FoundationHasher
     private let swiftVersionProvider: ISwiftVersionProvider
+    private let xcodeCLTVersionProvider: IXcodeCLTVersionProvider
     private let buildPhaseHasher: IBuildPhaseHasher
     private let cocoaPodsScriptsHasher: ICocoaPodsScriptsHasher
     private let configurationsHasher: IConfigurationsHasher
@@ -21,6 +22,7 @@ final class TargetsHasher {
 
     init(foundationHasher: FoundationHasher,
          swiftVersionProvider: ISwiftVersionProvider,
+         xcodeCLTVersionProvider: IXcodeCLTVersionProvider,
          buildPhaseHasher: IBuildPhaseHasher,
          cocoaPodsScriptsHasher: ICocoaPodsScriptsHasher,
          configurationsHasher: IConfigurationsHasher,
@@ -28,6 +30,7 @@ final class TargetsHasher {
          buildRulesHasher: IBuildRulesHasher) {
         self.foundationHasher = foundationHasher
         self.swiftVersionProvider = swiftVersionProvider
+        self.xcodeCLTVersionProvider = xcodeCLTVersionProvider
         self.buildPhaseHasher = buildPhaseHasher
         self.cocoaPodsScriptsHasher = cocoaPodsScriptsHasher
         self.configurationsHasher = configurationsHasher
@@ -61,6 +64,7 @@ final class TargetsHasher {
         try await [
             "name": target.name,
             "swift_version": swiftVersionProvider.swiftVersion(),
+            "xcode_version": String(describing: xcodeCLTVersionProvider.version()),
             "buildOptions": [
                 "xcargs": xcargs.sorted()
             ],

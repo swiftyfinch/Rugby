@@ -69,6 +69,11 @@ public final class Vault {
         shellExecutor: shellExecutor
     )
 
+    /// The service providing the current Xcode version.
+    public private(set) lazy var xcodeCLTVersionProvider: IXcodeCLTVersionProvider = XcodeCLTVersionProvider(
+        shellExecutor: shellExecutor
+    )
+
     /// The service providing the current CPU architecture.
     public private(set) lazy var architectureProvider: IArchitectureProvider = ArchitectureProvider(
         shellExecutor: shellExecutor
@@ -122,6 +127,7 @@ public final class Vault {
         return TargetsHasher(
             foundationHasher: foundationHasher,
             swiftVersionProvider: swiftVersionProvider,
+            xcodeCLTVersionProvider: xcodeCLTVersionProvider,
             buildPhaseHasher: BuildPhaseHasher(
                 logger: logger,
                 workingDirectoryPath: router.workingDirectory.path,
