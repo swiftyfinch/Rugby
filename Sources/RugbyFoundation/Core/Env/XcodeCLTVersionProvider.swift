@@ -12,12 +12,6 @@ public struct XcodeVersion {
     let build: String?
 }
 
-extension XcodeVersion: CustomStringConvertible {
-    public var description: String {
-        "Xcode \(base) - Build version \(build ?? "unknown")"
-    }
-}
-
 enum XcodeCLTVersionProviderError: LocalizedError {
     case unknownXcodeCLT
 

@@ -64,7 +64,10 @@ final class TargetsHasher {
         try await [
             "name": target.name,
             "swift_version": swiftVersionProvider.swiftVersion(),
-            "xcode_version": String(describing: xcodeCLTVersionProvider.version()),
+            "xcode_version": [
+                "base": xcodeCLTVersionProvider.version().base,
+                "build": xcodeCLTVersionProvider.version().build ?? "unknown"
+            ],
             "buildOptions": [
                 "xcargs": xcargs.sorted()
             ],
