@@ -33,8 +33,8 @@ extension XcodeCLTVersionProviderTests {
         let versionInfo = try sut.version()
 
         // Assert
-        XCTAssertEqual(versionInfo.base, "Xcode 14.1")
-        XCTAssertEqual(versionInfo.build, "Build version 14B47b")
+        XCTAssertEqual(versionInfo.base, "14.1")
+        XCTAssertEqual(versionInfo.build, "14B47b")
         XCTAssertEqual(shellExecutorMock.throwingShellArgsCallsCount, 1)
     }
 
@@ -48,8 +48,8 @@ extension XcodeCLTVersionProviderTests {
         let versionInfo = try sut.version()
 
         // Assert
-        XCTAssertEqual(versionInfo.base, "Xcode 14.1.3")
-        XCTAssertEqual(versionInfo.build, "Build version 04BD7b")
+        XCTAssertEqual(versionInfo.base, "14.1.3")
+        XCTAssertEqual(versionInfo.build, "04BD7b")
         XCTAssertEqual(shellExecutorMock.throwingShellArgsCallsCount, 1)
     }
 
@@ -79,7 +79,7 @@ extension XcodeCLTVersionProviderTests {
         let versionInfo = try sut.version()
 
         // Assert
-        XCTAssertEqual(versionInfo.base, "Xcode 14.1.3 - Build - version - 04BD7b")
+        XCTAssertEqual(versionInfo.base, "Xcode 14.1.3 / Build / version / 04BD7b")
         XCTAssertNil(versionInfo.build)
         XCTAssertEqual(shellExecutorMock.throwingShellArgsCallsCount, 1)
     }
@@ -99,10 +99,10 @@ extension XcodeCLTVersionProviderTests {
         let versionInfoCache = try sut.version()
 
         // Assert
-        XCTAssertEqual(versionInfo.base, "Xcode 14.2")
-        XCTAssertEqual(versionInfo.build, "Build version 11BT7b")
-        XCTAssertEqual(versionInfoCache.base, "Xcode 14.2")
-        XCTAssertEqual(versionInfoCache.build, "Build version 11BT7b")
+        XCTAssertEqual(versionInfo.base, "14.2")
+        XCTAssertEqual(versionInfo.build, "11BT7b")
+        XCTAssertEqual(versionInfoCache.base, "14.2")
+        XCTAssertEqual(versionInfoCache.build, "11BT7b")
         XCTAssertEqual(shellExecutorMock.throwingShellArgsCallsCount, 1)
     }
 }

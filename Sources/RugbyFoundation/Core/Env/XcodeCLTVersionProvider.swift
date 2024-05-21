@@ -30,7 +30,11 @@ enum XcodeCLTVersionProviderError: LocalizedError {
 
 final class XcodeCLTVersionProvider {
     private typealias Error = XcodeCLTVersionProviderError
+
     private let shellExecutor: IShellExecutor
+
+    private let xcodeVersionPrefix = "Xcode "
+    private let buildVersionPrefix = "Build version "
     private var cachedXcodeVersion: XcodeVersion?
 
     init(shellExecutor: IShellExecutor) {
@@ -51,9 +55,11 @@ extension XcodeCLTVersionProvider: IXcodeCLTVersionProvider {
 
         let version: XcodeVersion
         if output.count == 2 {
-            version = XcodeVersion(base: output[0], build: output[1])
+            let xcodeVersion = String(output[0].trimmingPrefix(xcodeVersionPrefix))
+            let buildVersion = String(output[1].trimmingPrefix(buildVersionPrefix))
+            version = XcodeVersion(base: xcodeVersion, build: buildVersion)
         } else {
-            version = XcodeVersion(base: output.joined(separator: " - "), build: nil)
+            version = XcodeVersion(base: output.joined(separator: " / "), build: nil)
         }
         cachedXcodeVersion = version
         return version
