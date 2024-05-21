@@ -8,7 +8,7 @@ extension String {
     // │                                │
     // │       █▀█ █ █ █▀▀ █▄▄ █▄█      │
     // │     > █▀▄ █▄█ █▄█ █▄█  █       │
-    // │                 v.2.10.0        │
+    // │                 v.2.10.0       │
     // │ Cache Cocoa 🌱 pods            │
     // │             for faster rebuild │
     // │   and indexing Xcode project   │
@@ -19,7 +19,7 @@ extension String {
     │                                │
     │       \("█▀█ █ █ █▀▀ █▄▄ █▄█".accent)      │
     │     \(">".black.bold.onAccent) \("█▀▄ █▄█ █▄█ █▄█  █".accent)       │
-    │                 \("v.\(version)".accent.bold)        │
+    │                 \("v.\(version)".accent.bold)       │
     │ \("Cache Cocoa 🌱 pods".bold)            │
     │             \("for faster rebuild".bold) │
     │   \("and indexing Xcode project".bold)   │
