@@ -47,7 +47,7 @@ final class EnvironmentCollectorTests: XCTestCase {
 
 extension EnvironmentCollectorTests {
     func test_env() async throws {
-        xcodeCLTVersionProvider.versionReturnValue = XcodeVersion(base: "Xcode 15.0", build: "Build version 15A240d")
+        xcodeCLTVersionProvider.versionReturnValue = XcodeVersion(base: "15.0", build: "15A240d")
         architectureProvider.architectureReturnValue = .arm64
         await swiftVersionProvider.setSwiftVersionReturnValue("5.9")
         shellExecutor.throwingShellArgsClosure = { command, _ in
@@ -80,7 +80,7 @@ extension EnvironmentCollectorTests {
             [
                 "Rugby version: 2.2.0",
                 "Swift: 5.9",
-                "CLT: Xcode 15.0 (Build version 15A240d)",
+                "CLT: Xcode 15.0 (15A240d)",
                 "CPU: Apple M1 Max (arm64)",
                 "Project: Example",
                 "Git branch: main",
@@ -92,7 +92,7 @@ extension EnvironmentCollectorTests {
 
     func test_write() async throws {
         Rainbow.enabled = false
-        xcodeCLTVersionProvider.versionReturnValue = XcodeVersion(base: "Xcode 15.0", build: "Build version 15A240d")
+        xcodeCLTVersionProvider.versionReturnValue = XcodeVersion(base: "15.0", build: "15A240d")
         await swiftVersionProvider.setSwiftVersionReturnValue("5.9")
         architectureProvider.architectureReturnValue = .auto
         struct Build {
@@ -121,7 +121,7 @@ extension EnvironmentCollectorTests {
             [
                 "Rugby version: 2.0",
                 "Swift: 5.9",
-                "CLT: Xcode 15.0 (Build version 15A240d)",
+                "CLT: Xcode 15.0 (15A240d)",
                 "CPU: Unknown (auto)",
                 "Project: Unknown",
                 "Git branch: Unknown",
@@ -136,7 +136,7 @@ extension EnvironmentCollectorTests {
 
     func test_logXcodeVersion() async throws {
         Rainbow.enabled = true
-        xcodeCLTVersionProvider.versionReturnValue = XcodeVersion(base: "Xcode 15.0", build: "Build version 15A240d")
+        xcodeCLTVersionProvider.versionReturnValue = XcodeVersion(base: "15.0", build: "15A240d")
 
         // Act
         try await sut.logXcodeVersion()

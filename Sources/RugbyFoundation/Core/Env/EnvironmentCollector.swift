@@ -107,7 +107,7 @@ extension EnvironmentCollector: IEnvironmentCollector {
         var output = try [
             "Rugby version: \(rugbyVersion)",
             await getSwiftVersion(),
-            "CLT: \(xcodeCLTVersion)",
+            "CLT: Xcode \(xcodeCLTVersion)",
             getCPU(),
             getProject(),
             getGitBranch()
@@ -135,7 +135,7 @@ extension EnvironmentCollector: IEnvironmentCollector {
     }
 
     public func logXcodeVersion() async throws {
-        try await log("CLT: \(xcodeCLTVersionProvider.version().base)")
+        try await log("CLT: Xcode \(xcodeCLTVersionProvider.version().base)")
     }
 
     public func logCommandDump(command: some Any) async {
