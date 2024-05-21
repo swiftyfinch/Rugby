@@ -91,6 +91,7 @@ final class TargetsHasher {
 extension TargetsHasher: ITargetsHasher {
     func hash(_ targets: TargetsMap, xcargs: [String], rehash: Bool) async throws {
         targets.modifyIf(rehash) { resetHash($0) }
+
         let xcodeVersion = try xcodeCLTVersionProvider.version()
         let formattedXcodeBuildVersion = xcodeVersion.build.map { " (\($0))" } ?? ""
         let formattedXcodeVersion = "\(xcodeVersion.base)" + formattedXcodeBuildVersion

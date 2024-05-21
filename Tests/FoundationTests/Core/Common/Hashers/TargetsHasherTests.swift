@@ -214,6 +214,7 @@ extension TargetsHasherTests {
         alamofire.targetHashContext = ["testKey": "testValue"]
         let targets: TargetsMap = [alamofire.uuid: alamofire]
         xcodeCLTVersionProvider.versionReturnValue = XcodeVersion(base: "14.5", build: "1234")
+
         // Act
         try await sut.hash(targets, xcargs: [], rehash: false)
 
@@ -240,6 +241,7 @@ extension TargetsHasherTests {
         foundationHasher.hashArrayOfStringsReturnValue = "test_rehash_array"
         foundationHasher.hashStringReturnValue = "test_rehash"
         xcodeCLTVersionProvider.versionReturnValue = XcodeVersion(base: "14.5", build: "1234")
+
         // Act
         try await sut.hash(targets, xcargs: [], rehash: true)
 
