@@ -67,7 +67,7 @@ extension TargetsHasherTests {
         name: Alamofire-framework
         product: null
         swift_version: \'5.9\'
-        xcode_version:\n  base: \'14.5\'\n  build: \'1234\'\n
+        xcode_version: 14.5 (1234)\n
         """
         let alamofire = IInternalTargetMock()
         alamofire.underlyingName = "Alamofire-framework"
@@ -93,7 +93,7 @@ extension TargetsHasherTests {
         product:
           MoyaProduct: MoyaProduct_hash
         swift_version: \'5.9\'
-        xcode_version:\n  base: \'14.5\'\n  build: \'1234\'\n
+        xcode_version: 14.5 (1234)\n
         """
         let moya = IInternalTargetMock()
         moya.underlyingName = "Moya-framework"
@@ -119,7 +119,7 @@ extension TargetsHasherTests {
         name: LocalPod-framework-LocalPodResources
         product: null
         swift_version: \'5.9\'
-        xcode_version:\n  base: \'14.5\'\n  build: \'1234\'\n
+        xcode_version: 14.5 (1234)\n
         """
         let localPodResources = IInternalTargetMock()
         localPodResources.underlyingName = "LocalPod-framework-LocalPodResources"
@@ -146,7 +146,7 @@ extension TargetsHasherTests {
         name: LocalPod-framework
         product: null
         swift_version: \'5.9\'
-        xcode_version:\n  base: \'14.5\'\n  build: \'1234\'\n
+        xcode_version: 14.5 (1234)\n
         """
         let localPod = IInternalTargetMock()
         localPod.underlyingName = "LocalPod-framework"
@@ -257,7 +257,7 @@ extension TargetsHasherTests {
             name: Alamofire-framework
             product: null
             swift_version: \'5.9\'
-            xcode_version:\n  base: \'14.5\'\n  build: \'1234\'\n
+            xcode_version: 14.5 (1234)\n
             """
         )
         XCTAssertEqual(alamofire.hash, "test_rehash")
