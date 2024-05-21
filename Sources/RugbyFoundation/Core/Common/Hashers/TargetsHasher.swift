@@ -13,6 +13,7 @@ protocol ITargetsHasher: AnyObject {
 final class TargetsHasher {
     private let foundationHasher: FoundationHasher
     private let swiftVersionProvider: ISwiftVersionProvider
+    private let xcodeCLTVersionProvider: IXcodeCLTVersionProvider
     private let buildPhaseHasher: IBuildPhaseHasher
     private let cocoaPodsScriptsHasher: ICocoaPodsScriptsHasher
     private let configurationsHasher: IConfigurationsHasher
@@ -21,6 +22,7 @@ final class TargetsHasher {
 
     init(foundationHasher: FoundationHasher,
          swiftVersionProvider: ISwiftVersionProvider,
+         xcodeCLTVersionProvider: IXcodeCLTVersionProvider,
          buildPhaseHasher: IBuildPhaseHasher,
          cocoaPodsScriptsHasher: ICocoaPodsScriptsHasher,
          configurationsHasher: IConfigurationsHasher,
@@ -28,6 +30,7 @@ final class TargetsHasher {
          buildRulesHasher: IBuildRulesHasher) {
         self.foundationHasher = foundationHasher
         self.swiftVersionProvider = swiftVersionProvider
+        self.xcodeCLTVersionProvider = xcodeCLTVersionProvider
         self.buildPhaseHasher = buildPhaseHasher
         self.cocoaPodsScriptsHasher = cocoaPodsScriptsHasher
         self.configurationsHasher = configurationsHasher
@@ -57,10 +60,14 @@ final class TargetsHasher {
         return try Yams.dump(object: targetHashContext, width: -1, sortKeys: true)
     }
 
-    private func targetHashContext(_ target: IInternalTarget, xcargs: [String]) async throws -> [String: Any] {
+    private func targetHashContext(
+        _ target: IInternalTarget,
+        xcargs: [String], xcodeVersion: String
+    ) async throws -> [String: Any] {
         try await [
             "name": target.name,
             "swift_version": swiftVersionProvider.swiftVersion(),
+            "xcode_version": xcodeVersion,
             "buildOptions": [
                 "xcargs": xcargs.sorted()
             ],
@@ -84,10 +91,16 @@ final class TargetsHasher {
 extension TargetsHasher: ITargetsHasher {
     func hash(_ targets: TargetsMap, xcargs: [String], rehash: Bool) async throws {
         targets.modifyIf(rehash) { resetHash($0) }
-
+        let xcodeVersion = try xcodeCLTVersionProvider.version()
+        let formattedXcodeBuildVersion = xcodeVersion.build.map { " (\($0))" } ?? ""
+        let formattedXcodeVersion = "\(xcodeVersion.base)" + formattedXcodeBuildVersion
         try await targets.merging(targets.flatMapValues(\.dependencies)).values.concurrentForEach { target in
             guard target.targetHashContext == nil else { return }
-            target.targetHashContext = try await self.targetHashContext(target, xcargs: xcargs)
+            target.targetHashContext = try await self.targetHashContext(
+                target,
+                xcargs: xcargs,
+                xcodeVersion: formattedXcodeVersion
+            )
         }
 
         for target in targets.values {

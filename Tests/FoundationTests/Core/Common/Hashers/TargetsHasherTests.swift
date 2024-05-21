@@ -5,6 +5,7 @@ final class TargetsHasherTests: XCTestCase {
     private var sut: ITargetsHasher!
     private var foundationHasher: FoundationHasherMock!
     private var swiftVersionProvider: ISwiftVersionProviderMock!
+    private var xcodeCLTVersionProvider: IXcodeCLTVersionProviderMock!
     private var buildPhaseHasher: IBuildPhaseHasherMock!
     private var cocoaPodsScriptsHasher: ICocoaPodsScriptsHasherMock!
     private var configurationsHasher: IConfigurationsHasherMock!
@@ -15,6 +16,7 @@ final class TargetsHasherTests: XCTestCase {
         super.setUp()
         foundationHasher = FoundationHasherMock()
         swiftVersionProvider = ISwiftVersionProviderMock()
+        xcodeCLTVersionProvider = IXcodeCLTVersionProviderMock()
         buildPhaseHasher = IBuildPhaseHasherMock()
         cocoaPodsScriptsHasher = ICocoaPodsScriptsHasherMock()
         configurationsHasher = IConfigurationsHasherMock()
@@ -23,6 +25,7 @@ final class TargetsHasherTests: XCTestCase {
         sut = TargetsHasher(
             foundationHasher: foundationHasher,
             swiftVersionProvider: swiftVersionProvider,
+            xcodeCLTVersionProvider: xcodeCLTVersionProvider,
             buildPhaseHasher: buildPhaseHasher,
             cocoaPodsScriptsHasher: cocoaPodsScriptsHasher,
             configurationsHasher: configurationsHasher,
@@ -35,6 +38,7 @@ final class TargetsHasherTests: XCTestCase {
         super.tearDown()
         foundationHasher = nil
         swiftVersionProvider = nil
+        xcodeCLTVersionProvider = nil
         buildPhaseHasher = nil
         cocoaPodsScriptsHasher = nil
         configurationsHasher = nil
@@ -62,7 +66,8 @@ extension TargetsHasherTests {
         dependencies: {}
         name: Alamofire-framework
         product: null
-        swift_version: \'5.9\'\n
+        swift_version: \'5.9\'
+        xcode_version: 14.5 (1234)\n
         """
         let alamofire = IInternalTargetMock()
         alamofire.underlyingName = "Alamofire-framework"
@@ -87,7 +92,8 @@ extension TargetsHasherTests {
         name: Moya-framework
         product:
           MoyaProduct: MoyaProduct_hash
-        swift_version: \'5.9\'\n
+        swift_version: \'5.9\'
+        xcode_version: 14.5 (1234)\n
         """
         let moya = IInternalTargetMock()
         moya.underlyingName = "Moya-framework"
@@ -112,7 +118,8 @@ extension TargetsHasherTests {
         dependencies: {}
         name: LocalPod-framework-LocalPodResources
         product: null
-        swift_version: \'5.9\'\n
+        swift_version: \'5.9\'
+        xcode_version: 14.5 (1234)\n
         """
         let localPodResources = IInternalTargetMock()
         localPodResources.underlyingName = "LocalPod-framework-LocalPodResources"
@@ -138,7 +145,8 @@ extension TargetsHasherTests {
           Moya-framework: Moya_hashed
         name: LocalPod-framework
         product: null
-        swift_version: \'5.9\'\n
+        swift_version: \'5.9\'
+        xcode_version: 14.5 (1234)\n
         """
         let localPod = IInternalTargetMock()
         localPod.underlyingName = "LocalPod-framework"
@@ -156,6 +164,8 @@ extension TargetsHasherTests {
             moya.uuid: moya,
             localPodResources.uuid: localPodResources
         ]
+
+        xcodeCLTVersionProvider.versionReturnValue = XcodeVersion(base: "14.5", build: "1234")
 
         await swiftVersionProvider.setSwiftVersionReturnValue("5.9")
         configurationsHasher.hashContextClosure = { ["\($0.name)_configuration_hash"] }
@@ -203,7 +213,7 @@ extension TargetsHasherTests {
         alamofire.hashContext = "test_hashContext"
         alamofire.targetHashContext = ["testKey": "testValue"]
         let targets: TargetsMap = [alamofire.uuid: alamofire]
-
+        xcodeCLTVersionProvider.versionReturnValue = XcodeVersion(base: "14.5", build: "1234")
         // Act
         try await sut.hash(targets, xcargs: [], rehash: false)
 
@@ -229,7 +239,7 @@ extension TargetsHasherTests {
         buildPhaseHasher.hashContextTargetReturnValue = []
         foundationHasher.hashArrayOfStringsReturnValue = "test_rehash_array"
         foundationHasher.hashStringReturnValue = "test_rehash"
-
+        xcodeCLTVersionProvider.versionReturnValue = XcodeVersion(base: "14.5", build: "1234")
         // Act
         try await sut.hash(targets, xcargs: [], rehash: true)
 
@@ -246,7 +256,8 @@ extension TargetsHasherTests {
             dependencies: {}
             name: Alamofire-framework
             product: null
-            swift_version: \'5.9\'\n
+            swift_version: \'5.9\'
+            xcode_version: 14.5 (1234)\n
             """
         )
         XCTAssertEqual(alamofire.hash, "test_rehash")

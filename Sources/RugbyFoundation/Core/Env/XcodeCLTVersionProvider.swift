@@ -2,8 +2,14 @@ import Foundation
 
 // MARK: - Interface
 
-protocol IXcodeCLTVersionProvider: AnyObject {
-    func version() throws -> (base: String, build: String?)
+public protocol IXcodeCLTVersionProvider: AnyObject {
+    func version() throws -> XcodeVersion
+}
+
+/// Representation of an Xcode version
+public struct XcodeVersion {
+    let base: String
+    let build: String?
 }
 
 enum XcodeCLTVersionProviderError: LocalizedError {
@@ -25,7 +31,7 @@ enum XcodeCLTVersionProviderError: LocalizedError {
 final class XcodeCLTVersionProvider {
     private typealias Error = XcodeCLTVersionProviderError
     private let shellExecutor: IShellExecutor
-    private var cachedXcodeVersion: (base: String, build: String?)?
+    private var cachedXcodeVersion: XcodeVersion?
 
     init(shellExecutor: IShellExecutor) {
         self.shellExecutor = shellExecutor
@@ -35,7 +41,7 @@ final class XcodeCLTVersionProvider {
 // MARK: - IXcodeCLTVersionProvider
 
 extension XcodeCLTVersionProvider: IXcodeCLTVersionProvider {
-    func version() throws -> (base: String, build: String?) {
+    func version() throws -> XcodeVersion {
         if let cachedXcodeVersion { return cachedXcodeVersion }
 
         guard let output = try? shellExecutor.throwingShell("xcodebuild -version")?
@@ -43,11 +49,11 @@ extension XcodeCLTVersionProvider: IXcodeCLTVersionProvider {
             .filter({ !$0.isEmpty })
         else { throw XcodeCLTVersionProviderError.unknownXcodeCLT }
 
-        let version: (base: String, build: String?)
+        let version: XcodeVersion
         if output.count == 2 {
-            version = (output[0], output[1])
+            version = XcodeVersion(base: output[0], build: output[1])
         } else {
-            version = (output.joined(separator: " - "), nil)
+            version = XcodeVersion(base: output.joined(separator: " - "), build: nil)
         }
         cachedXcodeVersion = version
         return version
