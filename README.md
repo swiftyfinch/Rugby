@@ -122,7 +122,11 @@ For advanced usage, please read the documentation below.
 
 ## 🤝 Contribution
 
-Feel free [to open a pull request](https://github.com/swiftyfinch/rugby/contribute) or a discussion.
+Feel free [to open a pull request](https://github.com/swiftyfinch/rugby/contribute) or [a discussion](https://github.com/swiftyfinch/Rugby/discussions).
+
+| Known Issues 🐞 |
+| :--- |
+| [#394](https://github.com/swiftyfinch/Rugby/discussions/394) Unable to run tests via Xcode (via `make test` they run perfectly) |
 
 ## 📮 Support
 
