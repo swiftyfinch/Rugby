@@ -126,7 +126,8 @@ Feel free [to open a pull request](https://github.com/swiftyfinch/rugby/contribu
 
 | Known Issues 🐞 |
 | :--- |
-| [#394](https://github.com/swiftyfinch/Rugby/discussions/394) Unable to run tests via Xcode (via `make test` they run perfectly) |
+| [#394](https://github.com/swiftyfinch/Rugby/discussions/394): Unable to run tests via Xcode (via `make test` they run perfectly) |
+| [#270](https://github.com/cpisciotta/xcbeautify/issues/270): Missing public `OutputType` |
 
 ## 📮 Support
 
