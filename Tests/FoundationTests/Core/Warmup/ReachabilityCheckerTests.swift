@@ -21,7 +21,7 @@ final class ReachabilityCheckerTests: XCTestCase {
 extension ReachabilityCheckerTests {
     func test_checkIfURLIsReachable_200() async throws {
         let url: URL! = URL(string: "https://github.com/swiftyfinch/Rugby")
-        let data: Data! = "test_data".data(using: .utf8)
+        let data = Data("test_data".utf8)
         let response: URLResponse! = HTTPURLResponse(url: url, statusCode: 200, httpVersion: nil, headerFields: nil)
         urlSession.dataForReturnValue = (data, response)
 
@@ -39,7 +39,7 @@ extension ReachabilityCheckerTests {
 
     func test_checkIfURLIsReachable_404() async throws {
         let url: URL! = URL(string: "https://github.com/swiftyfinch/Rugby")
-        let data: Data! = "test_data".data(using: .utf8)
+        let data = Data("test_data".utf8)
         let response: URLResponse! = HTTPURLResponse(url: url, statusCode: 404, httpVersion: nil, headerFields: nil)
         urlSession.dataForReturnValue = (data, response)
 
@@ -53,7 +53,7 @@ extension ReachabilityCheckerTests {
 
     func test_checkIfURLIsReachable_error() async throws {
         let url: URL! = URL(string: "https://github.com/swiftyfinch/Rugby")
-        let data: Data! = "test_data".data(using: .utf8)
+        let data = Data("test_data".utf8)
         urlSession.dataForReturnValue = (
             data,
             URLResponse(url: url, mimeType: nil, expectedContentLength: 0, textEncodingName: nil)

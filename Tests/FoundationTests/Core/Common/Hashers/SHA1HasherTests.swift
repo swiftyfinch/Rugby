@@ -29,7 +29,7 @@ extension SHA1HasherTests {
 
     func test_hash_data() {
         let expected = "f6b1cf5"
-        let input: Data! = "string_for_hash".data(using: .utf8)
+        let input = Data("string_for_hash".utf8)
 
         // Act
         let result = sut.hash(input)

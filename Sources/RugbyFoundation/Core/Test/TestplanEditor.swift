@@ -137,7 +137,7 @@ extension TestplanEditor: ITestplanEditor {
         let testFolder = try Folder.create(at: folderPath)
         let testplanFileName = "\(defaultTestplanName).\(xctestplanExtension)"
         let newData = try JSONSerialization.data(withJSONObject: json as Any, options: [.prettyPrinted, .sortedKeys])
-        try testFolder.createFile(named: testplanFileName, contents: String(data: newData, encoding: .utf8))
+        try testFolder.createFile(named: testplanFileName, contents: String(decoding: newData, as: UTF8.self))
 
         return URL(fileURLWithPath: testFolder.subpath(testplanFileName))
     }
