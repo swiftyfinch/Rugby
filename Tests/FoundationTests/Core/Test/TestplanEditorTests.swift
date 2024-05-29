@@ -69,7 +69,7 @@ extension TestplanEditorTests {
     }
 
     func test_createTestplan() throws {
-        let expectedRawTestplanData: Data! = """
+        let expectedRawTestplanData = Data("""
         {
           "configurations" : [
             {
@@ -100,7 +100,7 @@ extension TestplanEditorTests {
           ],
           "version" : 1
         }
-        """.data(using: .utf8)
+        """.utf8)
         let json = try JSONSerialization.jsonObject(with: expectedRawTestplanData)
         let expectedTestplanData = try JSONSerialization.data(
             withJSONObject: json,
