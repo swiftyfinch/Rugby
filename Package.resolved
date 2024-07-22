@@ -41,8 +41,8 @@
       "kind" : "remoteSourceControl",
       "location" : "https://github.com/OlehKulykov/PLzmaSDK",
       "state" : {
-        "revision" : "3349025b39ad295ac64dadee7c4fca73a98f424f",
-        "version" : "1.4.3"
+        "revision" : "7b8b88d7338bec9012d60864752a67fd9202d650",
+        "version" : "1.4.4"
       }
     },
     {
