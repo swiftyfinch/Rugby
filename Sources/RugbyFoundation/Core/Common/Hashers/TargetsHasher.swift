@@ -72,7 +72,7 @@ final class TargetsHasher {
                 "xcargs": xcargs.sorted()
             ],
             "buildPhases": buildPhaseHasher.hashContext(target: target),
-            "product": target.product.map(productHasher.hashContext) as Any,
+            "product": target.product.flatMap(productHasher.hashContext) as Any,
             "configurations": configurationsHasher.hashContext(target),
             "cocoaPodsScripts": cocoaPodsScriptsHasher.hashContext(target),
             "buildRules": buildRulesHasher.hashContext(target.buildRules)
@@ -93,7 +93,7 @@ extension TargetsHasher: ITargetsHasher {
         targets.modifyIf(rehash) { resetHash($0) }
 
         let xcodeVersion = try xcodeCLTVersionProvider.version()
-        let formattedXcodeBuildVersion = xcodeVersion.build.map { " (\($0))" } ?? ""
+        let formattedXcodeBuildVersion = xcodeVersion.build.flatMap { " (\($0))" } ?? ""
         let formattedXcodeVersion = "\(xcodeVersion.base)" + formattedXcodeBuildVersion
         try await targets.merging(targets.flatMapValues(\.dependencies)).values.concurrentForEach { target in
             guard target.targetHashContext == nil else { return }
