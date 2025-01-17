@@ -4,7 +4,7 @@ import XCTest
 final class SupportFilesPatcherTests: XCTestCase {
     private var sut: ISupportFilesPatcher!
     private var expectedPrefixBoundary = #"(?<=(\"|'|\s))"#
-    private var expectedSuffixBoundary = #"(?=(\"|'|\s))"#
+    private var expectedSuffixBoundary = #"(?=(\"|'|\s|/))"#
 
     override func setUp() {
         super.setUp()

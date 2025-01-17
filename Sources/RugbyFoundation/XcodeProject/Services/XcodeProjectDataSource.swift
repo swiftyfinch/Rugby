@@ -50,7 +50,7 @@ final class XcodeProjectDataSource: Loggable {
     func save() async throws {
         // Save only read projects
         var projects = cachedSubprojects ?? []
-        cachedRootProject.map { projects.append($0) }
+        cachedRootProject.flatMap { projects.append($0) }
 
         try await projects.concurrentMap { project in
             try project.xcodeProj.write(pathString: project.path, override: true)

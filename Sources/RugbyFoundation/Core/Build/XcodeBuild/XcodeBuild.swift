@@ -99,7 +99,7 @@ final class XcodeBuild {
             "-project \(paths.project.shellFriendly)",
             "SYMROOT=\(paths.symroot.shellFriendly)"
         ])
-        options.resultBundlePath.map {
+        options.resultBundlePath.flatMap {
             arguments.append("-resultBundlePath \($0.shellFriendly)")
         }
         arguments.append(contentsOf: options.xcargs)
