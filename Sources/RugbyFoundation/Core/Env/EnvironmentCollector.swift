@@ -103,7 +103,7 @@ extension EnvironmentCollector: IEnvironmentCollector {
         rugbyEnvironment: [String: String]
     ) async throws -> [String] {
         let xcodeCLTInfo = try xcodeCLTVersionProvider.version()
-        let xcodeCLTVersion = xcodeCLTInfo.build.map { "\(xcodeCLTInfo.base) (\($0))" } ?? xcodeCLTInfo.base
+        let xcodeCLTVersion = xcodeCLTInfo.build.flatMap { "\(xcodeCLTInfo.base) (\($0))" } ?? xcodeCLTInfo.base
         var output = try [
             "Rugby version: \(rugbyVersion)",
             await getSwiftVersion(),

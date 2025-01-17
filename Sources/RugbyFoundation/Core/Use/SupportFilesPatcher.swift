@@ -15,7 +15,7 @@ struct FileReplacement {
 
 enum ReplacementBoundary {
     static let prefix = #"(?<=(\"|'|\s))"#
-    static let suffix = #"(?=(\"|'|\s))"#
+    static let suffix = #"(?=(\"|'|\s|/))"#
 }
 
 protocol ISupportFilesPatcher: AnyObject {
