@@ -17,7 +17,7 @@ permissions:
 
 jobs:
   bump:
-    runs-on: macos-13
+    runs-on: macos-15
     steps:
       # Checkout with custom token for pushin to protected branch
       - uses: actions/checkout@v4

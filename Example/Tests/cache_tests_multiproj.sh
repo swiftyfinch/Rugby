@@ -11,6 +11,6 @@ MULTIPLE_PROJECTS=true pod install --repo-update
 
 header "Rugby Test"
 rugby _test -g framework \
-            -n 'iPhone 15' \
+            -n 'iPhone 16' \
             -p ExampleFrameworks \
             --output multiline

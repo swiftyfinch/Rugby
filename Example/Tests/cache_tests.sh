@@ -19,7 +19,7 @@ set -o pipefail && env NSUnbufferedIO=YES arch -arm64 xcodebuild test \
   -workspace Example.xcworkspace \
   -scheme ExampleFrameworks \
   -testPlan ExampleFrameworks \
-  -destination "platform=iOS Simulator,name=iPhone 15" \
+  -destination "platform=iOS Simulator,name=iPhone 16" \
   COMPILER_INDEX_STORE_ENABLE=NO \
   SWIFT_COMPILATION_MODE=wholemodule \
   CODE_SIGNING_ALLOWED=NO \
@@ -28,7 +28,7 @@ set -o pipefail && env NSUnbufferedIO=YES arch -arm64 xcodebuild test \
   -workspace Example.xcworkspace \
   -scheme ExampleLibs \
   -testPlan ExampleLibs \
-  -destination "platform=iOS Simulator,name=iPhone 15" \
+  -destination "platform=iOS Simulator,name=iPhone 16" \
   COMPILER_INDEX_STORE_ENABLE=NO \
   SWIFT_COMPILATION_MODE=wholemodule \
   CODE_SIGNING_ALLOWED=NO \

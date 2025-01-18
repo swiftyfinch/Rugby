@@ -3,7 +3,8 @@ import Fish
 import Foundation
 import RugbyFoundation
 
-extension ArchiveType: ExpressibleByArgument {}
+extension ArchiveType: @retroactive ExpressibleByArgument {}
+
 struct Warmup: AsyncParsableCommand {
     static var configuration = CommandConfiguration(
         commandName: "warmup",
