@@ -18,9 +18,9 @@ final actor ProgressPrinter {
     private let timeInterval: TimeInterval = 0.125
 
     // Dependencies
-    private let printer: Printer
+    nonisolated private let printer: Printer
     private let timerTaskFactory: ITimerTaskFactory
-    private let clock: IClock
+    nonisolated private let clock: IClock
 
     // Variables
     private var timerTask: ITimerTask?
