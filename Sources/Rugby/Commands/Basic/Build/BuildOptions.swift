@@ -1,8 +1,8 @@
 import ArgumentParser
 import RugbyFoundation
 
-extension SDK: ExpressibleByArgument {}
-extension Architecture: ExpressibleByArgument {}
+extension SDK: @retroactive ExpressibleByArgument {}
+extension Architecture: @retroactive ExpressibleByArgument {}
 
 struct BuildOptions: AsyncParsableCommand {
     @Option(name: .shortAndLong, help: "Build SDK: sim or ios.")
