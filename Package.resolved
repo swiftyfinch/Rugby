@@ -95,8 +95,8 @@
       "kind" : "remoteSourceControl",
       "location" : "https://github.com/tuist/XcodeProj",
       "state" : {
-        "revision" : "647cba2719e85748ec82d0720ee7afe5b7a6421e",
-        "version" : "8.26.3"
+        "revision" : "15b85e6480b8b12ced81e68f39d83a97b7601cfa",
+        "version" : "8.26.4"
       }
     },
     {
