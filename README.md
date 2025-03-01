@@ -10,6 +10,7 @@
   <a href="https://github.com/withfig/autocomplete/pull/2105"><img src="https://img.shields.io/badge/Fig-fff?logo=fig&logoColor=black" /></a>
   <br>
   <img src="https://img.shields.io/badge/Press_★_to_pay_respects-fff?logo=github&logoColor=black" />
+  <img title="Views since 30.11.2023 + 6k after migration" src="https://komarev.com/ghpvc/?username=swiftyfinch-rugby&label=Views&format=true&base=6000">
   <a href="https://twitter.com/swiftyfinch"><img src="https://img.shields.io/badge/SwiftyFinch-blue?logo=twitter&logoColor=white" /></a>
 </h1>
 
@@ -137,6 +138,3 @@ If you want to support this project, you can do some of these:\
 `3)` <ins><b>Leave feedback</b></ins> in the discussions 💬 section.
 
 Let's Roll-oll 🏈
-<br>
-
-<img title="Views since 30.11.2023 + 6k after migration" src="https://komarev.com/ghpvc/?username=swiftyfinch-rugby&label=Views&format=true&base=6000">
