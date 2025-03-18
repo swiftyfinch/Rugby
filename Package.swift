@@ -15,7 +15,7 @@ let package = Package(
 
         // RugbyFoundation
         .package(url: "https://github.com/onevcat/Rainbow", from: "4.0.1"),
-        .package(url: "https://github.com/tuist/XcodeProj", from: "8.20.0"),
+        .package(url: "https://github.com/tuist/XcodeProj", from: "9.0.0"),
         .package(url: "https://github.com/kareman/SwiftShell", from: "5.1.0"),
         .package(url: "https://github.com/tuist/xcbeautify", from: "1.6.0"),
         .package(url: "https://github.com/jpsim/Yams", from: "5.0.6"),
