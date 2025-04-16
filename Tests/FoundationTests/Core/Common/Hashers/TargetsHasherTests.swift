@@ -54,7 +54,6 @@ extension TargetsHasherTests {
         buildOptions:
           xcargs:
           - COMPILER_INDEX_STORE_ENABLE=NO
-          - SWIFT_COMPILATION_MODE=wholemodule
         buildPhases:
         - Alamofire-framework_buildPhase_hash
         buildRules:
@@ -78,7 +77,6 @@ extension TargetsHasherTests {
         buildOptions:
           xcargs:
           - COMPILER_INDEX_STORE_ENABLE=NO
-          - SWIFT_COMPILATION_MODE=wholemodule
         buildPhases:
         - Moya-framework_buildPhase_hash
         buildRules:
@@ -106,7 +104,6 @@ extension TargetsHasherTests {
         buildOptions:
           xcargs:
           - COMPILER_INDEX_STORE_ENABLE=NO
-          - SWIFT_COMPILATION_MODE=wholemodule
         buildPhases:
         - LocalPod-framework-LocalPodResources_buildPhase_hash
         buildRules:
@@ -130,7 +127,6 @@ extension TargetsHasherTests {
         buildOptions:
           xcargs:
           - COMPILER_INDEX_STORE_ENABLE=NO
-          - SWIFT_COMPILATION_MODE=wholemodule
         buildPhases:
         - LocalPod-framework_buildPhase_hash
         buildRules:
@@ -188,8 +184,7 @@ extension TargetsHasherTests {
 
         // Act
         try await sut.hash(targets, xcargs: [
-            "COMPILER_INDEX_STORE_ENABLE=NO",
-            "SWIFT_COMPILATION_MODE=wholemodule"
+            "COMPILER_INDEX_STORE_ENABLE=NO"
         ])
 
         // Assert

@@ -1,7 +1,6 @@
 /// The provider of xcargs which is used in Rugby.
 public final class XCARGSProvider {
-    private let base = ["COMPILER_INDEX_STORE_ENABLE=NO",
-                        "SWIFT_COMPILATION_MODE=wholemodule"]
+    private let base = ["COMPILER_INDEX_STORE_ENABLE=NO"]
     private let codeSigningNotAllowed = "CODE_SIGNING_ALLOWED=NO"
     private let disableDebugSymbolsGeneration = "GCC_GENERATE_DEBUGGING_SYMBOLS=NO"
     private let stripDebugSymbols = [

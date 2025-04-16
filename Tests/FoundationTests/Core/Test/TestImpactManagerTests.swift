@@ -100,7 +100,7 @@ extension TestImpactManagerTests {
             sdk: .sim,
             config: "Debug",
             arch: "arm64",
-            xcargs: ["COMPILER_INDEX_STORE_ENABLE=NO", "SWIFT_COMPILATION_MODE=wholemodule"],
+            xcargs: ["COMPILER_INDEX_STORE_ENABLE=NO"],
             resultBundlePath: nil
         )
         rugbyXcodeProject.isAlreadyUsingRugbyReturnValue = false
@@ -221,7 +221,7 @@ extension TestImpactManagerTests {
             sdk: .sim,
             config: "Debug",
             arch: "arm64",
-            xcargs: ["COMPILER_INDEX_STORE_ENABLE=NO", "SWIFT_COMPILATION_MODE=wholemodule"],
+            xcargs: ["COMPILER_INDEX_STORE_ENABLE=NO"],
             resultBundlePath: nil
         )
         rugbyXcodeProject.isAlreadyUsingRugbyReturnValue = false
@@ -319,7 +319,7 @@ extension TestImpactManagerTests {
             sdk: .sim,
             config: "Debug",
             arch: "arm64",
-            xcargs: ["COMPILER_INDEX_STORE_ENABLE=NO", "SWIFT_COMPILATION_MODE=wholemodule"],
+            xcargs: ["COMPILER_INDEX_STORE_ENABLE=NO"],
             resultBundlePath: nil
         )
         rugbyXcodeProject.isAlreadyUsingRugbyReturnValue = false
@@ -398,7 +398,7 @@ extension TestImpactManagerTests {
             sdk: .sim,
             config: "Debug",
             arch: "arm64",
-            xcargs: ["COMPILER_INDEX_STORE_ENABLE=NO", "SWIFT_COMPILATION_MODE=wholemodule"],
+            xcargs: ["COMPILER_INDEX_STORE_ENABLE=NO"],
             resultBundlePath: nil
         )
         rugbyXcodeProject.isAlreadyUsingRugbyReturnValue = false
