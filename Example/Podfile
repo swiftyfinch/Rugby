@@ -12,6 +12,7 @@ target 'ExampleFrameworks' do
   pod 'Moya/Core'
   pod 'Kingfisher'
   pod 'LocalPod', :path => 'LocalPods', :testspecs => ['Tests', 'ResourceBundleTests']
+  pod 'LocalLibraryPod', :path => 'LocalPods'
 
   target 'ExampleFrameworksTests' do
     inherit! :search_paths
@@ -41,7 +42,7 @@ post_install do |installer|
           config.build_settings['GCC_TREAT_WARNINGS_AS_ERRORS'] = 'YES'
         end
       end
-      
+
       target.build_configurations.each do |config|
         config.build_settings['IPHONEOS_DEPLOYMENT_TARGET'] = '16.0'
       end

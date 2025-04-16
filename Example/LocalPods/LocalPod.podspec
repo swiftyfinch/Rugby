@@ -16,7 +16,7 @@ Pod::Spec.new do |s|
     ]
   }
   s.dependency 'Moya/Core'
-
+  s.dependency 'LocalLibraryPod'
   s.test_spec 'Tests' do |ts|
     ts.source_files = "#{s.name}/Tests/**/*.swift"
     ts.resources = "#{s.name}/Tests/**/*.{json,xcassets}"
