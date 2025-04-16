@@ -50,7 +50,7 @@ extension TestsStorageTests {
             sdk: .sim,
             config: "Debug",
             arch: "arm64",
-            xcargs: ["COMPILER_INDEX_STORE_ENABLE=NO", "SWIFT_COMPILATION_MODE=wholemodule"],
+            xcargs: ["COMPILER_INDEX_STORE_ENABLE=NO"],
             resultBundlePath: nil
         )
         let localPodFrameworkUnitTests = IInternalTargetMock()
@@ -107,7 +107,7 @@ extension TestsStorageTests {
             sdk: .sim,
             config: "Debug",
             arch: "arm64",
-            xcargs: ["COMPILER_INDEX_STORE_ENABLE=NO", "SWIFT_COMPILATION_MODE=wholemodule"],
+            xcargs: ["COMPILER_INDEX_STORE_ENABLE=NO"],
             resultBundlePath: nil
         )
         let localPodFrameworkUnitTests = IInternalTargetMock()

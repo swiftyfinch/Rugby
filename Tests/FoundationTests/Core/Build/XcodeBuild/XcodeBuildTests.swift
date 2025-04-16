@@ -73,7 +73,6 @@ extension XcodeBuildTests {
                 "SYMROOT=/Users/swiftyfinch/Developer/Repos/Rugby/Example/.rugby/build",
                 "-resultBundlePath build.xcresult",
                 "COMPILER_INDEX_STORE_ENABLE=NO",
-                "SWIFT_COMPILATION_MODE=wholemodule",
                 "GCC_GENERATE_DEBUGGING_SYMBOLS=NO",
                 "STRIP_INSTALLED_PRODUCT=YES",
                 "COPY_PHASE_STRIP=YES",
@@ -124,8 +123,7 @@ extension XcodeBuildTests {
                 "-parallelizeTargets",
                 "-project /Users/swiftyfinch/Developer/Repos/Rugby/Exa\\ mple/Pods/Pods.xcodeproj",
                 "SYMROOT=/Users/swiftyfinch/Developer/Repos/Rugby/Exa\\ mple/.rugby/build",
-                "COMPILER_INDEX_STORE_ENABLE=NO",
-                "SWIFT_COMPILATION_MODE=wholemodule"
+                "COMPILER_INDEX_STORE_ENABLE=NO"
             ]]
         )
     }
@@ -175,7 +173,6 @@ extension XcodeBuildTests {
                 "SYMROOT=/Users/swiftyfinch/Developer/Repos/Rugby/Example/.rugby/build",
                 "-resultBundlePath build.xcresult",
                 "COMPILER_INDEX_STORE_ENABLE=NO",
-                "SWIFT_COMPILATION_MODE=wholemodule",
                 "GCC_GENERATE_DEBUGGING_SYMBOLS=NO",
                 "STRIP_INSTALLED_PRODUCT=YES",
                 "COPY_PHASE_STRIP=YES",

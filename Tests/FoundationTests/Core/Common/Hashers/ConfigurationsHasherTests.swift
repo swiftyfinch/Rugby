@@ -31,8 +31,7 @@ extension ConfigurationsHasherTests {
                 name: "Release",
                 buildSettings: [
                     "PRODUCT_MODULE_NAME": "KeyboardLayoutGuide",
-                    "SWIFT_OPTIMIZATION_LEVEL": "-O",
-                    "SWIFT_COMPILATION_MODE": "wholemodule"
+                    "SWIFT_OPTIMIZATION_LEVEL": "-O"
                 ]
             )
         ]
@@ -51,6 +50,6 @@ extension ConfigurationsHasherTests {
                        ["ONLY_ACTIVE_ARCH": "YES", "SWIFT_OPTIMIZATION_LEVEL": "-Onone"])
         XCTAssertEqual(hashContext[2]["name"] as? String, "Release")
         XCTAssertEqual(hashContext[2]["buildSettings"] as? [String: String],
-                       ["SWIFT_OPTIMIZATION_LEVEL": "-O", "SWIFT_COMPILATION_MODE": "wholemodule"])
+                       ["SWIFT_OPTIMIZATION_LEVEL": "-O"])
     }
 }
