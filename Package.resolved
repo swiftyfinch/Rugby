@@ -5,8 +5,8 @@
       "kind" : "remoteSourceControl",
       "location" : "https://github.com/tadija/AEXML.git",
       "state" : {
-        "revision" : "38f7d00b23ecd891e1ee656fa6aeebd6ba04ecc3",
-        "version" : "4.6.1"
+        "revision" : "db806756c989760b35108146381535aec231092b",
+        "version" : "4.7.0"
       }
     },
     {
@@ -95,8 +95,8 @@
       "kind" : "remoteSourceControl",
       "location" : "https://github.com/tuist/XcodeProj",
       "state" : {
-        "revision" : "8b77ece5708ed8b5bcd5819d339124c573279eb6",
-        "version" : "8.27.5"
+        "revision" : "7ed0fcca4ebfe065dd4abf6a4075727d525cfbaf",
+        "version" : "9.1.0"
       }
     },
     {
