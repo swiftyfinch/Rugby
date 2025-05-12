@@ -1,4 +1,5 @@
 @testable import RugbyFoundation
+import XcodeProj
 import XCTest
 
 final class RugbyXcodeProjectTests: XCTestCase {
@@ -47,6 +48,6 @@ extension RugbyXcodeProjectTests {
         // Assert
         XCTAssertEqual(xcodeProject.setBuildSettingsKeyValueCallsCount, 1)
         XCTAssertEqual(xcodeProject.setBuildSettingsKeyValueReceivedArguments?.buildSettingsKey, "RUGBY_PATCHED")
-        XCTAssertEqual(xcodeProject.setBuildSettingsKeyValueReceivedArguments?.value as? String, "YES")
+        XCTAssertEqual(xcodeProject.setBuildSettingsKeyValueReceivedArguments?.value as? BuildSetting, "YES")
     }
 }

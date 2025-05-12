@@ -1,5 +1,6 @@
 import Fish
 import Foundation
+import XcodeProj
 
 // MARK: - Interface
 
@@ -50,7 +51,7 @@ final class BackupManager {
     private let workingDirectory: IFolder
     private let hasBackupKey: String
 
-    private let yes = "YES"
+    private let yes: BuildSetting = true
     private let targetSupportFiles = "Target Support Files"
 
     init(backupFolderPath: String,

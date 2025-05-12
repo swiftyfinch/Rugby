@@ -5,6 +5,7 @@
 
 import Foundation
 @testable import RugbyFoundation
+@testable import XcodeProj
 
 final class IInternalXcodeProjectMock: IInternalXcodeProject {
 
@@ -249,12 +250,12 @@ final class IInternalXcodeProjectMock: IInternalXcodeProject {
     public var setBuildSettingsKeyValueThrowableError: Error?
     public var setBuildSettingsKeyValueCallsCount = 0
     public var setBuildSettingsKeyValueCalled: Bool { setBuildSettingsKeyValueCallsCount > 0 }
-    public var setBuildSettingsKeyValueReceivedArguments: (buildSettingsKey: String, value: Any)?
-    public var setBuildSettingsKeyValueReceivedInvocations: [(buildSettingsKey: String, value: Any)] = []
+    public var setBuildSettingsKeyValueReceivedArguments: (buildSettingsKey: String, value: BuildSetting)?
+    public var setBuildSettingsKeyValueReceivedInvocations: [(buildSettingsKey: String, value: BuildSetting)] = []
     private let setBuildSettingsKeyValueReceivedInvocationsLock = NSRecursiveLock()
-    public var setBuildSettingsKeyValueClosure: ((String, Any) async throws -> Void)?
+    public var setBuildSettingsKeyValueClosure: ((String, BuildSetting) async throws -> Void)?
 
-    public func set(buildSettingsKey: String, value: Any) async throws {
+    public func set(buildSettingsKey: String, value: BuildSetting) async throws {
         setBuildSettingsKeyValueCallsCount += 1
         setBuildSettingsKeyValueReceivedArguments = (buildSettingsKey: buildSettingsKey, value: value)
         setBuildSettingsKeyValueReceivedInvocationsLock.withLock {

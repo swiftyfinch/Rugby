@@ -17,8 +17,10 @@ extension PBXTarget {
         }
     }
 
-    private func combineKeys(_ lhs: Any, rhs: Any) -> Any {
-        guard let lhs = lhs as? String, let rhs = rhs as? String else { return rhs }
-        return rhs.replacingOccurrences(of: "$(inherited)", with: lhs)
+    private func combineKeys(_ lhs: BuildSetting, rhs: BuildSetting) -> BuildSetting {
+        guard let lhs = lhs.stringValue, let rhs = rhs.stringValue else { return rhs }
+        return BuildSetting.string(
+            rhs.replacingOccurrences(of: "$(inherited)", with: lhs)
+        )
     }
 }

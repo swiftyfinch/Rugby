@@ -1,4 +1,5 @@
 import Foundation
+import XcodeProj
 
 /// The protocol describing a service for Xcode project managment.
 public protocol IXcodeProject: AnyObject {
@@ -7,7 +8,7 @@ public protocol IXcodeProject: AnyObject {
     /// Returns `true` if the root project contains the key in the build settings.
     func contains(buildSettingsKey: String) async throws -> Bool
     /// Sets the value to the key in the build settings of the root project.
-    func set(buildSettingsKey: String, value: Any) async throws
+    func set(buildSettingsKey: String, value: BuildSetting) async throws
 }
 
 protocol IInternalXcodeProject: IXcodeProject {
@@ -118,7 +119,7 @@ extension XcodeProject: IInternalXcodeProject {
         try await buildSettingsEditor.contains(buildSettingsKey: buildSettingsKey)
     }
 
-    func set(buildSettingsKey: String, value: Any) async throws {
+    func set(buildSettingsKey: String, value: BuildSetting) async throws {
         try await buildSettingsEditor.set(buildSettingsKey: buildSettingsKey, value: value)
     }
 
