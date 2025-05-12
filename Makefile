@@ -60,7 +60,7 @@ test:
 
 .PHONY: smoke
 smoke:
-	cd Example && Tests/CacheTests.sh
+	cd Example && Tests/cache_tests.sh
 
 .PHONY: docs
 docs:
