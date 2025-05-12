@@ -1,4 +1,5 @@
 import Foundation
+import XcodeProj
 import Yams
 
 // MARK: - Interface
@@ -137,4 +138,17 @@ private extension String {
     static let hashKey = "HASH"
     static let hashContextKey = "HASH_CONTEXT"
     static let targetHashContextKey = "TARGET_HASH_CONTEXT"
+}
+
+// MARK: - BuildSetting
+
+extension BuildSetting: @retroactive NodeRepresentable {
+    public func represented() throws -> Node {
+        switch self {
+        case let .string(string):
+            return Node(string)
+        case let .array(array):
+            return try array.represented()
+        }
+    }
 }
