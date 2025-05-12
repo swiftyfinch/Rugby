@@ -109,7 +109,7 @@ extension BuildPhaseHasher: IBuildPhaseHasher {
         // Convert the build setting to different format
         var additionalEnv: [String: String] = [:]
         buildSettings.forEach { key, value in
-            guard let value = value as? String else { return }
+            guard let value = value.stringValue else { return }
             additionalEnv[key] = value
         }
 
