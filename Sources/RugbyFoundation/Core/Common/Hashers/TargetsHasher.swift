@@ -145,10 +145,10 @@ private extension String {
 extension BuildSetting: @retroactive NodeRepresentable {
     public func represented() throws -> Node {
         switch self {
-        case let .string(string):
-            return Node(string)
-        case let .array(array):
-            return try array.represented()
+        case let .string(value):
+            try value.represented()
+        case let .array(value):
+            try value.represented()
         }
     }
 }

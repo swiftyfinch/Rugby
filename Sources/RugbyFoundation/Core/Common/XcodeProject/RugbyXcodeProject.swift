@@ -24,7 +24,7 @@ protocol IRugbyXcodeProject: AnyObject {
 
 final class RugbyXcodeProject {
     private let xcodeProject: IInternalXcodeProject
-    private let yes = BuildSetting.string("YES")
+    private let yes: BuildSetting = true
 
     init(xcodeProject: IInternalXcodeProject) {
         self.xcodeProject = xcodeProject

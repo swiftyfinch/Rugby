@@ -51,7 +51,7 @@ final class BackupManager {
     private let workingDirectory: IFolder
     private let hasBackupKey: String
 
-    private let yes = BuildSetting.string("YES")
+    private let yes: BuildSetting = true
     private let targetSupportFiles = "Target Support Files"
 
     init(backupFolderPath: String,
