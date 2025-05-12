@@ -1,4 +1,5 @@
 import Foundation
+import XcodeProj
 
 // MARK: - Interface
 
@@ -23,7 +24,7 @@ protocol IRugbyXcodeProject: AnyObject {
 
 final class RugbyXcodeProject {
     private let xcodeProject: IInternalXcodeProject
-    private let yes = "YES"
+    private let yes = BuildSetting.string("YES")
 
     init(xcodeProject: IInternalXcodeProject) {
         self.xcodeProject = xcodeProject

@@ -73,7 +73,7 @@ extension IXcodeCLTVersionProvider {}
 // sourcery: AutoMockable, testableImports = ["RugbyFoundation"]
 extension IBinariesStorage {}
 
-// sourcery: AutoMockable, testableImports = ["RugbyFoundation"]
+// sourcery: AutoMockable, testableImports = ["RugbyFoundation", "XcodeProj"]
 extension IXcodeProject {}
 
 // sourcery: AutoMockable, testableImports = ["RugbyFoundation"]
@@ -136,7 +136,7 @@ extension ITargetTreePainter {}
 // sourcery: AutoMockable, testableImports = ["RugbyFoundation"]
 extension ITestsStorage {}
 
-// sourcery: AutoMockable, testableImports = ["RugbyFoundation"]
+// sourcery: AutoMockable, testableImports = ["RugbyFoundation", "XcodeProj"]
 extension IInternalXcodeProject {}
 
 // sourcery: AutoMockable, testableImports = ["RugbyFoundation"]

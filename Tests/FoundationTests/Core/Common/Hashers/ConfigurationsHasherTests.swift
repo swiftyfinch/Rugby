@@ -1,4 +1,5 @@
 @testable import RugbyFoundation
+import XcodeProj
 import XCTest
 
 final class ConfigurationsHasherTests: XCTestCase {
@@ -43,13 +44,13 @@ extension ConfigurationsHasherTests {
         let hashContext = try XCTUnwrap(anyHashContext as? [[String: Any]])
         XCTAssertEqual(hashContext.count, 3)
         XCTAssertEqual(hashContext[0]["name"] as? String, "_Common")
-        XCTAssertEqual(hashContext[0]["buildSettings"] as? [String: String],
+        XCTAssertEqual(hashContext[0]["buildSettings"] as? [String: BuildSetting],
                        ["PRODUCT_MODULE_NAME": "KeyboardLayoutGuide"])
         XCTAssertEqual(hashContext[1]["name"] as? String, "Debug")
-        XCTAssertEqual(hashContext[1]["buildSettings"] as? [String: String],
+        XCTAssertEqual(hashContext[1]["buildSettings"] as? [String: BuildSetting],
                        ["ONLY_ACTIVE_ARCH": "YES", "SWIFT_OPTIMIZATION_LEVEL": "-Onone"])
         XCTAssertEqual(hashContext[2]["name"] as? String, "Release")
-        XCTAssertEqual(hashContext[2]["buildSettings"] as? [String: String],
+        XCTAssertEqual(hashContext[2]["buildSettings"] as? [String: BuildSetting],
                        ["SWIFT_OPTIMIZATION_LEVEL": "-O"])
     }
 }

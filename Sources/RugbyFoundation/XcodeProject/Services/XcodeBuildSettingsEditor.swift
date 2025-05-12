@@ -1,3 +1,5 @@
+import XcodeProj
+
 final class XcodeBuildSettingsEditor {
     private let projectDataSource: XcodeProjectDataSource
 
@@ -12,7 +14,7 @@ final class XcodeBuildSettingsEditor {
         }
     }
 
-    func set(buildSettingsKey: String, value: Any) async throws {
+    func set(buildSettingsKey: String, value: BuildSetting) async throws {
         let buildConfigurationList = try await projectDataSource.rootProject.buildConfigurationList
         buildConfigurationList.buildConfigurations.forEach {
             $0.buildSettings[buildSettingsKey] = value
