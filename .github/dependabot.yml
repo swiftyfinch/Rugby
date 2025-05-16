@@ -5,10 +5,12 @@
 
 version: 2
 updates:
-  - package-ecosystem: "swift"
-    directory: "/"
+  - package-ecosystem: 'swift'
+    directory: '/'
     schedule:
-      interval: "daily"
+      interval: 'daily'
+    assignees: [swiftyfinch]
+    reviewers: [swiftyfinch]
     ignore:
       # Product 'PLzmaSDK' contains unsafe build flags.
-      - dependency-name: "github.com/OlehKulykov/PLzmaSDK"
+      - dependency-name: 'github.com/OlehKulykov/PLzmaSDK'
