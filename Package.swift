@@ -18,7 +18,7 @@ let package = Package(
         .package(url: "https://github.com/tuist/XcodeProj", from: "9.3.0"),
         .package(url: "https://github.com/kareman/SwiftShell", from: "5.1.0"),
         .package(url: "https://github.com/tuist/xcbeautify", from: "1.6.0"),
-        .package(url: "https://github.com/jpsim/Yams", from: "5.0.6"),
+        .package(url: "https://github.com/jpsim/Yams", from: "6.0.0"),
         .package(url: "https://github.com/weichsel/ZIPFoundation", from: "0.9.19"),
         .package(url: "https://github.com/swiftyfinch/Fish", from: "0.1.2"),
         .package(url: "https://github.com/OlehKulykov/PLzmaSDK", from: "1.4.2")
