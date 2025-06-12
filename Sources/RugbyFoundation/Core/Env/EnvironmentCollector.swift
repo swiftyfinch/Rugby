@@ -19,9 +19,9 @@ public protocol IEnvironmentCollector: AnyObject {
     ///   - rugbyVersion: The current version of Rugby.
     ///   - command: A command to log.
     ///   - rugbyEnvironment: The variable names and values in the environment which is used by Rugby.
-    func write<Command>(
+    func write(
         rugbyVersion: String,
-        command: Command,
+        command: some Any,
         rugbyEnvironment: [String: String]
     ) async throws
 
@@ -30,7 +30,7 @@ public protocol IEnvironmentCollector: AnyObject {
 
     /// Logs the command description.
     /// - Parameter command: A command to log.
-    func logCommandDump<Command>(command: Command) async
+    func logCommandDump(command: some Any) async
 }
 
 // MARK: - Implementation
